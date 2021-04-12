@@ -1,0 +1,165 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>How to Install AWS CLI to Raspberry Pi</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="xxxxxx"
+                  id="00-Install-AWS-CLI-to-RPI"
+                  title="How to Install AWS CLI to Raspberry Pi"
+                  environment="web"
+                  feedback-link="https://github.com/midnight480/handson-manual">
+    
+      <google-codelab-step label="Enviorment" duration="1">
+        <h2 is-upgraded>Machine</h2>
+<p><a href="https://www.switch-science.com/catalog/3850/" target="_blank"><paper-button class="colored" raised>SWITCHSCIENCE - Raspberry Pi 3 Model B+</paper-button></a></p>
+<p class="image-container"><img alt="RPI" src="img/6963ca18ae2cba5c.jpg"></p>
+<h2 is-upgraded>OS</h2>
+<ul>
+<li>Raspberry Pi OS</li>
+</ul>
+<pre>&gt; cat /etc/os-release
+PRETTY_NAME=&#34;Raspbian GNU/Linux 9 (stretch)&#34;
+NAME=&#34;Raspbian GNU/Linux&#34;
+VERSION_ID=&#34;9&#34;
+VERSION=&#34;9 (stretch)&#34;
+ID=raspbian
+ID_LIKE=debian
+HOME_URL=&#34;http://www.raspbian.org/&#34;
+SUPPORT_URL=&#34;http://www.raspbian.org/RaspbianForums&#34;
+BUG_REPORT_URL=&#34;http://www.raspbian.org/RaspbianBugs&#34;
+&gt; uname -a
+Linux raspberrypi 4.14.79-v7+ #1159 SMP Sun Nov 4 17:50:20 GMT 2018 armv7l GNU/Linux
+</pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Install AWS CLI" duration="3">
+        <pre>&gt; sudo apt-get update -y
+...
+パッケージリストを読み込んでいます... 完了
+&gt; sudo apt-get install -y awscli
+...
+python3-rsa (3.4.2-1) を設定しています ...
+python3-jmespath (0.9.0-2) を設定しています ...
+python3-dateutil (2.5.3-2) を設定しています ...
+python3-botocore (1.4.70-1) を設定しています ...
+python3-s3transfer (0.1.9-1) を設定しています ...
+awscli (1.11.13-1) を設定しています ...
+&gt; aws --version
+aws-cli/1.11.13 Python/3.5.3 Linux/4.14.79-v7+ botocore/1.4.70
+</pre>
+<aside class="special"><p><code>sudo apt-get update -y</code>は必ず実施してください</p>
+</aside>
+<aside class="warning"><p>Raspberry Piにインストール可能なAWS CLIは最新版でもv1.x系となります</p>
+</aside>
+<p><a href="https://aws.amazon.com/jp/cli/" target="_blank"><paper-button class="colored" raised>AWS コマンドラインインターフェイス</paper-button></a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="AWS Settings" duration="3">
+        <pre>&gt; aws configure              
+AWS Access Key ID [None]: AKXXXXX
+AWS Secret Access Key [None]: YYYYY
+Default region name [None]: ap-northeast-1
+Default output format [None]: json
+&gt;
+&gt; ls -la ~/.aws
+...
+-rw-------  1 pi pi   48  M月 DD HH:MI config
+-rw-------  1 pi pi   48  M月 DD HH:MI credential
+</pre>
+<aside class="special"><p>Shell Script内で実行するAWS CLIで実行する際の権限を設定します</p>
+</aside>
+<aside class="warning"><p>Access Key, Secret Access Keyは管理者から払い出されたものを設定してください。</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Create Shell Script" duration="3">
+        <pre>&gt; vi ZZZZ.sh
+&gt; crontab -e
+# 10分おきに実行
+*/10 * * * * ZZZZ.sh
+</pre>
+<aside class="special"><p>vimの場合、 <code>:wq</code> で保存することになります</p>
+</aside>
+<h2 is-upgraded>ShellScript</h2>
+<ul>
+<li>AWS Kinesis Data FirehoseにCSVファイルを送るための定義となります  <ul>
+<li>CSVから項目を抽出してJSON形式にしてデータをロードさせる形となります</li>
+<li>もし初期のCSVから出力するデータ形式がJSONの場合は、awkコマンドで切り出している箇所は不要です</li>
+</ul>
+</li>
+</ul>
+<pre>#!/bin/bash
+ 
+# Kinensis Firehoseのストリーム名を設定
+streamname=${kinesisn-data-firehose-stream-nama}
+ 
+while [ 1 ]
+do
+    (
+        time=`date &#39;+%F %T&#39;`
+        col1=$(awk -F= &#39;&#39;)
+        col2=$(awk -F= &#39;&#39;)
+        col3=$(awk -F= &#39;&#39;) 
+        payload=&#39;{\&#34;time\&#34;:\&#34;&#39;$time&#39;\&#34;, \&#34;col1\&#34;:&#39;$col1&#39;, \&#34;col2\&#34;:&#39;$col2&#39;, \&#34;col3\&#34;:&#39;$col3&#39;}&#39;
+        echo $payload
+        aws firehose put-record --delivery-stream-name $streamname --record=&#34;{\&#34;Data\&#34;:\&#34;$payload\n\&#34;}&#34;
+    ) &amp;
+    sleep 15
+done
+</pre>
+<ul>
+<li>参考  <ul>
+<li><a href="https://www.yamamanx.com/ds18b20_raspberry-pi_amazon-kinesis-firehose_s3_athena-quicksight/" target="_blank">DS18B20センサー+Raspberry Piで取得した温度をAmazon Kinesis FirehoseからS3へ格納</a></li>
+</ul>
+</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Complete" duration="1">
+        <ul>
+<li>設定作業お疲れさまでした</li>
+</ul>
+<aside class="special"><p>AWS CLIはGUIと比較して、作業者のスキルに依存せず再現性の高い作業も可能となります</p>
+</aside>
+<aside class="warning"><p>AWS CLI v2になると入力可能なコマンドの幅が増えるためRaspberry Piで利用可能になったら変更を推奨します</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
