@@ -84,30 +84,38 @@ Negative
 ### 拡張機能の有効
 
 * マイク
-  ![mic](./images/0101.jpg)
+
+![mic](./images/0101.jpg)
 
 * カメラ
-  ![camera](./images/0102.jpg)
+
+![camera](./images/0102.jpg)
   
 * 有効化の確認
-  ![camera](./images/0103.jpg)
+
+![camera](./images/0103.jpg)
 
 * ログイン名の入力
-  ![userName](./images/0104.jpg)
+
+![userName](./images/0104.jpg)
 
 ### プライベートスペースへの入室
   
 * 呼び出し前
-  ![befCall](./images/0105.jpg)
-  
+
+![befCall](./images/0105.jpg)
+
 * 呼び出し前
-  ![aftCall](./images/0106.jpg)
-  
+
+![aftCall](./images/0106.jpg)
+
 * 入室後
-  ![enter](./images/0107.jpg)
-  
+
+![enter](./images/0107.jpg)
+
 * 機能
-  ![func](./images/0108.jpg)
+
+![func](./images/0108.jpg)
 
 Positive
 : このあとは実際に入室してから動かしながら説明します
@@ -117,10 +125,12 @@ Positive
 ### 入室待ちの通知
 
 * 呼び出し中
-  ![calling](./images/0190.jpg)
+
+![calling](./images/0190.jpg)
 
 * 入室対応
-  ![room](./images/0191.jpg)
+
+![room](./images/0191.jpg)
 
 Positive
 : 基本的にはパブリックスペースに案内するとよいです
