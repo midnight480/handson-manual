@@ -81,27 +81,33 @@ Positive
 Negative
 : 以降の画面はmacOS BigSur 11.3.1, Mozilla Firefox 88.0.1 (64 ビット)で取得した画面となりますが、各自の操作へ影響はないと思います。
 
-* 拡張機能の有効
-  * マイク
-    ![mic](./images/0101.jpg)
-  * カメラ
-    ![camera](./images/0102.jpg)
-  * 有効化の確認
-    ![camera](./images/0103.jpg)
+### 拡張機能の有効
+
+* マイク
+  ![mic](./images/0101.jpg)
+
+* カメラ
+  ![camera](./images/0102.jpg)
+  
+* 有効化の確認
+  ![camera](./images/0103.jpg)
 
 * ログイン名の入力
-  * 今回利用するユーザ名
-    ![userName](./images/0104.jpg)
+  ![userName](./images/0104.jpg)
 
-* プライベートスペースへの入室
-  * 呼び出し前
-    ![befCall](./images/0105.jpg)
-  * 呼び出し前
-    ![aftCall](./images/0106.jpg)
-  * 入室後
-    ![enter](./images/0107.jpg)
-  * 機能
-    ![func](./images/0108.jpg)
+### プライベートスペースへの入室
+  
+* 呼び出し前
+  ![befCall](./images/0105.jpg)
+  
+* 呼び出し前
+  ![aftCall](./images/0106.jpg)
+  
+* 入室後
+  ![enter](./images/0107.jpg)
+  
+* 機能
+  ![func](./images/0108.jpg)
 
 Positive
 : このあとは実際に入室してから動かしながら説明します
