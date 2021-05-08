@@ -20,6 +20,7 @@ go version go1.16.3 darwin/amd64
 > export GOPATH=$HOME/Go
 > export PATH=$PATH:$GOPATH/bin
 > claat -h
+> claat export *.md
 ...
 > 
 ```
