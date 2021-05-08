@@ -1,0 +1,26 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2021-05-08T19:45:49+09:00",
+  "id": "01-use-manual-oVice",
+  "duration": 25,
+  "title": "oViceを使ってみよう",
+  "summary": "Desc",
+  "source": "01-use-manual-oVice.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "codelab",
+    "markdown"
+  ],
+  "tags": [
+    "web"
+  ],
+  "feedback": "https://github.com/midnight480/handson-manual",
+  "ga": "196534296",
+  "url": "01-use-manual-oVice"
+}
