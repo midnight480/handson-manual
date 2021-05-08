@@ -108,8 +108,13 @@ Positive
 
 ## （おまけ）管理者のオペレーション
 
-* 入室待ちの通知
-  * 呼び出し中
-    ![calling](./images/0190.jpg)
-  * 入室対応
-    ![room](./images/0191.jpg)
+### 入室待ちの通知
+
+* 呼び出し中
+  ![calling](./images/0190.jpg)
+
+* 入室対応
+  ![room](./images/0191.jpg)
+
+Positive
+: 基本的にはパブリックスペースに案内するとよいです
