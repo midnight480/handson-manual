@@ -1,6 +1,6 @@
 author: Shibao,Tetsuya
 summary: Desc
-id: 02-user-manual-gather
+id: 02-use-manual-gather
 categories: codelab,markdown
 environments: Web
 status: Published
