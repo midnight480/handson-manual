@@ -26,18 +26,19 @@ Negative
 
 * サイトURL
   * [公式](https://ovice.in/ja/)
-  * [本社所在地](https://ovice.in/ja/about-us/) - 石川県七尾市元府中町エ113B
+  * [本社所在地](https://ovice.in/ja/about-us/)  
+    石川県七尾市元府中町エ113B
   * [料金体系](https://ovice.in/ja/pricing/)
 
 * 現在はトライアル期間中
   * [テレワークやイベントで使えるバーチャル空間を無償提供(5/31まで)](https://prtimes.jp/main/html/rd/p/000000034.000058507.html)
   
 * 通信仕様
-  * [ネットワークについて](https://ovice.zendesk.com/hc/ja/articles/900004604266-%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6)
+  * [ネットワークについて](https://ovice.zendesk.com/hc/ja/articles/900004604266-%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6)  
   一般的なWebRTC、TCP/443によるHTTPS通信、一部UDPで通信がある模様
 
 * 適用される法律
-  * [利用規約](https://www.notion.so/oVice-2021-5-19-e93174118cd04934aca03c4ea4c409c4)
+  * [利用規約](https://www.notion.so/oVice-2021-5-19-e93174118cd04934aca03c4ea4c409c4)  
     > 本規約は、日本国法に準拠し、解釈されるものとします。
 
 ### 実績
