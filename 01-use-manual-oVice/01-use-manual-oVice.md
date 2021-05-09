@@ -23,7 +23,7 @@ Negative
   * 画面共有
 
 * サイトURL
-  * https://ovice.in/ja/
+  * [公式](https://ovice.in/ja/)
   * [本社所在地](https://ovice.in/ja/about-us/) - 石川県七尾市元府中町エ113B
   * [料金体系](https://ovice.in/ja/pricing/)
 
@@ -101,15 +101,15 @@ Negative
 
 ### プライベートスペースへの入室
   
-* 呼び出し前
+* 呼び出し前 - 鈴（ベル）の絵
 
 ![befCall](./images/0105.jpg)
 
-* 呼び出し前
+* 呼び出し後 - 拡声器（メガフォン）の絵
 
 ![aftCall](./images/0106.jpg)
 
-* 入室後
+* 入室後 - 画面内のどこかをクリック
 
 ![enter](./images/0107.jpg)
 
@@ -133,4 +133,4 @@ Positive
 ![room](./images/0191.jpg)
 
 Positive
-: 基本的にはパブリックスペースに案内するとよいです
+: 基本的にはオープンスペース（来訪者にする）を選ぶとスムーズに受付可能です
