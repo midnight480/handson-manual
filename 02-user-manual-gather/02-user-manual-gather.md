@@ -26,17 +26,18 @@ Negative
 
 * サイトURL
   * [公式](https://gather.town/)
-  * [本社所在地](https://pitchbook.com/profiles/company/454511-26#overview) - 547 Elm Avenue, San Bruno, CA, United States
-  * [料金体系](https://gather.town/pricing)
+  * [本社所在地](https://pitchbook.com/profiles/company/454511-26#overview)  
+    547 Elm Avenue, San Bruno, CA, United States
+  * [料金体系](https://gather.town/pricing)  
   ※ Free Tier Accommodates 25 Online Users!
 
 * 通信仕様
-  * [ネットワークについて](https://support.gather.town/help/data-protection-and-encryption#data-encryption)
+  * [ネットワークについて](https://support.gather.town/help/data-protection-and-encryption#data-encryption)  
   一般的なWebRTCを用いtら E2E(P2P)でのTCP/443によるHTTPS通信
 
 * 適用される法律
-  * [利用規約](https://gather.town/terms-of-use)
-    > United States Legal Compliance
+  * [利用規約](https://gather.town/terms-of-use)  
+    > United States Legal Compliance  
     ※ EUはGDPR、USのCalifornia州は独自の個人情報取得に関する法律が適用される
 
 https://status.gather.town/
