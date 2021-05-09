@@ -40,8 +40,6 @@ Negative
     > United States Legal Compliance  
     ※ EUはGDPR、USのCalifornia州は独自の個人情報取得に関する法律が適用される
 
-https://status.gather.town/
-
 ### 実績
 
 * [高エネルギー加速器研究機構 - 研究会「放射線検出器とその応用」](https://www-conf.kek.jp/rdetconf/index.html)
