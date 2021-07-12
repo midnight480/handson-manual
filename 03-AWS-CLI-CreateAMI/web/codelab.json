@@ -3,12 +3,12 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2021-07-12T23:33:49+09:00",
+  "updated": "2021-07-12T23:44:02+09:00",
   "id": "03-AWS-CLI-CreateAMI",
-  "duration": 110,
+  "duration": 50,
   "title": "AWS CLIを使ってEC2からAMIを作成する",
   "summary": "Create AMI by AWS CLI",
-  "source": ".\\03-AWS-CLI-CreateAMI.md",
+  "source": "03-AWS-CLI-CreateAMI.md",
   "theme": "",
   "status": [
     "published"
