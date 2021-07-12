@@ -166,7 +166,7 @@ aws ec2 describe-snapshots --owner-ids $AccountID --output yaml --profile cli-us
 #### sample
 
 ```
-l> aws ec2 describe-snapshots --owner-ids $AccountID --output yaml --profile cli-users --query 'Snapshots[*].[SnapshotId,VolumeId,VolumeSize,State,Progress,StartTime]'
+> aws ec2 describe-snapshots --owner-ids $AccountID --output yaml --profile cli-users --query 'Snapshots[*].[SnapshotId,VolumeId,VolumeSize,State,Progress,StartTime]'
 - - snap-******
   - vol-******
   - 8

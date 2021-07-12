@@ -141,7 +141,7 @@ aws ec2 describe-images  --query &#39;Images[].[{ImageId:ImageId},{Description:D
 aws ec2 describe-snapshots --owner-ids $AccountID --output yaml --profile cli-users --query &#39;Snapshots[*].[SnapshotId,VolumeId,VolumeSize,State,Progress,StartTime]&#39;
 </code></pre>
 <h3 is-upgraded>sample</h3>
-<pre><code>l&gt; aws ec2 describe-snapshots --owner-ids $AccountID --output yaml --profile cli-users --query &#39;Snapshots[*].[SnapshotId,VolumeId,VolumeSize,State,Progress,StartTime]&#39;
+<pre><code>&gt; aws ec2 describe-snapshots --owner-ids $AccountID --output yaml --profile cli-users --query &#39;Snapshots[*].[SnapshotId,VolumeId,VolumeSize,State,Progress,StartTime]&#39;
 - - snap-******
   - vol-******
   - 8
