@@ -66,7 +66,8 @@ aws-cli/2.2.5 Python/3.8.8 Windows/10 exe/AMD64 prompt/off
 
 Negative
 : アクセスキー、シークレットアクセスキーは管理を徹底すること  
-
+  
+　
 ```
 > aws configure --profile cli-users
 AWS Access Key ID [None]: AKI********
@@ -78,7 +79,8 @@ Default output format [None]: json
 
 Positive
 : AWS CLIで実行するときは必ず実行すること  
-
+  
+　
 ```
 > aws sts get-caller-identity --profile cli-users
 {

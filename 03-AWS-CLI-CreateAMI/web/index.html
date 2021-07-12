@@ -63,10 +63,26 @@ SerializationVersion           1.1.0.1
 aws-cli/2.2.5 Python/3.8.8 Windows/10 exe/AMD64 prompt/off
 &gt; 
 </code></pre>
-<aside class="warning"><p>アクセスキー、シークレットアクセスキーは管理を徹底すること<br><br><code>&gt; aws configure --profile cli-users<br>AWS Access Key ID [None]: AKI********<br>AWS Secret Access Key [None]: ********<br>Default region name [None]: ap-northeast-1<br>Default output format [None]: json<br>&gt;<br></code></p>
+<aside class="warning"><p>アクセスキー、シークレットアクセスキーは管理を徹底すること<br></p>
 </aside>
-<aside class="special"><p>AWS CLIで実行するときは必ず実行すること<br><br><code>&gt; aws sts get-caller-identity --profile cli-users<br>{<br>&#34;UserId&#34;: &#34;AID******&#34;,<br>&#34;Account&#34;: &#34;9999999999&#34;,<br>&#34;Arn&#34;: &#34;arn:aws:iam::9999999999:user/cli-users&#34;<br>}<br>&gt; <br></code></p>
+<pre><code>&gt; aws configure --profile cli-users
+AWS Access Key ID [None]: AKI********
+AWS Secret Access Key [None]: ********
+Default region name [None]: ap-northeast-1
+Default output format [None]: json
+&gt;
+</code></pre>
+<aside class="special"><p>AWS CLIで実行するときは必ず実行すること<br></p>
 </aside>
+<pre><code>&gt; aws sts get-caller-identity --profile cli-users
+{
+    &#34;UserId&#34;: &#34;AID******&#34;,
+    &#34;Account&#34;: &#34;9999999999&#34;,
+    &#34;Arn&#34;: &#34;arn:aws:iam::9999999999:user/cli-users&#34;
+}
+
+&gt; 
+</code></pre>
 
 
       </google-codelab-step>
