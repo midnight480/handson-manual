@@ -1,0 +1,197 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>AWS CLIを使ってEC2からAMIを作成する</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="196534296"
+                  id="03-AWS-CLI-CreateAMI"
+                  title="AWS CLIを使ってEC2からAMIを作成する"
+                  environment="web"
+                  feedback-link="https://github.com/midnight480/handson-manual">
+    
+      <google-codelab-step label="事前準備" duration="10">
+        <h2 is-upgraded>IAM Policy </h2>
+<p> 「<a href="https://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/best-practices.html#grant-least-privilege" target="_blank">最小限の特権を認める</a>」とあるように、   本来は必要最低限のポリシーで運用を行うべきですが、   今回はオペレーションの都合上、権限が幅広いものを提示しています。  <br><code>arn:aws:iam::aws:policy/AdministratorAccess<br>arn:aws:iam::aws:policy/AmazonEC2FullAccess</code><br>  </p>
+<h2 is-upgraded>IAM User </h2>
+<p> 前述のIAM Policyをアタッチする形でアクセスキーを発行する。  <a href="https://aws.amazon.com/jp/premiumsupport/knowledge-center/create-access-key/" target="_blank">AWS アクセスキーを作成するには、どうすればよいですか?</a>  <img alt="IAM User" src="img\\76e28d5cce87ff30.png">  <img alt="IAM Policy" src="img\\9085af5489d07bec.png">  <img alt="IAM AccessKey" src="img\\cc9ca39fc45c995a.png">  </p>
+<h2 is-upgraded>AWS CLI </h2>
+<p> 未インストールの場合は、以下より取得してください。  <a href="https://aws.amazon.com/jp/cli/" target="_blank"><paper-button class="colored" raised>AWS コマンドラインインターフェイス</paper-button></a>  </p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="AWS CLIの設定と確認" duration="30">
+        <p>Negative </p>
+<p>アクセスキー、シークレットアクセスキーは管理を徹底すること   <br><code>aws configure --profile cli-users<br>AWS Access Key ID [None]: AKI********<br>AWS Secret Access Key [None]: ********<br>Default region name [None]: ap-northeast-1<br>Default output format [None]: json</code><br><br>  Positive </p>
+<p>AWS CLIで実行するときは必ず実行すること  <br><code>aws sts get-caller-identity --profile cli-users<br>{<br>"UserId": "AID******",<br>"Account": "9999999999",<br>"Arn": "arn:aws:iam::9999999999:user/cli-users"<br>}</code><br><br><br>  </p>
+<p>AWS CLIs </p>
+<h2 is-upgraded>Documents </h2>
+<p>    Positive </p>
+<p>AWS CLIで実行するときは必ず実行すること  <br><code>aws sts get-caller-identity --profile cli-users<br>{<br>"UserId": "AID******",<br>"Account": "9999999999",<br>"Arn": "arn:aws:iam::9999999999:user/cli-users"<br>}</code><br><br><br>  </p>
+<p>AWS CLIs </p>
+<h2 is-upgraded>Documents </h2>
+<p>s sts get-caller-identity –profile cli-users { </p>
+<pre><code>&#34;UserId&#34;: &#34;AID******&#34;,
+&#34;Account&#34;: &#34;9999999999&#34;,
+&#34;Arn&#34;: &#34;arn:aws:iam::9999999999:user/cli-users&#34;
+</code></pre>
+<p>}   &#34;`  </p>
+<p>AWS CLIs </p>
+<h2 is-upgraded>Documents </h2>
+<ul>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/" target="_blank">aws ec2</a>のサブコマンド   <ul>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-images.html" target="_blank">describe-images</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html" target="_blank">describe-instances</a>  </li>
+<li><a href="[https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-snapshots.html" target="_blank">describe-snapshots</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-tags.html" target="_blank">describe-tags</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/create-image.html" target="_blank">create-images</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/create-snapshot.html" target="_blank">create-snapshot</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/create-tags.html" target="_blank">create-tags</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/stop-instances.html" target="_blank">stop-instances</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/start-instances.html" target="_blank">start-instances</a>    <h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-images.html" target="_blank">describe-images</a></h2>
+  <code><br>$AccountID=aws sts get-caller-identity --profile cli-users --output text --query Account <br>aws ec2 describe-images  --query 'Images[].[{ImageId:ImageId},{Description:Description},{Status:State}]' --owners $AccountID --output yaml --profile cli-users</code><br>    <h3 is-upgraded>Sample </h3>
+   &#34;` $AccountID=aws sts get-caller-identity –profile cli-users –output text –query Account  aws ec2 describe-images  –query ‘Images[].[{ImageId:ImageId},{Description:Description},{Status:State}]&#39; –owners $AccountID –output yaml –profile cli-users </li>
+</ul>
+</li>
+<li><ul>
+<li>ImageId: ami-****** </li>
+</ul>
+  <ul>
+<li>Description: sample </li>
+<li>Status: available   &#34;`    <h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html" target="_blank">describe-instances</a>  </h2>
+  <code><br>aws ec2 describe-instances --query 'Reservations[*].Instances[*].[{Instance:InstanceId}, {State:State.Name},{PublicIpAddress:PublicIpAddress},{PrivateIpAddress:PrivateIpAddress},{VolumeName:BlockDeviceMappings[*].DeviceName},{VolumeId:BlockDeviceMappings[*].Ebs.VolumeId},{ImageId:ImageId}]' --output yaml --profile cli-users</code><br>    <h3 is-upgraded>sample </h3>
+   &#34;` aws ec2 describe-instances –query ‘Reservations[<em>].Instances[</em>].[{Instance:InstanceId}, {State:State.Name},{PublicIpAddress:PublicIpAddress},{PrivateIpAddress:PrivateIpAddress},{VolumeName:BlockDeviceMappings[<em>].DeviceName},{VolumeId:BlockDeviceMappings[</em>].Ebs.VolumeId},{ImageId:ImageId}]&#39; –output yaml –profile cli-users         </li>
+</ul>
+</li>
+<li><ul>
+<li>- Instance: i-****** </li>
+</ul>
+  <ul>
+<li>State: running </li>
+<li>PublicIpAddress: ****** </li>
+<li>PrivateIpAddress: ****** </li>
+<li>VolumeName:   <ul>
+<li>/dev/xvda </li>
+</ul>
+</li>
+<li>VolumeId:   <ul>
+<li>vol-****** </li>
+</ul>
+</li>
+<li>ImageId: ami-******   &#34;`    <h2 is-upgraded><a href="[https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-snapshots.html" target="_blank">describe-snapshots</a></h2>
+  <code><br>$AccountID=aws sts get-caller-identity --profile cli-users --output text --query Account <br>aws ec2 describe-snapshots --owner-ids $AccountID --output yaml --profile cli-users --query 'Snapshots[*].[SnapshotId,VolumeId,VolumeSize,State,Progress,StartTime]'</code><br>    <h3 is-upgraded>sample </h3>
+   &#34;` l&gt; aws ec2 describe-snapshots –owner-ids $AccountID –output yaml –profile cli-users –query ‘Snapshots[*].[SnapshotId,VolumeId,VolumeSize,State,Progress,StartTime]&#39; </li>
+</ul>
+</li>
+<li><ul>
+<li>snap-****** </li>
+</ul>
+  <ul>
+<li>vol-****** </li>
+<li>8 </li>
+<li>completed </li>
+<li>100% </li>
+<li>‘2021-07-12T13:28:04.998000+00:00&#39;   &#34;`    <h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-tags.html" target="_blank">describe-tags</a></h2>
+  <code><br>$target="i-***/vol-****"<br>aws ec2 describe-tags --filters "Name=resource-id ,Values=$target" --profile cli-users</code><br>    <h3 is-upgraded>sample </h3>
+   &#34;` $target=&#34;i-***&#34; aws ec2 describe-tags –filters &#34;Name=resource-id ,Values=$target&#34; –profile cli-users { &#34;Tags&#34;: [ {   <pre><code>&#34;Key&#34;: &#34;Name&#34;,
+&#34;ResourceId&#34;: &#34;i-******&#34;,
+&#34;ResourceType&#34;: &#34;instance&#34;,
+&#34;Value&#34;: &#34;********&#34;
+</code></pre>
+} ] } &#34;`     <h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/create-image.html" target="_blank">create-images</a></h2>
+  <code><br>$aminame="backup-images"<br>$instanceid="i-******"<br>$rebootops="--no-reboot/--reboot"<br>aws ec2 create-image --name $aminame --instance-id $instanceid --profile cli-users $rebootops</code><br>  Positive </li>
+</ul>
+</li>
+</ul>
+<p>rebootops で再起動の有無をパラメータとして定義することが可能に  </p>
+<h3 is-upgraded>sample </h3>
+<p><code><br>$aminame="backup-images"<br>$instanceid="i-******"<br>$rebootops="--no-reboot"<br>aws ec2 create-image --name $aminame --instance-id $instanceid --profile cli-users $rebootops<br>{<br>"ImageId": "ami-******"<br>}<br><br>PS C:\Projects\handson-manual></code> <br>  </p>
+<h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/create-snapshot.html" target="_blank">create-snapshot</a></h2>
+<p><code><br>$volid="vol-******"<br>aws ec2 create-snapshot --volume-id $volid --profile cli-users</code> <br>  </p>
+<h3 is-upgraded>sample </h3>
+<p><code><br>$volid="vol-******"<br>aws ec2 create-snapshot --volume-id $volid --profile cli-users <br>{<br>"Description": "",<br>"Encrypted": false,<br>"OwnerId": "******",<br>"Progress": "",<br>"SnapshotId": "snap-******",<br>"StartTime": "2021-07-12T14:11:43+00:00",<br>"State": "pending",<br>"VolumeId": "vol-******",<br>"VolumeSize": 8,<br>"Tags": []<br>}</code><br><br><br>  Negative </p>
+<p>To create a snapshot for EBS volumes that serve as root devices, you should stop the instance before taking the snapshot.  </p>
+<h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/create-tags.html" target="_blank">create-tags</a></h2>
+<p><code><br>$target="i-***/vol-***"<br>aws ec2 create-tags --resources $target --tags 'Key=\"[Group]\",Value=test'  --profile cli-users</code><br>  </p>
+<h3 is-upgraded>sample </h3>
+<p> &#34;` aws ec2 create-tags –resources $target –tags ‘Key=\&#34;[Group]\&#34;,Value=test&#39;  –profile cli-users  aws ec2 describe-tags –filters &#34;Name=resource-id ,Values=$target&#34; –profile cli-users { &#34;Tags&#34;: [ </p>
+<pre><code>{
+    &#34;Key&#34;: &#34;Name&#34;,
+    &#34;ResourceId&#34;: &#34;i-******&#34;,
+    &#34;ResourceType&#34;: &#34;instance&#34;,
+    &#34;Value&#34;: &#34;******&#34;
+},
+{
+    &#34;Key&#34;: &#34;[Group]&#34;,
+    &#34;ResourceId&#34;: &#34;i-******&#34;,
+    &#34;ResourceType&#34;: &#34;instance&#34;,
+    &#34;Value&#34;: &#34;test&#34;
+}
+</code></pre>
+<p>] }   &#34;`  </p>
+<h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/stop-instances.html" target="_blank">stop-instances</a></h2>
+<p><code>$instancelid="i-******"<br>aws ec2 stop-instances --instance-ids $instancelid --profile cli-users</code> <br>  </p>
+<h3 is-upgraded>sample </h3>
+<p> &#34;` $instancelid=&#34;i-******&#34; aws ec2 stop-instances –instance-ids $instancelid –profile cli-users  { &#34;StoppingInstances&#34;: [ </p>
+<pre><code>{
+    &#34;CurrentState&#34;: {
+        &#34;Code&#34;: 64,
+        &#34;Name&#34;: &#34;stopping&#34;
+    },
+    &#34;InstanceId&#34;: &#34;i-******&#34;,
+    &#34;PreviousState&#34;: {
+        &#34;Code&#34;: 16,
+        &#34;Name&#34;: &#34;running&#34;
+    }
+}
+</code></pre>
+<p>] }   &#34;`  </p>
+<h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/start-instances.html" target="_blank">start-instances</a></h2>
+<p><code><br>$instancelid="i-******"<br>aws ec2 start-instances --instance-ids $instancelid --profile cli-users</code> <br>  </p>
+<h3 is-upgraded>sample </h3>
+<p> &#34;` $instancelid=&#34;i-******&#34; aws ec2 start-instances –instance-ids $instancelid –profile cli-users  { &#34;StartingInstances&#34;: [ </p>
+<pre><code>{
+    &#34;CurrentState&#34;: {
+        &#34;Code&#34;: 0,
+        &#34;Name&#34;: &#34;pending&#34;
+    },
+    &#34;InstanceId&#34;: &#34;i-******&#34;,
+    &#34;PreviousState&#34;: {
+        &#34;Code&#34;: 80,
+        &#34;Name&#34;: &#34;stopped&#34;
+    }
+}
+</code></pre>
+<p>] }   &#34;` </p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

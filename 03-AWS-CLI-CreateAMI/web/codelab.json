@@ -1,0 +1,26 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2021-07-12T23:33:49+09:00",
+  "id": "03-AWS-CLI-CreateAMI",
+  "duration": 110,
+  "title": "AWS CLIを使ってEC2からAMIを作成する",
+  "summary": "Create AMI by AWS CLI",
+  "source": ".\\03-AWS-CLI-CreateAMI.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "codelab",
+    "markdown"
+  ],
+  "tags": [
+    "web"
+  ],
+  "feedback": "https://github.com/midnight480/handson-manual",
+  "ga": "196534296",
+  "url": "03-AWS-CLI-CreateAMI"
+}
