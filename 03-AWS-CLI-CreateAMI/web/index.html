@@ -63,9 +63,9 @@ SerializationVersion           1.1.0.1
 aws-cli/2.2.5 Python/3.8.8 Windows/10 exe/AMD64 prompt/off
 &gt; 
 </code></pre>
-<aside class="warning"><p>アクセスキー、シークレットアクセスキーは管理を徹底すること <br><code>&gt; aws configure --profile cli-users<br>AWS Access Key ID [None]: AKI********<br>AWS Secret Access Key [None]: ********<br>Default region name [None]: ap-northeast-1<br>Default output format [None]: json<br>&gt;<br></code></p>
+<aside class="warning"><p>アクセスキー、シークレットアクセスキーは管理を徹底すること<br><br><code>&gt; aws configure --profile cli-users<br>AWS Access Key ID [None]: AKI********<br>AWS Secret Access Key [None]: ********<br>Default region name [None]: ap-northeast-1<br>Default output format [None]: json<br>&gt;<br></code></p>
 </aside>
-<aside class="special"><p>AWS CLIで実行するときは必ず実行すること <br><code>&gt; aws sts get-caller-identity --profile cli-users<br>{<br>&#34;UserId&#34;: &#34;AID******&#34;,<br>&#34;Account&#34;: &#34;9999999999&#34;,<br>&#34;Arn&#34;: &#34;arn:aws:iam::9999999999:user/cli-users&#34;<br>}<br>&gt; <br></code></p>
+<aside class="special"><p>AWS CLIで実行するときは必ず実行すること<br><br><code>&gt; aws sts get-caller-identity --profile cli-users<br>{<br>&#34;UserId&#34;: &#34;AID******&#34;,<br>&#34;Account&#34;: &#34;9999999999&#34;,<br>&#34;Arn&#34;: &#34;arn:aws:iam::9999999999:user/cli-users&#34;<br>}<br>&gt; <br></code></p>
 </aside>
 
 
@@ -88,6 +88,7 @@ aws-cli/2.2.5 Python/3.8.8 Windows/10 exe/AMD64 prompt/off
 </li>
 </ul>
 <h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-images.html" target="_blank">describe-images</a></h2>
+<p>自分自身のAWSアカウントIDがオーナーとなっているAMIを確認するためのコマンド</p>
 <pre><code>$AccountID=aws sts get-caller-identity --profile cli-users --output text --query Account 
 aws ec2 describe-images  --query &#39;Images[].[{ImageId:ImageId},{Description:Description},{Status:State}]&#39; --owners $AccountID --output yaml --profile cli-users
 </code></pre>
@@ -101,6 +102,7 @@ aws ec2 describe-images  --query &#39;Images[].[{ImageId:ImageId},{Description:D
 &gt; 
 </code></pre>
 <h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html" target="_blank">describe-instances</a></h2>
+<p>EC2インスタンスの情報を確認するためのコマンド</p>
 <pre><code>aws ec2 describe-instances --query &#39;Reservations[*].Instances[*].[{Instance:InstanceId}, {State:State.Name},{PublicIpAddress:PublicIpAddress},{PrivateIpAddress:PrivateIpAddress},{VolumeName:BlockDeviceMappings[*].DeviceName},{VolumeId:BlockDeviceMappings[*].Ebs.VolumeId},{ImageId:ImageId}]&#39; --output yaml --profile cli-users
 </code></pre>
 <h3 is-upgraded>sample</h3>
@@ -118,6 +120,7 @@ aws ec2 describe-images  --query &#39;Images[].[{ImageId:ImageId},{Description:D
 &gt; 
 </code></pre>
 <h2 is-upgraded><a href="[https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-snapshots.html" target="_blank">describe-snapshots</a></h2>
+<p>EBSスナップショットを確認するためのコマンド</p>
 <pre><code>$AccountID=aws sts get-caller-identity --profile cli-users --output text --query Account 
 aws ec2 describe-snapshots --owner-ids $AccountID --output yaml --profile cli-users --query &#39;Snapshots[*].[SnapshotId,VolumeId,VolumeSize,State,Progress,StartTime]&#39;
 </code></pre>
@@ -133,6 +136,7 @@ aws ec2 describe-snapshots --owner-ids $AccountID --output yaml --profile cli-us
 &gt; 
 </code></pre>
 <h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-tags.html" target="_blank">describe-tags</a></h2>
+<p>特定のリソースに付与しているTagを確認するためのコマンド</p>
 <pre><code>$target=&#34;i-***/vol-****&#34;
 aws ec2 describe-tags --filters &#34;Name=resource-id ,Values=$target&#34; --profile cli-users
 </code></pre>
@@ -151,12 +155,13 @@ aws ec2 describe-tags --filters &#34;Name=resource-id ,Values=$target&#34; --pro
 }
 </code></pre>
 <h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/create-image.html" target="_blank">create-images</a></h2>
+<p>EC2インスタンスからAMIを作成するためのコマンド</p>
 <pre><code>$aminame=&#34;backup-images&#34;
 $instanceid=&#34;i-******&#34;
 $rebootops=&#34;--no-reboot/--reboot&#34;
 aws ec2 create-image --name $aminame --instance-id $instanceid --profile cli-users $rebootops
 </code></pre>
-<aside class="special"><p>rebootops で再起動の有無をパラメータとして定義することが可能に</p>
+<aside class="special"><p>rebootops で再起動の有無をパラメータとして定義することが可能にしています<br></p>
 </aside>
 <h3 is-upgraded>sample</h3>
 <pre><code>&gt; $aminame=&#34;backup-images&#34;
@@ -167,9 +172,10 @@ aws ec2 create-image --name $aminame --instance-id $instanceid --profile cli-use
     &#34;ImageId&#34;: &#34;ami-******&#34;
 }
 
-PS C:\Projects\handson-manual&gt; 
+&gt; 
 </code></pre>
 <h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/create-snapshot.html" target="_blank">create-snapshot</a></h2>
+<p>EBSスナップショットを取得するコマンド</p>
 <pre><code>$volid=&#34;vol-******&#34;
 aws ec2 create-snapshot --volume-id $volid --profile cli-users 
 </code></pre>
@@ -191,9 +197,10 @@ aws ec2 create-snapshot --volume-id $volid --profile cli-users
 
 &gt; 
 </code></pre>
-<aside class="warning"><p>To create a snapshot for EBS volumes that serve as root devices, you should stop the instance before taking the snapshot.</p>
+<aside class="warning"><p>To create a snapshot for EBS volumes that serve as root devices, you should stop the instance before taking the snapshot.ルートボリュームは停止してからでないと取得してはいけません</p>
 </aside>
 <h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/create-tags.html" target="_blank">create-tags</a></h2>
+<p>特定のリソースに対してTagをつけるコマンド</p>
 <pre><code>$target=&#34;i-***/vol-***&#34;
 aws ec2 create-tags --resources $target --tags &#39;Key=\&#34;[Group]\&#34;,Value=test&#39;  --profile cli-users
 </code></pre>
@@ -221,6 +228,7 @@ aws ec2 create-tags --resources $target --tags &#39;Key=\&#34;[Group]\&#34;,Valu
 &gt; 
 </code></pre>
 <h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/stop-instances.html" target="_blank">stop-instances</a></h2>
+<p>EC2インスタンスを停止するためのコマンド</p>
 <pre><code>$instancelid=&#34;i-******&#34;
 aws ec2 stop-instances --instance-ids $instancelid --profile cli-users 
 </code></pre>
@@ -246,6 +254,7 @@ aws ec2 stop-instances --instance-ids $instancelid --profile cli-users
 &gt; 
 </code></pre>
 <h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/start-instances.html" target="_blank">start-instances</a></h2>
+<p>EC2インスタンスを起動するためのコマンド</p>
 <pre><code>$instancelid=&#34;i-******&#34;
 aws ec2 start-instances --instance-ids $instancelid --profile cli-users 
 </code></pre>

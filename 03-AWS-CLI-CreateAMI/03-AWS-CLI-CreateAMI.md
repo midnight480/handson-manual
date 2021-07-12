@@ -65,8 +65,7 @@ aws-cli/2.2.5 Python/3.8.8 Windows/10 exe/AMD64 prompt/off
 ```
 
 Negative
-: アクセスキー、シークレットアクセスキーは管理を徹底すること
-
+: アクセスキー、シークレットアクセスキーは管理を徹底すること  
 
 ```
 > aws configure --profile cli-users
@@ -78,7 +77,7 @@ Default output format [None]: json
 ```
 
 Positive
-: AWS CLIで実行するときは必ず実行すること
+: AWS CLIで実行するときは必ず実行すること  
 
 ```
 > aws sts get-caller-identity --profile cli-users
@@ -109,6 +108,8 @@ Duration: 0:30:00
 
 ### [describe-images](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-images.html)
 
+自分自身のAWSアカウントIDがオーナーとなっているAMIを確認するためのコマンド
+
 ```
 $AccountID=aws sts get-caller-identity --profile cli-users --output text --query Account 
 aws ec2 describe-images  --query 'Images[].[{ImageId:ImageId},{Description:Description},{Status:State}]' --owners $AccountID --output yaml --profile cli-users
@@ -127,6 +128,8 @@ aws ec2 describe-images  --query 'Images[].[{ImageId:ImageId},{Description:Descr
 ```
 
 ###  [describe-instances](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html) 
+
+EC2インスタンスの情報を確認するためのコマンド
 
 ```
 aws ec2 describe-instances --query 'Reservations[*].Instances[*].[{Instance:InstanceId}, {State:State.Name},{PublicIpAddress:PublicIpAddress},{PrivateIpAddress:PrivateIpAddress},{VolumeName:BlockDeviceMappings[*].DeviceName},{VolumeId:BlockDeviceMappings[*].Ebs.VolumeId},{ImageId:ImageId}]' --output yaml --profile cli-users
@@ -151,6 +154,8 @@ aws ec2 describe-instances --query 'Reservations[*].Instances[*].[{Instance:Inst
 
 ### [describe-snapshots]([https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-snapshots.html)
 
+EBSスナップショットを確認するためのコマンド
+
 ```
 $AccountID=aws sts get-caller-identity --profile cli-users --output text --query Account 
 aws ec2 describe-snapshots --owner-ids $AccountID --output yaml --profile cli-users --query 'Snapshots[*].[SnapshotId,VolumeId,VolumeSize,State,Progress,StartTime]'
@@ -171,6 +176,8 @@ l> aws ec2 describe-snapshots --owner-ids $AccountID --output yaml --profile cli
 ```
 
 ###  [describe-tags](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-tags.html)
+
+特定のリソースに付与しているTagを確認するためのコマンド
 
 ```
 $target="i-***/vol-****"
@@ -197,6 +204,8 @@ aws ec2 describe-tags --filters "Name=resource-id ,Values=$target" --profile cli
 
 ###  [create-images](https://docs.aws.amazon.com/cli/latest/reference/ec2/create-image.html)
 
+EC2インスタンスからAMIを作成するためのコマンド
+
 ```
 $aminame="backup-images"
 $instanceid="i-******"
@@ -205,7 +214,7 @@ aws ec2 create-image --name $aminame --instance-id $instanceid --profile cli-use
 ```
 
 Positive
-: rebootops で再起動の有無をパラメータとして定義することが可能に
+: rebootops で再起動の有無をパラメータとして定義することが可能にしています  
 
 #### sample
 
@@ -218,10 +227,12 @@ Positive
     "ImageId": "ami-******"
 }
 
-PS C:\Projects\handson-manual> 
+> 
 ```
 
 ###  [create-snapshot](https://docs.aws.amazon.com/cli/latest/reference/ec2/create-snapshot.html)
+
+EBSスナップショットを取得するコマンド
 
 ```
 $volid="vol-******"
@@ -250,9 +261,11 @@ aws ec2 create-snapshot --volume-id $volid --profile cli-users
 ```
 
 Negative
-: To create a snapshot for EBS volumes that serve as root devices, you should stop the instance before taking the snapshot.
+: To create a snapshot for EBS volumes that serve as root devices, you should stop the instance before taking the snapshot.ルートボリュームは停止してからでないと取得してはいけません
 
 ### [create-tags](https://docs.aws.amazon.com/cli/latest/reference/ec2/create-tags.html)
+
+特定のリソースに対してTagをつけるコマンド
 
 ```
 $target="i-***/vol-***"
@@ -287,6 +300,7 @@ aws ec2 create-tags --resources $target --tags 'Key=\"[Group]\",Value=test'  --p
 
 ###  [stop-instances](https://docs.aws.amazon.com/cli/latest/reference/ec2/stop-instances.html)
 
+EC2インスタンスを停止するためのコマンド
 
 ```
 $instancelid="i-******"
@@ -318,6 +332,8 @@ aws ec2 stop-instances --instance-ids $instancelid --profile cli-users
 ```
 
 ###  [start-instances](https://docs.aws.amazon.com/cli/latest/reference/ec2/start-instances.html)
+
+EC2インスタンスを起動するためのコマンド
 
 ```
 $instancelid="i-******"
