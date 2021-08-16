@@ -209,3 +209,24 @@ Positive
 
 Negative
 : 誤ってタブを閉じたあともCookieが有効な間はユーザ名、アバターは維持されますが、DuckDuckGoのようなCookieを保存しないブラウザを使っている場合は再度登録からやり直しとなります
+
+## 本日のアクセス先
+Duration: 0:03:00
+
+### ログインURL
+
+* 主催者から通知されるURLを利用してください
+
+以下のボタンを押しても構いません
+
+<button>
+  [今回利用するGather Space](https://gather.town/app/8KYOxHXpjMTelpx1/DINER)
+</button>
+
+ブラウザのURLバーに以下をコピーアンドペーストしても構いません
+
+```
+https://gather.town/app/8KYOxHXpjMTelpx1/DINER
+```
+
+HAPPY Gather Life !! ＼(^o^)／
