@@ -80,10 +80,6 @@ Duration: 0:10:00
 
 * 主催者から通知されるURLを利用してください
 
-<button>
-  [今回利用するGather Space](https://gather.town/app/8KYOxHXpjMTelpx1/DINER)
-</button>
-
 Positive
 : このあとログイン名を入力いただきますが、このスペースのみ有効なため、アカウント作成されるわけではないです
 
