@@ -1,0 +1,207 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Gatherを使ってみよう</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="196534296"
+                  id="04-use-manual-gather-other"
+                  title="Gatherを使ってみよう"
+                  environment="web"
+                  feedback-link="https://github.com/midnight480/handson-manual">
+    
+      <google-codelab-step label="はじめに" duration="5">
+        <h2 is-upgraded>Gatherとは</h2>
+<aside class="warning"><p>このページは紹介しているのみなのでアカウント登録は実施しないでください！</p>
+</aside>
+<ul>
+<li>機能概要 - オンラインコミュニケーションスペース  <ul>
+<li>2次元をアバターを移動させる</li>
+<li>音声・テキストチャット</li>
+<li>画面共有</li>
+<li>カスタムマップ</li>
+<li>カスタムオブジェクト（環境音,Google Meet/ZoomなどのURL）</li>
+</ul>
+</li>
+<li>サイトURL  <ul>
+<li><a href="https://gather.town/" target="_blank">公式</a></li>
+<li><a href="https://pitchbook.com/profiles/company/454511-26#overview" target="_blank">本社所在地</a><br> 547 Elm Avenue, San Bruno, CA, United States</li>
+<li><a href="https://gather.town/pricing" target="_blank">料金体系</a><br> ※ Free Tier Accommodates 25 Online Users!</li>
+</ul>
+</li>
+<li>通信仕様  <ul>
+<li><a href="https://support.gather.town/help/data-protection-and-encryption#data-encryption" target="_blank">ネットワークについて</a><br> 一般的なWebRTCを用いて E2E(P2P)でのTCP/443によるHTTPS通信</li>
+</ul>
+</li>
+<li>適用される法律  <ul>
+<li><a href="https://gather.town/terms-of-use" target="_blank">利用規約</a><br> &gt; United States Legal Compliance<br> ※ EUはGDPR、USのCalifornia州は独自の個人情報取得に関する法律が適用される</li>
+</ul>
+</li>
+</ul>
+<h2 is-upgraded>実績</h2>
+<ul>
+<li><a href="https://www-conf.kek.jp/rdetconf/index.html" target="_blank">高エネルギー加速器研究機構 - 研究会「放射線検出器とその応用」</a>  <ul>
+<li><a href="https://www-conf.kek.jp/rdetconf/GatherTown.pdf" target="_blank">ポスター会場</a></li>
+</ul>
+</li>
+<li><a href="https://www.studioanima.co.jp/company/" target="_blank">株式会社アニマ</a>  <ul>
+<li><a href="https://www.studioanima.co.jp/Anigon-chat/2021/01/21/post-5326/" target="_blank">2021.01.21 - バーチャルオフィスサービスの導入について</a></li>
+</ul>
+</li>
+<li><a href="https://monodukuri.club/" target="_blank">放課後モノづくり倶楽部</a>  <ul>
+<li><a href="https://note.com/hiroki_hachisuka/n/neeada2121807" target="_blank">チームでオフィスを持ちました！(Gatherにね)</a></li>
+</ul>
+</li>
+<li><a href="https://classmethod.jp/company/overview/" target="_blank">クラスメソッド株式会社</a>  <ul>
+<li><a href="https://dev.classmethod.jp/articles/gather-town-as-a-virtual-office/" target="_blank">レトロRPG風デザインのオンラインビデオ通話スペース『 Gather.Town 』で&#34;出社して仕事＆気軽に雑談&#34;を楽しく仮想体験！</a></li>
+<li><a href="https://dev.classmethod.jp/articles/gather-town-pricing/" target="_blank">Gather.Town 有料プランの費用感について</a></li>
+<li><a href="https://dev.classmethod.jp/articles/gather-town-integration-with-external-call-and-zoom-call/" target="_blank">Gather.Town でビデオ会議サービス(Zoom, Google Meet等)との連携を行う</a></li>
+</ul>
+</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="使い方の動画" duration="10">
+        <h2 is-upgraded>使い方紹介動画</h2>
+<ul>
+<li>Gather公式</li>
+</ul>
+<p><a href="https://www.youtube.com/watch?v=89at5EvCEvk" target="_blank"><paper-button class="colored" raised>YouTube - Intro to Gather</paper-button></a></p>
+<ul>
+<li>【ダナン在住エンジニア】KZY</li>
+</ul>
+<p><a href="https://www.youtube.com/watch?v=G2tBlLADZ2A" target="_blank"><paper-button class="colored" raised>YouTube - 【Gather Town】How to start Gather Town, which is the RPG like virtual office!</paper-button></a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="実際につかってみよう" duration="10">
+        <h2 is-upgraded>ログインURL</h2>
+<ul>
+<li>主催者から通知されるURLを利用してください</li>
+</ul>
+<p><a href="https://gather.town/app/8KYOxHXpjMTelpx1/DINER" target="_blank"><paper-button class="colored" raised>今回利用するGather Space</paper-button></a></p>
+<aside class="special"><p>このあとログイン名を入力いただきますが、このスペースのみ有効なため、アカウント作成されるわけではないです</p>
+</aside>
+<aside class="warning"><p>ログイン時にパスワードが必要になるので主催者から通知された情報にあるパスワードを事前に確認してください</p>
+</aside>
+<aside class="warning"><p>以降の画面はmacOS BigSur 11.3.1, Mozilla Firefox 88.0.1 (64 ビット)で取得した画面となりますが、各自の操作へ影響はないと思います。</p>
+</aside>
+<h2 is-upgraded>（共通操作）プライベートルームのパスワード</h2>
+<ul>
+<li>主催者から通知されるパスワードを入力</li>
+</ul>
+<p class="image-container"><img alt="privateroom" src="img/543a1af18d918b32.jpg"></p>
+<h2 is-upgraded>（Gatherアプリがインストールされている人のみ）拡張機能の有効</h2>
+<ul>
+<li>アプリケーションとの関連付けはキャンセル</li>
+</ul>
+<p class="image-container"><img alt="relative" src="img/91e4dfdd8cf38f87.jpg"></p>
+<ul>
+<li>ブラウザで続ける</li>
+</ul>
+<p class="image-container"><img alt="browser" src="img/6699f04bba640a8e.jpg"></p>
+<h2 is-upgraded>（共通操作）部屋に入るために必要な設定</h2>
+<ul>
+<li>マイクとカメラの設定</li>
+</ul>
+<p class="image-container"><img alt="settings" src="img/75f379a0be00d0db.jpg"></p>
+<ul>
+<li>（Edit Character）名前とアバターの設定</li>
+</ul>
+<p class="image-container"><img alt="avator" src="img/148cdd1b85196b45.jpg"></p>
+<p>変更可能な要素は次のとおりです。</p>
+<ul>
+<li>Body  <ul>
+<li>Skin（肌）</li>
+<li>Hair（髪型）</li>
+<li>Facial Hair（ひげ）</li>
+</ul>
+</li>
+<li>Clothing  <ul>
+<li>Top（上）</li>
+<li>Bottom（下）</li>
+<li>Shoes（靴）</li>
+</ul>
+</li>
+<li>Accessories  <ul>
+<li>Hat（帽子）</li>
+<li>Glasses（眼鏡）</li>
+<li>Other（他[マスク、松葉杖、車椅子？]）</li>
+</ul>
+</li>
+</ul>
+<aside class="warning"><p>予め選択可能な組み合わせの範囲内でのみ選択可能なため、オリジナルのアイテムを作成・選択することはできません</p>
+</aside>
+<h2 is-upgraded>（任意）チュートリアルのスキップ</h2>
+<ul>
+<li>接続後に表示されるチュートリアルはスキップ可能</li>
+</ul>
+<p>実際にMAPに入る前にキーボードなどでの動作について説明がありますが、 スキップしてください</p>
+<p class="image-container"><img alt="tutorial" src="img/9f7b7b8262436907.jpg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="簡単な機能説明" duration="5">
+        <h2 is-upgraded>入室後の画面</h2>
+<p>表示されている相手を直接呼び出すことも可能です</p>
+<p>画面下部のバー表示が自身の名前およびツールとなります。 左からマップ（全体のどの位置にいるか）、画面共有、アイコンとなっています。</p>
+<p class="image-container"><img alt="firsttime" src="img/94a88a3f0b8901f8.jpg"></p>
+<h2 is-upgraded>チャット</h2>
+<p>１：１、近く、全体にチャットを送ることが可能です</p>
+<p class="image-container"><img alt="chat" src="img/b0f716ff66b06171.jpg"></p>
+<h2 is-upgraded>アクション</h2>
+<p>アイコンで反応を示すことが可能です（アバターの上に数秒表示されます）</p>
+<p class="image-container"><img alt="action" src="img/ffbeb7e82565ec2d.jpg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ゾーンについて" duration="0">
+        <h2 is-upgraded>初期位置</h2>
+<p>右下が初期位置になります</p>
+<p class="image-container"><img alt="init" src="img/8cc19e5348579d64.jpg"></p>
+<h2 is-upgraded>パブリックゾーン</h2>
+<p>初期はパブリックゾーンとなり、 ここでのマイクによる発言は、 パブリックゾーンにいる全員が聞き取れます</p>
+<p class="image-container"><img alt="public" src="img/f76a6018fcd4f705.jpg"></p>
+<h2 is-upgraded>プライベートゾーン</h2>
+<p>特定の位置に移動すると周囲が暗くなり、 特定のゾーンのみ明るい状態になります。 これはプライベートゾーンとなるので、 会話はそのゾーンにいるメンバに留まります。</p>
+<p class="image-container"><img alt="private" src="img/370da7850154de44.jpg"></p>
+<h2 is-upgraded>（おまけ）管理者から強制退出</h2>
+<p class="image-container"><img alt="block" src="img/eddf7497fd1da1b9.jpg"></p>
+<aside class="special"><p>このあとは実際に入室してから動かしながら説明します</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
