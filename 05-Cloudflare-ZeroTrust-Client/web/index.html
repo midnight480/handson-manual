@@ -67,10 +67,9 @@
       <google-codelab-step label="Cloudflare Zero Trust 初期設定" duration="10">
         <h2 is-upgraded>初期設定</h2>
 <p class="image-container"><img style="width: 266.00px" src="img/25df5ec375316acb.png"></p>
+<p>チーム名は後ほどWARPクライアントからZero Trustにサインインする際に必要となります</p>
+<p>変更は後ほど記載する画面でも変更可能です</p>
 <p class="image-container"><img style="width: 624.00px" src="img/309a10eebb4d111d.png"></p>
-<p>We&#39;ll use Lighthouse to audit our Weather app, and verify the changes we&#39;ve made.</p>
-<aside class="special"><p><strong>Tip: </strong>You can run Lighthouse in Chrome DevTools, from the command line, or as a Node module. Consider <a href="https://github.com/GoogleChromeLabs/lighthousebot" target="_blank">adding Lighthouse</a> to your build process to make sure your web app doesn&#39;t regress. </p>
-</aside>
 <h2 is-upgraded><strong>プラン選択</strong></h2>
 <p class="image-container"><img style="width: 624.00px" src="img/38eec6f2284c2680.png"></p>
 <h2 is-upgraded><img style="width: 624.00px" src="img/3270f0a86a4f2f84.png"></h2>
@@ -183,7 +182,8 @@
 <aside class="special"><p>Cloudflareになっていればルート証明書の自動配置、有効化が無事に完了しました</p>
 </aside>
 <h2 is-upgraded><strong>Gateway Policyの変更</strong></h2>
-<p>The life cycle of the service worker is the most complicated part. If you don&#39;t know what it&#39;s trying to do and what the benefits are, it can feel like it&#39;s fighting you. But once you know how it works, you can deliver seamless, unobtrusive updates to users, mixing the best of the web and native patterns.</p>
+<p>Gatewayで通信を見てアクセス許可（Allow）、禁止（Block）、透過（Bypass）など設定が可能です。</p>
+<p>今回は、Zero Trustが有効な間はTwitterの通信をブロックして通常利用できないようにします。</p>
 <h2 is-upgraded><strong>Edge で Twitter にアクセス</strong></h2>
 <p>https://twitter.com/</p>
 <p class="image-container"><img style="width: 624.00px" src="img/7d3392151f7ba395.png"></p>
