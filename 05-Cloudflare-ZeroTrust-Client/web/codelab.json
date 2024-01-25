@@ -1,0 +1,40 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2024-01-25T14:36:02Z",
+  "id": "cloudflare-zerotrust-client",
+  "duration": 45,
+  "title": "Cloudflare Zero Trust - Client",
+  "authors": "Tetsuya Shibao",
+  "summary": "Cloudflare Zero Trustを自身の端末で行うためのものです",
+  "source": "121sZTjS2rgSVTkdamYdDVZMJtkfPWb-ytJ7N_37UMeU",
+  "theme": "web",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "web"
+  ],
+  "tags": [
+    "cds17",
+    "chrome-dev-summit-2016",
+    "devfest18",
+    "gdd17",
+    "io2016",
+    "io2017",
+    "io2018",
+    "io2019",
+    "jsconfeu",
+    "kiosk",
+    "pwa-dev-summit",
+    "pwa-roadshow",
+    "tag-web",
+    "typtwd17",
+    "web"
+  ],
+  "feedback": "https://github.com/midnight480/handson-manual/05-Cloudflare-ZeroTrust-Client",
+  "ga": "G-NGRDDBRB0P",
+  "url": "cloudflare-zerotrust-client"
+}

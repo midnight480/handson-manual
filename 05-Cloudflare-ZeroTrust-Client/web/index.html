@@ -1,0 +1,234 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Cloudflare Zero Trust - Client</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid="G-NGRDDBRB0P"
+                  codelab-ga4id=""
+                  id="cloudflare-zerotrust-client"
+                  title="Cloudflare Zero Trust - Client"
+                  environment="web"
+                  feedback-link="https://github.com/midnight480/handson-manual/05-Cloudflare-ZeroTrust-Client">
+    
+      <google-codelab-step label="概要" duration="0">
+        <p class="image-container"><img style="width: 624.00px" src="img/cc6035ee1b00b999.png"></p>
+<p><strong>Last Updated:</strong> 2024-01-24</p>
+<h2 is-upgraded><strong>Cloudflare Zero Trust - Client</strong></h2>
+<p>クライアントをCloudflareのネットワークまでWireGuard VPNでトンネルセッションを貼ることで、Cloudflareのネットワークを使ってインターネットに接続するサービスです。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="セットアップ" duration="3">
+        <h2 is-upgraded><strong>Cloudflare アカウント</strong></h2>
+<p>Cloudflareアカウントを作成します。</p>
+<p>既にアカウントを所有している場合は本手順をスキップしてください。</p>
+<p><a href="https://dash.cloudflare.com/login" target="_blank"><paper-button class="colored" raised>Log in to Cloudflare</paper-button></a></p>
+<aside class="special"><p><strong>Note:</strong> Cloudflareアカウントは検証作業で利用する範囲であれば、クレジットカードの初期登録は不要です。</p>
+</aside>
+<aside class="warning"><p><strong>Note:</strong> Cloudflare Zero TrustではクレジットカードあるいはPaypalの登録が必要です。</p>
+</aside>
+<h3 is-upgraded><strong>Sign-up</strong></h3>
+<p><code>メールアドレス、パスワード（ルールに準拠）、Cloudflare Turnstileのチェックを通してください。</code></p>
+<p class="image-container"><img style="width: 533.00px" src="img/fdb46fd01b8b42aa.png"></p>
+<aside class="warning"><p><strong>Caution:</strong> メールの受信ができるアドレスを用意してください。</p>
+</aside>
+<h3 is-upgraded><strong>Complete</strong></h3>
+<p>メールアドレス宛に本人確認を行うURLが送付されているので確認してください。</p>
+<p class="image-container"><img style="width: 624.00px" src="img/bc200f51e0a05e8e.png"></p>
+<h3 is-upgraded><strong>（任意）MFA設定</strong></h3>
+<p>Muilti-Factor Authenticator（MFA：多要素）認証の設定を推奨します。</p>
+<aside class="warning"><p><strong>Caution:</strong> MFAを設定せずにIDとPWで運用は可能ですが、セキュリティを向上させるため設定することを推奨します。乗っ取られてからでは遅いです。</p>
+</aside>
+<h3 is-upgraded><strong>（任意）言語設定</strong></h3>
+<p>TBD</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Cloudflare Zero Trust 初期設定" duration="10">
+        <h2 is-upgraded>初期設定</h2>
+<p class="image-container"><img style="width: 266.00px" src="img/25df5ec375316acb.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/309a10eebb4d111d.png"></p>
+<p>We&#39;ll use Lighthouse to audit our Weather app, and verify the changes we&#39;ve made.</p>
+<aside class="special"><p><strong>Tip: </strong>You can run Lighthouse in Chrome DevTools, from the command line, or as a Node module. Consider <a href="https://github.com/GoogleChromeLabs/lighthousebot" target="_blank">adding Lighthouse</a> to your build process to make sure your web app doesn&#39;t regress. </p>
+</aside>
+<h2 is-upgraded><strong>プラン選択</strong></h2>
+<p class="image-container"><img style="width: 624.00px" src="img/38eec6f2284c2680.png"></p>
+<h2 is-upgraded><img style="width: 624.00px" src="img/3270f0a86a4f2f84.png"></h2>
+<h2 is-upgraded><img style="width: 624.00px" src="img/e2b1cd6c8e132b5f.png"></h2>
+<h2 is-upgraded><img style="width: 624.00px" src="img/390acfe6f9a9e89f.png"></h2>
+<aside class="warning"><p><strong>Caution:</strong> もしこの画面でクレジットカードあるいはPaypalの登録は問題なく、住所等も問題なくエラーが表示された場合でも裏側ではチーム名登録処理が行われており、「Welcome to Cloudflare Access」という件名のメールが届いている可能性があります</p>
+</aside>
+<p class="image-container"><img style="width: 624.00px" src="img/402374ecac125827.png"></p>
+<h2 is-upgraded><strong>ダッシュボード画面の表示</strong></h2>
+<p>Cloudflare Zero Trustの初期画面が表示されればOK</p>
+<p class="image-container"><img style="width: 624.00px" src="img/8c0fabcf917f9e9a.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="設定画面の確認" duration="3">
+        <p class="image-container"><img style="width: 624.00px" src="img/69f3a9391f358fe8.png"></p>
+<h2 is-upgraded><strong>Account</strong></h2>
+<p>登録した情報を確認するメニューです。</p>
+<h2 is-upgraded><strong>Custom Pages</strong></h2>
+<h3 is-upgraded><strong>Team domain</strong></h3>
+<p>初期登録したチーム名を変更する場合はこちらです</p>
+<p>今回は変更しません</p>
+<h3 is-upgraded><strong>Block page</strong></h3>
+<p>Gateway Block時に表示する画面の設定がこちらです</p>
+<p>今回は変更しません</p>
+<h3 is-upgraded><strong>Login Page</strong></h3>
+<p>WARPからZero Trustにログインする画面の設定がこちらです</p>
+<p>今回は変更しません</p>
+<h2 is-upgraded><strong>Network</strong></h2>
+<p>取得するログの方針を変更する設定がこちらです</p>
+<p>今回は変更しません</p>
+<h2 is-upgraded><strong>Authentication</strong></h2>
+<p>認証方式を変更する設定がこちらです。</p>
+<p>今回は変更しません</p>
+<h2 is-upgraded><strong>WARP Client</strong></h2>
+<p>Plan変更に遷移してしまうので何もしません</p>
+<h2 is-upgraded><strong>Downloads</strong></h2>
+<p>ルート証明書、WARPクライアント、Cloudflaredなどがダウンロードできます</p>
+<p>今は何もしません</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="実際のデバイス設定" duration="10">
+        <h2 is-upgraded><strong>利用する端末の設定</strong></h2>
+<p>My Team &gt; Devices を進みます</p>
+<p class="image-container"><img style="width: 624.00px" src="img/38c1f3d5ef64825e.png"></p>
+<p>Connect a Device を押します</p>
+<p class="image-container"><img style="width: 624.00px" src="img/a30163911bfb0a84.png"></p>
+<p>Create an enrollment policy を押します</p>
+<p>裏側でdefault policyが自動作成されます</p>
+<p class="image-container"><img style="width: 624.00px" src="img/7bcc3d7adbe22022.png"></p>
+<p>今回利用するドメインを入力します</p>
+<p> @gmail.com , @yahoo.co.jp などです</p>
+<p class="image-container"><img style="width: 624.00px" src="img/6f37ec9d690290e0.png"></p>
+<p>今回はWindows を選択します</p>
+<p>以下の画面が別タブで開きます</p>
+<p><a href="https://install.appcenter.ms/orgs/cloudflare/apps/1.1.1.1-windows-1/distribution_groups/release" target="_blank">https://install.appcenter.ms/orgs/cloudflare/apps/1.1.1.1-windows-1/distribution_groups/release</a></p>
+<p class="image-container"><img style="width: 624.00px" src="img/b0215a8bac5aab6e.png"></p>
+<p>DOWNLOAD を押します</p>
+<h3 is-upgraded><img style="width: 624.00px" src="img/66775bc3cf38fac7.png"></h3>
+<p>MSIファイルになっているのでダブルクリックしてインストールを進めます</p>
+<p class="image-container"><img style="width: 491.00px" src="img/32ccd4ad900cf5bb.png"></p>
+<p class="image-container"><img style="width: 491.00px" src="img/622fead4feb2728a.png"></p>
+<p>チーム名をコピーします</p>
+<p class="image-container"><img style="width: 624.00px" src="img/70087b69adce04cc.png"></p>
+<p>証明書のダウンロード画面が出てきますので、念のためダウンロードしてください</p>
+<aside class="warning"><p><strong>Remember:</strong> チーム名は後ほど使います</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="検証機の作成" duration="10">
+        <h2 is-upgraded><strong>AWS にアクセス</strong></h2>
+<h2 is-upgraded><strong>Windows Serverを起動</strong></h2>
+<p>TBD</p>
+<h3 is-upgraded><strong>WARP をインストール</strong></h3>
+<p class="image-container"><img style="width: 292.67px" src="img/3fe1b9b284a9b6a9.png"><img style="width: 293.94px" src="img/f7952cfbafb7da24.png"></p>
+<p>右下の⚙マークを押します</p>
+<h3 is-upgraded><img style="width: 342.00px" src="img/df49dd9edb6ac037.png"></h3>
+<h3 is-upgraded><strong>チームドメインを入力</strong></h3>
+<p>アカウント タブを選択すると、右下に Cloudflare Zero Trustにログインが出てきます</p>
+<p class="image-container"><img style="width: 489.50px" src="img/be48e68d4bb1be45.png"></p>
+<p>自身で設定したチーム名を入力します</p>
+<p class="image-container"><img style="width: 327.00px" src="img/fad454345177db89.png"></p>
+<h3 is-upgraded><strong>サインイン</strong></h3>
+<p>今回利用するEmail Addressを入力してください</p>
+<p class="image-container"><img style="width: 451.95px" src="img/9572498e7059b55a.png"></p>
+<p>送られてきたメールに記載されているPINを入力します</p>
+<p class="image-container"><img style="width: 464.58px" src="img/7ace740e1bf3fb54.png"></p>
+<p>認証が通るとWARPを開こうとします</p>
+<p class="image-container"><img style="width: 624.00px" src="img/da96d516f5b62a23.png"></p>
+<p>ここでWARPからZero Trustに表示が変わります</p>
+<p class="image-container"><img style="width: 341.00px" src="img/9c739b5ef06c9f7c.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="接続の確認" duration="9">
+        <h2 is-upgraded><strong>Zero Trustの通信が有効か確認</strong></h2>
+<p class="image-container"><img style="width: 401.00px" src="img/aa03c5f3c07781aa.png"></p>
+<p><strong>curl </strong><a href="https://ipinfo.io/" target="_blank"><strong>https://ipinfo.io/</strong></a> </p>
+<p><strong> &#34;Org&#34;: が現在のプロバイダになっている状態</strong></p>
+<p>トグルスイッチをONにして接続します</p>
+<p class="image-container"><img style="width: 303.45px" src="img/c9d90389388b7e60.png"><img style="width: 302.67px" src="img/c9d90389388b7e60.png"></p>
+<p><strong>curl </strong><a href="https://ipinfo.io/" target="_blank"><strong>https://ipinfo.io/</strong></a> </p>
+<p><strong> &#34;org&#34;: &#34;AS13335 Cloudflare, Inc.&#34;,</strong></p>
+<aside class="special"><p>Cloudflareになっていればルート証明書の自動配置、有効化が無事に完了しました</p>
+</aside>
+<h2 is-upgraded><strong>Gateway Policyの変更</strong></h2>
+<p>The life cycle of the service worker is the most complicated part. If you don&#39;t know what it&#39;s trying to do and what the benefits are, it can feel like it&#39;s fighting you. But once you know how it works, you can deliver seamless, unobtrusive updates to users, mixing the best of the web and native patterns.</p>
+<h2 is-upgraded><strong>Edge で Twitter にアクセス</strong></h2>
+<p>https://twitter.com/</p>
+<p class="image-container"><img style="width: 624.00px" src="img/7d3392151f7ba395.png"></p>
+<h3 is-upgraded><strong>Gateway Policyを変更</strong></h3>
+<p class="image-container"><img style="width: 624.00px" src="img/392c23a74bee2941.png"></p>
+<p>TwitterをBlockします</p>
+<p>Display block pageを☑にします</p>
+<p class="image-container"><img style="width: 624.00px" src="img/4fc18c44b516bb36.png"></p>
+<p>Save Policy を押すとDefault DNS Locationが未登録のため有効化できない警告がでるので、</p>
+<p>そのまま、Gateway/Location を押します</p>
+<p class="image-container"><img style="width: 624.00px" src="img/7591512fbc13feaf.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/f2695599c2e7ec2f.png"></p>
+<p>Add A Locationをおします</p>
+<p class="image-container"><img style="width: 624.00px" src="img/82802c4c1255ef4.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/21244d7c91fab959.png"></p>
+<p>ここまで設定した後に、Twitter にアクセスすると、タイムラインやPostができない状態になります。</p>
+<p class="image-container"><img style="width: 624.00px" src="img/42f849b1c79fd3dc.png"></p>
+<aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Windows以外の環境で試す方" duration="0">
+        <h2 is-upgraded><strong>macOS・ESETの環境</strong></h2>
+<p>ESETを一時的に通信の対話モードへ切り替えて、WARPの接続を起動して通信を発生させて、追加させる対応を実施しました。</p>
+<p class="image-container"><img style="width: 624.00px" src="img/2fb49f22495edd0a.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/5be88cd44dd24814.png"></p>
+<h2 is-upgraded><strong>iPad・iPhone</strong></h2>
+<p>設定 &gt; 一般 &gt; VPNとデバイス管理 でCloudflare for Teams ECC Certificate Authority をインストール</p>
+<p>設定 &gt; 一般 &gt; 情報 &gt; 証明書信頼設定 で Cloudflare for Teams ECC Certificate Authority を信頼</p>
+<p class="image-container"><img style="width: 286.40px" src="img/7a0f31fc185c0c59.png"><img style="width: 290.96px" src="img/913408dd3fa1a732.png"></p>
+<h2 is-upgraded><strong>Andoroid</strong></h2>
+<p>アプリをインストールすると証明書の信頼確認が促されるポップアップが表示されたので承認して完了でした。</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
