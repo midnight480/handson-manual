@@ -47,19 +47,25 @@
 <aside class="warning"><p><strong>Note:</strong> Cloudflare Zero TrustではクレジットカードあるいはPaypalの登録が必要です。</p>
 </aside>
 <h3 is-upgraded><strong>Sign-up</strong></h3>
-<p><code>メールアドレス、パスワード（ルールに準拠）、Cloudflare Turnstileのチェックを通してください。</code></p>
+<p><code>メールアドレス、パスワード（ルールに準拠）、Cloudflare Turnstile（Bot対策用チェックボックスサービス）のチェックを通してください。</code></p>
 <p class="image-container"><img style="width: 533.00px" src="img/fdb46fd01b8b42aa.png"></p>
 <aside class="warning"><p><strong>Caution:</strong> メールの受信ができるアドレスを用意してください。</p>
 </aside>
 <h3 is-upgraded><strong>Complete</strong></h3>
 <p>メールアドレス宛に本人確認を行うURLが送付されているので確認してください。</p>
 <p class="image-container"><img style="width: 624.00px" src="img/bc200f51e0a05e8e.png"></p>
+<h3 is-upgraded><strong>（任意）言語設定</strong></h3>
+<p>デフォルトではEnglish（英語）が選択されています。</p>
+<p>右上の言語部分を押すとプルダウンリストが表示されるため、任意の言語に変更してください。</p>
+<p>本手順書はEnglishでキャプチャを選択しています。</p>
+<p class="image-container"><img style="width: 253.56px" src="img/b88cd8cc56d5194.png"></p>
 <h3 is-upgraded><strong>（任意）MFA設定</strong></h3>
 <p>Muilti-Factor Authenticator（MFA：多要素）認証の設定を推奨します。</p>
+<p class="image-container"><img style="width: 428.50px" src="img/3a0e382c34be7516.png"></p>
+<p class="image-container"><img style="width: 525.50px" src="img/af50c6c0bf885ac0.png"></p>
+<p class="image-container"><img style="width: 546.50px" src="img/e82799dd31611036.png"></p>
 <aside class="warning"><p><strong>Caution:</strong> MFAを設定せずにIDとPWで運用は可能ですが、セキュリティを向上させるため設定することを推奨します。乗っ取られてからでは遅いです。</p>
 </aside>
-<h3 is-upgraded><strong>（任意）言語設定</strong></h3>
-<p>TBD</p>
 
 
       </google-codelab-step>
@@ -115,7 +121,94 @@
       </google-codelab-step>
     
       <google-codelab-step label="実際のデバイス設定" duration="10">
-        <h2 is-upgraded><strong>利用する端末の設定</strong></h2>
+        <h2 is-upgraded><strong>デバイスの用意（今回はiPhone）</strong></h2>
+<h3 is-upgraded><strong>アプリのダウンロード</strong></h3>
+<p><a href="https://apps.apple.com/jp/app/1-1-1-1-faster-internet/id1423538627" target="_blank">「1.1.1.1: Faster Internet」をApp Storeで</a> </p>
+<p class="image-container"><img style="width: 269.50px" src="img/4d320dd1ae67db71.png"></p>
+<p>アプリの初回起動</p>
+<p>「同意する」「VPNプロファイルをインストール」</p>
+<p class="image-container"><img style="width: 190.47px" src="img/c48eb7f64a63e2fc.png"><img style="width: 193.06px" src="img/1f9f814fae873aa4.png"><img style="width: 184.69px" src="img/ca1190ad62d21a02.png"></p>
+<h2 is-upgraded><strong>Cloudflare Zero Trustへログイン</strong></h2>
+<p>右上のハンバーガーメニューから設定 を開き、アカウントを選択する</p>
+<p class="image-container"><img style="width: 209.68px" src="img/30b8586f21c485ff.png"><img style="width: 295.27px" src="img/50bebff7d37ef942.png"></p>
+<p>Zero Trustに画面が切り替わるものの、まだ正常に接続できない</p>
+<p class="image-container"><img style="width: 154.71px" src="img/51ad53ded8c976cb.png"><img style="width: 140.69px" src="img/55f24e6cf4f8f29f.png"><img style="width: 194.00px" src="img/c51317e6c9df241c.png"></p>
+<p><a href="https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.pem" target="_blank">Download certificate (.pem)</a> からルート証明書をダウンロード</p>
+<h3 is-upgraded><img style="width: 193.80px" src="img/ba885e4726cd8a90.jpeg"><img style="width: 194.50px" src="img/b007acfee6455bac.png"><img style="width: 181.32px" src="img/cd6566c351f25a80.png"></h3>
+<h3 is-upgraded><strong>iPhoneの設定</strong></h3>
+<p>設定 &gt; 一般 &gt; VPNとデバイス管理 でCloudflare for Teams ECC Certificate Authority をインストール</p>
+<p class="image-container"><img style="width: 164.19px" src="img/afa332e4e7491696.png"><img style="width: 134.85px" src="img/f497577259507c31.png"><img style="width: 138.52px" src="img/cfb63424fe54b333.png"><img style="width: 91.00px" src="img/d69983b248a052f3.png"></p>
+<p class="image-container"><img style="width: 167.87px" src="img/526cd369fe3d8917.png"></p>
+<p>設定 &gt; 一般 &gt; 情報 &gt; 証明書信頼設定 で Cloudflare for Teams ECC Certificate Authority を信頼</p>
+<p class="image-container"><img style="width: 169.75px" src="img/1683fce9904a1f56.png"><img style="width: 123.50px" src="img/c59665287bb2d981.png"><img style="width: 171.50px" src="img/10c00b45716b65b5.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="接続の確認" duration="9">
+        <p class="image-container"><img style="width: 624.00px" src="img/394aedc592682d3f.png"></p>
+<h2 is-upgraded><strong>Custom Pagesの初期設定</strong></h2>
+<p>Settings &gt; Custom Pagesに移動してください。</p>
+<p class="image-container"><img style="width: 624.00px" src="img/e8c42e8ae92ae93b.png"></p>
+<h2 is-upgraded><strong>Network Settingsの変更</strong></h2>
+<p>Settings &gt; Network に移動してください。</p>
+<h3 is-upgraded><strong>Firewall </strong></h3>
+<h4 is-upgraded>Proxy</h4>
+<p>Disabled -&gt; Enabled✅</p>
+<p>TCP ☑（標準で入っており変更不可）</p>
+<p>UDP ☑（HTTP/3規格ではUDPベースのため）</p>
+<p>ICMP ☐ </p>
+<h4 is-upgraded>TLS decryption</h4>
+<p>Disabled -&gt; Enabled✅</p>
+<p>Enable only cipher suites and TLS versions compliant with FIPS 140-2. ☐</p>
+<aside class="warning"><p><strong>Tips:</strong> FIPS 140-2（Federal Information Processing Standard Publication 140-2）は、</p>
+<p>アメリカ合衆国の国立標準技術研究所（NIST）によって発行された暗号モジュールのセキュリティ要件に関する標準です。この標準は、政府機関やそれに準ずる組織で使用される暗号モジュールが満たすべきセキュリティ基準を定めています。FIPS 140-2は、情報技術製品におけるセキュリティの強化を目的とし、暗号化されたデータの保護を中心に据えています。</p>
+<p>FIPS 140-2は以下の主な要点で構成されています：</p>
+<p>セキュリティレベル：FIPS 140-2は、セキュリティレベル1から4までの4つのセキュリティレベルを定義しています。レベルが高いほど、より強固なセキュリティ要件が求められます。</p>
+<p>レベル1：基本的な物理的セキュリティを提供します。</p>
+<p>レベル2：タンパー証拠（不正アクセスの証拠を残す）機能を追加します。</p>
+<p>レベル3：より厳格な物理的セキュリティと、暗号キーの保護を強化します。</p>
+<p>レベル4：最も厳格なセキュリティ要件を提供し、暗号モジュールの物理的なセキュリティと情報のセキュリティを最大限に保護します。</p>
+<p>暗号化アルゴリズムの検証：FIPS 140-2は、承認された暗号化アルゴリズムの使用を要求し、それらの実装が正しく機能していることを検証します。</p>
+<p>キー管理：適切なキー管理手順が必要とされ、キーの生成、配布、保存、廃棄などのプロセスがセキュリティ基準に準じていることを保証します。</p>
+<p>物理的セキュリティ：特に高いセキュリティレベルでは、暗号モジュールが物理的な攻撃から保護されるよう要求されます。</p>
+<p>アクセス制御：不正アクセスから暗号キーと暗号化アルゴリズムを保護するための適切なアクセス制御メカニズムが要求されます。</p>
+<p>FIPS 140-2準拠の製品は、政府機関による情報の安全な取り扱いを保証するため、また民間セクターにおいても信頼性の高いセキュリティ基準として認識されています。この標準は、製品が厳しいセキュリティ評価を受け、認証を得るための基盤を提供します。</p>
+</aside>
+<h4 is-upgraded>AV inspection</h4>
+<p>Disabled -&gt; Enabled✅</p>
+<p>Scan on file upload ☑</p>
+<p>Scan on file download ☑</p>
+<p>Block requests for files that cannot be scanned ☑</p>
+<h2 is-upgraded><img style="width: 624.00px" src="img/91941def1750ddb8.png"></h2>
+<h2 is-upgraded><strong>Gateway Policyの変更</strong></h2>
+<p>Gatewayで通信を見てアクセス許可（Allow）、禁止（Block）、透過（Bypass）など設定が可能です。</p>
+<p>今回は、Zero Trustが有効な間はTwitterの通信をブロックして通常利用できないようにします。</p>
+<h3 is-upgraded><strong>Gateway Policyを変更</strong></h3>
+<p class="image-container"><img style="width: 624.00px" src="img/392c23a74bee2941.png"></p>
+<p>Yahoo!JAPAN(yahoo.co.jp)をBlockします</p>
+<p>Display block pageを✅にします</p>
+<p class="image-container"><img style="width: 624.00px" src="img/e3c465fd90b01106.png"></p>
+<p>Save Policy を押すとDefault DNS Locationが未登録のため有効化できない警告がでるので、</p>
+<p>そのまま、Gateway/Location を押します</p>
+<p class="image-container"><img style="width: 624.00px" src="img/7591512fbc13feaf.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/f2695599c2e7ec2f.png"></p>
+<p>Add A Locationを押します</p>
+<p class="image-container"><img style="width: 624.00px" src="img/82802c4c1255ef4.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/21244d7c91fab959.png"></p>
+<p>ここまで設定した後に、SafariでYahoo!JAPANにアクセスしようとするとブロックします。</p>
+<h2 is-upgraded><strong>実際にアクセス</strong></h2>
+<p class="image-container"><img style="width: 242.14px" src="img/191ef66f394fc5cf.png"><img style="width: 245.95px" src="img/9d74d9f477b40856.png"></p>
+<p><a href="https://www.yahoo.co.jp" target="_blank">https://www.yahoo.co.jp</a> へSafariでアクセス</p>
+<p class="image-container"><img style="width: 223.50px" src="img/caaf56f550fc7877.png"></p>
+<aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ハンズオンで紹介した環境以外で試す方" duration="0">
+        <h2 is-upgraded><strong>利用する端末の設定（Windows Clientの方）</strong></h2>
 <p>My Team &gt; Devices を進みます</p>
 <p class="image-container"><img style="width: 624.00px" src="img/38c1f3d5ef64825e.png"></p>
 <p>Connect a Device を押します</p>
@@ -125,6 +218,7 @@
 <p class="image-container"><img style="width: 624.00px" src="img/7bcc3d7adbe22022.png"></p>
 <p>今回利用するドメインを入力します</p>
 <p> @gmail.com , @yahoo.co.jp などです</p>
+<p>独自ドメインのメールで受信する場合はそちらを入力してください。</p>
 <p class="image-container"><img style="width: 624.00px" src="img/6f37ec9d690290e0.png"></p>
 <p>今回はWindows を選択します</p>
 <p>以下の画面が別タブで開きます</p>
@@ -140,24 +234,16 @@
 <p>証明書のダウンロード画面が出てきますので、念のためダウンロードしてください</p>
 <aside class="warning"><p><strong>Remember:</strong> チーム名は後ほど使います</p>
 </aside>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="検証機の作成" duration="10">
-        <h2 is-upgraded><strong>AWS にアクセス</strong></h2>
-<h2 is-upgraded><strong>Windows Serverを起動</strong></h2>
-<p>TBD</p>
-<h3 is-upgraded><strong>WARP をインストール</strong></h3>
+<h3 is-upgraded><strong>Cloudflare WARPの設定変更</strong></h3>
 <p class="image-container"><img style="width: 292.67px" src="img/3fe1b9b284a9b6a9.png"><img style="width: 293.94px" src="img/f7952cfbafb7da24.png"></p>
 <p>右下の⚙マークを押します</p>
 <h3 is-upgraded><img style="width: 342.00px" src="img/df49dd9edb6ac037.png"></h3>
-<h3 is-upgraded><strong>チームドメインを入力</strong></h3>
+<h4 is-upgraded>チームドメインを入力</h4>
 <p>アカウント タブを選択すると、右下に Cloudflare Zero Trustにログインが出てきます</p>
 <p class="image-container"><img style="width: 489.50px" src="img/be48e68d4bb1be45.png"></p>
 <p>自身で設定したチーム名を入力します</p>
 <p class="image-container"><img style="width: 327.00px" src="img/fad454345177db89.png"></p>
-<h3 is-upgraded><strong>サインイン</strong></h3>
+<h4 is-upgraded>サインイン</h4>
 <p>今回利用するEmail Addressを入力してください</p>
 <p class="image-container"><img style="width: 451.95px" src="img/9572498e7059b55a.png"></p>
 <p>送られてきたメールに記載されているPINを入力します</p>
@@ -166,56 +252,34 @@
 <p class="image-container"><img style="width: 624.00px" src="img/da96d516f5b62a23.png"></p>
 <p>ここでWARPからZero Trustに表示が変わります</p>
 <p class="image-container"><img style="width: 341.00px" src="img/9c739b5ef06c9f7c.png"></p>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="接続の確認" duration="9">
-        <h2 is-upgraded><strong>Zero Trustの通信が有効か確認</strong></h2>
+<h4 is-upgraded>ルート証明書のインストール</h4>
+<p>WARP（デスクトップアプリ）が自動配置する動きが標準ですが、</p>
+<p>手順書作成時に、ルート証明書が配置されなかったので手順を追記しています。</p>
+<p><a href="https://developers.cloudflare.com/cloudflare-one/connections/connect-devices/warp/user-side-certificates/install-cloudflare-cert/#download-the-cloudflare-root-certificate" target="_blank">Download the Cloudflare certificate</a></p>
+<ol type="1" start="1">
+<li>証明書ファイルを右クリックします。</li>
+<li>「開く」を選択します。セキュリティ警告が表示された場合は、「開く」を選択して進みます。</li>
+<li>証明書ウィンドウが表示されます。「証明書のインストール」を選択します。</li>
+<li>次に、ストアの場所を選択します。セキュリティ警告が表示された場合は、「はい」を選択して進みます。</li>
+<li>次の画面で、「参照」を選択します。</li>
+<li>リストから、「信頼されたルート証明機関」ストアを選択します。</li>
+<li>「OK」を選択し、次に「完了」を選択します。</li>
+</ol>
+<p class="image-container"><img style="width: 266.63px" src="img/39ad5148114c16ee.png"><img style="width: 268.75px" src="img/d6f98581c485f296.png"></p>
+<h3 is-upgraded><strong>Zero Trustの通信が有効か確認</strong></h3>
 <p class="image-container"><img style="width: 401.00px" src="img/aa03c5f3c07781aa.png"></p>
 <p><strong>curl </strong><a href="https://ipinfo.io/" target="_blank"><strong>https://ipinfo.io/</strong></a> </p>
 <p><strong> &#34;Org&#34;: が現在のプロバイダになっている状態</strong></p>
 <p>トグルスイッチをONにして接続します</p>
-<p class="image-container"><img style="width: 303.45px" src="img/c9d90389388b7e60.png"><img style="width: 302.67px" src="img/c9d90389388b7e60.png"></p>
+<p class="image-container"><img style="width: 303.45px" src="img/c9d90389388b7e60.png"><img style="width: 290.50px" src="img/ce664e18092acaa8.png"></p>
 <p><strong>curl </strong><a href="https://ipinfo.io/" target="_blank"><strong>https://ipinfo.io/</strong></a> </p>
 <p><strong> &#34;org&#34;: &#34;AS13335 Cloudflare, Inc.&#34;,</strong></p>
 <aside class="special"><p>Cloudflareになっていればルート証明書の自動配置、有効化が無事に完了しました</p>
 </aside>
-<h2 is-upgraded><strong>Gateway Policyの変更</strong></h2>
-<p>Gatewayで通信を見てアクセス許可（Allow）、禁止（Block）、透過（Bypass）など設定が可能です。</p>
-<p>今回は、Zero Trustが有効な間はTwitterの通信をブロックして通常利用できないようにします。</p>
-<h2 is-upgraded><strong>Edge で Twitter にアクセス</strong></h2>
-<p>https://twitter.com/</p>
-<p class="image-container"><img style="width: 624.00px" src="img/7d3392151f7ba395.png"></p>
-<h3 is-upgraded><strong>Gateway Policyを変更</strong></h3>
-<p class="image-container"><img style="width: 624.00px" src="img/392c23a74bee2941.png"></p>
-<p>TwitterをBlockします</p>
-<p>Display block pageを☑にします</p>
-<p class="image-container"><img style="width: 624.00px" src="img/4fc18c44b516bb36.png"></p>
-<p>Save Policy を押すとDefault DNS Locationが未登録のため有効化できない警告がでるので、</p>
-<p>そのまま、Gateway/Location を押します</p>
-<p class="image-container"><img style="width: 624.00px" src="img/7591512fbc13feaf.png"></p>
-<p class="image-container"><img style="width: 624.00px" src="img/f2695599c2e7ec2f.png"></p>
-<p>Add A Locationをおします</p>
-<p class="image-container"><img style="width: 624.00px" src="img/82802c4c1255ef4.png"></p>
-<p class="image-container"><img style="width: 624.00px" src="img/21244d7c91fab959.png"></p>
-<p>ここまで設定した後に、Twitter にアクセスすると、タイムラインやPostができない状態になります。</p>
-<p class="image-container"><img style="width: 624.00px" src="img/42f849b1c79fd3dc.png"></p>
-<aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
-</aside>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Windows以外の環境で試す方" duration="0">
-        <h2 is-upgraded><strong>macOS・ESETの環境</strong></h2>
+<h2 is-upgraded><strong>macOS・ESETの環境</strong></h2>
 <p>ESETを一時的に通信の対話モードへ切り替えて、WARPの接続を起動して通信を発生させて、追加させる対応を実施しました。</p>
 <p class="image-container"><img style="width: 624.00px" src="img/2fb49f22495edd0a.png"></p>
 <p class="image-container"><img style="width: 624.00px" src="img/5be88cd44dd24814.png"></p>
-<h2 is-upgraded><strong>iPad・iPhone</strong></h2>
-<p>設定 &gt; 一般 &gt; VPNとデバイス管理 でCloudflare for Teams ECC Certificate Authority をインストール</p>
-<p>設定 &gt; 一般 &gt; 情報 &gt; 証明書信頼設定 で Cloudflare for Teams ECC Certificate Authority を信頼</p>
-<p class="image-container"><img style="width: 286.40px" src="img/7a0f31fc185c0c59.png"><img style="width: 290.96px" src="img/913408dd3fa1a732.png"></p>
 <h2 is-upgraded><strong>Andoroid</strong></h2>
 <p>アプリをインストールすると証明書の信頼確認が促されるポップアップが表示されたので承認して完了でした。</p>
 
