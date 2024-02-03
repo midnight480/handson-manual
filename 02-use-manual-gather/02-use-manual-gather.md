@@ -5,7 +5,7 @@ categories: codelab,markdown
 environments: Web
 status: Published
 feedback link: https://github.com/midnight480/handson-manual
-analytics account: 196534296
+analytics account: G-NGRDDBRB0P
 
 # Gatherを使ってみよう
 

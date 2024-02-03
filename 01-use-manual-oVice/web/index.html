@@ -9,7 +9,7 @@
   <title>oViceを使ってみよう</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
   <style>
     .success {
       color: #1e8e3e;
@@ -20,8 +20,9 @@
   </style>
 </head>
 <body>
-  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
-  <google-codelab codelab-gaid="196534296"
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid="G-NGRDDBRB0P"
+                  codelab-ga4id=""
                   id="01-use-manual-oVice"
                   title="oViceを使ってみよう"
                   environment="web"
@@ -29,10 +30,9 @@
     
       <google-codelab-step label="はじめに" duration="5">
         <h2 is-upgraded>oViceとは</h2>
-<aside class="warning"><p>このページは紹介しているのみなのでアカウント登録は実施しないでください！</p>
-</aside>
+<p>Negative : このページは紹介しているのみなのでアカウント登録は実施しないでください！</p>
 <ul>
-<li>機能概要 - オンラインコミュニケーションスペース  <ul>
+<li>機能概要 - オンラインコミュニケーションスペース<ul>
 <li>2次元アイコンで特定のルーム、会議室内を行き来</li>
 <li>音声・テキストチャット</li>
 <li>画面共有</li>
@@ -40,33 +40,33 @@
 <li>オープンスペースとプライベートスペース（会議室）を定義可能</li>
 </ul>
 </li>
-<li>サイトURL  <ul>
+<li>サイトURL<ul>
 <li><a href="https://ovice.in/ja/" target="_blank">公式</a></li>
 <li><a href="https://ovice.in/ja/about-us/" target="_blank">本社所在地</a><br> 石川県七尾市元府中町エ113B</li>
 <li><a href="https://ovice.in/ja/pricing/" target="_blank">料金体系</a></li>
 </ul>
 </li>
-<li>現在はトライアル期間中  <ul>
+<li>現在はトライアル期間中<ul>
 <li><a href="https://prtimes.jp/main/html/rd/p/000000034.000058507.html" target="_blank">テレワークやイベントで使えるバーチャル空間を無償提供(5/31まで)</a></li>
 </ul>
 </li>
-<li>通信仕様  <ul>
+<li>通信仕様<ul>
 <li><a href="https://ovice.zendesk.com/hc/ja/articles/900004604266-%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6" target="_blank">ネットワークについて</a><br> 一般的なWebRTC、TCP/443によるHTTPS通信、一部UDPで通信がある模様</li>
 </ul>
 </li>
-<li>適用される法律  <ul>
-<li><a href="https://www.notion.so/oVice-2021-5-19-e93174118cd04934aca03c4ea4c409c4" target="_blank">利用規約</a><br> &gt; 本規約は、日本国法に準拠し、解釈されるものとします。</li>
+<li>適用される法律<ul>
+<li><a href="https://www.notion.so/oVice-2021-5-19-e93174118cd04934aca03c4ea4c409c4" target="_blank">利用規約</a>本規約は、日本国法に準拠し、解釈されるものとします。</li>
 </ul>
 </li>
 </ul>
 <h2 is-upgraded>実績</h2>
 <ul>
-<li><a href="https://jawsdays2021.jaws-ug.jp/" target="_blank">JAWS DAYS 2021</a>  <ul>
+<li><a href="https://jawsdays2021.jaws-ug.jp/" target="_blank">JAWS DAYS 2021</a><ul>
 <li><a href="https://jawsdays2021.jaws-ug.jp/ovice-tutorial/" target="_blank">oViceコミュニケーションスペースの使い方</a></li>
 <li><a href="https://aws.amazon.com/jp/builders-flash/202103/jaws-days-conversation/?awsf.filter-name=*all" target="_blank">JAWS DAYS 2021 対談 : oVice が実現するオンラインイベントの双方向体験とは ?</a></li>
 </ul>
 </li>
-<li><a href="https://www.mofa.go.jp/mofaj/p_pd/ep/page6_000536.html" target="_blank">外務省 - 帰国留学生総会</a>  <ul>
+<li><a href="https://www.mofa.go.jp/mofaj/p_pd/ep/page6_000536.html" target="_blank">外務省 - 帰国留学生総会</a><ul>
 <li><a href="https://ovice.in/ja/%e5%a4%96%e5%8b%99%e7%9c%81%e3%81%a8japi%e5%85%b1%e5%82%ac%e3%80%81%e4%b8%96%e7%95%8c40%e3%81%8b%e5%9b%bd%e4%bb%a5%e4%b8%8a%e3%81%ae%e5%b8%b0%e5%9b%bd%e7%95%99%e5%ad%a6%e7%94%9f%e3%81%8c%e9%9b%86/" target="_blank">外務省とJAPI共催、世界40か国以上の帰国留学生が集まるオンライン国際カンファレンスでoViceが活用されました。</a></li>
 </ul>
 </li>
@@ -80,12 +80,11 @@
 <ul>
 <li>oVice公式</li>
 </ul>
-<p><a href="http://www.youtube.com/watch?v=C8r02gYDA50" target="_blank"><paper-button class="colored" raised>YouTube</paper-button></a></p>
-<p><a href="https://ovice.zendesk.com/hc/ja/categories/900000303506-%E3%83%88%E3%83%A9%E3%83%96%E3%83%AB%E3%82%B7%E3%83%A5%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0" target="_blank"><paper-button class="colored" raised>トラブルシューティング</paper-button></a></p>
+<p><br>  [YouTube](http://www.youtube.com/watch?v=C8r02gYDA50)<br><br>  [トラブルシューティング](https://ovice.zendesk.com/hc/ja/categories/900000303506-%E3%83%88%E3%83%A9%E3%83%96%E3%83%AB%E3%82%B7%E3%83%A5%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0)<br></p>
 <ul>
 <li>JAWS DAYS 2021</li>
 </ul>
-<p><a href="http://www.youtube.com/watch?v=q0UUgAkiNRk" target="_blank"><paper-button class="colored" raised>YouTube</paper-button></a></p>
+<p><br>  [YouTube](http://www.youtube.com/watch?v=q0UUgAkiNRk)<br></p>
 
 
       </google-codelab-step>
@@ -95,11 +94,9 @@
 <ul>
 <li>以下のボタンからリンク先に移動します</li>
 </ul>
-<p><a href="https://ooi-tech-mokumoku.ovice.in/" target="_blank"><paper-button class="colored" raised>トライアル中のoVice</paper-button></a></p>
-<aside class="special"><p>このあとログイン名を入力いただきますが、このスペースのみ有効なため、アカウント作成されるわけではないです</p>
-</aside>
-<aside class="warning"><p>以降の画面はmacOS BigSur 11.3.1, Mozilla Firefox 88.0.1 (64 ビット)で取得した画面となりますが、各自の操作へ影響はないと思います。</p>
-</aside>
+<p><br>  [トライアル中のoVice](https://ooi-tech-mokumoku.ovice.in/)<br></p>
+<p>Positive : このあとログイン名を入力いただきますが、このスペースのみ有効なため、アカウント作成されるわけではないです</p>
+<p>Negative : 以降の画面はmacOS BigSur 11.3.1, Mozilla Firefox 88.0.1 (64 ビット)で取得した画面となりますが、各自の操作へ影響はないと思います。</p>
 <h2 is-upgraded>拡張機能の有効</h2>
 <ul>
 <li>マイク</li>
@@ -134,8 +131,7 @@
 <li>機能</li>
 </ul>
 <p class="image-container"><img alt="func" src="img/5633b5d6b708bb92.jpg"></p>
-<aside class="special"><p>このあとは実際に入室してから動かしながら説明します</p>
-</aside>
+<p>Positive : このあとは実際に入室してから動かしながら説明します</p>
 
 
       </google-codelab-step>
@@ -150,18 +146,17 @@
 <li>入室対応</li>
 </ul>
 <p class="image-container"><img alt="room" src="img/a3cd0e44354d95a0.jpg"></p>
-<aside class="special"><p>基本的にはオープンスペース（来訪者にする）を選ぶとスムーズに受付可能です</p>
-</aside>
+<p>Positive : 基本的にはオープンスペース（来訪者にする）を選ぶとスムーズに受付可能です</p>
 
 
       </google-codelab-step>
     
   </google-codelab>
 
-  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
-  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
-  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
-  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
   <script src="//support.google.com/inapp/api.js"></script>
 
 </body>

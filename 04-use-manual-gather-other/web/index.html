@@ -9,7 +9,7 @@
   <title>Gatherを使ってみよう</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
   <style>
     .success {
       color: #1e8e3e;
@@ -20,8 +20,9 @@
   </style>
 </head>
 <body>
-  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
   <google-codelab codelab-gaid="196534296"
+                  codelab-ga4id=""
                   id="04-use-manual-gather-other"
                   title="Gatherを使ってみよう"
                   environment="web"
@@ -29,10 +30,9 @@
     
       <google-codelab-step label="はじめに" duration="5">
         <h2 is-upgraded>Gatherとは</h2>
-<aside class="warning"><p>このページは紹介しているのみなのでアカウント登録は実施しないでください！</p>
-</aside>
+<p>Negative : このページは紹介しているのみなのでアカウント登録は実施しないでください！</p>
 <ul>
-<li>機能概要 - オンラインコミュニケーションスペース  <ul>
+<li>機能概要 - オンラインコミュニケーションスペース<ul>
 <li>2次元をアバターを移動させる</li>
 <li>音声・テキストチャット</li>
 <li>画面共有</li>
@@ -40,36 +40,36 @@
 <li>カスタムオブジェクト（環境音,Google Meet/ZoomなどのURL）</li>
 </ul>
 </li>
-<li>サイトURL  <ul>
+<li>サイトURL<ul>
 <li><a href="https://gather.town/" target="_blank">公式</a></li>
 <li><a href="https://pitchbook.com/profiles/company/454511-26#overview" target="_blank">本社所在地</a><br> 547 Elm Avenue, San Bruno, CA, United States</li>
 <li><a href="https://gather.town/pricing" target="_blank">料金体系</a><br> ※ Free Tier Accommodates 25 Online Users!</li>
 </ul>
 </li>
-<li>通信仕様  <ul>
+<li>通信仕様<ul>
 <li><a href="https://support.gather.town/help/data-protection-and-encryption#data-encryption" target="_blank">ネットワークについて</a><br> 一般的なWebRTCを用いて E2E(P2P)でのTCP/443によるHTTPS通信</li>
 </ul>
 </li>
-<li>適用される法律  <ul>
-<li><a href="https://gather.town/terms-of-use" target="_blank">利用規約</a><br> &gt; United States Legal Compliance<br> ※ EUはGDPR、USのCalifornia州は独自の個人情報取得に関する法律が適用される</li>
+<li>適用される法律<ul>
+<li><a href="https://gather.town/terms-of-use" target="_blank">利用規約</a>United States Legal Compliance<br> ※ EUはGDPR、USのCalifornia州は独自の個人情報取得に関する法律が適用される</li>
 </ul>
 </li>
 </ul>
 <h2 is-upgraded>実績</h2>
 <ul>
-<li><a href="https://www-conf.kek.jp/rdetconf/index.html" target="_blank">高エネルギー加速器研究機構 - 研究会「放射線検出器とその応用」</a>  <ul>
+<li><a href="https://www-conf.kek.jp/rdetconf/index.html" target="_blank">高エネルギー加速器研究機構 - 研究会「放射線検出器とその応用」</a><ul>
 <li><a href="https://www-conf.kek.jp/rdetconf/GatherTown.pdf" target="_blank">ポスター会場</a></li>
 </ul>
 </li>
-<li><a href="https://www.studioanima.co.jp/company/" target="_blank">株式会社アニマ</a>  <ul>
+<li><a href="https://www.studioanima.co.jp/company/" target="_blank">株式会社アニマ</a><ul>
 <li><a href="https://www.studioanima.co.jp/Anigon-chat/2021/01/21/post-5326/" target="_blank">2021.01.21 - バーチャルオフィスサービスの導入について</a></li>
 </ul>
 </li>
-<li><a href="https://monodukuri.club/" target="_blank">放課後モノづくり倶楽部</a>  <ul>
+<li><a href="https://monodukuri.club/" target="_blank">放課後モノづくり倶楽部</a><ul>
 <li><a href="https://note.com/hiroki_hachisuka/n/neeada2121807" target="_blank">チームでオフィスを持ちました！(Gatherにね)</a></li>
 </ul>
 </li>
-<li><a href="https://classmethod.jp/company/overview/" target="_blank">クラスメソッド株式会社</a>  <ul>
+<li><a href="https://classmethod.jp/company/overview/" target="_blank">クラスメソッド株式会社</a><ul>
 <li><a href="https://dev.classmethod.jp/articles/gather-town-as-a-virtual-office/" target="_blank">レトロRPG風デザインのオンラインビデオ通話スペース『 Gather.Town 』で&#34;出社して仕事＆気軽に雑談&#34;を楽しく仮想体験！</a></li>
 <li><a href="https://dev.classmethod.jp/articles/gather-town-pricing/" target="_blank">Gather.Town 有料プランの費用感について</a></li>
 <li><a href="https://dev.classmethod.jp/articles/gather-town-integration-with-external-call-and-zoom-call/" target="_blank">Gather.Town でビデオ会議サービス(Zoom, Google Meet等)との連携を行う</a></li>
@@ -85,22 +85,19 @@
 <ul>
 <li>Gather公式</li>
 </ul>
-<p><a href="https://www.youtube.com/watch?v=89at5EvCEvk" target="_blank"><paper-button class="colored" raised>YouTube - Intro to Gather</paper-button></a></p>
+<p><br>  [YouTube - Intro to Gather](https://www.youtube.com/watch?v=89at5EvCEvk)<br></p>
 <ul>
 <li>【ダナン在住エンジニア】KZY</li>
 </ul>
-<p><a href="https://www.youtube.com/watch?v=G2tBlLADZ2A" target="_blank"><paper-button class="colored" raised>YouTube - 【Gather Town】How to start Gather Town, which is the RPG like virtual office!</paper-button></a></p>
+<p><br>  [YouTube - 【Gather Town】How to start Gather Town, which is the RPG like virtual office!](https://www.youtube.com/watch?v=G2tBlLADZ2A)<br></p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="実際につかってみよう" duration="10">
-        <aside class="special"><p>このあとログイン名を入力いただきますが、このスペースのみ有効なため、アカウント作成されるわけではないです</p>
-</aside>
-<aside class="warning"><p>ログイン時にパスワードが必要になるので主催者から通知された情報にあるパスワードを事前に確認してください</p>
-</aside>
-<aside class="warning"><p>以降の画面はmacOS BigSur 11.3.1, Mozilla Firefox 88.0.1 (64 ビット)で取得した画面となりますが、各自の操作へ影響はないと思います。</p>
-</aside>
+        <p>Positive : このあとログイン名を入力いただきますが、このスペースのみ有効なため、アカウント作成されるわけではないです</p>
+<p>Negative : ログイン時にパスワードが必要になるので主催者から通知された情報にあるパスワードを事前に確認してください</p>
+<p>Negative : 以降の画面はmacOS BigSur 11.3.1, Mozilla Firefox 88.0.1 (64 ビット)で取得した画面となりますが、各自の操作へ影響はないと思います。</p>
 <h2 is-upgraded>（共通操作）プライベートルームのパスワード</h2>
 <ul>
 <li>主催者から通知されるパスワードを入力</li>
@@ -117,27 +114,26 @@
 <p class="image-container"><img alt="avator" src="img/148cdd1b85196b45.jpg"></p>
 <p>変更可能な要素は次のとおりです。</p>
 <ul>
-<li>Body  <ul>
+<li>Body <ul>
 <li>Skin（肌）</li>
 <li>Hair（髪型）</li>
 <li>Facial Hair（ひげ）</li>
 </ul>
 </li>
-<li>Clothing  <ul>
+<li>Clothing <ul>
 <li>Top（上）</li>
 <li>Bottom（下）</li>
 <li>Shoes（靴）</li>
 </ul>
 </li>
-<li>Accessories  <ul>
+<li>Accessories <ul>
 <li>Hat（帽子）</li>
 <li>Glasses（眼鏡）</li>
 <li>Other（他[マスク、松葉杖、車椅子？]）</li>
 </ul>
 </li>
 </ul>
-<aside class="warning"><p>予め選択可能な組み合わせの範囲内でのみ選択可能なため、オリジナルのアイテムを作成・選択することはできません</p>
-</aside>
+<p>Negative : 予め選択可能な組み合わせの範囲内でのみ選択可能なため、オリジナルのアイテムを作成・選択することはできません</p>
 <h2 is-upgraded>（もし表示された場合）チュートリアルのスキップ</h2>
 <ul>
 <li>接続後に表示されるチュートリアルはスキップ可能</li>
@@ -180,10 +176,8 @@
 <p class="image-container"><img alt="private" src="img/370da7850154de44.jpg"></p>
 <h2 is-upgraded>（おまけ）管理者から強制退出</h2>
 <p class="image-container"><img alt="block" src="img/eddf7497fd1da1b9.jpg"></p>
-<aside class="special"><p>ダイレクトリンクでログインした人はブラウザタブを閉じるだけで退出扱いとなります。</p>
-</aside>
-<aside class="warning"><p>誤ってタブを閉じたあともCookieが有効な間はユーザ名、アバターは維持されますが、DuckDuckGoのようなCookieを保存しないブラウザを使っている場合は再度登録からやり直しとなります</p>
-</aside>
+<p>Positive : ダイレクトリンクでログインした人はブラウザタブを閉じるだけで退出扱いとなります。</p>
+<p>Negative : 誤ってタブを閉じたあともCookieが有効な間はユーザ名、アバターは維持されますが、DuckDuckGoのようなCookieを保存しないブラウザを使っている場合は再度登録からやり直しとなります</p>
 
 
       </google-codelab-step>
@@ -194,7 +188,7 @@
 <li>主催者から通知されるURLを利用してください</li>
 </ul>
 <p>以下のボタンを押しても構いません</p>
-<p><a href="https://gather.town/app/8KYOxHXpjMTelpx1/DINER" target="_blank"><paper-button class="colored" raised>今回利用するGather Space</paper-button></a></p>
+<p><br>  [今回利用するGather Space](https://gather.town/app/8KYOxHXpjMTelpx1/DINER)<br></p>
 <p>ブラウザのURLバーに以下をコピーアンドペーストしても構いません</p>
 <pre><code>https://gather.town/app/8KYOxHXpjMTelpx1/DINER
 </code></pre>
@@ -205,10 +199,10 @@
     
   </google-codelab>
 
-  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
-  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
-  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
-  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
   <script src="//support.google.com/inapp/api.js"></script>
 
 </body>

@@ -3,7 +3,7 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2021-05-09T15:04:22+09:00",
+  "updated": "2024-02-03T22:15:13+09:00",
   "id": "02-use-manual-gather",
   "duration": 30,
   "title": "Gatherを使ってみよう",
@@ -21,6 +21,6 @@
     "web"
   ],
   "feedback": "https://github.com/midnight480/handson-manual",
-  "ga": "196534296",
+  "ga": "G-NGRDDBRB0P",
   "url": "02-use-manual-gather"
 }

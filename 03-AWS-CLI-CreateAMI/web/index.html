@@ -9,7 +9,7 @@
   <title>AWS CLIを使ってEC2からAMIを作成する</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
   <style>
     .success {
       color: #1e8e3e;
@@ -20,8 +20,9 @@
   </style>
 </head>
 <body>
-  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
   <google-codelab codelab-gaid="196534296"
+                  codelab-ga4id=""
                   id="03-AWS-CLI-CreateAMI"
                   title="AWS CLIを使ってEC2からAMIを作成する"
                   environment="web"
@@ -41,7 +42,7 @@ arn:aws:iam::aws:policy/AmazonEC2FullAccess
 <p class="image-container"><img alt="IAM AccessKey" src="img/cc9ca39fc45c995a.png"></p>
 <h2 is-upgraded>AWS CLI</h2>
 <p>未インストールの場合は、以下より取得してください。</p>
-<p><a href="https://aws.amazon.com/jp/cli/" target="_blank"><paper-button class="colored" raised>AWS コマンドラインインターフェイス</paper-button></a></p>
+<p><br>  [AWS コマンドラインインターフェイス](https://aws.amazon.com/jp/cli/)<br></p>
 
 
       </google-codelab-step>
@@ -63,8 +64,7 @@ SerializationVersion           1.1.0.1
 aws-cli/2.2.5 Python/3.8.8 Windows/10 exe/AMD64 prompt/off
 &gt; 
 </code></pre>
-<aside class="warning"><p>アクセスキー、シークレットアクセスキーは管理を徹底すること<br></p>
-</aside>
+<p>Negative : アクセスキー、シークレットアクセスキーは管理を徹底すること</p>
 <pre><code>&gt; aws configure --profile cli-users
 AWS Access Key ID [None]: AKI********
 AWS Secret Access Key [None]: ********
@@ -72,8 +72,7 @@ Default region name [None]: ap-northeast-1
 Default output format [None]: json
 &gt;
 </code></pre>
-<aside class="special"><p>AWS CLIで実行するときは必ず実行すること<br></p>
-</aside>
+<p>Positive : AWS CLIで実行するときは必ず実行すること</p>
 <pre><code>&gt; aws sts get-caller-identity --profile cli-users
 {
     &#34;UserId&#34;: &#34;AID******&#34;,
@@ -90,10 +89,10 @@ Default output format [None]: json
       <google-codelab-step label="AWS CLIs" duration="30">
         <h2 is-upgraded>Documents</h2>
 <ul>
-<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/" target="_blank">aws ec2</a>のサブコマンド  <ul>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/" target="_blank">aws ec2</a>のサブコマンド <ul>
 <li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-images.html" target="_blank">describe-images</a></li>
 <li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html" target="_blank">describe-instances</a></li>
-<li><a href="[https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-snapshots.html" target="_blank">describe-snapshots</a></li>
+<li><a href="%5Bhttps://docs.aws.amazon.com/cli/latest/reference/ec2/describe-snapshots.html" target="_blank">describe-snapshots</a></li>
 <li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-tags.html" target="_blank">describe-tags</a></li>
 <li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/create-image.html" target="_blank">create-images</a></li>
 <li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/create-snapshot.html" target="_blank">create-snapshot</a></li>
@@ -135,7 +134,7 @@ aws ec2 describe-images  --query &#39;Images[].[{ImageId:ImageId},{Description:D
 
 &gt; 
 </code></pre>
-<h2 is-upgraded><a href="[https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-snapshots.html" target="_blank">describe-snapshots</a></h2>
+<h2 is-upgraded><a href="%5Bhttps://docs.aws.amazon.com/cli/latest/reference/ec2/describe-snapshots.html" target="_blank">describe-snapshots</a></h2>
 <p>EBSスナップショットを確認するためのコマンド</p>
 <pre><code>$AccountID=aws sts get-caller-identity --profile cli-users --output text --query Account 
 aws ec2 describe-snapshots --owner-ids $AccountID --output yaml --profile cli-users --query &#39;Snapshots[*].[SnapshotId,VolumeId,VolumeSize,State,Progress,StartTime]&#39;
@@ -177,8 +176,7 @@ $instanceid=&#34;i-******&#34;
 $rebootops=&#34;--no-reboot/--reboot&#34;
 aws ec2 create-image --name $aminame --instance-id $instanceid --profile cli-users $rebootops
 </code></pre>
-<aside class="special"><p>rebootops で再起動の有無をパラメータとして定義することが可能にしています<br></p>
-</aside>
+<p>Positive : rebootops で再起動の有無をパラメータとして定義することが可能にしています</p>
 <h3 is-upgraded>sample</h3>
 <pre><code>&gt; $aminame=&#34;backup-images&#34;
 &gt; $instanceid=&#34;i-******&#34;
@@ -213,8 +211,7 @@ aws ec2 create-snapshot --volume-id $volid --profile cli-users
 
 &gt; 
 </code></pre>
-<aside class="warning"><p>To create a snapshot for EBS volumes that serve as root devices, you should stop the instance before taking the snapshot.ルートボリュームは停止してからでないと取得してはいけません</p>
-</aside>
+<p>Negative : To create a snapshot for EBS volumes that serve as root devices, you should stop the instance before taking the snapshot.ルートボリュームは停止してからでないと取得してはいけません</p>
 <h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/create-tags.html" target="_blank">create-tags</a></h2>
 <p>特定のリソースに対してTagをつけるコマンド</p>
 <pre><code>$target=&#34;i-***/vol-***&#34;
@@ -301,10 +298,10 @@ aws ec2 start-instances --instance-ids $instancelid --profile cli-users
     
   </google-codelab>
 
-  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
-  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
-  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
-  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
   <script src="//support.google.com/inapp/api.js"></script>
 
 </body>

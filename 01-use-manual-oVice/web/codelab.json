@@ -3,7 +3,7 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2021-05-09T15:08:11+09:00",
+  "updated": "2024-02-03T22:15:07+09:00",
   "id": "01-use-manual-oVice",
   "duration": 25,
   "title": "oViceを使ってみよう",
@@ -21,6 +21,6 @@
     "web"
   ],
   "feedback": "https://github.com/midnight480/handson-manual",
-  "ga": "196534296",
+  "ga": "G-NGRDDBRB0P",
   "url": "01-use-manual-oVice"
 }
