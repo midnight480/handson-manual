@@ -23,7 +23,7 @@
   <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
   <google-codelab codelab-gaid="G-NGRDDBRB0P"
                   codelab-ga4id=""
-                  id="cloudflare-zerotrust-client"
+                  id="web"
                   title="Cloudflare Zero Trust - Client"
                   environment="web"
                   feedback-link="https://github.com/midnight480/handson-manual/05-Cloudflare-ZeroTrust-Client">
@@ -33,6 +33,14 @@
 <p><strong>Last Updated:</strong> 2024-01-24</p>
 <h2 is-upgraded><strong>Cloudflare Zero Trust - Client</strong></h2>
 <p>クライアントをCloudflareのネットワークまでWireGuard VPNでトンネルセッションを貼ることで、Cloudflareのネットワークを使ってインターネットに接続するサービスです。</p>
+<h2 is-upgraded><strong>対応端末</strong></h2>
+<p><a href="https://developers.cloudflare.com/cloudflare-one/connections/connect-devices/warp/download-warp/" target="_blank">https://developers.cloudflare.com/cloudflare-one/connections/connect-devices/warp/download-warp/</a></p>
+<p>Windows        10,  11</p>
+<p>macOS                Catalina+ (10.15+)</p>
+<p>iOS                11+</p>
+<p>Android        5.0+</p>
+<p>Linux                CentOS 8, RHEL 8, Ubuntu 16.04, Ubuntu 18.04, Ubuntu 20.04, Ubuntu 22.04,</p>
+<p>Debian 9, Debian 10, Debian 11</p>
 
 
       </google-codelab-step>
@@ -120,15 +128,17 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="実際のデバイス設定" duration="10">
-        <h2 is-upgraded><strong>デバイスの用意（今回はiPhone）</strong></h2>
+      <google-codelab-step label="実際のデバイス設定（iPhone）" duration="10">
+        <p>iPhoneの方とAndroidの方でそれぞれ手順が異なります。</p>
+<p>ご自身の設定に合わせて用意してください。</p>
+<h2 is-upgraded><strong>デバイスの用意（iPhone）</strong></h2>
 <h3 is-upgraded><strong>アプリのダウンロード</strong></h3>
 <p><a href="https://apps.apple.com/jp/app/1-1-1-1-faster-internet/id1423538627" target="_blank">「1.1.1.1: Faster Internet」をApp Storeで</a> </p>
-<p class="image-container"><img style="width: 269.50px" src="img/4d320dd1ae67db71.png"></p>
+<p class="image-container"><img style="width: 252.50px" src="img/4d320dd1ae67db71.png"></p>
 <p>アプリの初回起動</p>
 <p>「同意する」「VPNプロファイルをインストール」</p>
 <p class="image-container"><img style="width: 190.47px" src="img/c48eb7f64a63e2fc.png"><img style="width: 193.06px" src="img/1f9f814fae873aa4.png"><img style="width: 184.69px" src="img/ca1190ad62d21a02.png"></p>
-<h2 is-upgraded><strong>Cloudflare Zero Trustへログイン</strong></h2>
+<h3 is-upgraded><strong>Cloudflare Zero Trustへログイン</strong></h3>
 <p>右上のハンバーガーメニューから設定 を開き、アカウントを選択する</p>
 <p class="image-container"><img style="width: 209.68px" src="img/30b8586f21c485ff.png"><img style="width: 295.27px" src="img/50bebff7d37ef942.png"></p>
 <p>Zero Trustに画面が切り替わるものの、まだ正常に接続できない</p>
@@ -141,6 +151,34 @@
 <p class="image-container"><img style="width: 167.87px" src="img/526cd369fe3d8917.png"></p>
 <p>設定 &gt; 一般 &gt; 情報 &gt; 証明書信頼設定 で Cloudflare for Teams ECC Certificate Authority を信頼</p>
 <p class="image-container"><img style="width: 169.75px" src="img/1683fce9904a1f56.png"><img style="width: 123.50px" src="img/c59665287bb2d981.png"><img style="width: 171.50px" src="img/10c00b45716b65b5.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="実際のデバイス設定（Andoroid）" duration="10">
+        <h2 is-upgraded><strong>デバイスの用意（Andoroidの方）</strong></h2>
+<h3 is-upgraded><strong>アプリのダウンロード</strong></h3>
+<p><a href="https://play.google.com/store/apps/details?id=com.cloudflare.onedotonedotonedotone" target="_blank">1.1.1.1 + WARP: Safer Internet - Apps on Google Play</a></p>
+<p class="image-container"><img style="width: 274.00px" src="img/d8ff877aec2442e9.png"></p>
+<p>アプリの初回起動</p>
+<p>「同意する」「VPNプロファイルをインストール」</p>
+<p>通知は「Not now」</p>
+<p class="image-container"><img style="width: 167.50px" src="img/7814c63fe1a9280a.png"><img style="width: 140.15px" src="img/629cf82ce1572c92.png"><img style="width: 141.60px" src="img/cd032787881fe3bf.png"><img style="width: 141.50px" src="img/e1f23e5a148a376e.png"></p>
+<h3 is-upgraded><strong>Cloudflare Zero Trustへログイン</strong></h3>
+<p>右上のハンバーガーメニューからアカウント &gt;  Cloudflare Zero Trustにログイン</p>
+<p class="image-container"><img style="width: 194.35px" src="img/82badf55a3a88e49.png"><img style="width: 216.78px" src="img/4caa2145af135c4b.png"><img style="width: 192.70px" src="img/782815208c01fbc2.png"></p>
+<p>組織名（チーム名）を入力すると認証画面が表示されるためメールアドレスを入力</p>
+<p>送付されるPINを入力</p>
+<p class="image-container"><img style="width: 186.62px" src="img/52a13625033b1e70.png"><img style="width: 200.87px" src="img/4ea08ee55164e7e2.png"><img style="width: 202.50px" src="img/fc0d7221c400e227.png"></p>
+<p>証明書も自動配置されるのでそのまま接続可能</p>
+<p class="image-container"><img style="width: 151.50px" src="img/222eefb502fbf043.png"><img style="width: 261.69px" src="img/dbc58363ac228b3e.png"></p>
+<p>Andoroid 14.xで確認する場合、</p>
+<p>設定⚙ &gt; セキュリティとプライバシー &gt; その他のセキュリティとプライバシー &gt; 暗号化と認証情報</p>
+<ul>
+<li>信頼できる認証情報（ユーザ） ※環境によっては登録されていないかもしれません</li>
+<li>ユーザ認証情報</li>
+</ul>
+<p>Cloudflareが登録されていることが確認できます</p>
 
 
       </google-codelab-step>
@@ -196,10 +234,10 @@
 <p>Add A Locationを押します</p>
 <p class="image-container"><img style="width: 624.00px" src="img/82802c4c1255ef4.png"></p>
 <p class="image-container"><img style="width: 624.00px" src="img/21244d7c91fab959.png"></p>
-<p>ここまで設定した後に、SafariでYahoo!JAPANにアクセスしようとするとブロックします。</p>
+<p>ここまで設定した後に、システムブラウザ（iOSであればSafari、AndoroidであればChrome）iでYahoo!JAPANにアクセスしようとするとブロックします。</p>
 <h2 is-upgraded><strong>実際にアクセス</strong></h2>
 <p class="image-container"><img style="width: 242.14px" src="img/191ef66f394fc5cf.png"><img style="width: 245.95px" src="img/9d74d9f477b40856.png"></p>
-<p><a href="https://www.yahoo.co.jp" target="_blank">https://www.yahoo.co.jp</a> へSafariでアクセス</p>
+<p><a href="https://www.yahoo.co.jp" target="_blank">https://www.yahoo.co.jp</a> へアクセス</p>
 <p class="image-container"><img style="width: 223.50px" src="img/caaf56f550fc7877.png"></p>
 <aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
 </aside>
@@ -280,8 +318,6 @@
 <p>ESETを一時的に通信の対話モードへ切り替えて、WARPの接続を起動して通信を発生させて、追加させる対応を実施しました。</p>
 <p class="image-container"><img style="width: 624.00px" src="img/2fb49f22495edd0a.png"></p>
 <p class="image-container"><img style="width: 624.00px" src="img/5be88cd44dd24814.png"></p>
-<h2 is-upgraded><strong>Andoroid</strong></h2>
-<p>アプリをインストールすると証明書の信頼確認が促されるポップアップが表示されたので承認して完了でした。</p>
 
 
       </google-codelab-step>
