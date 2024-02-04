@@ -3,8 +3,8 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2024-02-03T12:55:30Z",
-  "id": "cloudflare-zerotrust-client",
+  "updated": "2024-02-04T13:22:42Z",
+  "id": "web",
   "duration": 35,
   "title": "Cloudflare Zero Trust - Client",
   "authors": "Tetsuya Shibao",
@@ -36,5 +36,5 @@
   ],
   "feedback": "https://github.com/midnight480/handson-manual/05-Cloudflare-ZeroTrust-Client",
   "ga": "G-NGRDDBRB0P",
-  "url": "cloudflare-zerotrust-client"
+  "url": "web"
 }
