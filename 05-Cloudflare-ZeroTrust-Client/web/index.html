@@ -172,7 +172,7 @@
 <h2 is-upgraded><img style="width: 624.00px" src="img/91941def1750ddb8.png"></h2>
 <h2 is-upgraded><strong>Gateway Policyの変更</strong></h2>
 <p>Gatewayで通信を見てアクセス許可（Allow）、禁止（Block）、透過（Bypass）など設定が可能です。</p>
-<p>今回は、Zero Trustが有効な間はYahoo!JAPの通信をブロックして通常利用できないようにします。</p>
+<p>今回は、Zero Trustが有効な間は楽天市場（http://www.rakuten.co.jp/）の通信をブロックして通常利用できないようにします。</p>
 <h3 is-upgraded><strong>Gateway Policyを変更</strong></h3>
 <p class="image-container"><img style="width: 624.00px" src="img/392c23a74bee2941.png"></p>
 <p>Yahoo!JAPAN(yahoo.co.jp)をBlockします</p>
@@ -185,7 +185,7 @@
 <p>Add A Locationを押します</p>
 <p class="image-container"><img style="width: 624.00px" src="img/82802c4c1255ef4.png"></p>
 <p class="image-container"><img style="width: 624.00px" src="img/21244d7c91fab959.png"></p>
-<p>ここまで設定した後に、ブラウザでYahoo!JAPANにアクセスしようとするとブロックします。</p>
+<p>ここまで設定した後に、ブラウザで楽天市場（http://www.rakuten.co.jp/）にアクセスしようとするとブロックします。</p>
 <h2 is-upgraded><strong>利用するデバイスポリシーの設定</strong></h2>
 <p>My Team &gt; Devices と進みます</p>
 <p class="image-container"><img style="width: 624.00px" src="img/38c1f3d5ef64825e.png"></p>
@@ -225,6 +225,13 @@
 <p class="image-container"><img style="width: 167.87px" src="img/526cd369fe3d8917.png"></p>
 <p>設定 &gt; 一般 &gt; 情報 &gt; 証明書信頼設定 で Cloudflare for Teams ECC Certificate Authority を信頼</p>
 <p class="image-container"><img style="width: 169.75px" src="img/1683fce9904a1f56.png"><img style="width: 123.50px" src="img/c59665287bb2d981.png"><img style="width: 171.50px" src="img/10c00b45716b65b5.png"></p>
+<p>これで接続できるようになります。</p>
+<h2 is-upgraded><strong>実際にアクセス</strong></h2>
+<p class="image-container"><img style="width: 242.14px" src="img/191ef66f394fc5cf.png"><img style="width: 245.95px" src="img/9d74d9f477b40856.png"></p>
+<p><a href="http://www.rakuten.co.jp/" target="_blank">http://www.rakuten.co.jp/</a> へアクセス</p>
+<p class="image-container"><img style="width: 223.50px" src="img/caaf56f550fc7877.png"></p>
+<aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
+</aside>
 
 
       </google-codelab-step>
@@ -255,7 +262,7 @@
 <p>Cloudflareが登録されていることが確認できます</p>
 <h2 is-upgraded><strong>実際にアクセス</strong></h2>
 <p class="image-container"><img style="width: 242.14px" src="img/191ef66f394fc5cf.png"><img style="width: 245.95px" src="img/9d74d9f477b40856.png"></p>
-<p><a href="https://www.yahoo.co.jp" target="_blank">https://www.yahoo.co.jp</a> へアクセス</p>
+<p><a href="http://www.rakuten.co.jp/" target="_blank">http://www.rakuten.co.jp/</a> へアクセス</p>
 <p class="image-container"><img style="width: 223.50px" src="img/caaf56f550fc7877.png"></p>
 <aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
 </aside>
@@ -320,13 +327,78 @@
 <p><strong> &#34;org&#34;: &#34;AS13335 Cloudflare, Inc.&#34;,</strong></p>
 <aside class="special"><p>Cloudflareになっていればルート証明書の自動配置、有効化が無事に完了しました</p>
 </aside>
+<h2 is-upgraded><strong>実際にアクセス</strong></h2>
+<p><a href="http://www.rakuten.co.jp/" target="_blank">http://www.rakuten.co.jp/</a> へアクセス</p>
+<p class="image-container"><img style="width: 223.50px" src="img/caaf56f550fc7877.png"></p>
+<aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
+</aside>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="デバイス設定（macOS）" duration="10">
         <h2 is-upgraded><strong>デバイスの用意（macOS）</strong></h2>
-<p>T.B.D</p>
+<p>以下の画面が別タブで開きます</p>
+<p><a href="https://install.appcenter.ms/orgs/cloudflare/apps/1.1.1.1-macos-1/distribution_groups/release" target="_blank">https://install.appcenter.ms/orgs/cloudflare/apps/1.1.1.1-macos-1/distribution_groups/release</a></p>
+<p class="image-container"><img style="width: 624.00px" src="img/3342b2ea7b2dcdd3.png"></p>
+<p>DOWNLOADを押します</p>
+<p class="image-container"><img style="width: 339.83px" src="img/a1e58cb7786d65ba.png"></p>
+<p>パッケージファイルからインストールを進めます。</p>
+<h3 is-upgraded><img style="width: 624.00px" src="img/b0eed27625520369.png"></h3>
+<p>インストールが完了するまで進めてください。</p>
+<h3 is-upgraded><img style="width: 307.50px" src="img/6469d8011d910e2c.png"><img style="width: 307.08px" src="img/7ffb1c0f32919bd1.png"></h3>
+<h3 is-upgraded><strong>Cloudflare WARPの設定変更</strong></h3>
+<p>メニューバーに追加されたWARPの歯車⚙マークを押して設定（Preferences）を押します。</p>
+<p class="image-container"><img style="width: 318.25px" src="img/23d96e2fcb39738f.png"></p>
+<h4 is-upgraded>チームドメインを入力</h4>
+<p>Accountタブから Login to Cloudflare Zero Trust を押します</p>
+<h3 is-upgraded><img style="width: 624.00px" src="img/989cb5a97cd4efca.png"></h3>
+<p>自身で設定したチーム名を入力します</p>
+<p class="image-container"><img style="width: 624.00px" src="img/83047c27a46400e4.png"></p>
+<h3 is-upgraded><img style="width: 241.50px" src="img/79c12d4d9c336831.png"><img style="width: 239.42px" src="img/e63ad8b7409e1b3d.png"></h3>
+<h4 is-upgraded>サインイン</h4>
+<p>今回利用するEmail Addressを入力してください</p>
+<p class="image-container"><img style="width: 452.00px" src="img/b77d3adc9db896a1.png"></p>
+<p>送られてきたメールに記載されているPINを入力します</p>
+<p class="image-container"><img style="width: 465.33px" src="img/e33fde24059ea53a.png"></p>
+<p>認証が通るとWARPを開こうとします</p>
+<p class="image-container"><img style="width: 588.00px" src="img/a10f8f4305f0b839.png"></p>
+<p>ここでWARPからZero Trustに表示が変わります</p>
+<p class="image-container"><img style="width: 332.67px" src="img/b15d4e1e73ddfedf.png"></p>
+<h3 is-upgraded><img style="width: 327.21px" src="img/af1ccf8578648efb.png"></h3>
+<h4 is-upgraded>（必要に応じて）ルート証明書のインストール</h4>
+<p>WARP（デスクトップアプリ）が自動配置する動きが標準ですが、</p>
+<p>接続をしようとしても保護されていると表示されない方は手動で配置してください。</p>
+<p><a href="https://developers.cloudflare.com/cloudflare-one/connections/connect-devices/warp/user-side-certificates/install-cloudflare-cert/#download-the-cloudflare-root-certificate" target="_blank">download the Cloudflare certificate</a> から .crt ファイル</p>
+<ol type="1" start="1">
+<li>ルート証明書をダウンロード</li>
+<li>ターミナルを開く</li>
+<li>以下のコマンドを実行<br></li>
+</ol>
+<p>sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain &lt;path-to-Cloudflare_CA.crt&gt;</p>
+<p></p>
+<ol type="1" start="4">
+<li>(任意）もし異なるキーチェーンに証明書を配置する場合は以下のコマンドを実行</li>
+</ol>
+<p>echo | sudo tee -a /etc/ssl/cert.pem &lt; Cloudflare_CA.pem</p>
+<p></p>
+<h3 is-upgraded><strong>Zero Trustの通信が有効か確認</strong></h3>
+<p>ターミナルで以下のコマンドを実行してください。</p>
+<p>curl https://ipinfo.io</p>
+<p></p>
+<p><strong> &#34;Org&#34;: が現在のプロバイダになっている状態</strong></p>
+<p>トグルスイッチをONにして接続します</p>
+<p class="image-container"><img style="width: 380.70px" src="img/feb7029c640a8c7.png"></p>
+<p>curl https://ipinfo.io</p>
+<p></p>
+<p><strong> &#34;org&#34;: &#34;AS13335 Cloudflare, Inc.&#34;,</strong></p>
+<aside class="special"><p>Cloudflareになっていればルート証明書の自動配置、有効化が無事に完了しました</p>
+</aside>
+<h2 is-upgraded><strong>実際にアクセス</strong></h2>
+<p><a href="http://www.rakuten.co.jp/" target="_blank">http://www.rakuten.co.jp/</a> へアクセス</p>
+<p class="image-container"><img style="width: 223.50px" src="img/caaf56f550fc7877.png"></p>
+<aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
+</aside>
 <h3 is-upgraded><strong>macOS・ESETの環境の方向け</strong></h3>
 <p>ESETを一時的に通信の対話モードへ切り替えて、WARPの接続を起動して通信を発生させて、追加させる対応を実施しました。</p>
 <p class="image-container"><img style="width: 624.00px" src="img/2fb49f22495edd0a.png"></p>
