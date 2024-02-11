@@ -30,7 +30,7 @@
     
       <google-codelab-step label="概要" duration="0">
         <p class="image-container"><img style="width: 624.00px" src="img/cc6035ee1b00b999.png"></p>
-<p><strong>Last Updated:</strong> 2024-01-24</p>
+<p><strong>Last Updated:</strong> 2024-02-11</p>
 <h2 is-upgraded><strong>Cloudflare Zero Trust - Client</strong></h2>
 <p>クライアントをCloudflareのネットワークまでWireGuard VPNでトンネルセッションを貼ることで、Cloudflareのネットワークを使ってインターネットに接続するサービスです。</p>
 <h2 is-upgraded><strong>対応端末</strong></h2>
@@ -45,7 +45,7 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="セットアップ" duration="3">
+      <google-codelab-step label="セットアップ" duration="5">
         <h2 is-upgraded><strong>Cloudflare アカウント</strong></h2>
 <p>Cloudflareアカウントを作成します。</p>
 <p>既にアカウントを所有している場合は本手順をスキップしてください。</p>
@@ -83,11 +83,17 @@
 <p class="image-container"><img style="width: 266.00px" src="img/25df5ec375316acb.png"></p>
 <p>チーム名は後ほどWARPクライアントからZero Trustにサインインする際に必要となります</p>
 <p>変更は後ほど記載する画面でも変更可能です</p>
+<p>チーム名は各クライアントがインターネットを経由してアクセスするURLに利用されるため、</p>
+<p>世界で一意の文字列である必要があります。</p>
+<p>例）</p>
+<p> 名前-日付 鈴木さんが2024年2月11日実施する場合 suzuki-handson20240211 など</p>
 <p class="image-container"><img style="width: 624.00px" src="img/309a10eebb4d111d.png"></p>
 <h2 is-upgraded><strong>プラン選択</strong></h2>
 <p class="image-container"><img style="width: 624.00px" src="img/38eec6f2284c2680.png"></p>
 <h2 is-upgraded><img style="width: 624.00px" src="img/3270f0a86a4f2f84.png"></h2>
 <h2 is-upgraded><img style="width: 624.00px" src="img/e2b1cd6c8e132b5f.png"></h2>
+<p>Account Type が標準（キャプチャ）でBusinessになっていますが、プルダウンメニューで</p>
+<p>Personalに変更して登録頂いても構いません。（その項目によって登録する内容は変わりません）</p>
 <h2 is-upgraded><img style="width: 624.00px" src="img/390acfe6f9a9e89f.png"></h2>
 <aside class="warning"><p><strong>Caution:</strong> もしこの画面でクレジットカードあるいはPaypalの登録は問題なく、住所等も問題なくエラーが表示された場合でも裏側ではチーム名登録処理が行われており、「Welcome to Cloudflare Access」という件名のメールが届いている可能性があります</p>
 </aside>
@@ -128,62 +134,7 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="実際のデバイス設定（iPhone）" duration="10">
-        <p>iPhoneの方とAndroidの方でそれぞれ手順が異なります。</p>
-<p>ご自身の設定に合わせて用意してください。</p>
-<h2 is-upgraded><strong>デバイスの用意（iPhone）</strong></h2>
-<h3 is-upgraded><strong>アプリのダウンロード</strong></h3>
-<p><a href="https://apps.apple.com/jp/app/1-1-1-1-faster-internet/id1423538627" target="_blank">「1.1.1.1: Faster Internet」をApp Storeで</a> </p>
-<p class="image-container"><img style="width: 252.50px" src="img/4d320dd1ae67db71.png"></p>
-<p>アプリの初回起動</p>
-<p>「同意する」「VPNプロファイルをインストール」</p>
-<p class="image-container"><img style="width: 190.47px" src="img/c48eb7f64a63e2fc.png"><img style="width: 193.06px" src="img/1f9f814fae873aa4.png"><img style="width: 184.69px" src="img/ca1190ad62d21a02.png"></p>
-<h3 is-upgraded><strong>Cloudflare Zero Trustへログイン</strong></h3>
-<p>右上のハンバーガーメニューから設定 を開き、アカウントを選択する</p>
-<p class="image-container"><img style="width: 209.68px" src="img/30b8586f21c485ff.png"><img style="width: 295.27px" src="img/50bebff7d37ef942.png"></p>
-<p>Zero Trustに画面が切り替わるものの、まだ正常に接続できない</p>
-<p class="image-container"><img style="width: 154.71px" src="img/51ad53ded8c976cb.png"><img style="width: 140.69px" src="img/55f24e6cf4f8f29f.png"><img style="width: 194.00px" src="img/c51317e6c9df241c.png"></p>
-<p><a href="https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.pem" target="_blank">Download certificate (.pem)</a> からルート証明書をダウンロード</p>
-<h3 is-upgraded><img style="width: 193.80px" src="img/ba885e4726cd8a90.jpeg"><img style="width: 194.50px" src="img/b007acfee6455bac.png"><img style="width: 181.32px" src="img/cd6566c351f25a80.png"></h3>
-<h3 is-upgraded><strong>iPhoneの設定</strong></h3>
-<p>設定 &gt; 一般 &gt; VPNとデバイス管理 でCloudflare for Teams ECC Certificate Authority をインストール</p>
-<p class="image-container"><img style="width: 164.19px" src="img/afa332e4e7491696.png"><img style="width: 134.85px" src="img/f497577259507c31.png"><img style="width: 138.52px" src="img/cfb63424fe54b333.png"><img style="width: 91.00px" src="img/d69983b248a052f3.png"></p>
-<p class="image-container"><img style="width: 167.87px" src="img/526cd369fe3d8917.png"></p>
-<p>設定 &gt; 一般 &gt; 情報 &gt; 証明書信頼設定 で Cloudflare for Teams ECC Certificate Authority を信頼</p>
-<p class="image-container"><img style="width: 169.75px" src="img/1683fce9904a1f56.png"><img style="width: 123.50px" src="img/c59665287bb2d981.png"><img style="width: 171.50px" src="img/10c00b45716b65b5.png"></p>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="実際のデバイス設定（Andoroid）" duration="10">
-        <h2 is-upgraded><strong>デバイスの用意（Andoroidの方）</strong></h2>
-<h3 is-upgraded><strong>アプリのダウンロード</strong></h3>
-<p><a href="https://play.google.com/store/apps/details?id=com.cloudflare.onedotonedotonedotone" target="_blank">1.1.1.1 + WARP: Safer Internet - Apps on Google Play</a></p>
-<p class="image-container"><img style="width: 274.00px" src="img/d8ff877aec2442e9.png"></p>
-<p>アプリの初回起動</p>
-<p>「同意する」「VPNプロファイルをインストール」</p>
-<p>通知は「Not now」</p>
-<p class="image-container"><img style="width: 167.50px" src="img/7814c63fe1a9280a.png"><img style="width: 140.15px" src="img/629cf82ce1572c92.png"><img style="width: 141.60px" src="img/cd032787881fe3bf.png"><img style="width: 141.50px" src="img/e1f23e5a148a376e.png"></p>
-<h3 is-upgraded><strong>Cloudflare Zero Trustへログイン</strong></h3>
-<p>右上のハンバーガーメニューからアカウント &gt;  Cloudflare Zero Trustにログイン</p>
-<p class="image-container"><img style="width: 194.35px" src="img/82badf55a3a88e49.png"><img style="width: 216.78px" src="img/4caa2145af135c4b.png"><img style="width: 192.70px" src="img/782815208c01fbc2.png"></p>
-<p>組織名（チーム名）を入力すると認証画面が表示されるためメールアドレスを入力</p>
-<p>送付されるPINを入力</p>
-<p class="image-container"><img style="width: 186.62px" src="img/52a13625033b1e70.png"><img style="width: 200.87px" src="img/4ea08ee55164e7e2.png"><img style="width: 202.50px" src="img/fc0d7221c400e227.png"></p>
-<p>証明書も自動配置されるのでそのまま接続可能</p>
-<p class="image-container"><img style="width: 151.50px" src="img/222eefb502fbf043.png"><img style="width: 261.69px" src="img/dbc58363ac228b3e.png"></p>
-<p>Andoroid 14.xで確認する場合、</p>
-<p>設定⚙ &gt; セキュリティとプライバシー &gt; その他のセキュリティとプライバシー &gt; 暗号化と認証情報</p>
-<ul>
-<li>信頼できる認証情報（ユーザ） ※環境によっては登録されていないかもしれません</li>
-<li>ユーザ認証情報</li>
-</ul>
-<p>Cloudflareが登録されていることが確認できます</p>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="接続の確認" duration="9">
+      <google-codelab-step label="接続前の設定" duration="15">
         <p class="image-container"><img style="width: 624.00px" src="img/394aedc592682d3f.png"></p>
 <h2 is-upgraded><strong>Custom Pagesの初期設定</strong></h2>
 <p>Settings &gt; Custom Pagesに移動してください。</p>
@@ -235,19 +186,8 @@
 <p class="image-container"><img style="width: 624.00px" src="img/82802c4c1255ef4.png"></p>
 <p class="image-container"><img style="width: 624.00px" src="img/21244d7c91fab959.png"></p>
 <p>ここまで設定した後に、システムブラウザ（iOSであればSafari、AndoroidであればChrome）iでYahoo!JAPANにアクセスしようとするとブロックします。</p>
-<h2 is-upgraded><strong>実際にアクセス</strong></h2>
-<p class="image-container"><img style="width: 242.14px" src="img/191ef66f394fc5cf.png"><img style="width: 245.95px" src="img/9d74d9f477b40856.png"></p>
-<p><a href="https://www.yahoo.co.jp" target="_blank">https://www.yahoo.co.jp</a> へアクセス</p>
-<p class="image-container"><img style="width: 223.50px" src="img/caaf56f550fc7877.png"></p>
-<aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
-</aside>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="ハンズオンで紹介した環境以外で試す方" duration="0">
-        <h2 is-upgraded><strong>利用する端末の設定（Windows Clientの方）</strong></h2>
-<p>My Team &gt; Devices を進みます</p>
+<h2 is-upgraded><strong>利用するデバイスポリシーの設定</strong></h2>
+<p>My Team &gt; Devices と進みます</p>
 <p class="image-container"><img style="width: 624.00px" src="img/38c1f3d5ef64825e.png"></p>
 <p>Connect a Device を押します</p>
 <p class="image-container"><img style="width: 624.00px" src="img/a30163911bfb0a84.png"></p>
@@ -258,7 +198,73 @@
 <p> @gmail.com , @yahoo.co.jp などです</p>
 <p>独自ドメインのメールで受信する場合はそちらを入力してください。</p>
 <p class="image-container"><img style="width: 624.00px" src="img/6f37ec9d690290e0.png"></p>
-<p>今回はWindows を選択します</p>
+<p>iPhone, Android, Windows, macOSでそれぞれ手順が異なります。</p>
+<p>ご自身の設定に合わせて用意してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="デバイス設定（iPhone）" duration="10">
+        <h2 is-upgraded><strong>デバイスの用意（iPhone）</strong></h2>
+<h3 is-upgraded><strong>アプリのダウンロード</strong></h3>
+<p><a href="https://apps.apple.com/jp/app/1-1-1-1-faster-internet/id1423538627" target="_blank">「1.1.1.1: Faster Internet」をApp Storeで</a> </p>
+<p class="image-container"><img style="width: 252.50px" src="img/4d320dd1ae67db71.png"></p>
+<p>アプリの初回起動</p>
+<p>「同意する」「VPNプロファイルをインストール」</p>
+<p class="image-container"><img style="width: 190.47px" src="img/c48eb7f64a63e2fc.png"><img style="width: 193.06px" src="img/1f9f814fae873aa4.png"><img style="width: 184.69px" src="img/ca1190ad62d21a02.png"></p>
+<h3 is-upgraded><strong>Cloudflare Zero Trustへログイン</strong></h3>
+<p>右上のハンバーガーメニューから設定 を開き、アカウントを選択する</p>
+<p class="image-container"><img style="width: 209.68px" src="img/30b8586f21c485ff.png"><img style="width: 295.27px" src="img/50bebff7d37ef942.png"></p>
+<p>Zero Trustに画面が切り替わるものの、まだ正常に接続できない</p>
+<p class="image-container"><img style="width: 154.71px" src="img/51ad53ded8c976cb.png"><img style="width: 140.69px" src="img/55f24e6cf4f8f29f.png"><img style="width: 194.00px" src="img/c51317e6c9df241c.png"></p>
+<p><a href="https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.pem" target="_blank">Download certificate (.pem)</a> からルート証明書をダウンロード</p>
+<h3 is-upgraded><img style="width: 193.80px" src="img/ba885e4726cd8a90.jpeg"><img style="width: 194.50px" src="img/b007acfee6455bac.png"><img style="width: 181.32px" src="img/cd6566c351f25a80.png"></h3>
+<h3 is-upgraded><strong>iPhoneの設定</strong></h3>
+<p>設定 &gt; 一般 &gt; VPNとデバイス管理 でCloudflare for Teams ECC Certificate Authority をインストール</p>
+<p class="image-container"><img style="width: 164.19px" src="img/afa332e4e7491696.png"><img style="width: 134.85px" src="img/f497577259507c31.png"><img style="width: 138.52px" src="img/cfb63424fe54b333.png"><img style="width: 91.00px" src="img/d69983b248a052f3.png"></p>
+<p class="image-container"><img style="width: 167.87px" src="img/526cd369fe3d8917.png"></p>
+<p>設定 &gt; 一般 &gt; 情報 &gt; 証明書信頼設定 で Cloudflare for Teams ECC Certificate Authority を信頼</p>
+<p class="image-container"><img style="width: 169.75px" src="img/1683fce9904a1f56.png"><img style="width: 123.50px" src="img/c59665287bb2d981.png"><img style="width: 171.50px" src="img/10c00b45716b65b5.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="デバイス設定（Andoroid）" duration="10">
+        <h2 is-upgraded><strong>デバイスの用意（Andoroidの方）</strong></h2>
+<h3 is-upgraded><strong>アプリのダウンロード</strong></h3>
+<p><a href="https://play.google.com/store/apps/details?id=com.cloudflare.onedotonedotonedotone" target="_blank">1.1.1.1 + WARP: Safer Internet - Apps on Google Play</a></p>
+<p class="image-container"><img style="width: 274.00px" src="img/d8ff877aec2442e9.png"></p>
+<p>アプリの初回起動</p>
+<p>「同意する」「VPNプロファイルをインストール」</p>
+<p>通知は「Not now」</p>
+<p class="image-container"><img style="width: 167.50px" src="img/7814c63fe1a9280a.png"><img style="width: 140.15px" src="img/629cf82ce1572c92.png"><img style="width: 141.60px" src="img/cd032787881fe3bf.png"><img style="width: 141.50px" src="img/e1f23e5a148a376e.png"></p>
+<h3 is-upgraded><strong>Cloudflare Zero Trustへログイン</strong></h3>
+<p>右上のハンバーガーメニューからアカウント &gt;  Cloudflare Zero Trustにログイン</p>
+<p class="image-container"><img style="width: 194.35px" src="img/82badf55a3a88e49.png"><img style="width: 216.78px" src="img/4caa2145af135c4b.png"><img style="width: 192.70px" src="img/782815208c01fbc2.png"></p>
+<p>組織名（チーム名）を入力すると認証画面が表示されるためメールアドレスを入力</p>
+<p>送付されるPINを入力</p>
+<p class="image-container"><img style="width: 186.62px" src="img/52a13625033b1e70.png"><img style="width: 200.87px" src="img/4ea08ee55164e7e2.png"><img style="width: 202.50px" src="img/fc0d7221c400e227.png"></p>
+<p>証明書も自動配置されるのでそのまま接続可能</p>
+<p class="image-container"><img style="width: 151.50px" src="img/222eefb502fbf043.png"><img style="width: 261.69px" src="img/dbc58363ac228b3e.png"></p>
+<p>Andoroid 14.xで確認する場合、</p>
+<p>設定⚙ &gt; セキュリティとプライバシー &gt; その他のセキュリティとプライバシー &gt; 暗号化と認証情報</p>
+<ul>
+<li>信頼できる認証情報（ユーザ） ※環境によっては登録されていないかもしれません</li>
+<li>ユーザ認証情報</li>
+</ul>
+<p>Cloudflareが登録されていることが確認できます</p>
+<h2 is-upgraded><strong>実際にアクセス</strong></h2>
+<p class="image-container"><img style="width: 242.14px" src="img/191ef66f394fc5cf.png"><img style="width: 245.95px" src="img/9d74d9f477b40856.png"></p>
+<p><a href="https://www.yahoo.co.jp" target="_blank">https://www.yahoo.co.jp</a> へアクセス</p>
+<p class="image-container"><img style="width: 223.50px" src="img/caaf56f550fc7877.png"></p>
+<aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="実際のデバイス設定（Windows）" duration="10">
+        <h2 is-upgraded><strong>デバイスの用意（Windows）</strong></h2>
 <p>以下の画面が別タブで開きます</p>
 <p><a href="https://install.appcenter.ms/orgs/cloudflare/apps/1.1.1.1-windows-1/distribution_groups/release" target="_blank">https://install.appcenter.ms/orgs/cloudflare/apps/1.1.1.1-windows-1/distribution_groups/release</a></p>
 <p class="image-container"><img style="width: 624.00px" src="img/b0215a8bac5aab6e.png"></p>
@@ -290,7 +296,7 @@
 <p class="image-container"><img style="width: 624.00px" src="img/da96d516f5b62a23.png"></p>
 <p>ここでWARPからZero Trustに表示が変わります</p>
 <p class="image-container"><img style="width: 341.00px" src="img/9c739b5ef06c9f7c.png"></p>
-<h4 is-upgraded>ルート証明書のインストール</h4>
+<h4 is-upgraded>（必要に応じて）ルート証明書のインストール</h4>
 <p>WARP（デスクトップアプリ）が自動配置する動きが標準ですが、</p>
 <p>手順書作成時に、ルート証明書が配置されなかったので手順を追記しています。</p>
 <p><a href="https://developers.cloudflare.com/cloudflare-one/connections/connect-devices/warp/user-side-certificates/install-cloudflare-cert/#download-the-cloudflare-root-certificate" target="_blank">Download the Cloudflare certificate</a></p>
@@ -314,7 +320,14 @@
 <p><strong> &#34;org&#34;: &#34;AS13335 Cloudflare, Inc.&#34;,</strong></p>
 <aside class="special"><p>Cloudflareになっていればルート証明書の自動配置、有効化が無事に完了しました</p>
 </aside>
-<h2 is-upgraded><strong>macOS・ESETの環境</strong></h2>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="実際のデバイス設定（macOS）" duration="10">
+        <h2 is-upgraded><strong>デバイスの用意（macOS）</strong></h2>
+<p>T.B.D</p>
+<h3 is-upgraded><strong>macOS・ESETの環境の方向け</strong></h3>
 <p>ESETを一時的に通信の対話モードへ切り替えて、WARPの接続を起動して通信を発生させて、追加させる対応を実施しました。</p>
 <p class="image-container"><img style="width: 624.00px" src="img/2fb49f22495edd0a.png"></p>
 <p class="image-container"><img style="width: 624.00px" src="img/5be88cd44dd24814.png"></p>
