@@ -352,10 +352,11 @@
 <p class="image-container"><img style="width: 318.25px" src="img/23d96e2fcb39738f.png"></p>
 <h4 is-upgraded>チームドメインを入力</h4>
 <p>Accountタブから Login to Cloudflare Zero Trust を押します</p>
-<h3 is-upgraded><img style="width: 624.00px" src="img/989cb5a97cd4efca.png"></h3>
+<h3 is-upgraded><img style="width: 558.50px" src="img/989cb5a97cd4efca.png"></h3>
 <p>自身で設定したチーム名を入力します</p>
 <p class="image-container"><img style="width: 624.00px" src="img/83047c27a46400e4.png"></p>
-<h3 is-upgraded><img style="width: 241.50px" src="img/79c12d4d9c336831.png"><img style="width: 239.42px" src="img/e63ad8b7409e1b3d.png"></h3>
+<p>以下の確認が表示されるので、 Next -&gt; Accept と進んでください。</p>
+<h3 is-upgraded><img style="width: 239.00px" src="img/79c12d4d9c336831.png"><img style="width: 239.42px" src="img/e63ad8b7409e1b3d.png"></h3>
 <h4 is-upgraded>サインイン</h4>
 <p>今回利用するEmail Addressを入力してください</p>
 <p class="image-container"><img style="width: 452.00px" src="img/b77d3adc9db896a1.png"></p>
@@ -365,7 +366,8 @@
 <p class="image-container"><img style="width: 588.00px" src="img/a10f8f4305f0b839.png"></p>
 <p>ここでWARPからZero Trustに表示が変わります</p>
 <p class="image-container"><img style="width: 332.67px" src="img/b15d4e1e73ddfedf.png"></p>
-<h3 is-upgraded><img style="width: 327.21px" src="img/af1ccf8578648efb.png"></h3>
+<p>接続ができるかトグルをOnにしてください。</p>
+<h3 is-upgraded><img style="width: 360.00px" src="img/af1ccf8578648efb.png"></h3>
 <h4 is-upgraded>（必要に応じて）ルート証明書のインストール</h4>
 <p>WARP（デスクトップアプリ）が自動配置する動きが標準ですが、</p>
 <p>接続をしようとしても保護されていると表示されない方は手動で配置してください。</p>
@@ -373,24 +375,16 @@
 <ol type="1" start="1">
 <li>ルート証明書をダウンロード</li>
 <li>ターミナルを開く</li>
-<li>以下のコマンドを実行<br></li>
+<li>以下のコマンドを実行<br>sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain &lt;path-to-Cloudflare_CA.crt&gt;</li>
+<li>(任意）もし異なるキーチェーンに証明書を配置する場合は以下のコマンドを実行<br>echo | sudo tee -a /etc/ssl/cert.pem &lt; Cloudflare_CA.pem</li>
 </ol>
-<p>sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain &lt;path-to-Cloudflare_CA.crt&gt;</p>
-<p></p>
-<ol type="1" start="4">
-<li>(任意）もし異なるキーチェーンに証明書を配置する場合は以下のコマンドを実行</li>
-</ol>
-<p>echo | sudo tee -a /etc/ssl/cert.pem &lt; Cloudflare_CA.pem</p>
-<p></p>
 <h3 is-upgraded><strong>Zero Trustの通信が有効か確認</strong></h3>
 <p>ターミナルで以下のコマンドを実行してください。</p>
-<p>curl https://ipinfo.io</p>
-<p></p>
+<p>curl https://ipinfo.io</p>
 <p><strong> &#34;Org&#34;: が現在のプロバイダになっている状態</strong></p>
 <p>トグルスイッチをONにして接続します</p>
 <p class="image-container"><img style="width: 380.70px" src="img/feb7029c640a8c7.png"></p>
-<p>curl https://ipinfo.io</p>
-<p></p>
+<p>curl https://ipinfo.io</p>
 <p><strong> &#34;org&#34;: &#34;AS13335 Cloudflare, Inc.&#34;,</strong></p>
 <aside class="special"><p>Cloudflareになっていればルート証明書の自動配置、有効化が無事に完了しました</p>
 </aside>
