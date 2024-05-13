@@ -70,7 +70,7 @@
 <h3 is-upgraded><strong>（任意）MFA設定</strong></h3>
 <p>Muilti-Factor Authenticator（MFA：多要素）認証の設定を推奨します。</p>
 <p class="image-container"><img style="width: 428.50px" src="img/3a0e382c34be7516.png"></p>
-<p class="image-container"><img style="width: 525.50px" src="img/af50c6c0bf885ac0.png"></p>
+<p class="image-container"><img style="width: 525.50px" src="img/bbfbb416a0b7259f.png"></p>
 <p class="image-container"><img style="width: 546.50px" src="img/e82799dd31611036.png"></p>
 <aside class="warning"><p><strong>Caution:</strong> MFAを設定せずにIDとPWで運用は可能ですが、セキュリティを向上させるため設定することを推奨します。乗っ取られてからでは遅いです。</p>
 </aside>
@@ -169,23 +169,23 @@
 <p>Scan on file upload ☑</p>
 <p>Scan on file download ☑</p>
 <p>Block requests for files that cannot be scanned ☑</p>
-<h2 is-upgraded><img style="width: 624.00px" src="img/91941def1750ddb8.png"></h2>
+<h2 is-upgraded><img style="width: 624.00px" src="img/9db4ec4a62218a93.png"></h2>
 <h2 is-upgraded><strong>Gateway Policyの変更</strong></h2>
 <p>Gatewayで通信を見てアクセス許可（Allow）、禁止（Block）、透過（Bypass）など設定が可能です。</p>
 <p>今回は、Zero Trustが有効な間は楽天市場（http://www.rakuten.co.jp/）の通信をブロックして通常利用できないようにします。</p>
 <h3 is-upgraded><strong>Gateway Policyを変更</strong></h3>
 <p class="image-container"><img style="width: 624.00px" src="img/392c23a74bee2941.png"></p>
-<p>Yahoo!JAPAN(yahoo.co.jp)をBlockします</p>
+<p><strong>TOTOインフォコム（https://tim.jp.toto.com/）</strong>をBlockします</p>
 <p>Display block pageを✅にします</p>
-<p class="image-container"><img style="width: 624.00px" src="img/e3c465fd90b01106.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/e3f6a7887e08c8eb.png"></p>
 <p>Save Policy を押すとDefault DNS Locationが未登録のため有効化できない警告がでるので、</p>
 <p>そのまま、Gateway/Location を押します</p>
 <p class="image-container"><img style="width: 624.00px" src="img/7591512fbc13feaf.png"></p>
 <p class="image-container"><img style="width: 624.00px" src="img/f2695599c2e7ec2f.png"></p>
 <p>Add A Locationを押します</p>
-<p class="image-container"><img style="width: 624.00px" src="img/82802c4c1255ef4.png"></p>
-<p class="image-container"><img style="width: 624.00px" src="img/21244d7c91fab959.png"></p>
-<p>ここまで設定した後に、ブラウザで楽天市場（http://www.rakuten.co.jp/）にアクセスしようとするとブロックします。</p>
+<p class="image-container"><img style="width: 624.00px" src="img/146bdc21cf1299cc.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/72d472949cdee83e.png"></p>
+<p>ここまで設定した後に、ブラウザで<strong>TOTOインフォコム（https://tim.jp.toto.com/）</strong>にアクセスしようとするとブロックします。</p>
 <h2 is-upgraded><strong>利用するデバイスポリシーの設定</strong></h2>
 <p>My Team &gt; Devices と進みます</p>
 <p class="image-container"><img style="width: 624.00px" src="img/38c1f3d5ef64825e.png"></p>
@@ -228,8 +228,8 @@
 <p>これで接続できるようになります。</p>
 <h2 is-upgraded><strong>実際にアクセス</strong></h2>
 <p class="image-container"><img style="width: 242.14px" src="img/191ef66f394fc5cf.png"><img style="width: 245.95px" src="img/9d74d9f477b40856.png"></p>
-<p><a href="http://www.rakuten.co.jp/" target="_blank">http://www.rakuten.co.jp/</a> へアクセス</p>
-<p class="image-container"><img style="width: 223.50px" src="img/caaf56f550fc7877.png"></p>
+<p>対象のサイトへアクセス</p>
+<p class="image-container"><img style="width: 612.00px" src="img/18f0af3cd7c95006.png"></p>
 <aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
 </aside>
 
@@ -244,13 +244,13 @@
 <p>アプリの初回起動</p>
 <p>「同意する」「VPNプロファイルをインストール」</p>
 <p>通知は「Not now」</p>
-<p class="image-container"><img style="width: 167.50px" src="img/7814c63fe1a9280a.png"><img style="width: 140.15px" src="img/629cf82ce1572c92.png"><img style="width: 141.60px" src="img/cd032787881fe3bf.png"><img style="width: 141.50px" src="img/e1f23e5a148a376e.png"></p>
+<p class="image-container"><img style="width: 167.50px" src="img/a0c555acc3bea6af.png"><img style="width: 140.15px" src="img/e25d7c36640013e6.png"><img style="width: 141.60px" src="img/90e9f6612ef29032.png"><img style="width: 141.50px" src="img/e1f23e5a148a376e.png"></p>
 <h3 is-upgraded><strong>Cloudflare Zero Trustへログイン</strong></h3>
 <p>右上のハンバーガーメニューからアカウント &gt;  Cloudflare Zero Trustにログイン</p>
-<p class="image-container"><img style="width: 194.35px" src="img/82badf55a3a88e49.png"><img style="width: 216.78px" src="img/4caa2145af135c4b.png"><img style="width: 192.70px" src="img/782815208c01fbc2.png"></p>
+<p class="image-container"><img style="width: 194.35px" src="img/2bd0f1de3ddf236c.png"><img style="width: 216.78px" src="img/4caa2145af135c4b.png"><img style="width: 192.70px" src="img/81ef08f7fb00d4ca.png"></p>
 <p>組織名（チーム名）を入力すると認証画面が表示されるためメールアドレスを入力</p>
 <p>送付されるPINを入力</p>
-<p class="image-container"><img style="width: 186.62px" src="img/52a13625033b1e70.png"><img style="width: 200.87px" src="img/4ea08ee55164e7e2.png"><img style="width: 202.50px" src="img/fc0d7221c400e227.png"></p>
+<p class="image-container"><img style="width: 186.62px" src="img/8c965a2b01474834.png"><img style="width: 200.87px" src="img/b5b6aeeea569235c.png"><img style="width: 202.50px" src="img/cc166cd287149a30.png"></p>
 <p>証明書も自動配置されるのでそのまま接続可能</p>
 <p class="image-container"><img style="width: 151.50px" src="img/222eefb502fbf043.png"><img style="width: 261.69px" src="img/dbc58363ac228b3e.png"></p>
 <p>Andoroid 14.xで確認する場合、</p>
@@ -262,8 +262,8 @@
 <p>Cloudflareが登録されていることが確認できます</p>
 <h2 is-upgraded><strong>実際にアクセス</strong></h2>
 <p class="image-container"><img style="width: 242.14px" src="img/191ef66f394fc5cf.png"><img style="width: 245.95px" src="img/9d74d9f477b40856.png"></p>
-<p><a href="http://www.rakuten.co.jp/" target="_blank">http://www.rakuten.co.jp/</a> へアクセス</p>
-<p class="image-container"><img style="width: 223.50px" src="img/caaf56f550fc7877.png"></p>
+<p>対象のサイト へアクセス</p>
+<p class="image-container"><img style="width: 612.00px" src="img/18f0af3cd7c95006.png"></p>
 <aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
 </aside>
 
@@ -328,8 +328,8 @@
 <aside class="special"><p>Cloudflareになっていればルート証明書の自動配置、有効化が無事に完了しました</p>
 </aside>
 <h2 is-upgraded><strong>実際にアクセス</strong></h2>
-<p><a href="http://www.rakuten.co.jp/" target="_blank">http://www.rakuten.co.jp/</a> へアクセス</p>
-<p class="image-container"><img style="width: 223.50px" src="img/caaf56f550fc7877.png"></p>
+<p>対象のサイト へアクセス</p>
+<p class="image-container"><img style="width: 612.00px" src="img/18f0af3cd7c95006.png"></p>
 <aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
 </aside>
 
@@ -389,8 +389,8 @@
 <aside class="special"><p>Cloudflareになっていればルート証明書の自動配置、有効化が無事に完了しました</p>
 </aside>
 <h2 is-upgraded><strong>実際にアクセス</strong></h2>
-<p><a href="http://www.rakuten.co.jp/" target="_blank">http://www.rakuten.co.jp/</a> へアクセス</p>
-<p class="image-container"><img style="width: 223.50px" src="img/caaf56f550fc7877.png"></p>
+<p>対象のサイト へアクセス</p>
+<p class="image-container"><img style="width: 612.00px" src="img/18f0af3cd7c95006.png"></p>
 <aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
 </aside>
 <h3 is-upgraded><strong>macOS・ESETの環境の方向け</strong></h3>
