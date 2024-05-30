@@ -1,0 +1,219 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Amazon CloudWatch Logs/Metrics</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid="G-NGRDDBRB0P"
+                  codelab-ga4id=""
+                  id="web"
+                  title="Amazon CloudWatch Logs/Metrics"
+                  environment="web"
+                  feedback-link="https://github.com/midnight480/handson-manual/06-CloudWatch-Logs-Metrics">
+    
+      <google-codelab-step label="概要" duration="0">
+        <p class="image-container"><img style="width: 624.00px" src="img/956ead37a2c25f9e.png"></p>
+<p><strong>Last Updated: </strong>2024-05-30</p>
+<h2 is-upgraded><strong>本資料の位置づけ</strong></h2>
+<p>以下のAWS公式で提供されているハンズオン資料があります。</p>
+<p>しかしながら、2022年に作成されたものであるため、</p>
+<p>2024年現在の画面と大きく乖離が入っていることを受けて、</p>
+<p>ベースはいただきつつも、2024年5月時点でのものに更新します。</p>
+<p>https://pages.awscloud.com/JAPAN-event-OE-Hands-on-for-Beginners-monitoring-2022-reg-event.html</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Amazon CloudWatchの概要" duration="5">
+        <p>Amazon CloudWatchとは、Amazonが提供するクラウドサービスの監視ツールです。 このツールを使えば、AWSのリソース(コンピューター、ストレージ、ネットワークなど)の状況を簡単に監視することができます。 リソースの使用状況や、エラーの発生などを確認でき、問題に早期に対処することができます。</p>
+<p class="image-container"><img style="width: 624.00px" src="img/741baaaf5d3b81b9.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ハンズオン環境を構築" duration="10">
+        <p>GUI or CUI どちらで実施しても構いません</p>
+<h2 is-upgraded>（GUI）CloudFormationを実行</h2>
+<p>次のどちらかのURLからファイルを取得する</p>
+<p><a href="https://github.com/midnight480/aws-monitoring-hands-on-1/blob/master/monitoring-1.yaml" target="_blank">https://github.com/midnight480/aws-monitoring-hands-on-1/blob/master/monitoring-1.yaml</a></p>
+<p><a href="https://raw.githubusercontent.com/midnight480/aws-monitoring-hands-on-1/master/monitoring-1.yaml" target="_blank">https://raw.githubusercontent.com/midnight480/aws-monitoring-hands-on-1/master/monitoring-1.yaml</a></p>
+<p>東京（ap-northeast-1）でCloudformationを開く</p>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudformation/home" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudformation/home</a></p>
+<p>Create stack（スタックの作製）を押す</p>
+<p class="image-container"><img style="width: 624.00px" src="img/45faaf15cc413232.png"></p>
+<p>Choose an existing template（既存のテンプレートを選択）</p>
+<p>&gt; Upload a template file（テンプレートファイルのアップロード）</p>
+<p>&gt; monitoring-1.yaml </p>
+<p class="image-container"><img style="width: 624.00px" src="img/a993c45b698a9ede.png"></p>
+<h2 is-upgraded><strong>（CUI）CloudFormationを実行</strong></h2>
+<p>CloudShellを起動する</p>
+<p>```bash</p>
+<p>git clone <a href="https://github.com/midnight480/aws-monitoring-hands-on-1.git" target="_blank">https://github.com/midnight480/aws-monitoring-hands-on-1.git</a></p>
+<p>cd aws-monitoring-hands-on-1/</p>
+<p>sh monitoring-1-create-stack.sh </p>
+<p>```</p>
+<aside class="warning"><p><strong>Caution:</strong> RDS（データベース）が、db.t3.micro（2 vCPU, 1GiB）で作成しているため、起動に若干時間が掛かります。</p>
+</aside>
+<h2 is-upgraded><strong>（任意）リソースの確認</strong></h2>
+<p>実際に起動しているリソースの確認</p>
+<h3 is-upgraded><strong>（任意）EC2を見てみる</strong></h3>
+<p>作成しているEC2の情報を見てみてください</p>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/ec2/home" target="_blank">https://ap-northeast-1.console.aws.amazon.com/ec2/home</a></p>
+<h3 is-upgraded><strong>（任意）RDSを見てみる</strong></h3>
+<p>作成しているRDSの情報を見てみてください。</p>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/rds/home" target="_blank">https://ap-northeast-1.console.aws.amazon.com/rds/home</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Amazon CloudWatchの画面" duration="3">
+        <p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home</a></p>
+<p class="image-container"><img style="width: 624.00px" src="img/dcfb09a9d086fc25.png"></p>
+<h2 is-upgraded><strong>Alarm</strong></h2>
+<p>設定したしきい値に基づいて通知をする際に利用します</p>
+<h2 is-upgraded><strong>Logs</strong></h2>
+<p>EC2やRDS、Lambdaといった各サービスから連携されるログの収集先となります</p>
+<h2 is-upgraded><strong>Metrics</strong></h2>
+<p>Logsで収集した結果を元にグラフで可視化する際に利用します</p>
+<h3 is-upgraded><strong>（任意）その他</strong></h3>
+<ul>
+<li>X-Ray traces</li>
+<li>構築したサーバレスサービス間のIOなどボトルネックを洗い出す際に利用します</li>
+<li>Events</li>
+<li>EventBridge Rulesに統合されていますが、Cron式などで所定の時間に起動させたいなどの設定する際に利用します</li>
+<li>Application Signals</li>
+<li>自前のアプリケーションを外形監視したい、結合状況を可視化したいといった際に利用します</li>
+<li>Network monitoring</li>
+<li>世界のインターネットで発生している障害状況を確認する際に利用しま</li>
+<li>Insights</li>
+<li>LambdaやEC2などより詳細に調査する際に利用します</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="初期設定の設定" duration="15">
+        <h2 is-upgraded><strong>Cloudformationで作成されたリソースの確認</strong></h2>
+<p>Outputs（出力）タブ</p>
+<p class="image-container"><img style="width: 624.00px" src="img/240c4d85c25d82ac.png"></p>
+<p>以下の4つの情報をご自身のメモアプリなどに転記してください</p>
+<ul>
+<li>EC2WebServer01</li>
+<li>CloudWatchでLogを確認する際に識別するインスタンスIDとなります</li>
+<li>EC2WebServer01DNS</li>
+<li>WordPressの初期設定を行うURLとなります</li>
+<li>EC2WebServer02</li>
+<li>CloudWatchでLogを確認する際に識別するインスタンスIDとなります</li>
+<li>EC2WebServer02DNS</li>
+<li>WordPressで初期設定後にアクセスするURLとなります</li>
+<li>RDSEndpointAddress</li>
+<li>WordPressのデータベースに設定するURLとなります</li>
+</ul>
+<h2 is-upgraded><strong>WordPressの初期設定</strong></h2>
+<p>EC2WebServer01DNS のURLにアクセスしてください</p>
+<p class="image-container"><img style="width: 624.00px" src="img/b3fd9099732d83ed.png"></p>
+<h3 is-upgraded><strong>設定値</strong></h3>
+<ul>
+<li>データベース名</li>
+<li>Wordpress（初期値）</li>
+<li>ユーザー名</li>
+<li>dbmaster</li>
+<li>パスワード</li>
+<li>H&amp;ppyHands0n</li>
+<li>データベースのホスト名</li>
+<li>RDSEndpointAddress のURL</li>
+<li>テーブル接頭辞</li>
+<li>wp_（初期値）</li>
+</ul>
+<h3 is-upgraded><img style="width: 624.00px" src="img/89dd684a01271181.png"></h3>
+<p class="image-container"><img style="width: 624.00px" src="img/54fc6aef50a0dc.png"></p>
+<h3 is-upgraded>設定値</h3>
+<ul>
+<li>サイトのタイトル</li>
+<li>Monitoring #1</li>
+<li>ユーザ名</li>
+<li>Admin</li>
+<li>パスワード</li>
+<li>各人の表示されている文字列をコピーする</li>
+<li>メールアドレス</li>
+<li><a href="mailto:username@example.com" target="_blank">username@example.com</a></li>
+<li>検索エンジンがサイトをインデックスしないようにする</li>
+<li>☑</li>
+</ul>
+<p class="image-container"><img style="width: 624.00px" src="img/1c4ef8f130ea797f.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/b615c8efbf0589c2.png"></p>
+<aside class="special"><p><strong>Note:</strong>  WordPressの初期設定は完了しました</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Amazon CloudWatchと戯れる" duration="45">
+        <h2 is-upgraded>EC2のディスク使用率が90%以上のときにアラートを発報する</h2>
+<h3 is-upgraded><strong>Alarmにアクセス </strong></h3>
+<h4 is-upgraded>グラフの見方</h4>
+<aside class="warning"><p><strong>Tips: </strong></p>
+</aside>
+<aside class="special"><p><strong>Note: </strong></p>
+</aside>
+<aside class="warning"><p><strong>Note: </strong></p>
+</aside>
+<h2 is-upgraded><strong>EC2のaccess_log, error_logを確認する</strong></h2>
+<h3 is-upgraded><strong>Logsにアクセス </strong></h3>
+<h4 is-upgraded>グラフの見方</h4>
+<aside class="warning"><p><strong>Tips: </strong></p>
+</aside>
+<aside class="special"><p><strong>Note: </strong></p>
+</aside>
+<aside class="warning"><p><strong>Note: </strong></p>
+</aside>
+<h2 is-upgraded><strong>EC2のaccess_logを分析する</strong></h2>
+<h3 is-upgraded><strong>Logsにアクセス </strong></h3>
+<h4 is-upgraded>グラフの見方</h4>
+<h2 is-upgraded><strong>WordPressのダッシュボードを作成する</strong></h2>
+<h3 is-upgraded><strong>Logsにアクセス </strong></h3>
+<h4 is-upgraded>グラフの見方</h4>
+<h2 is-upgraded><strong>EC2を停止したときの通知を作成する</strong></h2>
+<h3 is-upgraded><strong>Alarmにアクセス </strong></h3>
+<h4 is-upgraded>グラフの見方</h4>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="さいごに" duration="5">
+        <h2 is-upgraded><strong>リソースを削除する</strong></h2>
+<h3 is-upgraded><strong>CloudFormationにアクセス </strong></h3>
+<h4 is-upgraded>グラフの見方</h4>
+<h3 is-upgraded><strong>Logsにアクセス </strong></h3>
+<h4 is-upgraded>グラフの見方</h4>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
