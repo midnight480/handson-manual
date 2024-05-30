@@ -93,18 +93,13 @@
 <h2 is-upgraded><strong>Metrics</strong></h2>
 <p>Logsで収集した結果を元にグラフで可視化する際に利用します</p>
 <h3 is-upgraded><strong>（任意）その他</strong></h3>
-<ul>
-<li>X-Ray traces</li>
-<li>構築したサーバレスサービス間のIOなどボトルネックを洗い出す際に利用します</li>
-<li>Events</li>
-<li>EventBridge Rulesに統合されていますが、Cron式などで所定の時間に起動させたいなどの設定する際に利用します</li>
-<li>Application Signals</li>
-<li>自前のアプリケーションを外形監視したい、結合状況を可視化したいといった際に利用します</li>
-<li>Network monitoring</li>
-<li>世界のインターネットで発生している障害状況を確認する際に利用しま</li>
-<li>Insights</li>
-<li>LambdaやEC2などより詳細に調査する際に利用します</li>
-</ul>
+<ol type="1" start="1">
+<li>X-Ray traces：構築したサーバレスサービス間のIOなどボトルネックを洗い出す際に利用します</li>
+<li>EventsEventBridge Rulesに統合されていますが、Cron式などで所定の時間に起動させたいなどの設定する際に利用します</li>
+<li>Application Signals：自前のアプリケーションを外形監視したい、結合状況を可視化したいといった際に利用します</li>
+<li>Network monitoring：世界のインターネットで発生している障害状況を確認する際に利用しま</li>
+<li>Insights：LambdaやEC2などより詳細に調査する際に利用します</li>
+</ol>
 
 
       </google-codelab-step>
@@ -114,48 +109,33 @@
 <p>Outputs（出力）タブ</p>
 <p class="image-container"><img style="width: 624.00px" src="img/240c4d85c25d82ac.png"></p>
 <p>以下の4つの情報をご自身のメモアプリなどに転記してください</p>
-<ul>
-<li>EC2WebServer01</li>
-<li>CloudWatchでLogを確認する際に識別するインスタンスIDとなります</li>
-<li>EC2WebServer01DNS</li>
-<li>WordPressの初期設定を行うURLとなります</li>
-<li>EC2WebServer02</li>
-<li>CloudWatchでLogを確認する際に識別するインスタンスIDとなります</li>
-<li>EC2WebServer02DNS</li>
-<li>WordPressで初期設定後にアクセスするURLとなります</li>
-<li>RDSEndpointAddress</li>
-<li>WordPressのデータベースに設定するURLとなります</li>
-</ul>
+<ol type="1" start="1">
+<li>EC2WebServer01：CloudWatchでLogを確認する際に識別するインスタンスIDとなります</li>
+<li>EC2WebServer01DNS：WordPressの初期設定を行うURLとなります</li>
+<li>EC2WebServer02：CloudWatchでLogを確認する際に識別するインスタンスIDとなります</li>
+<li>EC2WebServer02DNS：WordPressで初期設定後にアクセスするURLとなります</li>
+<li>RDSEndpointAddress：WordPressのデータベースに設定するURLとなります</li>
+</ol>
 <h2 is-upgraded><strong>WordPressの初期設定</strong></h2>
 <p>EC2WebServer01DNS のURLにアクセスしてください</p>
 <p class="image-container"><img style="width: 624.00px" src="img/b3fd9099732d83ed.png"></p>
 <h3 is-upgraded><strong>設定値</strong></h3>
 <ul>
-<li>データベース名</li>
-<li>Wordpress（初期値）</li>
-<li>ユーザー名</li>
-<li>dbmaster</li>
-<li>パスワード</li>
-<li>H&amp;ppyHands0n</li>
-<li>データベースのホスト名</li>
-<li>RDSEndpointAddress のURL</li>
-<li>テーブル接頭辞</li>
-<li>wp_（初期値）</li>
+<li>データベース名： wordpress</li>
+<li>ユーザー名： dbmaster</li>
+<li>パスワード： H&amp;ppyHands0n</li>
+<li>データベースのホスト名： RDSEndpointAddress のURL</li>
+<li>テーブル接頭辞： wp_（初期値）</li>
 </ul>
 <h3 is-upgraded><img style="width: 624.00px" src="img/89dd684a01271181.png"></h3>
 <p class="image-container"><img style="width: 624.00px" src="img/54fc6aef50a0dc.png"></p>
 <h3 is-upgraded>設定値</h3>
 <ul>
-<li>サイトのタイトル</li>
-<li>Monitoring #1</li>
-<li>ユーザ名</li>
-<li>Admin</li>
-<li>パスワード</li>
-<li>各人の表示されている文字列をコピーする</li>
-<li>メールアドレス</li>
-<li><a href="mailto:username@example.com" target="_blank">username@example.com</a></li>
-<li>検索エンジンがサイトをインデックスしないようにする</li>
-<li>☑</li>
+<li>サイトのタイトル： Monitoring #1</li>
+<li>ユーザ名： Admin</li>
+<li>パスワード： 各人の表示されている文字列をコピーする</li>
+<li>メールアドレス： <a href="mailto:username@example.com" target="_blank">username@example.com</a> （実際にメールは送付されません）</li>
+<li>検索エンジンがサイトをインデックスしないようにする： ☑</li>
 </ul>
 <p class="image-container"><img style="width: 624.00px" src="img/1c4ef8f130ea797f.png"></p>
 <p class="image-container"><img style="width: 624.00px" src="img/b615c8efbf0589c2.png"></p>
