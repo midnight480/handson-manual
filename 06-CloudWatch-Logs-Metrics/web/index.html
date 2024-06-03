@@ -107,6 +107,8 @@
       <google-codelab-step label="初期設定の設定" duration="15">
         <h2 is-upgraded><strong>Cloudformationで作成されたリソースの確認</strong></h2>
 <p>Outputs（出力）タブ</p>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/getting-started" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/getting-started</a></p>
+<p>Stacks &gt; monitoring-1</p>
 <p class="image-container"><img style="width: 624.00px" src="img/240c4d85c25d82ac.png"></p>
 <p>以下の4つの情報をご自身のメモアプリなどに転記してください</p>
 <ol type="1" start="1">
@@ -148,12 +150,56 @@
       <google-codelab-step label="Amazon CloudWatch Alarms" duration="5">
         <h2 is-upgraded>EC2のディスク使用率が90%以上のときにアラートを発報する</h2>
 <h3 is-upgraded><strong>Alarmにアクセス </strong></h3>
-<h4 is-upgraded>グラフの見方</h4>
-<aside class="warning"><p><strong>Tips: </strong></p>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#alarmsV2" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#alarmsV2</a>:</p>
+<p class="image-container"><img style="width: 624.00px" src="img/5a0462956cb1ebb3.png"></p>
+<p>Create alarm &gt; Select metric に進みます</p>
+<p class="image-container"><img style="width: 624.00px" src="img/26181c8c05a3ca52.png"></p>
+<p>Metrics &gt; CWAgent に進みます</p>
+<p class="image-container"><img style="width: 624.00px" src="img/417848459f928cd0.png"></p>
+<p>CWAgent &gt; ImageId, InstanceId, InstanceType, device, fstype, path に進みます</p>
+<p class="image-container"><img style="width: 624.00px" src="img/16afdbf79bd5afa.png"></p>
+<h4 is-upgraded>設定値</h4>
+<ul>
+<li>Instance Name： monitoring-1-WebServer01</li>
+<li>Path： /</li>
+<li>Metric Name：  disk_used_percent</li>
+</ul>
+<p class="image-container"><img style="width: 624.00px" src="img/17bfc20effe38049.png"></p>
+<aside class="warning"><p><strong>Note:</strong> ブラウザの拡大表示によってはMetric列が見えないことがあります</p>
 </aside>
-<aside class="special"><p><strong>Note: </strong></p>
+<p>左端のチェックボックスに☑を入れて、Select metricに進みます</p>
+<p class="image-container"><img style="width: 624.00px" src="img/b2901b9c9c31795b.png"></p>
+<h4 is-upgraded>設定値</h4>
+<ul>
+<li>Period： 15 minitues</li>
+<li>Whenever disk_used_percent is...： Greater/Equal</li>
+<li>than...：  90</li>
+</ul>
+<h4 is-upgraded><img style="width: 624.00px" src="img/dce3dbd0fa5262b3.png"></h4>
+<p>Next </p>
+<h4 is-upgraded>設定値</h4>
+<ul>
+<li>Send a notification to the following SNS topic： Create new topic</li>
+<li>Create a new topic...：  monitoring-1-topic</li>
+<li>Email endpoints that will receive the notification... ： ${有効なメールアドレス}</li>
+</ul>
+<h4 is-upgraded><img style="width: 624.00px" src="img/53afac9631f104de.png"></h4>
+<p>Next </p>
+<h4 is-upgraded>設定値</h4>
+<ul>
+<li>Alarm name： monitoring-1-alarm</li>
+</ul>
+<p class="image-container"><img style="width: 624.00px" src="img/7918be6ad2d7903b.png"></p>
+<p>Next に進みます</p>
+<p class="image-container"><img style="width: 624.00px" src="img/77997826f8d8c399.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/a7da308976957e8f.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/7d6f3e86de5b9e0f.png"></p>
+<aside class="special"><p><strong>Note:</strong>  上記の画面が表示されればAlarmの設定は完了しました</p>
 </aside>
-<aside class="warning"><p><strong>Note: </strong></p>
+<p>入力したメールアドレスに、SNSから確認メールが届いているので Confirm subscriptionしてください</p>
+<p class="image-container"><img style="width: 624.00px" src="img/d0ee72bfa640988b.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/faefc01464a51e3.png"></p>
+<aside class="warning"><p><strong>Note:</strong>  上記まで設定すると実際にメールによる通知設定が完了となります</p>
 </aside>
 
 
