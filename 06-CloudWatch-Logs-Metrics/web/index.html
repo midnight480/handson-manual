@@ -64,11 +64,10 @@
 <p class="image-container"><img style="width: 624.00px" src="img/a993c45b698a9ede.png"></p>
 <h2 is-upgraded><strong>（CUI）CloudFormationを実行</strong></h2>
 <p>CloudShellを起動する</p>
-<p>```bash</p>
-<p>git clone <a href="https://github.com/midnight480/aws-monitoring-hands-on-1.git" target="_blank">https://github.com/midnight480/aws-monitoring-hands-on-1.git</a></p>
-<p>cd aws-monitoring-hands-on-1/</p>
-<p>sh monitoring-1-create-stack.sh </p>
-<p>```</p>
+<p><code>command</code></p>
+<pre><code>git clone https://github.com/midnight480/aws-monitoring-hands-on-1.git
+cd aws-monitoring-hands-on-1/
+sh monitoring-1-create-stack.sh </code></pre>
 <aside class="warning"><p><strong>Caution:</strong> RDS（データベース）が、db.t3.micro（2 vCPU, 1GiB）で作成しているため、起動に若干時間が掛かります。</p>
 </aside>
 <h2 is-upgraded><strong>（任意）リソースの確認</strong></h2>
@@ -109,7 +108,7 @@
 <p>Outputs（出力）タブ</p>
 <p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/getting-started" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/getting-started</a></p>
 <p>Stacks &gt; monitoring-1</p>
-<p class="image-container"><img style="width: 624.00px" src="img/240c4d85c25d82ac.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/3f6b3fda68e82bd4.png"></p>
 <p>以下の4つの情報をご自身のメモアプリなどに転記してください</p>
 <ol type="1" start="1">
 <li>EC2WebServer01：CloudWatchでLogを確認する際に識別するインスタンスIDとなります</li>
@@ -151,48 +150,47 @@
         <h2 is-upgraded>EC2のディスク使用率が90%以上のときにアラートを発報する</h2>
 <h3 is-upgraded><strong>Alarmにアクセス </strong></h3>
 <p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#alarmsV2" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#alarmsV2</a>:</p>
-<p class="image-container"><img style="width: 624.00px" src="img/5a0462956cb1ebb3.png"></p>
-<p>Create alarm &gt; Select metric に進みます</p>
-<p class="image-container"><img style="width: 624.00px" src="img/26181c8c05a3ca52.png"></p>
+<p>アラームの作成 &gt; メトリクスの選択 に進みます</p>
+<p class="image-container"><img style="width: 624.00px" src="img/5174a8ce9b1fcbab.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/aabc452c99031a24.png"></p>
 <p>Metrics &gt; CWAgent に進みます</p>
-<p class="image-container"><img style="width: 624.00px" src="img/417848459f928cd0.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/84afd8f23188d21c.png"></p>
 <p>CWAgent &gt; ImageId, InstanceId, InstanceType, device, fstype, path に進みます</p>
-<p class="image-container"><img style="width: 624.00px" src="img/16afdbf79bd5afa.png"></p>
 <h4 is-upgraded>設定値</h4>
 <ul>
 <li>Instance Name： monitoring-1-WebServer01</li>
 <li>Path： /</li>
 <li>Metric Name：  disk_used_percent</li>
 </ul>
-<p class="image-container"><img style="width: 624.00px" src="img/17bfc20effe38049.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/52de98ca2ee87bbd.png"></p>
 <aside class="warning"><p><strong>Note:</strong> ブラウザの拡大表示によってはMetric列が見えないことがあります</p>
 </aside>
 <p>左端のチェックボックスに☑を入れて、Select metricに進みます</p>
-<p class="image-container"><img style="width: 624.00px" src="img/b2901b9c9c31795b.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/7a5ac09fdffbae7d.png"></p>
 <h4 is-upgraded>設定値</h4>
 <ul>
-<li>Period： 15 minitues</li>
-<li>Whenever disk_used_percent is...： Greater/Equal</li>
-<li>than...：  90</li>
+<li>期間： 15 minitues</li>
+<li>disk_used_percent が次の時...： Greater/Equal</li>
+<li>... よりも：  90</li>
 </ul>
-<h4 is-upgraded><img style="width: 624.00px" src="img/dce3dbd0fa5262b3.png"></h4>
-<p>Next </p>
+<h4 is-upgraded><img style="width: 624.00px" src="img/3b32adbe63270fb5.png"></h4>
+<p>次へ に進みます </p>
 <h4 is-upgraded>設定値</h4>
 <ul>
-<li>Send a notification to the following SNS topic： Create new topic</li>
-<li>Create a new topic...：  monitoring-1-topic</li>
-<li>Email endpoints that will receive the notification... ： ${有効なメールアドレス}</li>
+<li>次の SNS トピックに通知を送信： 新しいトピックの作成</li>
+<li>新規トピックの作成中...：  monitoring-1-topic</li>
+<li>通知を受け取る E メールエンドポイント ... ： ${有効なメールアドレス}</li>
 </ul>
-<h4 is-upgraded><img style="width: 624.00px" src="img/53afac9631f104de.png"></h4>
-<p>Next </p>
+<h4 is-upgraded><img style="width: 624.00px" src="img/cc66a12a052da93b.png"></h4>
+<p>次へ に進みます </p>
 <h4 is-upgraded>設定値</h4>
 <ul>
 <li>Alarm name： monitoring-1-alarm</li>
 </ul>
-<p class="image-container"><img style="width: 624.00px" src="img/7918be6ad2d7903b.png"></p>
-<p>Next に進みます</p>
-<p class="image-container"><img style="width: 624.00px" src="img/77997826f8d8c399.png"></p>
-<p class="image-container"><img style="width: 624.00px" src="img/a7da308976957e8f.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/3d5722b858e8091d.png"></p>
+<p>次へ に進みます</p>
+<p class="image-container"><img style="width: 624.00px" src="img/28d0cfa33b9636d7.png"></p>
+<p>アラームの作成 に進みます</p>
 <p class="image-container"><img style="width: 624.00px" src="img/7d6f3e86de5b9e0f.png"></p>
 <aside class="special"><p><strong>Note:</strong>  上記の画面が表示されればAlarmの設定は完了しました</p>
 </aside>
@@ -208,13 +206,78 @@
       <google-codelab-step label="Amazon CloudWatch Logs" duration="5">
         <h2 is-upgraded><strong>EC2のaccess_log, error_logを確認する</strong></h2>
 <h3 is-upgraded><strong>Logsにアクセス </strong></h3>
-<h4 is-upgraded>グラフの見方</h4>
+<p class="image-container"><img style="width: 624.00px" src="img/8412d9c721a304a4.png"></p>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#logsV2:log-groups" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#logsV2:log-groups</a></p>
+<p>Wordpress_access_log &gt; 保持 &gt; 執行しない を押す</p>
+<p class="image-container"><img style="width: 624.00px" src="img/e99ccfb1cc0361c2.png"></p>
 <aside class="warning"><p><strong>Tips: </strong></p>
+<p>ログの保存期間は設計用途によって異なるので、必要に応じて設定する</p>
 </aside>
-<aside class="special"><p><strong>Note: </strong></p>
-</aside>
-<aside class="warning"><p><strong>Note: </strong></p>
-</aside>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>保存期間</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>法令、</strong><a href="https://d.hatena.ne.jp/keyword/%A5%AC%A5%A4%A5%C9%A5%E9%A5%A4%A5%F3" target="_blank"><strong>ガイドライン</strong></a><strong>など</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>1ヶ月間</p>
+</td><td colspan="1" rowspan="1"><p><a href="https://elaws.e-gov.go.jp/document?lawid=323AC0000000131" target="_blank">刑事訴訟法 - 第百九十七条の3</a></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>3ヶ月間</p>
+</td><td colspan="1" rowspan="1"><p><a href="https://www.mofa.go.jp/mofaj/gaiko/treaty/pdfs/treaty159_4a.pdf" target="_blank">サイバー犯罪に関する条約（略称：サイバー犯罪条約）（通称：ブダペスト条約）- 第十六条 ２</a></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>12ヶ月間(1年間)</p>
+</td><td colspan="1" rowspan="1"><p>・<a href="https://pcireadycloud.com/blog/2022/06/01/4143/" target="_blank">PCIDSS v4.0 - 10.5.1</a></p>
+<p>・<a href="https://www.giac.org/paper/gcia/1866/successful-siem-log-management-strategies-audit-compliance/108778" target="_blank">Successful SIEM and Log Management Strategies for Audit and Compliance - Discussion</a></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>36ヶ月間(3年間)</p>
+</td><td colspan="1" rowspan="1"><p><a href="https://d.hatena.ne.jp/keyword/%C9%D4%C0%B5%A5%A2%A5%AF%A5%BB%A5%B9%B9%D4%B0%D9%A4%CE%B6%D8%BB%DF%C5%F9%A4%CB%B4%D8%A4%B9%A4%EB%CB%A1%CE%A7" target="_blank">不正アクセス行為の禁止等に関する法律</a>の時効に合わせて</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>60ヶ月間(5年間)</p>
+</td><td colspan="1" rowspan="1"><p>・<a href="https://elaws.e-gov.go.jp/document?lawid=323AC0000000025_20221101_502AC0000000033" target="_blank">金融商品取引法 - 25条</a>の期間に合わせて</p>
+<p>・電子計算機損壊等<a href="https://d.hatena.ne.jp/keyword/%B6%C8%CC%B3%CB%B8%B3%B2" target="_blank">業務妨害</a>罪の時効に合わせて</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>84ヶ月(7年間)</p>
+</td><td colspan="1" rowspan="1"><p>下記3つの時効に合わせて</p>
+<p>・電子計算機使用詐欺罪</p>
+<p>・詐欺罪</p>
+<p>・窃盗罪</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>120ヶ月(10年間)</p>
+</td><td colspan="1" rowspan="1"><p>・『不当利得返還請求』等、2020年改正前<a href="https://d.hatena.ne.jp/keyword/%CC%B1%CB%A1" target="_blank">民法</a>上の請求権期限</p>
+<p>・<a href="https://elaws.e-gov.go.jp/document?lawid=132AC0000000048" target="_blank">商法19条</a>（旧商法36条）</p>
+</td></tr>
+</table>
+<p>引用：<a href="https://shinkufencer.hateblo.jp/entry/2023/02/11/000349" target="_blank">ログの保持期間の目安についてまとめられている資料があるので2023年2月時点で照らし合わせる</a></p>
+<p>アクセスログを表示</p>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#logsV2:log-groups/log-group/wordpress_access_log" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#logsV2:log-groups/log-group/wordpress_access_log</a></p>
+<p class="image-container"><img style="width: 624.00px" src="img/8703e6361e8e85f3.png"></p>
+<p>ログストリームがEC2のインスタンスごとに設定されている（今回のハンズオンにおいて）</p>
+<p class="image-container"><img style="width: 624.00px" src="img/943304f3f7de8cb9.png"></p>
+<p>参考：</p>
+<p><a href="https://docs.aws.amazon.com/ja_jp/AmazonCloudWatch/latest/monitoring/create-cloudwatch-agent-configuration-file-wizard.html" target="_blank">ウィザードを使用して CloudWatch エージェント設定ファイルを作成する</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Amazon CloudWatch Logs Insight" duration="5">
+        <h2 is-upgraded><strong>EC2のaccess_logを分析する</strong></h2>
+<h3 is-upgraded><strong>Logs Insightにアクセス </strong></h3>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#logsV2:logs-insights" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#logsV2:logs-insights</a></p>
+<p class="image-container"><img style="width: 624.00px" src="img/366be49862e02540.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/33bb70a9ee5d1be7.png"></p>
+<p>特に変更せずに クエリの実行 を押す</p>
+<p class="image-container"><img style="width: 624.00px" src="img/741119df0fa26273.png"></p>
+<p><code>Query Sample</code></p>
+<pre><code>parse &#39;* - * [*] &#34;* * *&#34; * * * *&#39; as host, identity, dateTimeString, httpVerb, url, protocol, statusCode, bytes, referrer, userAgent
+| filter statusCode like /(4\d\d)/ </code></pre>
+<p class="image-container"><img style="width: 624.00px" src="img/e45ea16b5464ab25.png"></p>
+<p><a href="https://aws.amazon.com/jp/q/" target="_blank">Amazon Q - 生成 AI 搭載アシスタント</a> の登場により、</p>
+<p>Query Generator を押して、 プロンプトを <strong>英語 </strong>で入力してください</p>
+<p>新しいクエリを生成 を押すと、クエリが置き換わります</p>
+<p>英語が苦手な方は <a href="https://www.deepl.com/translator" target="_blank">DeepL Translate</a> を使ってみてください</p>
+<p>例）</p>
+<p>Give me searching for HTTP status code 200.</p>
+<p>（HTTPのステータスコードが200のものを検索してください。）</p>
+<p class="image-container"><img style="width: 624.00px" src="img/4e32c65af17c4e16.png"></p>
+<p>参考：<a href="https://docs.aws.amazon.com/ja_jp/AmazonCloudWatch/latest/logs/CWL_AnalyzeLogData-discoverable-fields.html" target="_blank">サポートされるログと検出されるフィールド - Amazon CloudWatch Logs</a></p>
 
 
       </google-codelab-step>
