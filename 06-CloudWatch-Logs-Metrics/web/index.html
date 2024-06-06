@@ -310,8 +310,76 @@ sh monitoring-1-create-stack.sh </code></pre>
 <p class="image-container"><img style="width: 624.00px" src="img/f3b366fc396abec5.png"></p>
 <p>ウィジェットの作成 を押す</p>
 <p class="image-container"><img style="width: 624.00px" src="img/c91f18d846f91055.png"></p>
-<h3 is-upgraded><strong>Logsにアクセス </strong></h3>
-<h4 is-upgraded>グラフの見方</h4>
+<p>🖊 アイコンを押すと名前が変更できる（今回は変更しません）</p>
+<p class="image-container"><img style="width: 624.00px" src="img/c7173c7925028ea5.png"></p>
+<h2 is-upgraded><strong>テキストウィジェットを追加する</strong></h2>
+<p class="image-container"><img style="width: 624.00px" src="img/f4864b91a75e425c.png"></p>
+<p>右端にある ➕ を押す</p>
+<p class="image-container"><img style="width: 624.00px" src="img/b6e840b54a2a62b7.png"></p>
+<p>その他のコンテンツタイプ を選択する</p>
+<p class="image-container"><img style="width: 624.00px" src="img/475c3bea9a128328.png"></p>
+<p>テキスト/画像... がデフォルトで選択されているので 次へ を押す</p>
+<p class="image-container"><img style="width: 624.00px" src="img/5f979a27f0b251a2.png"></p>
+<p>マークダウンの枠に以下の文字列をコピー・アンド・ペーストする</p>
+<p><code>Markdown Sample</code></p>
+<pre><code># WordPress 運用者向け資料
+
+## 公式ドキュメント
+
+*  [CloudWatch Logs - ウィザードを使用して CloudWatch エージェント設定ファイルを作成する](https://docs.aws.amazon.com/ja_jp/AmazonCloudWatch/latest/monitoring/create-cloudwatch-agent-configuration-file-wizard.html).
+
+[button:Emergency](https://jaws-ug.jp/) </code></pre>
+<p>ウィジェットの追加 を押す</p>
+<p class="image-container"><img style="width: 624.00px" src="img/b649693d0c33bfb6.png"></p>
+<p>横幅を調整する</p>
+<p class="image-container"><img style="width: 624.00px" src="img/7007097d828ab1f8.png"></p>
+<p>右上の 自動保存：オフ が標準になっているのでオンにする</p>
+<p class="image-container"><img style="width: 624.00px" src="img/322f629f0af3fdfc.png"></p>
+<p>再度EC2のCPU使用率を可視化するウィジェットを追加する</p>
+<p class="image-container"><img style="width: 624.00px" src="img/61e30045fe3a923f.png"></p>
+<p>ウィジェットの位置を調整する</p>
+<p class="image-container"><img style="width: 624.00px" src="img/b5481ce9cb67381d.png"></p>
+<h2 is-upgraded><strong>クエリの結果を可視化する</strong></h2>
+<p class="image-container"><img style="width: 624.00px" src="img/79215648009773d4.png"></p>
+<p>ウィジェットの追加で ログ &gt; ログテーブル を選択して 次へ </p>
+<p class="image-container"><img style="width: 624.00px" src="img/250544cb94fd4c7.png"></p>
+<p>クエリを特に修正することなく実行して、ウィジェットの作成 を押す</p>
+<h3 is-upgraded><strong>設定値</strong></h3>
+<ul>
+<li>ロググループ： wordpress_access_log</li>
+</ul>
+<p class="image-container"><img style="width: 624.00px" src="img/f1caf21f13c96cda.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/1bf946796da21336.png"></p>
+<aside class="warning"><p><strong>Tips: </strong></p>
+<p>このハンズオンではクエリをカスタマイズはしませんでしたが、ログの中に errorの文字を含むものやHTTP ステータスコードが 40x や 50x といった特定のケースにおけるクエリに置き換えるとよいでしょう</p>
+</aside>
+<p>ダッシュボードを保存 を押す</p>
+<p class="image-container"><img style="width: 624.00px" src="img/8fa7b030f5dd9f7c.png"></p>
+<p>各サービスには標準のダッシュボードが用意されている</p>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#dashboards?listOptions=~(tab~'service)" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#dashboards?listOptions=~(tab~&#39;service)</a></p>
+<p>EC2を選択する</p>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#home:dashboards/EC2" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#home:dashboards/EC2</a></p>
+<p class="image-container"><img style="width: 624.00px" src="img/78095265c0598ad5.png"></p>
+<h2 is-upgraded><strong>リソースグループを作成する</strong></h2>
+<p class="image-container"><img style="width: 624.00px" src="img/8fb3f087780642fc.png"></p>
+<p>リソースグループに移動する</p>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/resource-groups/home?region=ap-northeast-1#" target="_blank">https://ap-northeast-1.console.aws.amazon.com/resource-groups/home?region=ap-northeast-1#</a></p>
+<p class="image-container"><img style="width: 624.00px" src="img/5fde65c2d9d4d63b.png"></p>
+<p>リソースグループの作成 を押す</p>
+<p class="image-container"><img style="width: 624.00px" src="img/a32e8601a41e9e44.png"></p>
+<h3 is-upgraded><strong>設定値</strong></h3>
+<ul>
+<li>グループタイプ： CloudFormationスタックベース</li>
+<li>リソースタイプ： monitoring-1</li>
+<li>サポートされるすべてのリソースタイプ</li>
+<li>グループリソースをプレビュー</li>
+<li>グループ名： monitoring-1</li>
+</ul>
+<p class="image-container"><img style="width: 624.00px" src="img/a37c4e9843a71f5e.png"></p>
+<p>グループを作成 を押す</p>
+<p class="image-container"><img style="width: 624.00px" src="img/4487d4c22eea2c41.png"></p>
+<p>CloudWatchの画面に戻りリロード（F5）するとリソースグループが表示される</p>
+<p class="image-container"><img style="width: 624.00px" src="img/636ff370dd235180.png"></p>
 
 
       </google-codelab-step>
