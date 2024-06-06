@@ -175,8 +175,7 @@ sh monitoring-1-create-stack.sh </code></pre>
 <li>disk_used_percent が次の時...： Greater/Equal</li>
 <li>... よりも：  90</li>
 </ul>
-<p>以下のように設定します</p>
-<h4 is-upgraded><img style="width: 624.00px" src="img/3b32adbe63270fb5.png"></h4>
+<h4 is-upgraded><img style="width: 610.49px" src="img/3b32adbe63270fb5.png"></h4>
 <p>次へ に進みます </p>
 <h4 is-upgraded>設定値</h4>
 <ul>
@@ -185,14 +184,13 @@ sh monitoring-1-create-stack.sh </code></pre>
 <li>通知を受け取る E メールエンドポイント ... ： ${有効なメールアドレス}</li>
 </ul>
 <p>以下のように設定します</p>
-<h4 is-upgraded><img style="width: 624.00px" src="img/cc66a12a052da93b.png"></h4>
+<h4 is-upgraded><img style="width: 598.81px" src="img/cc66a12a052da93b.png"></h4>
 <p>次へ に進みます </p>
 <h4 is-upgraded>設定値</h4>
 <ul>
 <li>Alarm name： monitoring-1-alarm</li>
 </ul>
-<p>以下のように設定します</p>
-<p class="image-container"><img style="width: 624.00px" src="img/3d5722b858e8091d.png"></p>
+<p class="image-container"><img style="width: 603.02px" src="img/3d5722b858e8091d.png"></p>
 <p>次へ に進みます</p>
 <p class="image-container"><img style="width: 624.00px" src="img/28d0cfa33b9636d7.png"></p>
 <p>アラームの作成 に進みます</p>
@@ -388,18 +386,52 @@ sh monitoring-1-create-stack.sh </code></pre>
 
       </google-codelab-step>
     
-      <google-codelab-step label="Amazon CloudWatch （Example）" duration="5">
+      <google-codelab-step label="Amazon CloudWatch Events（=&gt;Amazon EventBridge Rules）" duration="5">
         <h2 is-upgraded><strong>EC2を停止したときの通知を作成する</strong></h2>
-<h3 is-upgraded><strong>Alarmにアクセス </strong></h3>
-<h4 is-upgraded>グラフの見方</h4>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Amazon CloudWatch Metrics" duration="5">
-        <h2 is-upgraded><strong>EC2のaccess_logを分析する</strong></h2>
-<h3 is-upgraded><strong>Logsにアクセス </strong></h3>
-<h4 is-upgraded>グラフの見方</h4>
+<h3 is-upgraded><strong>CloudWatchのイベントからアクセスする</strong></h3>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#rules" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#rules</a>:</p>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/events/home?region=ap-northeast-1#/rules?redirect_from_cwe=true" target="_blank">https://ap-northeast-1.console.aws.amazon.com/events/home?region=ap-northeast-1#/rules?redirect_from_cwe=true</a></p>
+<p class="image-container"><img style="width: 624.00px" src="img/16c8c405c9aa4854.png"></p>
+<p>ルールを作成 を押す</p>
+<h3 is-upgraded><strong>設定値</strong></h3>
+<ul>
+<li>名前： Rule-1</li>
+<li>ルールタイプ： イベントパターンを持つルール</li>
+</ul>
+<p class="image-container"><img style="width: 624.00px" src="img/17cb11ec6decb0c9.png"></p>
+<h3 is-upgraded><strong>設定値</strong></h3>
+<ul>
+<li>イベントソース： AWSのサービス</li>
+<li>AWSのサービス： EC2</li>
+<li>イベントタイプ： EC2 Instance State-Change Notification</li>
+<li>イベントタイプの仕様１： stopped</li>
+<li>イベントタイプの仕様２： 任意のインスタンス</li>
+</ul>
+<p class="image-container"><img style="width: 624.00px" src="img/e6c4c77b22520a3f.png"></p>
+<h3 is-upgraded><strong>設定値</strong></h3>
+<ul>
+<li>ターゲットタイプ： AWSのサービス</li>
+<li>AWSのサービス： SNSのトピック</li>
+<li>トピック： monitoring-1-topic</li>
+</ul>
+<aside class="warning"><p><strong>Caution:</strong> 前段のAlarmを実施していると上記のSNSトピックを作成しています。</p>
+<p>未実施の場合は、新規でSNSトピックを作成してください。</p>
+</aside>
+<p class="image-container"><img style="width: 624.00px" src="img/a2038bad305b10f7.png"></p>
+<p>次へを押す</p>
+<p class="image-container"><img style="width: 624.00px" src="img/f151095d86ca667f.png"></p>
+<p>次へ を押す</p>
+<p class="image-container"><img style="width: 624.00px" src="img/3ab74d3700c0cb87.png"></p>
+<p>ルールの作成 を押す</p>
+<p class="image-container"><img style="width: 624.00px" src="img/a4dafea92cbe9de5.png"></p>
+<h2 is-upgraded><strong>EC2に移動する</strong></h2>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/ec2/home?region=ap-northeast-1#Instances:instanceState=running" target="_blank">https://ap-northeast-1.console.aws.amazon.com/ec2/home?region=ap-northeast-1#Instances:instanceState=running</a></p>
+<p>monitoring-1-WebServer01 を停止する</p>
+<p class="image-container"><img style="width: 624.00px" src="img/743dcc70cb8be219.png"></p>
+<p>インスタンスを停止 （インスタンスを終了ではない）を押す</p>
+<p class="image-container"><img style="width: 624.00px" src="img/2e13294541f65a9f.png"></p>
+<p>以下のようなメールが届いていれば設定完了している</p>
+<p class="image-container"><img style="width: 624.00px" src="img/10c508c23368a1d6.png"></p>
 
 
       </google-codelab-step>
@@ -407,9 +439,37 @@ sh monitoring-1-create-stack.sh </code></pre>
       <google-codelab-step label="さいごに" duration="5">
         <h2 is-upgraded><strong>リソースを削除する</strong></h2>
 <h3 is-upgraded><strong>CloudFormationにアクセス </strong></h3>
-<h4 is-upgraded>グラフの見方</h4>
-<h3 is-upgraded><strong>Logsにアクセス </strong></h3>
-<h4 is-upgraded>グラフの見方</h4>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks</a></p>
+<p>monitoring-1 のチェックを押し、削除を押す</p>
+<p class="image-container"><img style="width: 624.00px" src="img/20bc408587b8d294.png"></p>
+<p>削除 を押す</p>
+<p class="image-container"><img style="width: 624.00px" src="img/c302c505eb5aace9.png"></p>
+<h3 is-upgraded><strong>CloudWatchにアクセス </strong></h3>
+<h4 is-upgraded>Alarms</h4>
+<p><strong>T.B.D</strong></p>
+<h4 is-upgraded>Dashboards</h4>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#dashboards/" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#dashboards/</a></p>
+<p class="image-container"><img style="width: 624.00px" src="img/132676645e10815d.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/7b07cfb4a3b74e88.png"></p>
+<h4 is-upgraded>Logs</h4>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#logsV2:log-groups" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#logsV2:log-groups</a></p>
+<p class="image-container"><img style="width: 624.00px" src="img/9c04ff56cb4c2b1a.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/b4322a231aa2f306.png"></p>
+<h3 is-upgraded><strong>EventBridgeにアクセス </strong></h3>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/events/home?region=ap-northeast-1#/rules?redirect_from_cwe=true" target="_blank">https://ap-northeast-1.console.aws.amazon.com/events/home?region=ap-northeast-1#/rules?redirect_from_cwe=true</a></p>
+<p class="image-container"><img style="width: 624.00px" src="img/60343e96c711bcd1.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/1297b458f400ec83.png"></p>
+<h3 is-upgraded><strong>SNSにアクセス </strong></h3>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/sns/v3/home?region=ap-northeast-1#/topics" target="_blank">https://ap-northeast-1.console.aws.amazon.com/sns/v3/home?region=ap-northeast-1#/topics</a></p>
+<p class="image-container"><img style="width: 624.00px" src="img/a081a0723c83dae3.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/67531c9b5e09eb3c.png"></p>
+<h3 is-upgraded><strong>S3にアクセス </strong></h3>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/s3/home?region=ap-northeast-1#" target="_blank">https://ap-northeast-1.console.aws.amazon.com/s3/home?region=ap-northeast-1#</a></p>
+<p class="image-container"><img style="width: 624.00px" src="img/ebeaec3b3ec4a4d3.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/6d8ed19bf3e9fd94.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/b73f308eabe5cb3c.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/f6f61ab583cd7490.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/5e4100e2d81a832.png"></p>
 
 
       </google-codelab-step>
