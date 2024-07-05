@@ -418,29 +418,59 @@
       </google-codelab-step>
     
       <google-codelab-step label="デバイス設定（Linux）" duration="5">
-        <h2 is-upgraded><strong>証明書のダウンロード</strong></h2>
+        <h2 is-upgraded><strong>WARP のインストール</strong></h2>
+<p><code>Debian系統</code></p>
+<p># Add cloudflare gpg key</p>
+<p>curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg</p>
+<p># Add this repo to your apt repositories</p>
+<p>echo &#34;deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main&#34; | sudo tee /etc/apt/sources.list.d/cloudflare-client.list</p>
+<p># Install</p>
+<p>sudo apt-get update &amp;&amp; sudo apt-get install cloudflare-warp</p>
+<p><code>Red Hat系統</code></p>
+<p># Add cloudflare-warp.repo to /etc/yum.repos.d/</p>
+<p>curl -fsSl https://pkg.cloudflareclient.com/cloudflare-warp-ascii.repo | sudo tee /etc/yum.repos.d/cloudflare-warp.repo</p>
+<p># Update repo</p>
+<p>sudo yum update</p>
+<p># Install</p>
+<p>sudo yum install cloudflare-warp</p>
+<h2 is-upgraded><strong>証明書のダウンロード</strong></h2>
 <p>URL（Debian系統、Red Hat系統共通）：</p>
 <p><a href="https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.pem" target="_blank">https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.pem</a></p>
 <p>URL（Red Hat系統のみ追加で必要）：</p>
 <p><a href="https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.crt" target="_blank">https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.crt</a></p>
-<p>例</p>
-<p>wget <a href="https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.crt" target="_blank">https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.crt</a></p>
-<p>wget <a href="https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.pem" target="_blank">https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.pem</a></p>
+<p><code>ダウンロード（サンプル）</code></p>
+<p>curl -O https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.crt</p>
+<p>curl -O https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.pem</p>
 <h2 is-upgraded><strong>独自証明書のインストール</strong></h2>
-<h3 is-upgraded><strong>Debian系統</strong></h3>
+<p><code>Debian系統</code></p>
 <p>sudo apt-get install ca-certificates</p>
-<h3 is-upgraded><strong>Red Hat系統</strong></h3>
+<p><code>Red Hat系統</code></p>
 <p>sudo dnf install ca-certificates</p>
 <h2 is-upgraded><strong>証明書のコピー</strong></h2>
-<h3 is-upgraded><strong>Debian系統</strong></h3>
+<p><code>Debian系統</code></p>
 <p>sudo cp Cloudflare_CA.pem /usr/share/ca-certificates/Cloudflare_CA.crt</p>
-<h3 is-upgraded><strong>Red Hat系統</strong></h3>
+<p><code>Red Hat系統</code></p>
 <p>sudo cp Cloudflare_CA.crt Cloudflare_CA.pem /etc/pki/ca-trust/source/anchors</p>
 <h2 is-upgraded><strong>証明書の反映</strong></h2>
-<h3 is-upgraded><strong>Debian系統</strong></h3>
+<p><code>Debian系統</code></p>
 <p>sudo dpkg-reconfigure ca-certificates</p>
-<h3 is-upgraded><strong>Red Hat系統</strong></h3>
+<p><code>Red Hat系統</code></p>
 <p>sudo update-ca-trust</p>
+<h2 is-upgraded><strong>Zero Trustの通信が有効か確認</strong></h2>
+<p>ターミナルで以下のコマンドを実行してください。</p>
+<p>curl https://ipinfo.io</p>
+<p><strong> &#34;Org&#34;: が現在のプロバイダになっている状態</strong></p>
+<p>トグルスイッチをONにして接続します</p>
+<p class="image-container"><img style="width: 380.70px" src="img/feb7029c640a8c7.png"></p>
+<p>curl https://ipinfo.io</p>
+<p><strong> &#34;org&#34;: &#34;AS13335 Cloudflare, Inc.&#34;,</strong></p>
+<aside class="special"><p>Cloudflareになっていればルート証明書の自動配置、有効化が無事に完了しました</p>
+</aside>
+<h2 is-upgraded><strong>実際にアクセス</strong></h2>
+<p>対象のサイト へアクセス</p>
+<p class="image-container"><img style="width: 624.00px" src="img/4bade49f6feee826.png"></p>
+<aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
+</aside>
 
 
       </google-codelab-step>
