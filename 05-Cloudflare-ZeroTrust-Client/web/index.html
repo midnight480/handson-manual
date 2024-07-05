@@ -417,6 +417,34 @@
 
       </google-codelab-step>
     
+      <google-codelab-step label="デバイス設定（Linux）" duration="5">
+        <h2 is-upgraded><strong>証明書のダウンロード</strong></h2>
+<p>URL（Debian系統、Red Hat系統共通）：</p>
+<p><a href="https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.pem" target="_blank">https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.pem</a></p>
+<p>URL（Red Hat系統のみ追加で必要）：</p>
+<p><a href="https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.crt" target="_blank">https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.crt</a></p>
+<p>例</p>
+<p>wget <a href="https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.crt" target="_blank">https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.crt</a></p>
+<p>wget <a href="https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.pem" target="_blank">https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.pem</a></p>
+<h2 is-upgraded><strong>独自証明書のインストール</strong></h2>
+<h3 is-upgraded><strong>Debian系統</strong></h3>
+<p>sudo apt-get install ca-certificates</p>
+<h3 is-upgraded><strong>Red Hat系統</strong></h3>
+<p>sudo dnf install ca-certificates</p>
+<h2 is-upgraded><strong>証明書のコピー</strong></h2>
+<h3 is-upgraded><strong>Debian系統</strong></h3>
+<p>sudo cp Cloudflare_CA.pem /usr/share/ca-certificates/Cloudflare_CA.crt</p>
+<h3 is-upgraded><strong>Red Hat系統</strong></h3>
+<p>sudo cp Cloudflare_CA.crt Cloudflare_CA.pem /etc/pki/ca-trust/source/anchors</p>
+<h2 is-upgraded><strong>証明書の反映</strong></h2>
+<h3 is-upgraded><strong>Debian系統</strong></h3>
+<p>sudo dpkg-reconfigure ca-certificates</p>
+<h3 is-upgraded><strong>Red Hat系統</strong></h3>
+<p>sudo update-ca-trust</p>
+
+
+      </google-codelab-step>
+    
   </google-codelab>
 
   <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
