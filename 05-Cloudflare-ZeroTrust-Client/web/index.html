@@ -72,7 +72,7 @@
 <p class="image-container"><img style="width: 428.50px" src="img/3a0e382c34be7516.png"></p>
 <p class="image-container"><img style="width: 525.50px" src="img/bbfbb416a0b7259f.png"></p>
 <p class="image-container"><img style="width: 546.50px" src="img/e82799dd31611036.png"></p>
-<aside class="warning"><p><strong>Caution:</strong> MFAを設定せずにIDとPWで運用は可能ですが、セキュリティを向上させるため設定することを推奨します。乗っ取られてからでは遅いです。</p>
+<aside class="warning"><p><strong>Caution:</strong> MFAを設定せずにIDとPWで運用は可能ですが、セキュリティを向上させるため設定することを推奨します。アカウントを乗っ取られてからでは取り返しは付かないです。</p>
 </aside>
 
 
@@ -93,7 +93,7 @@
 <h2 is-upgraded><img style="width: 624.00px" src="img/3270f0a86a4f2f84.png"></h2>
 <h2 is-upgraded><img style="width: 624.00px" src="img/e2b1cd6c8e132b5f.png"></h2>
 <p>Account Type が標準（キャプチャ）でBusinessになっていますが、プルダウンメニューで</p>
-<p>Personalに変更して登録頂いても構いません。（その項目によって登録する内容は変わりません）</p>
+<p>Personalに変更して登録してください。</p>
 <h2 is-upgraded><img style="width: 624.00px" src="img/390acfe6f9a9e89f.png"></h2>
 <aside class="warning"><p><strong>Caution:</strong> もしこの画面でクレジットカードあるいはPaypalの登録は問題なく、住所等も問題なくエラーが表示された場合でも裏側ではチーム名登録処理が行われており、「Welcome to Cloudflare Access」という件名のメールが届いている可能性があります</p>
 </aside>
@@ -175,7 +175,7 @@
 <p>今回は、Zero Trustが有効な間は特定のサイトへの通信をブロックして通常利用できないようにします。</p>
 <h3 is-upgraded><strong>Gateway Policyを変更</strong></h3>
 <p class="image-container"><img style="width: 624.00px" src="img/392c23a74bee2941.png"></p>
-<p><strong>TOTOインフォコム（https://tim.jp.toto.com/）</strong>をBlockします</p>
+<p><strong>指定のURL（ハンズオン講師の指示に従ってください）</strong>をBlockします</p>
 <p>Display block pageを✅にします</p>
 <p class="image-container"><img style="width: 624.00px" src="img/e3f6a7887e08c8eb.png"></p>
 <p>Save Policy を押すとDefault DNS Locationが未登録のため有効化できない警告がでるので、</p>
@@ -185,7 +185,7 @@
 <p>Add A Locationを押します</p>
 <p class="image-container"><img style="width: 624.00px" src="img/146bdc21cf1299cc.png"></p>
 <p class="image-container"><img style="width: 624.00px" src="img/72d472949cdee83e.png"></p>
-<p>ここまで設定した後に、ブラウザで<strong>TOTOインフォコム（https://tim.jp.toto.com/）</strong>にアクセスしようとするとブロックします。</p>
+<p>ここまで設定した後に、ブラウザで<strong>指定されたURL</strong>にアクセスをブロックする準備が整いました。</p>
 <h2 is-upgraded><strong>利用するデバイスポリシーの設定</strong></h2>
 <p>My Team &gt; Devices と進みます</p>
 <p class="image-container"><img style="width: 624.00px" src="img/38c1f3d5ef64825e.png"></p>
@@ -215,9 +215,11 @@
 <h3 is-upgraded><strong>Cloudflare Zero Trustへログイン</strong></h3>
 <p>右上のハンバーガーメニューから設定 を開き、アカウントを選択する</p>
 <p class="image-container"><img style="width: 209.68px" src="img/30b8586f21c485ff.png"><img style="width: 295.27px" src="img/50bebff7d37ef942.png"></p>
-<p>Zero Trustに画面が切り替わるものの、まだ正常に接続できない</p>
+<p>Zero Trustに画面が切り替わるものの、まだ正常に接続できない状態です。</p>
 <p class="image-container"><img style="width: 154.71px" src="img/51ad53ded8c976cb.png"><img style="width: 140.69px" src="img/55f24e6cf4f8f29f.png"><img style="width: 194.00px" src="img/c51317e6c9df241c.png"></p>
 <p><a href="https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.pem" target="_blank">Download certificate (.pem)</a> からルート証明書をダウンロード</p>
+<p>URL：</p>
+<p><a href="https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.pem" target="_blank">https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.pem</a></p>
 <h3 is-upgraded><img style="width: 193.80px" src="img/ba885e4726cd8a90.jpeg"><img style="width: 194.50px" src="img/b007acfee6455bac.png"><img style="width: 181.32px" src="img/cd6566c351f25a80.png"></h3>
 <h3 is-upgraded><strong>iPhoneの設定</strong></h3>
 <p>設定 &gt; 一般 &gt; VPNとデバイス管理 でCloudflare for Teams ECC Certificate Authority をインストール</p>
@@ -229,7 +231,7 @@
 <h2 is-upgraded><strong>実際にアクセス</strong></h2>
 <p class="image-container"><img style="width: 242.14px" src="img/191ef66f394fc5cf.png"><img style="width: 245.95px" src="img/9d74d9f477b40856.png"></p>
 <p>対象のサイトへアクセス</p>
-<p class="image-container"><img style="width: 612.00px" src="img/18f0af3cd7c95006.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/4bade49f6feee826.png"></p>
 <aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
 </aside>
 
@@ -245,6 +247,18 @@
 <p>「同意する」「VPNプロファイルをインストール」</p>
 <p>通知は「Not now」</p>
 <p class="image-container"><img style="width: 167.50px" src="img/a0c555acc3bea6af.png"><img style="width: 140.15px" src="img/e25d7c36640013e6.png"><img style="width: 141.60px" src="img/90e9f6612ef29032.png"><img style="width: 141.50px" src="img/e1f23e5a148a376e.png"></p>
+<h3 is-upgraded><strong>証明書のダウンロードとインストール</strong></h3>
+<p><a href="https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.crt" target="_blank">Download certificate (.crt)</a> からルート証明書をダウンロード</p>
+<p>URL：</p>
+<p><a href="https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.crt" target="_blank">https://developers.cloudflare.com/cloudflare-one/static/Cloudflare_CA.crt</a></p>
+<p>設定 &gt; セキュリティとプライバシー &gt; その他のセキュリティとプライバシー &gt; 暗号化と認証情報 &gt; 証明書のインストール &gt; CA証明書 で証明書をインストール</p>
+<p class="image-container"><img style="width: 317.59px" src="img/bcc068c0b9a46225.png"></p>
+<p>警告が表示されますが、 Cloudflareで復号化するために必要なので「インストールする」を押す</p>
+<p class="image-container"><img style="width: 186.29px" src="img/93a8824063acace6.png"></p>
+<p>&#34;cloud&#34; と入力すると、ダウンロードした証明書が表示される</p>
+<p class="image-container"><img style="width: 291.53px" src="img/9764cacaaa67292c.png"></p>
+<p>Cloudflare_CA.crt を選択してインストールする</p>
+<p class="image-container"><img style="width: 310.00px" src="img/97d3d1ee478e9d7d.png"></p>
 <h3 is-upgraded><strong>Cloudflare Zero Trustへログイン</strong></h3>
 <p>右上のハンバーガーメニューからアカウント &gt;  Cloudflare Zero Trustにログイン</p>
 <p class="image-container"><img style="width: 194.35px" src="img/2bd0f1de3ddf236c.png"><img style="width: 216.78px" src="img/4caa2145af135c4b.png"><img style="width: 192.70px" src="img/81ef08f7fb00d4ca.png"></p>
@@ -263,7 +277,7 @@
 <h2 is-upgraded><strong>実際にアクセス</strong></h2>
 <p class="image-container"><img style="width: 242.14px" src="img/191ef66f394fc5cf.png"><img style="width: 245.95px" src="img/9d74d9f477b40856.png"></p>
 <p>対象のサイト へアクセス</p>
-<p class="image-container"><img style="width: 612.00px" src="img/18f0af3cd7c95006.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/4bade49f6feee826.png"></p>
 <aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
 </aside>
 
@@ -331,7 +345,7 @@
 </aside>
 <h2 is-upgraded><strong>実際にアクセス</strong></h2>
 <p>対象のサイト へアクセス</p>
-<p class="image-container"><img style="width: 612.00px" src="img/18f0af3cd7c95006.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/4bade49f6feee826.png"></p>
 <aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
 </aside>
 
@@ -392,7 +406,7 @@
 </aside>
 <h2 is-upgraded><strong>実際にアクセス</strong></h2>
 <p>対象のサイト へアクセス</p>
-<p class="image-container"><img style="width: 612.00px" src="img/18f0af3cd7c95006.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/4bade49f6feee826.png"></p>
 <aside class="special"><p><strong>Congratulations！ これでCloudflare Zero Trustの初期設定は完了しました</strong></p>
 </aside>
 <h3 is-upgraded><strong>macOS・ESETの環境の方向け</strong></h3>
