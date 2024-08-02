@@ -63,6 +63,13 @@
 <p>&gt; Upload a template file（テンプレートファイルのアップロード）</p>
 <p>&gt; monitoring-1.yaml </p>
 <p class="image-container"><img style="width: 624.00px" src="img/a993c45b698a9ede.png"></p>
+<p>スタック名には以下を指定し他はデフォルトのまま次へを押下する</p>
+<p>スタック名：monitoring-1</p>
+<p class="image-container"><img style="width: 624.00px" src="img/b4452dee3f035206.png"></p>
+<p>スタックのオプションの設定は何も変更せず次へを押下する</p>
+<p class="image-container"><img style="width: 624.00px" src="img/1e51acc1218db0fa.png"></p>
+<p>確認画面で「<strong>AWS CloudFormation によって IAM リソースがカスタム名で作成される場合があることを承認します。</strong>」にチェックを入れ、送信を押下する</p>
+<p class="image-container"><img style="width: 624.00px" src="img/2e4d99994c043c09.png"></p>
 <h2 is-upgraded><strong>（CUI）CloudFormationを実行</strong></h2>
 <p>CloudShellを起動する</p>
 <p><code>command</code></p>
@@ -185,7 +192,7 @@ sh monitoring-1-create-stack.sh </code></pre>
 </ul>
 <p>以下のように設定します</p>
 <h4 is-upgraded><img style="width: 598.81px" src="img/cc66a12a052da93b.png"></h4>
-<p>次へ に進みます </p>
+<p>トピックの作成を押下し次へ に進みます </p>
 <h4 is-upgraded>設定値</h4>
 <ul>
 <li>Alarm name： monitoring-1-alarm</li>
@@ -211,7 +218,7 @@ sh monitoring-1-create-stack.sh </code></pre>
 <h3 is-upgraded><strong>Logsにアクセス </strong></h3>
 <p class="image-container"><img style="width: 624.00px" src="img/8412d9c721a304a4.png"></p>
 <p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#logsV2:log-groups" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#logsV2:log-groups</a></p>
-<p>Wordpress_access_log &gt; 保持 &gt; 失効しない を押す</p>
+<p>wordpress_access_log &gt; 保持 &gt; 失効しない を押す</p>
 <p>1か月（30日） を選択して、 保存 を押す</p>
 <p class="image-container"><img style="width: 624.00px" src="img/e99ccfb1cc0361c2.png"></p>
 <h3 is-upgraded><strong>アクセスログを表示</strong></h3>
@@ -372,9 +379,9 @@ sh monitoring-1-create-stack.sh </code></pre>
 <h3 is-upgraded><strong>設定値</strong></h3>
 <ul>
 <li>グループタイプ： CloudFormationスタックベース</li>
-<li>リソースタイプ： monitoring-1</li>
-<li>サポートされるすべてのリソースタイプ</li>
-<li>グループリソースをプレビュー</li>
+<li>CloudFormation スタック：monitoring-1</li>
+<li>リソースタイプ： サポートされるすべてのリソースタイプ</li>
+<li>グループリソースをプレビューを押下</li>
 <li>グループ名： monitoring-1</li>
 </ul>
 <p class="image-container"><img style="width: 624.00px" src="img/a37c4e9843a71f5e.png"></p>
@@ -401,17 +408,20 @@ sh monitoring-1-create-stack.sh </code></pre>
 <p class="image-container"><img style="width: 624.00px" src="img/17cb11ec6decb0c9.png"></p>
 <h3 is-upgraded><strong>設定値</strong></h3>
 <ul>
+<li>イベントソース： AWS イベントまたは EventBridge パートナーイベント</li>
+<li>作成のメソッド：パターンフォームを使用する</li>
+<li>イベントパターン</li>
 <li>イベントソース： AWSのサービス</li>
-<li>AWSのサービス： EC2</li>
+<li>AWSのサービス：EC2</li>
 <li>イベントタイプ： EC2 Instance State-Change Notification</li>
-<li>イベントタイプの仕様１： stopped</li>
+<li>イベントタイプの仕様１： 特定の状態→stopped</li>
 <li>イベントタイプの仕様２： 任意のインスタンス</li>
 </ul>
 <p class="image-container"><img style="width: 624.00px" src="img/e6c4c77b22520a3f.png"></p>
 <h3 is-upgraded><strong>設定値</strong></h3>
 <ul>
 <li>ターゲットタイプ： AWSのサービス</li>
-<li>AWSのサービス： SNSのトピック</li>
+<li>ターゲットの選択： SNSのトピック</li>
 <li>トピック： monitoring-1-topic</li>
 </ul>
 <aside class="warning"><p><strong>Caution:</strong> 前段のAlarmを実施していると上記のSNSトピックを作成しています。</p>
@@ -446,7 +456,9 @@ sh monitoring-1-create-stack.sh </code></pre>
 <p class="image-container"><img style="width: 624.00px" src="img/c302c505eb5aace9.png"></p>
 <h3 is-upgraded><strong>CloudWatchにアクセス </strong></h3>
 <h4 is-upgraded>Alarms</h4>
-<p><strong>T.B.D</strong></p>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#alarmsV2" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#alarmsV2:</a></p>
+<p class="image-container"><img style="width: 624.00px" src="img/3e82f4d2f8c96524.png"></p>
+<p class="image-container"><img style="width: 606.00px" src="img/cb2b57b877af4dd.png"></p>
 <h4 is-upgraded>Dashboards</h4>
 <p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#dashboards/" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#dashboards/</a></p>
 <p class="image-container"><img style="width: 624.00px" src="img/132676645e10815d.png"></p>
@@ -464,6 +476,8 @@ sh monitoring-1-create-stack.sh </code></pre>
 <p class="image-container"><img style="width: 624.00px" src="img/a081a0723c83dae3.png"></p>
 <p class="image-container"><img style="width: 624.00px" src="img/67531c9b5e09eb3c.png"></p>
 <h3 is-upgraded><strong>S3にアクセス </strong></h3>
+<p>※以降の手順はAWSアカウントで初めてCloudFormationを利用した方向けです。</p>
+<p>※普段からCloudFormationを利用されている場合、S3バケット内の対象yamlファイル「monitoring-1.yaml」のみ削除してください。</p>
 <p><a href="https://ap-northeast-1.console.aws.amazon.com/s3/home?region=ap-northeast-1#" target="_blank">https://ap-northeast-1.console.aws.amazon.com/s3/home?region=ap-northeast-1#</a></p>
 <p class="image-container"><img style="width: 624.00px" src="img/ebeaec3b3ec4a4d3.png"></p>
 <p class="image-container"><img style="width: 624.00px" src="img/6d8ed19bf3e9fd94.png"></p>
