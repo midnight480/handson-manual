@@ -1,0 +1,98 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Cloudflare Workers x AWS</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid="G-NGRDDBRB0P"
+                  codelab-ga4id=""
+                  id="web"
+                  title="Cloudflare Workers x AWS"
+                  environment="web"
+                  feedback-link="https://github.com/midnight480/handson-manual/06-Cloudflare-AWS">
+    
+      <google-codelab-step label="概要" duration="0">
+        <p class="image-container"><img style="width: 624.00px" src="img/48c334b69cfc35d0.png"></p>
+<p><strong>Last Updated:</strong> 2024-12-08</p>
+<h2 is-upgraded><strong>Cloudflareとは</strong></h2>
+<p>インターネットをより速く、安全に、そして信頼性の高いものにするためのサービスです。</p>
+<h2 is-upgraded><strong>Cloudflare Workersとは</strong></h2>
+<p>Cloudflareのネットワーク上でコードを実行できるサービスで、コードをCloudflareのエッジサーバー上で実行することができます。エッジサーバーとは、世界中に分散配置されたCloudflareのサーバーのことです。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="セットアップ" duration="5">
+        <h2 is-upgraded><strong>Cloudflare アカウント</strong></h2>
+<p>Cloudflareアカウントを作成します。</p>
+<p>既にアカウントを所有している場合は本手順をスキップしてください。</p>
+<p><a href="https://dash.cloudflare.com/login" target="_blank"><paper-button class="colored" raised>Log in to Cloudflare</paper-button></a></p>
+<aside class="special"><p><strong>Note:</strong> Cloudflareアカウントは検証作業で利用する範囲であれば、クレジットカードの初期登録は不要です。</p>
+</aside>
+<h3 is-upgraded><strong>Sign-up</strong></h3>
+<p><code>メールアドレス、パスワード（ルールに準拠）、Cloudflare Turnstile（Bot対策用チェックボックスサービス）のチェックを通してください。</code></p>
+<p class="image-container"><img style="width: 533.00px" src="img/fdb46fd01b8b42aa.png"></p>
+<aside class="warning"><p><strong>Caution:</strong> メールの受信ができるアドレスを用意してください。</p>
+</aside>
+<h3 is-upgraded><strong>Complete</strong></h3>
+<p>メールアドレス宛に本人確認を行うURLが送付されているので確認してください。</p>
+<p class="image-container"><img style="width: 624.00px" src="img/bc200f51e0a05e8e.png"></p>
+<h3 is-upgraded><strong>（任意）言語設定</strong></h3>
+<p>デフォルトではEnglish（英語）が選択されています。</p>
+<p>右上の言語部分を押すとプルダウンリストが表示されるため、任意の言語に変更してください。</p>
+<p>本手順書はEnglishでキャプチャを選択しています。</p>
+<p class="image-container"><img style="width: 253.56px" src="img/b88cd8cc56d5194.png"></p>
+<h3 is-upgraded><strong>（任意）MFA設定</strong></h3>
+<p>Muilti-Factor Authenticator（MFA：多要素）認証の設定を推奨します。</p>
+<p class="image-container"><img style="width: 428.50px" src="img/3a0e382c34be7516.png"></p>
+<p class="image-container"><img style="width: 525.50px" src="img/bbfbb416a0b7259f.png"></p>
+<p class="image-container"><img style="width: 546.50px" src="img/e82799dd31611036.png"></p>
+<aside class="warning"><p><strong>Caution:</strong> MFAを設定せずにIDとPWで運用は可能ですが、セキュリティを向上させるため設定することを推奨します。アカウントを乗っ取られてからでは取り返しは付かないです。</p>
+</aside>
+<h2 is-upgraded><strong>AWS アカウント</strong></h2>
+<h3 is-upgraded><strong>AWS アカウント作成の流れ</strong></h3>
+<p>こちらのページに沿って作成してください。</p>
+<p>クレジットカードが必要です。</p>
+<p><a href="https://aws.amazon.com/jp/register-flow/" target="_blank">AWS アカウント作成の流れ【AWS 公式】</a></p>
+<h2 is-upgraded><strong>npmのインストール</strong></h2>
+<h3 is-upgraded><strong>npm(node package manager)のダウンロード</strong></h3>
+<p>こちらのページから</p>
+<p><a href="https://nodejs.org/en/download/package-manager" target="_blank">Node.js — Download Node.js®</a></p>
+<p>（参考）</p>
+<p><a href="https://kinsta.com/jp/blog/how-to-install-node-js/" target="_blank">Windows、macOS、LinuxにNode.jsとnpmをインストールする方法</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="AWS アカウント作成の流れ" duration="0">
+        
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
