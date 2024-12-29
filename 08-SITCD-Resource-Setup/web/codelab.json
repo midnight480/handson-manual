@@ -3,13 +3,13 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2024-12-29T06:27:27Z",
+  "updated": "2024-12-29T09:58:01Z",
   "id": "web",
-  "duration": 5,
+  "duration": 15,
   "title": "Cloudflare Workers x AWS",
   "authors": "Tetsuya Shibao",
   "summary": "Cloudflare WorkerとAWSを組み合わせを自身の端末で行うためのものです",
-  "source": "1rxYHBpG210zfprQvUccba3gw-r3C60Y-D4HlVdBbvSI",
+  "source": "1z743nfpf2BSDCr4BnIpEkBkYvb5cU6mkoLrAhRtLPJA",
   "theme": "web",
   "status": [
     "published"
@@ -34,7 +34,7 @@
     "typtwd17",
     "web"
   ],
-  "feedback": "https://github.com/midnight480/handson-manual/07-SITCD-Initial-Setup",
+  "feedback": "https://github.com/midnight480/handson-manual/08-SITCD-Resource-Setup",
   "ga": "G-NGRDDBRB0P",
   "url": "web"
 }
