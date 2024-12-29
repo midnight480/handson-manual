@@ -16,11 +16,10 @@ go version go1.16.3 darwin/amd64
 >
 > go get -u -v -x github.com/googlecodelabs/tools/claat
 ...
-> 
-> export GOPATH=$HOME/Go
-> export PATH=$PATH:$GOPATH/bin
-> claat -h
-> claat export *.md
+export GOPATH=$HOME/Go
+export PATH=$PATH:$GOPATH/bin
+claat -h
+claat export *.md
 ...
 > 
 ```
