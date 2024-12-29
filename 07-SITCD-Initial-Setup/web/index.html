@@ -35,11 +35,59 @@
 <p>インターネットをより速く、安全に、そして信頼性の高いものにするためのサービスです。</p>
 <h2 is-upgraded><strong>Cloudflare Workersとは</strong></h2>
 <p>Cloudflareのネットワーク上でコードを実行できるサービスで、コードをCloudflareのエッジサーバー上で実行することができます。エッジサーバーとは、世界中に分散配置されたCloudflareのサーバーのことです。</p>
+<p class="image-container"><img style="width: 521.50px" src="img/bcb8dc38bd701bf1.png"></p>
+<p>最新の情報はCloudflare公式ページで確認してください。</p>
+<p><a href="https://www.cloudflare.com/ja-jp/plans/developer-platform/" target="_blank"><strong>https://www.cloudflare.com/ja-jp/plans/developer-platform/</strong></a></p>
+<h3 is-upgraded><strong>AWSとは？</strong></h3>
+<p>AWS（Amazon Web Services）は、Amazonが提供する世界最大級のクラウドサービスプラットフォームです。サーバー、ストレージ、データベース、人工知能、分析ツールなど、幅広い機能を提供し、インターネット経由で必要なリソースをオンデマンドで利用できます。これにより、スケーラブルで柔軟かつコスト効率の良いシステム構築が可能です。</p>
+<h3 is-upgraded><strong>ハンズオンで利用する主要サービスの説明</strong></h3>
+<h4 is-upgraded><strong>1. AWS Lambda</strong></h4>
+<ul>
+<li><strong>概要</strong>: サーバーレスコンピューティングサービス。サーバーの管理不要で、コードを実行できます。</li>
+<li><strong>特徴</strong>: イベント駆動型で、リクエストに応じて必要な時だけ実行。使用した分だけ課金されます。</li>
+<li><strong>主な用途</strong>:</li>
+<li>バックエンドAPIの処理</li>
+<li>データのリアルタイム処理</li>
+<li>自動化タスクの実行</li>
+</ul>
+<p>AWS Lambda の無料利用枠には、1 か月あたり 100 万件の無料リクエストと、1 か月あたり 40 万 GB 秒のコンピューティング時間が含まれており、x86 および Graviton2 プロセッサの両方を使用する関数に利用できます。 さらに、無料利用枠には、リクエストごとの最初の 6 MB が無料ですが、それ以外に、1 か月あたり 100 GiB の HTTP レスポンスストリーミングが含まれます。</p>
+<p><a href="https://aws.amazon.com/jp/lambda/pricing/?loc=ft#Free_Tier" target="_blank">料金 - AWS Lambda</a></p>
+<h4 is-upgraded><strong>2. Amazon S3 (Simple Storage Service)</strong></h4>
+<ul>
+<li><strong>概要</strong>: オブジェクトストレージサービス。大量のデータを安全かつ低コストで保存・管理できます。</li>
+<li><strong>特徴</strong>: 高い耐久性（99.999999999%）と可用性を持ち、スケーラブル。</li>
+<li><strong>主な用途</strong>:</li>
+<li>データのバックアップとアーカイブ</li>
+<li>静的ウェブサイトのホスティング</li>
+<li>データ分析用のデータ保存</li>
+</ul>
+<p>S3 Standard ストレージクラスで 5 GB の Amazon S3 ストレージ、20,000 GET リクエスト、2,000 PUT、COPY、POST、あるいは LIST リクエスト、データ送信 100 GB を毎月、ご利用いただけます。</p>
+<p><a href="https://aws.amazon.com/jp/s3/pricing/?nc=sn&loc=4" target="_blank">料金 - Amazon S3 ｜AWS</a></p>
+<h4 is-upgraded><strong>3. Amazon DynamoDB</strong></h4>
+<ul>
+<li><strong>概要</strong>: フルマネージドのNoSQLデータベースサービス。高速でスケーラブルなデータ処理が可能です。</li>
+<li><strong>特徴</strong>: マイクロ秒単位の高速な読み書き、完全マネージド、スキーマレス設計。</li>
+<li><strong>主な用途</strong>:</li>
+<li>リアルタイムのデータ処理（ゲームスコア、IoTデータなど）</li>
+<li>分散型システムのデータストレージ</li>
+</ul>
+<p>25 GB のストレージ、25 のプロビジョニングされた書き込みキャパシティーユニット、25 のプロビジョニングされた読み取りキャパシティーユニット (WCU、RCU) が提供されます。これは、1 か月あたり 2 億のリクエストを処理するのに十分です。</p>
+<p><a href="https://aws.amazon.com/jp/dynamodb/pricing/" target="_blank">Amazon DynamoDB 料金</a></p>
+<h4 is-upgraded><strong>4. AWS CDK (Cloud Development Kit)</strong></h4>
+<ul>
+<li><strong>概要</strong>: インフラストラクチャをコード（IaC）として定義するツール。プログラミング言語（TypeScript、Pythonなど）を使ってクラウドリソースを構築します。</li>
+<li><strong>特徴</strong>: リソース管理が簡単になり、再利用性が高まります。コードベースで管理することで、バージョン管理も容易です。</li>
+<li><strong>主な用途</strong>:</li>
+<li>開発チームの効率化</li>
+<li>複雑なインフラ設計の自動化</li>
+</ul>
+<p><a href="https://aws.amazon.com/jp/cdk/" target="_blank">オープンソースの開発フレームワーク - AWS クラウド開発キット</a></p>
+<p>※ CDKの利用は費用が掛かりません</p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="セットアップ" duration="5">
+      <google-codelab-step label="Cloudflareセットアップ" duration="5">
         <h2 is-upgraded><strong>Cloudflare アカウント</strong></h2>
 <p>Cloudflareアカウントを作成します。</p>
 <p>既にアカウントを所有している場合は本手順をスキップしてください。</p>
@@ -66,7 +114,12 @@
 <p class="image-container"><img style="width: 546.50px" src="img/e82799dd31611036.png"></p>
 <aside class="warning"><p><strong>Caution:</strong> MFAを設定せずにIDとPWで運用は可能ですが、セキュリティを向上させるため設定することを推奨します。アカウントを乗っ取られてからでは取り返しは付かないです。</p>
 </aside>
-<h2 is-upgraded><strong>AWS アカウント</strong></h2>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="AWSセットアップ" duration="5">
+        <h2 is-upgraded><strong>AWS アカウント</strong></h2>
 <h3 is-upgraded><strong>AWS アカウント作成の流れ</strong></h3>
 <p>こちらのページに沿って作成してください。</p>
 <p>クレジットカードが必要です。</p>
