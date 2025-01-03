@@ -141,16 +141,12 @@ Python Subprocess exited with error 9009
 <h3 is-upgraded><strong>CDKのデプロイ</strong></h3>
 <p>AWS CDKでリソースを作成します。</p>
 <p>「--force」をオプションを付けているのでリソース作成まで完了します。</p>
+<p>Windowsの方は「<code>Do you wish to deploy these changes (y/n)?</code> 」と表示されるので、y を押してください。</p>
 <pre><code>$ cdk deploy --profile sitcd --force
 
 ✨  Synthesis time: 2.96s
 
-ImageProcessingStack: start: Building
- ...
-
-Do you wish to deploy these changes (y/n)? </code></pre>
-<p><strong>y</strong></p>
-<pre><code># Windowsの場合は途中で確認が入るかもしれません</code></pre>
+ImageProcessingStack: start: Building</code></pre>
 <p> ...</p>
 <pre><code>ImageProcessingStack: deploying... [1/1]
 ImageProcessingStack: creating CloudFormation changeset...
