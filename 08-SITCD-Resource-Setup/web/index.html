@@ -29,7 +29,7 @@
                   feedback-link="https://github.com/midnight480/handson-manual/08-SITCD-Resource-Setup">
     
       <google-codelab-step label="概要" duration="0">
-        <p class="image-container"><img style="width: 624.00px" src="img/9e6c262bb1237d83.png"></p>
+        <p class="image-container"><img style="width: 624.00px" src="img\\9e6c262bb1237d83.png"></p>
 <p><strong>Last Updated:</strong> 2024-12-29</p>
 <h2 is-upgraded><strong>ハンズオンの内容</strong></h2>
 <ul>
@@ -39,13 +39,35 @@
 <li>シンプルなウェブアプリケーションを構築する一連の流れを体験する</li>
 </ul>
 <p>テキストを入力、画像をアップロードするとAWSのDynamoDB（NoSQLデータベース）に書き込む、S3（ストレージ）に書き込みます。</p>
-<p class="image-container"><img style="width: 624.00px" src="img/39b1e8d7a2925f2a.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\\39b1e8d7a2925f2a.png"></p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="セットアップ" duration="5">
-        <h2 is-upgraded><strong>GitHubからソースコードを取得</strong></h2>
+        <h2 is-upgraded><strong>(Windowsの方に限り）</strong></h2>
+<p>PowerShell環境では、スクリプトの実行ができないポリシーになっている可能性があるので、</p>
+<p>一度管理者権限でPowerShellを起動してください。</p>
+<p>Restrictedとなっている場合は、エラーになるので次のようにコマンドを実行してください。</p>
+<pre><code>PS C:\Users\xxx&gt; npm -v
+npm : このシステムではスクリプトの実行が無効になっているため、ファイル C:\Program Files\nodejs\npm.ps1 を読み込むことができません。詳細については、「about_Execution_Policies」(https://go.micros 
+oft.com/fwlink/?LinkID=135170) を参照してください。
+発生場所 行:1 文字:1
++ npm -v
++ ~~~
+    + CategoryInfo          : セキュリティ エラー: (: ) []、PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+
+PS C:\Users\xxx&gt; Get-ExecutionPolicy
+Restricted
+PS C:\Users\xxx&gt;
+PS C:\Users\xxx&gt; Set-ExecutionPolicy RemoteSigned
+PS C:\Users\shiba&gt;
+PS C:\Users\xxx&gt; Get-ExecutionPolicy
+RemoteSigned
+PS C:\Users\xxx&gt;
+</code></pre>
+<h2 is-upgraded><strong>GitHubからソースコードを取得</strong></h2>
 <p>GitHubに利用するソースコードを置いているので、</p>
 <p>以下のいずれかの方法で取得してください。</p>
 <p>GitHubにSSH認証を設定済みの方</p>
@@ -63,22 +85,23 @@
 <h3 is-upgraded><strong>CDKで利用するユーザを作成</strong></h3>
 <p><code>AdministratorAccess（AWS提供ポリシー）を付与したユーザを作成、アクセスキーとシークレットアクセスキーを払い出します。</code></p>
 <p><code>左上の窓に 「IAM」を入力</code></p>
-<p class="image-container"><img style="width: 624.00px" src="img/286e5b4b41e0072b.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\\286e5b4b41e0072b.png"></p>
 <p>右上にある「ユーザの作成」</p>
-<p class="image-container"><img style="width: 588.00px" src="img/f852ddaf35737b04.png"></p>
+<p class="image-container"><img style="width: 588.00px" src="img\\f852ddaf35737b04.png"></p>
 <p>ユーザ名「sitcd」</p>
-<p><img style="width: 624.00px" src="img/b352e409c295473e.png">「ポリシーを直接アタッチする」を選択して、「AdministratorAccess」 </p>
-<p class="image-container"><img style="width: 624.00px" src="img/b55c4f5b540a44fe.png"></p>
-<p class="image-container"><img style="width: 624.00px" src="img/4a7687b620529354.png"></p>
-<p class="image-container"><img style="width: 624.00px" src="img/d75a3acd832bf7fa.png"></p>
+<p><img style="width: 624.00px" src="img\\b352e409c295473e.png">「ポリシーを直接アタッチする」を選択して、「AdministratorAccess」 </p>
+<p class="image-container"><img style="width: 624.00px" src="img\\b55c4f5b540a44fe.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\\4a7687b620529354.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\\d75a3acd832bf7fa.png"></p>
 <p>作成したIAMユーザ「sitcd」を押して「セキュリティ認証情報」</p>
-<p class="image-container"><img style="width: 624.00px" src="img/3ecab7b4b67d2c17.png"></p>
-<p class="image-container"><img style="width: 624.00px" src="img/b6a5b49d88ebaec9.png"></p>
-<p class="image-container"><img style="width: 624.00px" src="img/d6d4516e8171e584.png"></p>
-<p class="image-container"><img style="width: 624.00px" src="img/c59e7e42d0edfa00.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\\3ecab7b4b67d2c17.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\\b6a5b49d88ebaec9.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\\d6d4516e8171e584.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\\c59e7e42d0edfa00.png"></p>
 <aside class="warning"><p><strong>Caution:</strong> AdministratorAccessのアクセスキー、シークレットアクセスキーとなるので公開できる箇所に置かないようにしてください。</p>
 </aside>
 <p>以降は、GitHubから取得した README.md ファイルにもコマンドを記載している内容のため、</p>
+<p>実行するコマンドは原則README.mdを参照してください。</p>
 <h3 is-upgraded><a href="https://github.com/midnight480/saga-it-community-day-handson-1/tree/master" target="_blank">https://github.com/midnight480/saga-it-community-day-handson-1/tree/master</a></h3>
 <h3 is-upgraded>AWS CLIにプロファイル設定</h3>
 <p>AWS CLIで取り扱う上で、プロファイルを用いることでAWSアカウント、IAMユーザごとに設定が可能なので設定します。</p>
@@ -91,6 +114,30 @@ Trusted accounts for lookup: (none)
 Using default execution policy of &#39;arn:aws:iam::aws:policy/AdministratorAccess&#39;. Pass &#39;--cloudformation-execution-policies&#39; to customize.
  ✅  Environment aws://{AccountNumber}/ap-northeast-1 bootstrapped (no changes).
 (.venv) </code></pre>
+<p>Windowsの方で次のエラーに該当する方は、<strong><em>saga-it-community-day-handson-1/cdk.json</em></strong> を修正してください。</p>
+<pre><code>(.venv) C:\Users\</code></pre>
+<p>xxx</p>
+<pre><code>\Documents\src\saga-it-community-day-handson-1\backend&gt;cdk bootstrap --profile sitcd
+Python Subprocess exited with error 9009
+
+(.venv) C:\Users\xxx\Documents\src\saga-it-community-day-handson-1\backend&gt;npx aws-cdk bootstrap --profile sitcd
+Python Subprocess exited with error 9009
+
+(.venv) C:\Users\xxx\Documents\src\saga-it-community-day-handson-1\backend&gt;</code></pre>
+<p>修正前の状態では、 python3 となっている箇所があります。（1行）</p>
+<pre><code>{
+  &#34;app&#34;: &#34;python3 app.py&#34;,
+  &#34;watch&#34;: {
+    &#34;include&#34;: [
+      &#34;**&#34;
+    ],</code></pre>
+<p>3 を削除してください。</p>
+<pre><code>{
+  &#34;app&#34;: &#34;python app.py&#34;,
+  &#34;watch&#34;: {
+    &#34;include&#34;: [
+      &#34;**&#34;
+    ],</code></pre>
 <h3 is-upgraded><strong>CDKのデプロイ</strong></h3>
 <p>AWS CDKでリソースを作成します。</p>
 <p>「--force」をオプションを付けているのでリソース作成まで完了します。</p>
@@ -101,7 +148,11 @@ Using default execution policy of &#39;arn:aws:iam::aws:policy/AdministratorAcce
 ImageProcessingStack: start: Building
  ...
 
-ImageProcessingStack: deploying... [1/1]
+Do you wish to deploy these changes (y/n)? </code></pre>
+<p><strong>y</strong></p>
+<pre><code># Windowsの場合は途中で確認が入るかもしれません</code></pre>
+<p> ...</p>
+<pre><code>ImageProcessingStack: deploying... [1/1]
 ImageProcessingStack: creating CloudFormation changeset...
 
  ✅  ImageProcessingStack
@@ -175,8 +226,8 @@ Your worker has access to the following bindings:
   - NEX_CACHE_SAGA_ITL: xxxxxxxxxxxxxxxxxxxxxxxx (local)</code></pre>
 <p>Webブラウザが起動してCloudflareにログインが求められるのでログインしてください。</p>
 <p>そのあと、WorkersとWranglerの認証設定が尋ねられます。</p>
-<p class="image-container"><img style="width: 463.82px" src="img/73ff20c35ec3d7ee.png"></p>
-<p class="image-container"><img style="width: 489.50px" src="img/853592b5becf7cb5.png"></p>
+<p class="image-container"><img style="width: 463.82px" src="img\\73ff20c35ec3d7ee.png"></p>
+<p class="image-container"><img style="width: 489.50px" src="img\\853592b5becf7cb5.png"></p>
 <pre><code>$ npm run deploy:worker
 
 &gt; frontend@0.1.0 deploy:worker
