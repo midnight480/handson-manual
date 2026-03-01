@@ -1,0 +1,592 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Amplifyで動的Webアプリケーションをホスティングするハンズオン</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid="196534296"
+                  codelab-ga4id=""
+                  id="11-AWS-handson-4-beginners-saga-serverlss-003"
+                  title="Amplifyで動的Webアプリケーションをホスティングするハンズオン"
+                  environment="web"
+                  feedback-link="https://github.com/midnight480/handson-manual">
+    
+      <google-codelab-step label="はじめに" duration="5">
+        <h2 is-upgraded>ハンズオンの概要</h2>
+<p>このハンズオンでは、AWS Amplifyを使って動的なWebアプリケーションを構築・デプロイします。<br> フォーム送信やAPIとの連携など、サーバサイドの処理を含むWebアプリケーションをサーバレスで実現します。</p>
+<h2 is-upgraded>使用するAWSサービス</h2>
+<ul>
+<li><strong>AWS Amplify</strong> - Webアプリケーションのホスティング・バックエンドサービス <ul>
+<li>Amplify Hosting - フロントエンドアプリのデプロイとCDN配信</li>
+<li>Amplify Functions - サーバレスAPI</li>
+<li>Amplify Data - データの永続化</li>
+</ul>
+</li>
+</ul>
+<h2 is-upgraded>前提条件</h2>
+<ul>
+<li>AWSアカウントを持っていること</li>
+<li>GitHubアカウントを持っていること</li>
+<li>Node.js（v18以上）がインストールされていること</li>
+<li>Gitがインストールされていること</li>
+</ul>
+<p>Positive : AWS Amplifyは、フロントエンドからバックエンドまで一貫して構築できるフルスタックのサービスです。</p>
+<p>Negative : 本ハンズオンで作成するリソースには料金が発生する場合があります。ハンズオン終了後は必ずアプリを削除してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="アプリケーションの作成" duration="10">
+        <h2 is-upgraded>Amplifyプロジェクトの初期化</h2>
+<p>新しいAmplifyプロジェクトを作成します。</p>
+<pre>npm create amplify@latest -- --yes
+cd my-amplify-app
+</pre>
+<p>Positive : <code>npm create amplify@latest</code> コマンドにより、Next.jsベースのAmplifyプロジェクトが自動生成されます。</p>
+<h2 is-upgraded>プロジェクト構成の確認</h2>
+<pre><code>my-amplify-app/
+├── amplify/
+│   ├── auth/
+│   │   └── resource.ts
+│   ├── data/
+│   │   └── resource.ts
+│   ├── backend.ts
+│   └── tsconfig.json
+├── app/
+│   ├── layout.tsx
+│   ├── page.tsx
+│   └── globals.css
+├── package.json
+└── tsconfig.json
+</code></pre>
+<p>主な構造は以下の通りです。</p>
+<ul>
+<li><code>amplify/</code> - バックエンドリソースの定義</li>
+<li><code>app/</code> - フロントエンドアプリケーション</li>
+<li><code>amplify/data/resource.ts</code> - データモデルの定義</li>
+<li><code>amplify/auth/resource.ts</code> - 認証の設定</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="データモデルの定義" duration="10">
+        <h2 is-upgraded>スキーマの設定</h2>
+<p><code>amplify/data/resource.ts</code> を編集して、メッセージを管理するデータモデルを定義します。</p>
+<pre><code language="language-typescript" class="language-typescript">import { type ClientSchema, a, defineData } from &#39;@aws-amplify/backend&#39;;
+
+const schema = a.schema({
+  // メッセージボードのデータモデル
+  Message: a.model({
+    content: a.string().required(),
+    author: a.string().required(),
+    createdAt: a.datetime(),
+  }).authorization(allow =&gt; [
+    allow.publicApiKey(),
+  ]),
+});
+
+export type Schema = ClientSchema&lt;typeof schema&gt;;
+
+export const data = defineData({
+  schema,
+  authorizationModes: {
+    defaultAuthorizationMode: &#39;apiKey&#39;,
+    apiKeyAuthorizationMode: {
+      expiresInDays: 7,
+    },
+  },
+});
+</code></pre>
+<p>Positive : <code>a.model()</code> で定義したモデルは自動的にDynamoDBテーブルとGraphQL APIが作成されます。CRUD操作も自動生成されます。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="フロントエンドの実装" duration="20">
+        <h2 is-upgraded>メインページの編集</h2>
+<p><code>app/page.tsx</code> を以下の内容に書き換えて、メッセージボードアプリを実装します。</p>
+<pre><code language="language-tsx" class="language-tsx">&#34;use client&#34;;
+
+import { useState, useEffect } from &#34;react&#34;;
+import { generateClient } from &#34;aws-amplify/data&#34;;
+import type { Schema } from &#34;@/amplify/data/resource&#34;;
+import { Amplify } from &#34;aws-amplify&#34;;
+import outputs from &#34;@/amplify_outputs.json&#34;;
+
+Amplify.configure(outputs);
+const client = generateClient&lt;Schema&gt;();
+
+export default function Home() {
+  const [messages, setMessages] = useState&lt;Schema[&#34;Message&#34;][&#34;type&#34;][]&gt;([]);
+  const [content, setContent] = useState(&#34;&#34;);
+  const [author, setAuthor] = useState(&#34;&#34;);
+
+  // メッセージの一覧取得
+  useEffect(() =&gt; {
+    const sub = client.models.Message.observeQuery().subscribe({
+      next: ({ items }) =&gt; {
+        setMessages([...items].sort((a, b) =&gt;
+          (b.createdAt ?? &#34;&#34;).localeCompare(a.createdAt ?? &#34;&#34;)
+        ));
+      },
+    });
+    return () =&gt; sub.unsubscribe();
+  }, []);
+
+  // メッセージの送信
+  const handleSubmit = async (e: React.FormEvent) =&gt; {
+    e.preventDefault();
+    if (!content.trim() || !author.trim()) return;
+
+    await client.models.Message.create({
+      content: content.trim(),
+      author: author.trim(),
+      createdAt: new Date().toISOString(),
+    });
+
+    setContent(&#34;&#34;);
+  };
+
+  // メッセージの削除
+  const handleDelete = async (id: string) =&gt; {
+    await client.models.Message.delete({ id });
+  };
+
+  return (
+    &lt;main className=&#34;container&#34;&gt;
+      &lt;h1&gt;📝 メッセージボード&lt;/h1&gt;
+      &lt;p className=&#34;subtitle&#34;&gt;AWS Amplify で構築した動的Webアプリ&lt;/p&gt;
+
+      &lt;form onSubmit={handleSubmit} className=&#34;form&#34;&gt;
+        &lt;input
+          type=&#34;text&#34;
+          placeholder=&#34;名前を入力&#34;
+          value={author}
+          onChange={(e) =&gt; setAuthor(e.target.value)}
+          className=&#34;input&#34;
+          required
+        /&gt;
+        &lt;textarea
+          placeholder=&#34;メッセージを入力&#34;
+          value={content}
+          onChange={(e) =&gt; setContent(e.target.value)}
+          className=&#34;textarea&#34;
+          required
+        /&gt;
+        &lt;button type=&#34;submit&#34; className=&#34;button&#34;&gt;
+          送信
+        &lt;/button&gt;
+      &lt;/form&gt;
+
+      &lt;div className=&#34;messages&#34;&gt;
+        &lt;h2&gt;メッセージ一覧 ({messages.length}件)&lt;/h2&gt;
+        {messages.length === 0 ? (
+          &lt;p className=&#34;empty&#34;&gt;まだメッセージがありません&lt;/p&gt;
+        ) : (
+          messages.map((msg) =&gt; (
+            &lt;div key={msg.id} className=&#34;message-card&#34;&gt;
+              &lt;div className=&#34;message-header&#34;&gt;
+                &lt;span className=&#34;message-author&#34;&gt;👤 {msg.author}&lt;/span&gt;
+                &lt;span className=&#34;message-date&#34;&gt;
+                  {msg.createdAt
+                    ? new Date(msg.createdAt).toLocaleString(&#34;ja-JP&#34;)
+                    : &#34;&#34;}
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;p className=&#34;message-content&#34;&gt;{msg.content}&lt;/p&gt;
+              &lt;button
+                onClick={() =&gt; handleDelete(msg.id)}
+                className=&#34;delete-button&#34;
+              &gt;
+                🗑 削除
+              &lt;/button&gt;
+            &lt;/div&gt;
+          ))
+        )}
+      &lt;/div&gt;
+    &lt;/main&gt;
+  );
+}
+</code></pre>
+<h2 is-upgraded>スタイルの編集</h2>
+<p><code>app/globals.css</code> を以下の内容に書き換えます。</p>
+<pre><code language="language-css" class="language-css">:root {
+  --bg-primary: #0f0f23;
+  --bg-secondary: #1a1a3e;
+  --text-primary: #e0e0ff;
+  --text-secondary: #9999cc;
+  --accent: #6c63ff;
+  --accent-hover: #5a52d5;
+  --card-bg: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.1);
+  --danger: #ff6b6b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: &#39;Segoe UI&#39;, Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+h1 {
+  font-size: 2.2rem;
+  text-align: center;
+  margin-bottom: 0.3rem;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 2.5rem;
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.input, .textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.input:focus, .textarea:focus {
+  border-color: var(--accent);
+}
+
+.textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.button {
+  padding: 0.8rem;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.button:hover {
+  background: var(--accent-hover);
+}
+
+.messages h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+}
+
+.empty {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 2rem;
+}
+
+.message-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  transition: transform 0.2s;
+}
+
+.message-card:hover {
+  transform: translateY(-2px);
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+
+.message-author {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.message-date {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.message-content {
+  line-height: 1.6;
+  margin-bottom: 0.8rem;
+}
+
+.delete-button {
+  background: none;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.delete-button:hover {
+  background: var(--danger);
+  color: white;
+}
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ローカルでの動作確認" duration="10">
+        <h2 is-upgraded>Amplifyサンドボックスの起動</h2>
+<p>ローカル開発用のサンドボックス環境を起動します。</p>
+<pre>npx ampx sandbox
+</pre>
+<p>Positive : サンドボックスモードでは、バックエンドのリソースが自動的にAWS上に作成されます。コードを変更するとホットリロードされます。</p>
+<p>別のターミナルでフロントエンドの開発サーバーを起動します。</p>
+<pre>npm run dev
+</pre>
+<h2 is-upgraded>ブラウザで確認</h2>
+<p><code>http://localhost:3000</code> にアクセスして以下を確認します。</p>
+<ol type="1">
+<li>メッセージボードが表示される</li>
+<li>名前とメッセージを入力して「送信」ボタンをクリック</li>
+<li>メッセージ一覧にリアルタイムで反映される</li>
+<li>「削除」ボタンでメッセージを削除できる</li>
+</ol>
+<h2 is-upgraded>サンドボックスの停止</h2>
+<p>確認が終わったら、サンドボックスを停止します。<br> ターミナルで <code>Ctrl + C</code> を押して停止し、リソース削除の確認に <code>y</code> と回答します。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="GitHubリポジトリの作成とプッシュ" duration="10">
+        <h2 is-upgraded>リポジトリの作成</h2>
+<ol type="1">
+<li><a href="https://github.com/" target="_blank">GitHub</a> にログインします</li>
+<li><strong>New repository</strong> をクリックします</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Repository name</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-amplify-app</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Visibility</p>
+</td><td colspan="1" rowspan="1"><p>Private</p>
+</td></tr>
+</table>
+<ol type="1" start="3">
+<li><strong>Create repository</strong> をクリックします</li>
+</ol>
+<h2 is-upgraded>コードのプッシュ</h2>
+<pre>git init
+git add .
+git commit -m &#34;Initial commit: Amplify message board app&#34;
+git branch -M main
+git remote add origin https://github.com/{あなたのGitHubユーザー名}/handson-amplify-app.git
+git push -u origin main
+</pre>
+<p>Negative : <code>{あなたのGitHubユーザー名}</code> は自分のGitHubユーザー名に置き換えてください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Amplify Hostingへのデプロイ" duration="15">
+        <h2 is-upgraded>Amplifyコンソールでの設定</h2>
+<ol type="1">
+<li>AWSマネジメントコンソールから <strong>AWS Amplify</strong> を選択します</li>
+<li><strong>新しいアプリを作成</strong> をクリックします</li>
+<li><strong>GitHub</strong> を選択して <strong>続行</strong> をクリックします</li>
+</ol>
+<h2 is-upgraded>GitHubとの連携</h2>
+<ol type="1">
+<li>GitHubの認証画面が表示されるので、<strong>Authorize</strong> をクリックします</li>
+<li>リポジトリの一覧から <code>handson-amplify-app</code> を選択します</li>
+<li>ブランチとして <code>main</code> を選択します</li>
+</ol>
+<h2 is-upgraded>ビルド設定</h2>
+<p>アプリ名を確認して、ビルド設定はデフォルトのまま進めます。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>アプリ名</p>
+</td><td colspan="1" rowspan="1"><p>handson-amplify-app</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ブランチ</p>
+</td><td colspan="1" rowspan="1"><p>main</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ビルド設定</p>
+</td><td colspan="1" rowspan="1"><p>自動検出（Next.js）</p>
+</td></tr>
+</table>
+<ol type="1" start="4">
+<li><strong>保存してデプロイ</strong> をクリックします</li>
+</ol>
+<p>Positive : Amplifyがnext.jsアプリを自動検出して適切なビルド設定を構成してくれます。</p>
+<h2 is-upgraded>デプロイの完了を待つ</h2>
+<p>以下のステップが順番に実行されます。</p>
+<ol type="1">
+<li><strong>Provision</strong> - インフラのプロビジョニング</li>
+<li><strong>Build</strong> - アプリケーションのビルド</li>
+<li><strong>Deploy</strong> - デプロイ</li>
+<li><strong>Verify</strong> - 動作確認</li>
+</ol>
+<p>全てのステップが ✅ になるまで待ちます（5〜10分程度）。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="動作確認" duration="10">
+        <h2 is-upgraded>デプロイされたアプリの確認</h2>
+<p>デプロイ完了後、Amplifyコンソールに表示されるURLにアクセスします。</p>
+<pre><code>https://main.{ランダム文字列}.amplifyapp.com
+</code></pre>
+<p>以下を確認しましょう。</p>
+<ol type="1">
+<li>メッセージボードが正しく表示される</li>
+<li>メッセージの投稿ができる</li>
+<li>メッセージの削除ができる</li>
+<li>リアルタイムでメッセージが反映される</li>
+<li>HTTPSでアクセスできる</li>
+</ol>
+<h2 is-upgraded>CI/CDの確認</h2>
+<p>コードを変更してGitHubにプッシュすると、自動的にAmplifyでリビルド・再デプロイが行われます。</p>
+<pre># 例：ページのタイトルを変更
+# app/page.tsx を任意の内容に編集
+git add .
+git commit -m &#34;Update page title&#34;
+git push
+</pre>
+<p>Amplifyコンソールで自動ビルドが開始されることを確認します。</p>
+<p>Positive : AmplifyはGitベースのCI/CDを標準で提供しています。プッシュするだけで自動デプロイが実行されます。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="リソースの削除" duration="5">
+        <h2 is-upgraded>Amplifyアプリの削除</h2>
+<ol type="1">
+<li>AWSマネジメントコンソールから <strong>AWS Amplify</strong> を選択します</li>
+<li>作成したアプリ（<code>handson-amplify-app</code>）を選択します</li>
+<li><strong>アプリの設定</strong> → <strong>全般</strong> を選択します</li>
+<li><strong>アプリを削除</strong> をクリックします</li>
+<li>確認画面で「削除」と入力して <strong>削除</strong> をクリックします</li>
+</ol>
+<p>Positive : Amplifyアプリを削除すると、関連するバックエンドリソース（DynamoDB、AppSync、S3など）も自動的に削除されます。</p>
+<h2 is-upgraded>GitHubリポジトリの削除（任意）</h2>
+<p>不要であればGitHubリポジトリも削除します。</p>
+<ol type="1">
+<li>GitHubのリポジトリページを開きます</li>
+<li><strong>Settings</strong> → ページ最下部の <strong>Delete this repository</strong> をクリック</li>
+</ol>
+<p>Negative : リソースの削除を忘れると、意図しない料金が発生する可能性があります。必ずアプリを削除してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="まとめ" duration="5">
+        <h2 is-upgraded>学んだこと</h2>
+<p>このハンズオンでは以下のことを学びました。</p>
+<ul>
+<li><strong>AWS Amplify</strong> を使ったフルスタックアプリケーションの構築</li>
+<li><strong>Amplify Data</strong> を使ったデータモデルの定義とGraphQL APIの自動生成</li>
+<li><strong>Amplify Hosting</strong> を使ったアプリケーションのデプロイ</li>
+<li><strong>GitHubとの連携</strong> によるCI/CD自動化</li>
+<li><strong>サンドボックスモード</strong> でのローカル開発</li>
+<li><strong>リアルタイムデータ同期</strong> の実装</li>
+</ul>
+<h2 is-upgraded>3つのハンズオンの振り返り</h2>
+<table>
+<tr><td colspan="1" rowspan="1"><p>#</p>
+</td><td colspan="1" rowspan="1"><p>テーマ</p>
+</td><td colspan="1" rowspan="1"><p>使用サービス</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>09</p>
+</td><td colspan="1" rowspan="1"><p>テキストの翻訳・音声化</p>
+</td><td colspan="1" rowspan="1"><p>Lambda, Step Functions, S3, Translate, Polly</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>10</p>
+</td><td colspan="1" rowspan="1"><p>静的Webサイトホスティング</p>
+</td><td colspan="1" rowspan="1"><p>CDK, CloudFront, S3, CloudWatch</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>11</p>
+</td><td colspan="1" rowspan="1"><p>動的Webアプリホスティング</p>
+</td><td colspan="1" rowspan="1"><p>Amplify</p>
+</td></tr>
+</table>
+<p>それぞれのハンズオンで、サーバレスのユースケースと構築方法を学びました。</p>
+<h2 is-upgraded>発展課題</h2>
+<ul>
+<li>Amplify Authを使ってユーザー認証を追加してみましょう</li>
+<li>Amplify Storageを使って画像のアップロード機能を追加してみましょう</li>
+<li>カスタムドメインを設定してみましょう</li>
+<li>Amplify Functionsでカスタムバックエンドロジックを追加してみましょう</li>
+</ul>
+<h2 is-upgraded>参考リンク</h2>
+<p><br>  [AWS Amplify ドキュメント](https://docs.amplify.aws/)<br><br>  [Amplify Gen 2 ガイド](https://docs.amplify.aws/gen2/)<br><br>  [Next.js ドキュメント](https://nextjs.org/docs)<br></p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

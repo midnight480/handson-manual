@@ -1,0 +1,601 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>ローカルテキストファイルの翻訳・音声化ハンズオン</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid="196534296"
+                  codelab-ga4id=""
+                  id="09-AWS-handson-4-beginners-saga-serverlss-001"
+                  title="ローカルテキストファイルの翻訳・音声化ハンズオン"
+                  environment="web"
+                  feedback-link="https://github.com/midnight480/handson-manual">
+    
+      <google-codelab-step label="はじめに" duration="5">
+        <h2 is-upgraded>ハンズオンの概要</h2>
+<p>このハンズオンでは、AWSのサーバレスサービスを活用して、ローカルのテキストファイルをアップロードし、翻訳・音声化するシステムを構築します。</p>
+<h2 is-upgraded>構成図</h2>
+<p>以下のAWSサービスを使用します。</p>
+<ul>
+<li><strong>Amazon S3</strong> - テキストファイルのアップロード先・出力先ストレージ</li>
+<li><strong>AWS Lambda</strong> - 各処理のビジネスロジック実行</li>
+<li><strong>AWS Step Functions</strong> - ワークフローのオーケストレーション</li>
+<li><strong>Amazon Translate</strong> - テキストの翻訳処理</li>
+<li><strong>Amazon Polly</strong> - テキストの音声化処理</li>
+</ul>
+<h2 is-upgraded>処理フロー</h2>
+<ol type="1">
+<li>ユーザーがテキストファイルをS3にアップロード</li>
+<li>S3イベントがStep Functionsのワークフローを起動</li>
+<li>Lambda関数がテキストファイルを読み取り</li>
+<li>Amazon Translateで翻訳</li>
+<li>Amazon Pollyで音声ファイルに変換</li>
+<li>結果をS3に保存</li>
+</ol>
+<h2 is-upgraded>前提条件</h2>
+<ul>
+<li>AWSアカウントを持っていること</li>
+<li>AWS CLIがインストール・設定済みであること</li>
+<li>AWS マネジメントコンソールにログインできること</li>
+</ul>
+<p>Positive : 本ハンズオンは初心者向けの内容です。AWSの基本的な操作ができれば問題ありません。</p>
+<p>Negative : 本ハンズオンで作成するリソースには料金が発生する場合があります。ハンズオン終了後は必ずリソースを削除してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="S3バケットの作成" duration="10">
+        <h2 is-upgraded>入力用バケットの作成</h2>
+<p>テキストファイルをアップロードするためのS3バケットを作成します。</p>
+<ol type="1">
+<li>AWSマネジメントコンソールにログインします</li>
+<li>サービス一覧から <strong>S3</strong> を選択します</li>
+<li><strong>バケットを作成</strong> をクリックします</li>
+</ol>
+<p>以下の設定でバケットを作成します。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>バケット名</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-input-{あなたのアカウントID}</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>AWSリージョン</p>
+</td><td colspan="1" rowspan="1"><p><code>ap-northeast-1（東京）</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>その他設定</p>
+</td><td colspan="1" rowspan="1"><p>デフォルトのまま</p>
+</td></tr>
+</table>
+<ol type="1" start="4">
+<li><strong>バケットを作成</strong> をクリックして完了します</li>
+</ol>
+<h2 is-upgraded>出力用バケットの作成</h2>
+<p>翻訳結果と音声ファイルを格納するS3バケットを作成します。</p>
+<p>同様の手順で以下の設定のバケットを作成します。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>バケット名</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-output-{あなたのアカウントID}</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>AWSリージョン</p>
+</td><td colspan="1" rowspan="1"><p><code>ap-northeast-1（東京）</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>その他設定</p>
+</td><td colspan="1" rowspan="1"><p>デフォルトのまま</p>
+</td></tr>
+</table>
+<p>Positive : S3バケット名はグローバルで一意である必要があります。アカウントIDを含めることで重複を避けましょう。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="IAMロールの作成" duration="10">
+        <h2 is-upgraded>Lambda用IAMロール</h2>
+<p>Lambda関数がS3、Translate、Pollyにアクセスするためのロールを作成します。</p>
+<ol type="1">
+<li>AWSマネジメントコンソールから <strong>IAM</strong> を選択します</li>
+<li>左メニューの <strong>ロール</strong> をクリックします</li>
+<li><strong>ロールを作成</strong> をクリックします</li>
+</ol>
+<p>以下の設定でロールを作成します。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>信頼されたエンティティ</p>
+</td><td colspan="1" rowspan="1"><p>AWS のサービス</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ユースケース</p>
+</td><td colspan="1" rowspan="1"><p>Lambda</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ロール名</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-lambda-role</code></p>
+</td></tr>
+</table>
+<p>以下のポリシーをアタッチします。</p>
+<pre><code>AmazonS3FullAccess
+AmazonTranslateFullAccess
+AmazonPollyFullAccess
+CloudWatchLogsFullAccess
+</code></pre>
+<p>Negative : 本ハンズオンでは簡易化のためFullAccessポリシーを使用しますが、本番環境では最小権限の原則に基づいたポリシーを設定してください。</p>
+<h2 is-upgraded>Step Functions用IAMロール</h2>
+<p>同様の手順で、Step Functions用のロールを作成します。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>信頼されたエンティティ</p>
+</td><td colspan="1" rowspan="1"><p>AWS のサービス</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ユースケース</p>
+</td><td colspan="1" rowspan="1"><p>Step Functions</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ロール名</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-stepfunctions-role</code></p>
+</td></tr>
+</table>
+<p>以下のポリシーをアタッチします。</p>
+<pre><code>AWSLambda_FullAccess
+CloudWatchLogsFullAccess
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Lambda関数の作成（テキスト読み取り）" duration="15">
+        <h2 is-upgraded>関数の作成</h2>
+<ol type="1">
+<li>AWSマネジメントコンソールから <strong>Lambda</strong> を選択します</li>
+<li><strong>関数の作成</strong> をクリックします</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>関数名</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-read-text</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ランタイム</p>
+</td><td colspan="1" rowspan="1"><p>Python 3.12</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>実行ロール</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-lambda-role</code>（既存のロールを使用）</p>
+</td></tr>
+</table>
+<h2 is-upgraded>コードの入力</h2>
+<p>以下のコードを入力します。</p>
+<pre><code language="language-python" class="language-python">import json
+import boto3
+import urllib.parse
+
+s3 = boto3.client(&#39;s3&#39;)
+
+def lambda_handler(event, context):
+    &#34;&#34;&#34;S3からテキストファイルを読み取る&#34;&#34;&#34;
+
+    bucket = event[&#39;bucket&#39;]
+    key = event[&#39;key&#39;]
+
+    # S3からファイルを取得
+    response = s3.get_object(Bucket=bucket, Key=key)
+    text = response[&#39;Body&#39;].read().decode(&#39;utf-8&#39;)
+
+    return {
+        &#39;statusCode&#39;: 200,
+        &#39;bucket&#39;: bucket,
+        &#39;key&#39;: key,
+        &#39;text&#39;: text,
+        &#39;source_language&#39;: &#39;ja&#39;
+    }
+</code></pre>
+<ol type="1" start="3">
+<li><strong>Deploy</strong> をクリックして関数をデプロイします</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Lambda関数の作成（翻訳処理）" duration="15">
+        <h2 is-upgraded>関数の作成</h2>
+<p>新しいLambda関数を作成します。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>関数名</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-translate-text</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ランタイム</p>
+</td><td colspan="1" rowspan="1"><p>Python 3.12</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>実行ロール</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-lambda-role</code>（既存のロールを使用）</p>
+</td></tr>
+</table>
+<h2 is-upgraded>コードの入力</h2>
+<p>以下のコードを入力します。</p>
+<pre><code language="language-python" class="language-python">import json
+import boto3
+
+translate = boto3.client(&#39;translate&#39;)
+
+def lambda_handler(event, context):
+    &#34;&#34;&#34;テキストを英語に翻訳する&#34;&#34;&#34;
+
+    text = event[&#39;text&#39;]
+    source_language = event.get(&#39;source_language&#39;, &#39;ja&#39;)
+    target_language = &#39;en&#39;
+
+    # Amazon Translateで翻訳
+    response = translate.translate_text(
+        Text=text,
+        SourceLanguageCode=source_language,
+        TargetLanguageCode=target_language
+    )
+
+    translated_text = response[&#39;TranslatedText&#39;]
+
+    return {
+        &#39;statusCode&#39;: 200,
+        &#39;bucket&#39;: event[&#39;bucket&#39;],
+        &#39;key&#39;: event[&#39;key&#39;],
+        &#39;original_text&#39;: text,
+        &#39;translated_text&#39;: translated_text,
+        &#39;source_language&#39;: source_language,
+        &#39;target_language&#39;: target_language
+    }
+</code></pre>
+<ol type="1" start="3">
+<li><strong>Deploy</strong> をクリックして関数をデプロイします</li>
+</ol>
+<p>Positive : Amazon Translateは多くの言語ペアに対応しています。<code>source_language</code>と<code>target_language</code>を変更することで、様々な言語間の翻訳が可能です。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Lambda関数の作成（音声化処理）" duration="15">
+        <h2 is-upgraded>関数の作成</h2>
+<p>新しいLambda関数を作成します。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>関数名</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-text-to-speech</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ランタイム</p>
+</td><td colspan="1" rowspan="1"><p>Python 3.12</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>実行ロール</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-lambda-role</code>（既存のロールを使用）</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>タイムアウト</p>
+</td><td colspan="1" rowspan="1"><p>60秒（デフォルトの3秒から変更）</p>
+</td></tr>
+</table>
+<h2 is-upgraded>タイムアウトの変更</h2>
+<ol type="1">
+<li><strong>設定</strong> タブをクリック</li>
+<li><strong>一般設定</strong> の <strong>編集</strong> をクリック</li>
+<li>タイムアウトを <strong>1分</strong> に変更</li>
+<li><strong>保存</strong> をクリック</li>
+</ol>
+<h2 is-upgraded>コードの入力</h2>
+<p>以下のコードを入力します。</p>
+<pre><code language="language-python" class="language-python">import json
+import boto3
+from datetime import datetime
+
+polly = boto3.client(&#39;polly&#39;)
+s3 = boto3.client(&#39;s3&#39;)
+
+def lambda_handler(event, context):
+    &#34;&#34;&#34;翻訳されたテキストを音声に変換してS3に保存する&#34;&#34;&#34;
+
+    translated_text = event[&#39;translated_text&#39;]
+    output_bucket = event[&#39;bucket&#39;].replace(&#39;input&#39;, &#39;output&#39;)
+    original_key = event[&#39;key&#39;]
+
+    # ファイル名を生成
+    timestamp = datetime.now().strftime(&#39;%Y%m%d_%H%M%S&#39;)
+    output_key_text = f&#34;translated/{timestamp}_{original_key}&#34;
+    output_key_audio = f&#34;audio/{timestamp}_{original_key.replace(&#39;.txt&#39;, &#39;.mp3&#39;)}&#34;
+
+    # 翻訳テキストをS3に保存
+    s3.put_object(
+        Bucket=output_bucket,
+        Key=output_key_text,
+        Body=translated_text.encode(&#39;utf-8&#39;),
+        ContentType=&#39;text/plain&#39;
+    )
+
+    # Amazon Pollyで音声合成
+    response = polly.synthesize_speech(
+        Text=translated_text,
+        OutputFormat=&#39;mp3&#39;,
+        VoiceId=&#39;Joanna&#39;,
+        Engine=&#39;neural&#39;
+    )
+
+    # 音声ファイルをS3に保存
+    audio_stream = response[&#39;AudioStream&#39;].read()
+    s3.put_object(
+        Bucket=output_bucket,
+        Key=output_key_audio,
+        Body=audio_stream,
+        ContentType=&#39;audio/mpeg&#39;
+    )
+
+    return {
+        &#39;statusCode&#39;: 200,
+        &#39;output_bucket&#39;: output_bucket,
+        &#39;translated_text_key&#39;: output_key_text,
+        &#39;audio_key&#39;: output_key_audio,
+        &#39;message&#39;: &#39;翻訳テキストと音声ファイルの保存が完了しました&#39;
+    }
+</code></pre>
+<ol type="1" start="3">
+<li><strong>Deploy</strong> をクリックして関数をデプロイします</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Step Functionsの作成" duration="15">
+        <h2 is-upgraded>ステートマシンの作成</h2>
+<ol type="1">
+<li>AWSマネジメントコンソールから <strong>Step Functions</strong> を選択します</li>
+<li><strong>ステートマシンの作成</strong> をクリックします</li>
+<li><strong>コードでワークフローを作成</strong> を選択します</li>
+</ol>
+<h2 is-upgraded>ワークフロー定義</h2>
+<p>以下のASL（Amazon States Language）を入力します。</p>
+<pre><code language="language-json" class="language-json">{
+  &#34;Comment&#34;: &#34;テキストファイルの翻訳・音声化ワークフロー&#34;,
+  &#34;StartAt&#34;: &#34;ReadText&#34;,
+  &#34;States&#34;: {
+    &#34;ReadText&#34;: {
+      &#34;Type&#34;: &#34;Task&#34;,
+      &#34;Resource&#34;: &#34;arn:aws:lambda:ap-northeast-1:{アカウントID}:function:handson-read-text&#34;,
+      &#34;Next&#34;: &#34;TranslateText&#34;,
+      &#34;Catch&#34;: [
+        {
+          &#34;ErrorEquals&#34;: [&#34;States.ALL&#34;],
+          &#34;Next&#34;: &#34;HandleError&#34;
+        }
+      ]
+    },
+    &#34;TranslateText&#34;: {
+      &#34;Type&#34;: &#34;Task&#34;,
+      &#34;Resource&#34;: &#34;arn:aws:lambda:ap-northeast-1:{アカウントID}:function:handson-translate-text&#34;,
+      &#34;Next&#34;: &#34;TextToSpeech&#34;,
+      &#34;Catch&#34;: [
+        {
+          &#34;ErrorEquals&#34;: [&#34;States.ALL&#34;],
+          &#34;Next&#34;: &#34;HandleError&#34;
+        }
+      ]
+    },
+    &#34;TextToSpeech&#34;: {
+      &#34;Type&#34;: &#34;Task&#34;,
+      &#34;Resource&#34;: &#34;arn:aws:lambda:ap-northeast-1:{アカウントID}:function:handson-text-to-speech&#34;,
+      &#34;Next&#34;: &#34;SuccessState&#34;,
+      &#34;Catch&#34;: [
+        {
+          &#34;ErrorEquals&#34;: [&#34;States.ALL&#34;],
+          &#34;Next&#34;: &#34;HandleError&#34;
+        }
+      ]
+    },
+    &#34;SuccessState&#34;: {
+      &#34;Type&#34;: &#34;Succeed&#34;
+    },
+    &#34;HandleError&#34;: {
+      &#34;Type&#34;: &#34;Fail&#34;,
+      &#34;Error&#34;: &#34;ProcessingError&#34;,
+      &#34;Cause&#34;: &#34;ワークフローの実行中にエラーが発生しました&#34;
+    }
+  }
+}
+</code></pre>
+<p>Negative : <code>{アカウントID}</code> は自分のAWSアカウントIDに置き換えてください。</p>
+<h2 is-upgraded>ステートマシンの設定</h2>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ステートマシン名</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-translate-workflow</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>実行ロール</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-stepfunctions-role</code>（既存のロールを使用）</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ログ記録</p>
+</td><td colspan="1" rowspan="1"><p>すべてのログ</p>
+</td></tr>
+</table>
+<ol type="1" start="4">
+<li><strong>ステートマシンの作成</strong> をクリックします</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="S3イベント通知の設定" duration="10">
+        <h2 is-upgraded>イベント通知の設定</h2>
+<p>S3にテキストファイルがアップロードされた際に、自動的にStep Functionsを実行するよう設定します。</p>
+<ol type="1">
+<li>S3コンソールから <strong>入力用バケット</strong> を選択します</li>
+<li><strong>プロパティ</strong> タブを選択します</li>
+<li><strong>イベント通知</strong> セクションの <strong>イベント通知を作成</strong> をクリックします</li>
+</ol>
+<p>Positive : S3イベント通知からStep Functionsを直接起動するには、Amazon EventBridge経由で設定することもできます。</p>
+<h2 is-upgraded>EventBridge経由での設定</h2>
+<ol type="1">
+<li>入力用S3バケットの <strong>プロパティ</strong> タブを開きます</li>
+<li><strong>Amazon EventBridge</strong> セクションで <strong>編集</strong> をクリック</li>
+<li><strong>通知をEventBridgeに送信</strong> を <strong>オン</strong> にします</li>
+</ol>
+<p>次に、EventBridgeでルールを作成します。</p>
+<ol type="1">
+<li><strong>Amazon EventBridge</strong> コンソールを開きます</li>
+<li><strong>ルール</strong> → <strong>ルールを作成</strong> をクリック</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ルール名</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-s3-to-stepfunctions</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>イベントバス</p>
+</td><td colspan="1" rowspan="1"><p>default</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ルールタイプ</p>
+</td><td colspan="1" rowspan="1"><p>イベントパターンを持つルール</p>
+</td></tr>
+</table>
+<ol type="1" start="3">
+<li>イベントパターンを以下のように設定します</li>
+</ol>
+<pre><code language="language-json" class="language-json">{
+  &#34;source&#34;: [&#34;aws.s3&#34;],
+  &#34;detail-type&#34;: [&#34;Object Created&#34;],
+  &#34;detail&#34;: {
+    &#34;bucket&#34;: {
+      &#34;name&#34;: [&#34;handson-input-{アカウントID}&#34;]
+    },
+    &#34;object&#34;: {
+      &#34;key&#34;: [{
+        &#34;suffix&#34;: &#34;.txt&#34;
+      }]
+    }
+  }
+}
+</code></pre>
+<ol type="1" start="4">
+<li>ターゲットに <strong>Step Functions ステートマシン</strong> を選択し、<code>handson-translate-workflow</code> を指定します</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="動作確認" duration="10">
+        <h2 is-upgraded>テストファイルの作成</h2>
+<p>ローカルにテスト用のテキストファイルを作成します。</p>
+<pre>echo &#34;こんにちは。今日はAWSのサーバレスサービスを使ったハンズオンを行います。楽しんでいきましょう。&#34; &gt; test.txt
+</pre>
+<h2 is-upgraded>S3へのアップロード</h2>
+<p>AWS CLIを使ってファイルをアップロードします。</p>
+<pre>aws s3 cp test.txt s3://handson-input-{アカウントID}/test.txt
+</pre>
+<h2 is-upgraded>結果の確認</h2>
+<ol type="1">
+<li><strong>Step Functions</strong> コンソールでワークフローの実行を確認します</li>
+<li>各ステップが <strong>Succeeded</strong> になっていることを確認します</li>
+<li><strong>出力用S3バケット</strong> に以下のファイルが生成されていることを確認します</li>
+</ol>
+<ul>
+<li><code>translated/</code> フォルダ - 翻訳されたテキストファイル</li>
+<li><code>audio/</code> フォルダ - 音声ファイル（.mp3）</li>
+</ul>
+<h2 is-upgraded>音声ファイルの確認</h2>
+<pre>aws s3 ls s3://handson-output-{アカウントID}/audio/
+aws s3 cp s3://handson-output-{アカウントID}/audio/{生成されたファイル名}.mp3 ./output.mp3
+</pre>
+<p>ダウンロードしたMP3ファイルを再生して、英語の音声が出力されることを確認します。</p>
+<p>Positive : ワークフローがエラーになった場合は、Step Functionsの実行履歴からエラーの詳細を確認してください。Lambda関数のCloudWatch Logsも参考になります。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="リソースの削除" duration="10">
+        <h2 is-upgraded>作成したリソースの削除</h2>
+<p>ハンズオンが完了したら、以下のリソースを削除して料金の発生を防ぎましょう。</p>
+<p>削除順序は以下の通りです。</p>
+<ol type="1">
+<li><strong>EventBridge ルール </strong><code>handson-s3-to-stepfunctions</code> を削除</li>
+<li><strong>Step Functions</strong> ステートマシン <code>handson-translate-workflow</code> を削除</li>
+<li><strong>Lambda関数</strong> 以下の3つの関数を削除 <ul>
+<li><code>handson-read-text</code></li>
+<li><code>handson-translate-text</code></li>
+<li><code>handson-text-to-speech</code></li>
+</ul>
+</li>
+<li><strong>S3バケット</strong> 以下の2つのバケットを空にしてから削除 <ul>
+<li><code>handson-input-{アカウントID}</code></li>
+<li><code>handson-output-{アカウントID}</code></li>
+</ul>
+</li>
+<li><strong>IAMロール</strong> 以下の2つのロールを削除 <ul>
+<li><code>handson-lambda-role</code></li>
+<li><code>handson-stepfunctions-role</code></li>
+</ul>
+</li>
+</ol>
+<h2 is-upgraded>S3バケットの空にする方法</h2>
+<pre>aws s3 rm s3://handson-input-{アカウントID} --recursive
+aws s3 rm s3://handson-output-{アカウントID} --recursive
+aws s3 rb s3://handson-input-{アカウントID}
+aws s3 rb s3://handson-output-{アカウントID}
+</pre>
+<p>Negative : リソースの削除を忘れると、意図しない料金が発生する可能性があります。必ず全てのリソースを削除してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="まとめ" duration="5">
+        <h2 is-upgraded>学んだこと</h2>
+<p>このハンズオンでは以下のことを学びました。</p>
+<ul>
+<li><strong>Amazon S3</strong> を使ったファイルの保存とイベント通知</li>
+<li><strong>AWS Lambda</strong> を使ったサーバレスアプリケーションの構築</li>
+<li><strong>AWS Step Functions</strong> を使ったワークフローのオーケストレーション</li>
+<li><strong>Amazon Translate</strong> を使ったテキスト翻訳</li>
+<li><strong>Amazon Polly</strong> を使ったテキスト音声変換</li>
+<li><strong>Amazon EventBridge</strong> を使ったイベント駆動アーキテクチャ</li>
+</ul>
+<h2 is-upgraded>発展課題</h2>
+<ul>
+<li>翻訳先の言語を複数言語に対応させてみましょう</li>
+<li>音声のVoiceIdを変更して異なる声質を試してみましょう</li>
+<li>エラーハンドリングを強化してSNS通知を追加してみましょう</li>
+<li>DynamoDBを追加して翻訳履歴を保存してみましょう</li>
+</ul>
+<h2 is-upgraded>参考リンク</h2>
+<p><br>  [AWS Lambda ドキュメント](https://docs.aws.amazon.com/ja_jp/lambda/)<br><br>  [AWS Step Functions ドキュメント](https://docs.aws.amazon.com/ja_jp/step-functions/)<br><br>  [Amazon Translate ドキュメント](https://docs.aws.amazon.com/ja_jp/translate/)<br><br>  [Amazon Polly ドキュメント](https://docs.aws.amazon.com/ja_jp/polly/)<br></p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2026-03-01T17:10:16+09:00",
+  "id": "10-AWS-handson-4-beginners-saga-serverlss-002",
+  "duration": 85,
+  "title": "サーバレスで静的Webサイトをホスティングするハンズオン",
+  "summary": "サーバレスでindex.html, CSS, images/ ホスティング - AWS CDK, CloudFront, S3, CloudWatch を使ったハンズオン",
+  "source": "10-AWS-handson-4-beginners-saga-serverlss-002.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "codelab",
+    "markdown"
+  ],
+  "tags": [
+    "web"
+  ],
+  "feedback": "https://github.com/midnight480/handson-manual",
+  "ga": "196534296",
+  "url": "10-AWS-handson-4-beginners-saga-serverlss-002"
+}

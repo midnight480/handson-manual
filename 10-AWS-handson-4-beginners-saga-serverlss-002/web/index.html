@@ -1,0 +1,430 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>サーバレスで静的Webサイトをホスティングするハンズオン</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid="196534296"
+                  codelab-ga4id=""
+                  id="10-AWS-handson-4-beginners-saga-serverlss-002"
+                  title="サーバレスで静的Webサイトをホスティングするハンズオン"
+                  environment="web"
+                  feedback-link="https://github.com/midnight480/handson-manual">
+    
+      <google-codelab-step label="はじめに" duration="5">
+        <h2 is-upgraded>ハンズオンの概要</h2>
+<p>このハンズオンでは、AWS CDKを使って、S3 + CloudFrontで静的Webサイト（HTML/CSS/画像）をホスティングする環境を構築します。<br> CloudWatchでアクセスログの監視も設定します。</p>
+<h2 is-upgraded>使用するAWSサービス</h2>
+<ul>
+<li><strong>Amazon S3</strong> - 静的ファイル（HTML, CSS, 画像）の保存先</li>
+<li><strong>Amazon CloudFront</strong> - CDNによるコンテンツ配信</li>
+<li><strong>AWS CDK</strong> - IaCによるインフラの自動構築</li>
+<li><strong>Amazon CloudWatch</strong> - アクセスログの監視</li>
+</ul>
+<h2 is-upgraded>前提条件</h2>
+<ul>
+<li>AWSアカウントを持っていること</li>
+<li>AWS CLIがインストール・設定済みであること</li>
+<li>Node.js（v18以上）がインストールされていること</li>
+<li>TypeScriptの基本的な知識があること（なくても実施可能）</li>
+</ul>
+<p>Positive : AWS CDKを使うことで、インフラをコードで管理できます。再現性が高く、環境の複製も容易です。</p>
+<p>Negative : 本ハンズオンで作成するリソースには料金が発生する場合があります。ハンズオン終了後は必ずリソースを削除してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="開発環境の構築" duration="10">
+        <h2 is-upgraded>AWS CDKのインストール</h2>
+<p>AWS CDKをグローバルにインストールします。</p>
+<pre>npm install -g aws-cdk
+cdk --version
+</pre>
+<h2 is-upgraded>CDKプロジェクトの作成</h2>
+<p>プロジェクトディレクトリを作成し、CDKプロジェクトを初期化します。</p>
+<pre>mkdir handson-static-hosting
+cd handson-static-hosting
+cdk init app --language typescript
+</pre>
+<p>Positive : <code>cdk init</code> コマンドにより、TypeScriptベースのCDKプロジェクトが自動生成されます。</p>
+<h2 is-upgraded>プロジェクト構成の確認</h2>
+<p>以下のようなディレクトリ構成が生成されます。</p>
+<pre><code>handson-static-hosting/
+├── bin/
+│   └── handson-static-hosting.ts
+├── lib/
+│   └── handson-static-hosting-stack.ts
+├── website/          ← ★ これから作成
+│   ├── index.html
+│   ├── style.css
+│   └── images/
+├── cdk.json
+├── package.json
+└── tsconfig.json
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="静的Webサイトの作成" duration="15">
+        <h2 is-upgraded>ディレクトリの作成</h2>
+<pre>mkdir -p website/images
+</pre>
+<h2 is-upgraded>index.htmlの作成</h2>
+<p><code>website/index.html</code> を以下の内容で作成します。</p>
+<pre><code language="language-html" class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&#34;ja&#34;&gt;
+&lt;head&gt;
+    &lt;meta charset=&#34;UTF-8&#34;&gt;
+    &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1.0&#34;&gt;
+    &lt;title&gt;AWS サーバレスハンズオン&lt;/title&gt;
+    &lt;link rel=&#34;stylesheet&#34; href=&#34;style.css&#34;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;nav&gt;
+            &lt;h1&gt;☁️ AWS Serverless Handson&lt;/h1&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+        &lt;section class=&#34;hero&#34;&gt;
+            &lt;h2&gt;サーバレスで始めるWebホスティング&lt;/h2&gt;
+            &lt;p&gt;S3 + CloudFrontで高速・低コストなWebサイトを構築しよう&lt;/p&gt;
+        &lt;/section&gt;
+        &lt;section class=&#34;features&#34;&gt;
+            &lt;div class=&#34;feature-card&#34;&gt;
+                &lt;h3&gt;🚀 高速配信&lt;/h3&gt;
+                &lt;p&gt;CloudFrontのCDNで世界中に高速配信&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&#34;feature-card&#34;&gt;
+                &lt;h3&gt;💰 低コスト&lt;/h3&gt;
+                &lt;p&gt;サーバレスだから使った分だけ課金&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&#34;feature-card&#34;&gt;
+                &lt;h3&gt;🔒 セキュア&lt;/h3&gt;
+                &lt;p&gt;HTTPS対応で安全に配信&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+    &lt;/main&gt;
+    &lt;footer&gt;
+        &lt;p&gt;&amp;copy; 2026 AWS Handson. All rights reserved.&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h2 is-upgraded>style.cssの作成</h2>
+<p><code>website/style.css</code> を以下の内容で作成します。</p>
+<pre><code language="language-css" class="language-css">* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: &#39;Segoe UI&#39;, Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0a0a2e 0%, #1a1a4e 100%);
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+header nav {
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+}
+
+.hero {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, #00d2ff, #7b2ff7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: #aaa;
+}
+
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem;
+    flex-wrap: wrap;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 280px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.feature-card p {
+    color: #bbb;
+}
+
+footer {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    margin-top: 3rem;
+}
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="CDKスタックの実装" duration="20">
+        <h2 is-upgraded>必要なパッケージのインストール</h2>
+<pre>npm install aws-cdk-lib constructs
+</pre>
+<h2 is-upgraded>スタックファイルの編集</h2>
+<p><code>lib/handson-static-hosting-stack.ts</code> を以下の内容に書き換えます。</p>
+<pre><code language="language-typescript" class="language-typescript">import * as cdk from &#39;aws-cdk-lib&#39;;
+import * as s3 from &#39;aws-cdk-lib/aws-s3&#39;;
+import * as cloudfront from &#39;aws-cdk-lib/aws-cloudfront&#39;;
+import * as origins from &#39;aws-cdk-lib/aws-cloudfront-origins&#39;;
+import * as s3deploy from &#39;aws-cdk-lib/aws-s3-deployment&#39;;
+import * as cloudwatch from &#39;aws-cdk-lib/aws-cloudwatch&#39;;
+import { Construct } from &#39;constructs&#39;;
+
+export class HandsonStaticHostingStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+
+    // S3バケット（WebサイトホスティングはCloudFront経由のため不要）
+    const websiteBucket = new s3.Bucket(this, &#39;WebsiteBucket&#39;, {
+      bucketName: `handson-website-${this.account}`,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    });
+
+    // CloudFrontディストリビューション
+    const distribution = new cloudfront.Distribution(this, &#39;Distribution&#39;, {
+      defaultBehavior: {
+        origin: origins.S3BucketOrigin.withOriginAccessControl(websiteBucket),
+        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+        cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+      },
+      defaultRootObject: &#39;index.html&#39;,
+      enableLogging: true,
+    });
+
+    // S3へのデプロイ
+    new s3deploy.BucketDeployment(this, &#39;DeployWebsite&#39;, {
+      sources: [s3deploy.Source.asset(&#39;./website&#39;)],
+      destinationBucket: websiteBucket,
+      distribution,
+      distributionPaths: [&#39;/*&#39;],
+    });
+
+    // CloudWatchダッシュボード
+    const dashboard = new cloudwatch.Dashboard(this, &#39;WebsiteDashboard&#39;, {
+      dashboardName: &#39;handson-website-dashboard&#39;,
+    });
+
+    dashboard.addWidgets(
+      new cloudwatch.GraphWidget({
+        title: &#39;CloudFront Requests&#39;,
+        left: [
+          new cloudwatch.Metric({
+            namespace: &#39;AWS/CloudFront&#39;,
+            metricName: &#39;Requests&#39;,
+            dimensionsMap: {
+              DistributionId: distribution.distributionId,
+              Region: &#39;Global&#39;,
+            },
+            statistic: &#39;Sum&#39;,
+            period: cdk.Duration.minutes(5),
+          }),
+        ],
+      }),
+      new cloudwatch.GraphWidget({
+        title: &#39;CloudFront Error Rate&#39;,
+        left: [
+          new cloudwatch.Metric({
+            namespace: &#39;AWS/CloudFront&#39;,
+            metricName: &#39;4xxErrorRate&#39;,
+            dimensionsMap: {
+              DistributionId: distribution.distributionId,
+              Region: &#39;Global&#39;,
+            },
+            statistic: &#39;Average&#39;,
+            period: cdk.Duration.minutes(5),
+          }),
+          new cloudwatch.Metric({
+            namespace: &#39;AWS/CloudFront&#39;,
+            metricName: &#39;5xxErrorRate&#39;,
+            dimensionsMap: {
+              DistributionId: distribution.distributionId,
+              Region: &#39;Global&#39;,
+            },
+            statistic: &#39;Average&#39;,
+            period: cdk.Duration.minutes(5),
+          }),
+        ],
+      }),
+    );
+
+    // 出力
+    new cdk.CfnOutput(this, &#39;DistributionDomainName&#39;, {
+      value: distribution.distributionDomainName,
+      description: &#39;CloudFrontのURL&#39;,
+    });
+
+    new cdk.CfnOutput(this, &#39;BucketName&#39;, {
+      value: websiteBucket.bucketName,
+      description: &#39;S3バケット名&#39;,
+    });
+  }
+}
+</code></pre>
+<p>Positive : OAC（Origin Access Control）を使用することで、S3バケットへの直接アクセスをブロックし、CloudFront経由のみでアクセスを許可できます。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="CDKデプロイ" duration="15">
+        <h2 is-upgraded>CDKブートストラップ</h2>
+<p>初めてCDKを利用する場合は、ブートストラップを実行します。</p>
+<pre>cdk bootstrap aws://{アカウントID}/ap-northeast-1
+</pre>
+<p>Negative : <code>{アカウントID}</code> は自分のAWSアカウントIDに置き換えてください。</p>
+<h2 is-upgraded>差分確認</h2>
+<p>デプロイ前に変更内容を確認します。</p>
+<pre>cdk diff
+</pre>
+<h2 is-upgraded>デプロイ</h2>
+<pre>cdk deploy
+</pre>
+<p>デプロイ中に確認が求められた場合は <code>y</code> を入力します。</p>
+<p>Positive : デプロイには数分かかる場合があります。CloudFrontディストリビューションの作成に特に時間がかかります。</p>
+<h2 is-upgraded>デプロイ完了</h2>
+<p>デプロイが完了すると、以下のような出力が表示されます。</p>
+<pre><code>Outputs:
+HandsonStaticHostingStack.DistributionDomainName = d1234567890.cloudfront.net
+HandsonStaticHostingStack.BucketName = handson-website-{アカウントID}
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="動作確認" duration="10">
+        <h2 is-upgraded>Webサイトの確認</h2>
+<p>出力されたCloudFrontのURLにブラウザでアクセスします。</p>
+<pre><code>https://d1234567890.cloudfront.net
+</code></pre>
+<p>以下を確認しましょう。</p>
+<ul>
+<li>HTMLページが正しく表示される</li>
+<li>CSSスタイルが適用されている</li>
+<li>HTTPSでアクセスできる</li>
+</ul>
+<h2 is-upgraded>CloudWatchダッシュボードの確認</h2>
+<ol type="1">
+<li>AWSマネジメントコンソールから <strong>CloudWatch</strong> を選択</li>
+<li>左メニューの <strong>ダッシュボード</strong> をクリック</li>
+<li><code>handson-website-dashboard</code> を選択</li>
+<li>リクエスト数とエラー率のグラフを確認</li>
+</ol>
+<p>Positive : CloudFrontのメトリクスはリアルタイムではなく、数分の遅延がある場合があります。</p>
+<h2 is-upgraded>コンテンツの更新</h2>
+<p>Webサイトの内容を更新したい場合は、<code>website/</code> ディレクトリのファイルを編集し、再デプロイします。</p>
+<pre>cdk deploy
+</pre>
+<p>CDKが自動的にS3のファイルを更新し、CloudFrontのキャッシュを無効化します。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="リソースの削除" duration="5">
+        <h2 is-upgraded>CDKで作成したリソースの削除</h2>
+<p>CDKで作成したリソースは、以下のコマンドで一括削除できます。</p>
+<pre>cdk destroy
+</pre>
+<p>確認が求められた場合は <code>y</code> を入力します。</p>
+<p>Positive : CDKの <code>RemovalPolicy.DESTROY</code> と <code>autoDeleteObjects: true</code> を設定済みのため、S3バケットも含めて全て自動削除されます。</p>
+<h2 is-upgraded>CDKブートストラップリソースの削除（任意）</h2>
+<p>CDKブートストラップで作成されたS3バケットとCloudFormationスタックが残ります。<br> 完全にクリーンアップしたい場合は以下を実行してください。</p>
+<ol type="1">
+<li>S3コンソールで <code>cdk-hnb659fds-assets-{アカウントID}-ap-northeast-1</code> バケットを空にして削除</li>
+<li>CloudFormationコンソールで <code>CDKToolkit</code> スタックを削除</li>
+</ol>
+<p>Negative : CDKブートストラップを削除すると、次回CDKを使用する際に再度ブートストラップが必要になります。他のCDKプロジェクトにも影響するため、削除は慎重に行ってください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="まとめ" duration="5">
+        <h2 is-upgraded>学んだこと</h2>
+<p>このハンズオンでは以下のことを学びました。</p>
+<ul>
+<li><strong>AWS CDK</strong> を使ったIaC（Infrastructure as Code）によるインフラ構築</li>
+<li><strong>Amazon S3</strong> を使った静的ファイルのホスティング</li>
+<li><strong>Amazon CloudFront</strong> を使ったCDN配信とHTTPS対応</li>
+<li><strong>Amazon CloudWatch</strong> を使ったアクセスログの監視とダッシュボード作成</li>
+<li>OAC（Origin Access Control）によるセキュアなS3アクセス制御</li>
+</ul>
+<h2 is-upgraded>発展課題</h2>
+<ul>
+<li>独自ドメイン（Route 53 + ACM）を設定してみましょう</li>
+<li>WAF（Web Application Firewall）を追加してセキュリティを強化してみましょう</li>
+<li>CloudFrontのキャッシュポリシーをカスタマイズしてみましょう</li>
+<li>CloudWatch Alarmを設定してエラー率の閾値超過を通知してみましょう</li>
+</ul>
+<h2 is-upgraded>参考リンク</h2>
+<p><br>  [AWS CDK ドキュメント](https://docs.aws.amazon.com/ja_jp/cdk/)<br><br>  [Amazon CloudFront ドキュメント](https://docs.aws.amazon.com/ja_jp/cloudfront/)<br><br>  [Amazon S3 ドキュメント](https://docs.aws.amazon.com/ja_jp/s3/)<br><br>  [Amazon CloudWatch ドキュメント](https://docs.aws.amazon.com/ja_jp/cloudwatch/)<br></p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

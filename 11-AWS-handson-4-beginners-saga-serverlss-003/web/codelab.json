@@ -1,0 +1,26 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2026-03-01T17:11:40+09:00",
+  "id": "11-AWS-handson-4-beginners-saga-serverlss-003",
+  "duration": 100,
+  "title": "Amplifyで動的Webアプリケーションをホスティングするハンズオン",
+  "summary": "動的ページのホスティング - AWS Amplify を使ったサーバレスハンズオン",
+  "source": "11-AWS-handson-4-beginners-saga-serverlss-003.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "codelab",
+    "markdown"
+  ],
+  "tags": [
+    "web"
+  ],
+  "feedback": "https://github.com/midnight480/handson-manual",
+  "ga": "196534296",
+  "url": "11-AWS-handson-4-beginners-saga-serverlss-003"
+}
