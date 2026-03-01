@@ -1,0 +1,26 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2026-03-01T20:26:16+09:00",
+  "id": "12-AWS-handson-4-beginners-saga-serverlss-004",
+  "duration": 140,
+  "title": "サーバレスAPIの構築と保護 - GASからAPI Gateway + WAFまで",
+  "summary": "GAS vs Lambda Function URL 比較から API Gateway + WAF + Lambda まで - サーバレスAPI構築の一気通貫ハンズオン",
+  "source": "12-AWS-handson-4-beginners-saga-serverlss-004.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "codelab",
+    "markdown"
+  ],
+  "tags": [
+    "web"
+  ],
+  "feedback": "https://github.com/midnight480/handson-manual",
+  "ga": "196534296",
+  "url": "12-AWS-handson-4-beginners-saga-serverlss-004"
+}

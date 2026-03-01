@@ -1,0 +1,1281 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>サーバレスAPIの構築と保護 - GASからAPI Gateway &#43; WAFまで</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid="196534296"
+                  codelab-ga4id=""
+                  id="12-AWS-handson-4-beginners-saga-serverlss-004"
+                  title="サーバレスAPIの構築と保護 - GASからAPI Gateway &#43; WAFまで"
+                  environment="web"
+                  feedback-link="https://github.com/midnight480/handson-manual">
+    
+      <google-codelab-step label="はじめに" duration="5">
+        <h2 is-upgraded>ハンズオンの概要</h2>
+<p>このハンズオンでは、サーバレスでHTTP APIを公開する方法を段階的に学びます。</p>
+<ol type="1">
+<li><strong>Google Apps Script（GAS）</strong> で手軽にAPIを作る</li>
+<li><strong>AWS Lambda Function URL</strong> で同等のAPIを作り、GASとの違いを比較する</li>
+<li>セキュリティ上の課題を認識し、暫定的な対策を実装する</li>
+<li><strong>API Gateway + WAF + Lambda</strong> でより本格的・セキュアな構成を構築する</li>
+</ol>
+<h2 is-upgraded>サーバレスAPIの実行時間制限</h2>
+<p>サーバレスAPIを選ぶ際、実行時間制限は重要な判断材料です。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>サービス</p>
+</td><td colspan="1" rowspan="1"><p>プラン</p>
+</td><td colspan="1" rowspan="1"><p>実行時間の上限</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Google Apps Script</p>
+</td><td colspan="1" rowspan="1"><p>無料版</p>
+</td><td colspan="1" rowspan="1"><p><strong>6分</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Google Apps Script</p>
+</td><td colspan="1" rowspan="1"><p>Google Workspace（有料版）</p>
+</td><td colspan="1" rowspan="1"><p><strong>30分</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>AWS Lambda</p>
+</td><td colspan="1" rowspan="1"><p>—</p>
+</td><td colspan="1" rowspan="1"><p><strong>15分</strong></p>
+</td></tr>
+</table>
+<h2 is-upgraded>構成の進化</h2>
+<p>このハンズオンでは、以下のように段階的に構成を発展させます。</p>
+<pre><code>Step 1: GAS → Webアプリとして公開（手軽だが制約あり）
+  ↓
+Step 2: Lambda Function URL（AWSでの同等構成、制約も同様）
+  ↓
+Step 3: セキュリティ暫定対策（GAS: スプレッドシート照合 / Lambda: DynamoDB照合）
+  ↓
+Step 4: API Gateway + WAF + Lambda（本格的・セキュアな構成）
+</code></pre>
+<h2 is-upgraded>前提条件</h2>
+<ul>
+<li>AWSアカウントを持っていること</li>
+<li>Googleアカウントを持っていること</li>
+<li>AWS CLIがインストール・設定済みであること</li>
+</ul>
+<p>Positive : 本ハンズオンは初心者向けの内容です。GAS、Lambda、API Gateway、WAF を段階的に学んでいきます。</p>
+<p>Negative : 本ハンズオンで作成するリソースには料金が発生する場合があります。ハンズオン終了後は必ずリソースを削除してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="GASでWebアプリAPIを作成する" duration="15">
+        <h2 is-upgraded>Google Apps Script プロジェクトの作成</h2>
+<ol type="1">
+<li>ブラウザで <a href="https://script.google.com/" target="_blank">Google Apps Script</a> にアクセスします</li>
+<li><strong>新しいプロジェクト</strong> をクリックします</li>
+<li>プロジェクト名を <code>handson-text-api</code> に変更します</li>
+</ol>
+<h2 is-upgraded>コードの入力</h2>
+<p>デフォルトの <code>コード.gs</code> を以下の内容に書き換えます。</p>
+<pre><code language="language-javascript" class="language-javascript">/**
+ * GETリクエストのハンドラー
+ * @param {Object} e - イベントオブジェクト
+ * @return {TextOutput} JSON形式のレスポンス
+ */
+function doGet(e) {
+  var output = {
+    service: &#34;テキスト要約API（GAS版）&#34;,
+    version: &#34;1.0&#34;,
+    usage: &#34;POSTリクエストで {text: &#39;要約したいテキスト&#39;, max_sentences: 3} を送信してください&#34;
+  };
+
+  return ContentService
+    .createTextOutput(JSON.stringify(output))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * POSTリクエストのハンドラー - テキスト要約処理
+ * @param {Object} e - イベントオブジェクト
+ * @return {TextOutput} JSON形式のレスポンス
+ */
+function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var text = data.text || &#34;&#34;;
+    var maxSentences = data.max_sentences || 3;
+
+    if (!text) {
+      return ContentService
+        .createTextOutput(JSON.stringify({
+          error: &#34;テキストが指定されていません&#34;
+        }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // 簡易要約処理: 文を分割して先頭N文を抽出
+    var sentences;
+    if (text.indexOf(&#34;。&#34;) !== -1) {
+      sentences = text.split(&#34;。&#34;).filter(function(s) { return s.trim(); });
+      sentences = sentences.map(function(s) { return s.trim() + &#34;。&#34;; });
+    } else {
+      sentences = text.split(&#34;.&#34;).filter(function(s) { return s.trim(); });
+      sentences = sentences.map(function(s) { return s.trim() + &#34;.&#34;; });
+    }
+
+    var summarySentences = sentences.slice(0, maxSentences);
+    var summary = summarySentences.join(&#34;&#34;);
+
+    var result = {
+      original_length: text.length,
+      summary: summary,
+      sentence_count: sentences.length,
+      summary_sentence_count: summarySentences.length
+    };
+
+    return ContentService
+      .createTextOutput(JSON.stringify(result))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        error: &#34;リクエストの処理中にエラーが発生しました: &#34; + error.message
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+</code></pre>
+<h2 is-upgraded>Webアプリとしてデプロイ</h2>
+<ol type="1">
+<li><strong>デプロイ</strong> → <strong>新しいデプロイ</strong> をクリックします</li>
+<li>種類の選択で <strong>ウェブアプリ</strong> を選択します</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>説明</p>
+</td><td colspan="1" rowspan="1"><p>テキスト要約API</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>次のユーザーとして実行</p>
+</td><td colspan="1" rowspan="1"><p>自分</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>アクセスできるユーザー</p>
+</td><td colspan="1" rowspan="1"><p>全員</p>
+</td></tr>
+</table>
+<ol type="1" start="3">
+<li><strong>デプロイ</strong> をクリックします</li>
+<li>表示されたURLをメモします</li>
+</ol>
+<h2 is-upgraded>動作確認</h2>
+<pre># GETリクエスト
+curl -L &#34;https://script.google.com/macros/s/{デプロイID}/exec&#34;
+
+# POSTリクエスト
+curl -L -X POST \
+  -H &#34;Content-Type: application/json&#34; \
+  -d &#39;{&#34;text&#34;: &#34;AWSは包括的なクラウドプラットフォームです。200以上のサービスを提供しています。多くの企業がAWSを利用しています。&#34;, &#34;max_sentences&#34;: 2}&#39; \
+  &#34;https://script.google.com/macros/s/{デプロイID}/exec&#34;
+</pre>
+<p>Negative : GASのWebアプリURLは、URLを知っている人なら誰でもアクセスできます。また、無料版では実行時間が最大6分に制限されています。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Lambda Function URLで同等のAPIを作成する" duration="20">
+        <h2 is-upgraded>IAMロールの作成</h2>
+<ol type="1">
+<li>AWSマネジメントコンソールから <strong>IAM</strong> を選択します</li>
+<li><strong>ロール</strong> → <strong>ロールを作成</strong> をクリックします</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>信頼されたエンティティ</p>
+</td><td colspan="1" rowspan="1"><p>AWS のサービス</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ユースケース</p>
+</td><td colspan="1" rowspan="1"><p>Lambda</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ロール名</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-furl-lambda-role</code></p>
+</td></tr>
+</table>
+<p>以下のポリシーをアタッチします。</p>
+<pre><code>CloudWatchLogsFullAccess
+</code></pre>
+<h2 is-upgraded>Lambda関数の作成</h2>
+<ol type="1">
+<li><strong>Lambda</strong> コンソールから <strong>関数の作成</strong> をクリックします</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>関数名</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-text-summarizer</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ランタイム</p>
+</td><td colspan="1" rowspan="1"><p>Python 3.12</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>アーキテクチャ</p>
+</td><td colspan="1" rowspan="1"><p>x86_64</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>実行ロール</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-furl-lambda-role</code>（既存のロールを使用）</p>
+</td></tr>
+</table>
+<h2 is-upgraded>コードの入力</h2>
+<pre><code language="language-python" class="language-python">import json
+
+
+def lambda_handler(event, context):
+    &#34;&#34;&#34;Lambda Function URL用のテキスト要約API&#34;&#34;&#34;
+
+    # リクエストメソッドの取得
+    http_method = event.get(&#39;requestContext&#39;, {}).get(&#39;http&#39;, {}).get(&#39;method&#39;, &#39;GET&#39;)
+
+    # GETリクエスト: API情報を返す
+    if http_method == &#39;GET&#39;:
+        return {
+            &#39;statusCode&#39;: 200,
+            &#39;headers&#39;: {
+                &#39;Content-Type&#39;: &#39;application/json; charset=utf-8&#39;
+            },
+            &#39;body&#39;: json.dumps({
+                &#39;service&#39;: &#39;テキスト要約API（Lambda版）&#39;,
+                &#39;version&#39;: &#39;1.0&#39;,
+                &#39;usage&#39;: &#39;POSTリクエストで {&#34;text&#34;: &#34;要約したいテキスト&#34;, &#34;max_sentences&#34;: 3} を送信してください&#39;
+            }, ensure_ascii=False)
+        }
+
+    # POSTリクエスト: テキスト要約処理
+    if http_method == &#39;POST&#39;:
+        try:
+            body = event.get(&#39;body&#39;, &#39;{}&#39;)
+            if event.get(&#39;isBase64Encoded&#39;, False):
+                import base64
+                body = base64.b64decode(body).decode(&#39;utf-8&#39;)
+
+            data = json.loads(body)
+            text = data.get(&#39;text&#39;, &#39;&#39;)
+            max_sentences = data.get(&#39;max_sentences&#39;, 3)
+
+            if not text:
+                return {
+                    &#39;statusCode&#39;: 400,
+                    &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json; charset=utf-8&#39;},
+                    &#39;body&#39;: json.dumps({
+                        &#39;error&#39;: &#39;テキストが指定されていません&#39;
+                    }, ensure_ascii=False)
+                }
+
+            # 簡易要約処理
+            if &#39;。&#39; in text:
+                sentences = [s.strip() + &#39;。&#39; for s in text.split(&#39;。&#39;) if s.strip()]
+            else:
+                sentences = [s.strip() + &#39;.&#39; for s in text.split(&#39;.&#39;) if s.strip()]
+
+            summary_sentences = sentences[:max_sentences]
+            summary = &#39;&#39;.join(summary_sentences) if &#39;。&#39; in text else &#39; &#39;.join(summary_sentences)
+
+            return {
+                &#39;statusCode&#39;: 200,
+                &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json; charset=utf-8&#39;},
+                &#39;body&#39;: json.dumps({
+                    &#39;original_length&#39;: len(text),
+                    &#39;summary&#39;: summary,
+                    &#39;sentence_count&#39;: len(sentences),
+                    &#39;summary_sentence_count&#39;: len(summary_sentences)
+                }, ensure_ascii=False)
+            }
+        except json.JSONDecodeError:
+            return {
+                &#39;statusCode&#39;: 400,
+                &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json; charset=utf-8&#39;},
+                &#39;body&#39;: json.dumps({&#39;error&#39;: &#39;JSONの形式が不正です&#39;}, ensure_ascii=False)
+            }
+
+    return {
+        &#39;statusCode&#39;: 405,
+        &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json; charset=utf-8&#39;},
+        &#39;body&#39;: json.dumps({&#39;error&#39;: f&#39;{http_method}はサポートされていません&#39;}, ensure_ascii=False)
+    }
+</code></pre>
+<ol type="1" start="3">
+<li><strong>Deploy</strong> をクリックして関数をデプロイします</li>
+</ol>
+<h2 is-upgraded>Function URLの有効化</h2>
+<ol type="1">
+<li><strong>設定</strong> タブ → <strong>関数URL</strong> → <strong>関数URLの作成</strong> をクリックします</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>認証タイプ</p>
+</td><td colspan="1" rowspan="1"><p><code>NONE</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>CORS - オリジンを許可</p>
+</td><td colspan="1" rowspan="1"><p><code>*</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>CORS - メソッドを許可</p>
+</td><td colspan="1" rowspan="1"><p><code>GET</code>, <code>POST</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>CORS - ヘッダーを許可</p>
+</td><td colspan="1" rowspan="1"><p><code>Content-Type</code></p>
+</td></tr>
+</table>
+<ol type="1" start="2">
+<li><strong>保存</strong> をクリックし、発行されたURLをメモします</li>
+</ol>
+<h2 is-upgraded>動作確認</h2>
+<pre># GETリクエスト
+curl https://{Function URL}/
+
+# POSTリクエスト
+curl -X POST https://{Function URL}/ \
+  -H &#34;Content-Type: application/json&#34; \
+  -d &#39;{&#34;text&#34;: &#34;AWSは包括的なクラウドプラットフォームです。200以上のサービスを提供しています。多くの企業がAWSを利用しています。&#34;, &#34;max_sentences&#34;: 2}&#39;
+</pre>
+<p>Positive : GASとLambda、どちらも同じテキスト要約処理を実装しています。URLにアクセスするだけで動く手軽さは同じですが、実行時間制限やインフラの制御度に差があります。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="GAS vs Lambda Function URL の比較" duration="5">
+        <h2 is-upgraded>両者の比較</h2>
+<p>ここまでの実装を踏まえて、GASとLambda Function URLを比較します。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>比較項目</p>
+</td><td colspan="1" rowspan="1"><p>GAS（無料版）</p>
+</td><td colspan="1" rowspan="1"><p>GAS（有料版）</p>
+</td><td colspan="1" rowspan="1"><p>Lambda Function URL</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>実行時間上限</p>
+</td><td colspan="1" rowspan="1"><p>6分</p>
+</td><td colspan="1" rowspan="1"><p>30分</p>
+</td><td colspan="1" rowspan="1"><p>15分</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>デプロイ</p>
+</td><td colspan="1" rowspan="1"><p>ワンクリック</p>
+</td><td colspan="1" rowspan="1"><p>ワンクリック</p>
+</td><td colspan="1" rowspan="1"><p>Deploy+URL設定</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>言語</p>
+</td><td colspan="1" rowspan="1"><p>JavaScript</p>
+</td><td colspan="1" rowspan="1"><p>JavaScript</p>
+</td><td colspan="1" rowspan="1"><p>Python, Node.js 等</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>コスト</p>
+</td><td colspan="1" rowspan="1"><p>無料</p>
+</td><td colspan="1" rowspan="1"><p>Workspace料金</p>
+</td><td colspan="1" rowspan="1"><p>従量課金</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>認証</p>
+</td><td colspan="1" rowspan="1"><p>Googleアカウント or なし</p>
+</td><td colspan="1" rowspan="1"><p>同左</p>
+</td><td colspan="1" rowspan="1"><p>NONE or IAM</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>カスタムドメイン</p>
+</td><td colspan="1" rowspan="1"><p>不可</p>
+</td><td colspan="1" rowspan="1"><p>不可</p>
+</td><td colspan="1" rowspan="1"><p>不可</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>WAF連携</p>
+</td><td colspan="1" rowspan="1"><p>不可</p>
+</td><td colspan="1" rowspan="1"><p>不可</p>
+</td><td colspan="1" rowspan="1"><p>不可</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>レートリミット</p>
+</td><td colspan="1" rowspan="1"><p>GAS側の制限のみ</p>
+</td><td colspan="1" rowspan="1"><p>同左</p>
+</td><td colspan="1" rowspan="1"><p>なし（課金増大リスク）</p>
+</td></tr>
+</table>
+<h2 is-upgraded>共通の課題</h2>
+<p>どちらの方式も、<strong>URLを知っていれば誰でもアクセスできる</strong>というセキュリティ上の課題があります。</p>
+<ul>
+<li>不正アクセスによるコスト増大（Lambda）</li>
+<li>APIの不正利用</li>
+<li>DDoS攻撃のリスク</li>
+</ul>
+<p>Negative : GASもLambda Function URLも、単体ではAPIキー認証やレートリミットなどのセキュリティ機能を持ちません。次のセクションで暫定的な対策を、その後に本格的な対策を学びます。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="セキュリティの暫定対策" duration="20">
+        <h2 is-upgraded>考え方</h2>
+<p>API GatewayやWAFを使わなくても、アプリケーションレベルでの認証チェックを導入することで、ある程度のアクセス制御が可能です。</p>
+<ul>
+<li><strong>GAS</strong>: スプレッドシートにAPIキーを保存し、リクエストのキーと照合</li>
+<li><strong>Lambda</strong>: DynamoDBにAPIキーを保存し、リクエストのキーと照合</li>
+</ul>
+<h2 is-upgraded>GAS側: スプレッドシートでのキー照合</h2>
+<h3 is-upgraded>スプレッドシートの準備</h3>
+<ol type="1">
+<li>Google スプレッドシートを新規作成します</li>
+<li>シート名を <code>APIKeys</code> に変更します</li>
+<li>A1セルに <code>key</code>、B1セルに <code>description</code> と入力します</li>
+<li>A2セルにAPIキー（例: <code>handson-demo-key-2026</code>）を入力します</li>
+<li>スプレッドシートのIDをメモします（URLの <code>/d/</code> と <code>/edit</code> の間の文字列）</li>
+</ol>
+<h3 is-upgraded>GASコードの更新</h3>
+<p><code>コード.gs</code> を以下に更新し、再デプロイします。</p>
+<pre><code language="language-javascript" class="language-javascript">// スプレッドシートID（自分のスプレッドシートIDに置き換え）
+var SPREADSHEET_ID = &#34;{あなたのスプレッドシートID}&#34;;
+
+/**
+ * APIキーを検証する
+ * @param {string} apiKey - 検証するAPIキー
+ * @return {boolean} 有効なキーならtrue
+ */
+function validateApiKey(apiKey) {
+  if (!apiKey) return false;
+
+  var sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(&#34;APIKeys&#34;);
+  var keys = sheet.getRange(&#34;A2:A&#34; + sheet.getLastRow()).getValues();
+
+  for (var i = 0; i &lt; keys.length; i++) {
+    if (keys[i][0] === apiKey) return true;
+  }
+  return false;
+}
+
+/**
+ * GETリクエストのハンドラー
+ */
+function doGet(e) {
+  return ContentService
+    .createTextOutput(JSON.stringify({
+      service: &#34;テキスト要約API（GAS版・認証あり）&#34;,
+      version: &#34;2.0&#34;,
+      usage: &#34;x-api-keyパラメータにAPIキーを指定してください&#34;
+    }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * POSTリクエストのハンドラー - APIキー認証付き
+ */
+function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+
+    // APIキーの検証
+    var apiKey = data.api_key || e.parameter.api_key || &#34;&#34;;
+    if (!validateApiKey(apiKey)) {
+      return ContentService
+        .createTextOutput(JSON.stringify({
+          error: &#34;無効なAPIキーです。正しいAPIキーを指定してください。&#34;
+        }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    var text = data.text || &#34;&#34;;
+    var maxSentences = data.max_sentences || 3;
+
+    if (!text) {
+      return ContentService
+        .createTextOutput(JSON.stringify({ error: &#34;テキストが指定されていません&#34; }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // 簡易要約処理
+    var sentences;
+    if (text.indexOf(&#34;。&#34;) !== -1) {
+      sentences = text.split(&#34;。&#34;).filter(function(s) { return s.trim(); });
+      sentences = sentences.map(function(s) { return s.trim() + &#34;。&#34;; });
+    } else {
+      sentences = text.split(&#34;.&#34;).filter(function(s) { return s.trim(); });
+      sentences = sentences.map(function(s) { return s.trim() + &#34;.&#34;; });
+    }
+
+    var summarySentences = sentences.slice(0, maxSentences);
+
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        original_length: text.length,
+        summary: summarySentences.join(&#34;&#34;),
+        sentence_count: sentences.length,
+        summary_sentence_count: summarySentences.length
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ error: &#34;エラー: &#34; + error.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+</code></pre>
+<p>Negative : GASでは <code>doPost</code> の引数 <code>e</code> にリクエストヘッダーを直接取得する方法が限定的なため、ここではリクエストボディの <code>api_key</code> フィールドで照合しています。</p>
+<h3 is-upgraded>GASの再デプロイ</h3>
+<ol type="1">
+<li><strong>デプロイ</strong> → <strong>デプロイの管理</strong> をクリック</li>
+<li>鉛筆アイコンをクリックして <strong>バージョン</strong> を「新しいバージョン」に変更</li>
+<li><strong>デプロイ</strong> をクリック</li>
+</ol>
+<h3 is-upgraded>テスト</h3>
+<pre># APIキーなし → エラー
+curl -L -X POST \
+  -H &#34;Content-Type: application/json&#34; \
+  -d &#39;{&#34;text&#34;: &#34;テストです。要約します。&#34;}&#39; \
+  &#34;https://script.google.com/macros/s/{デプロイID}/exec&#34;
+
+# APIキーあり → 成功
+curl -L -X POST \
+  -H &#34;Content-Type: application/json&#34; \
+  -d &#39;{&#34;api_key&#34;: &#34;handson-demo-key-2026&#34;, &#34;text&#34;: &#34;テストです。要約します。&#34;, &#34;max_sentences&#34;: 1}&#39; \
+  &#34;https://script.google.com/macros/s/{デプロイID}/exec&#34;
+</pre>
+<h2 is-upgraded>Lambda側: DynamoDBでのキー照合</h2>
+<h3 is-upgraded>DynamoDBテーブルの作成</h3>
+<ol type="1">
+<li>AWSマネジメントコンソールから <strong>DynamoDB</strong> を選択します</li>
+<li><strong>テーブルの作成</strong> をクリックします</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>テーブル名</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-api-keys</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>パーティションキー</p>
+</td><td colspan="1" rowspan="1"><p><code>api_key</code>（文字列）</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>テーブルクラス</p>
+</td><td colspan="1" rowspan="1"><p>DynamoDB Standard</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>キャパシティモード</p>
+</td><td colspan="1" rowspan="1"><p>オンデマンド</p>
+</td></tr>
+</table>
+<ol type="1" start="3">
+<li><strong>テーブルの作成</strong> をクリックします</li>
+</ol>
+<h3 is-upgraded>APIキーの登録</h3>
+<ol type="1">
+<li>作成した <code>handson-api-keys</code> テーブルを開きます</li>
+<li><strong>項目を探索</strong> → <strong>項目を作成</strong> をクリック</li>
+<li>以下のアイテムを追加します</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>属性</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>api_key</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-demo-key-2026</code></p>
+</td></tr>
+</table>
+<h3 is-upgraded>IAMロールの更新</h3>
+<p>Lambda関数がDynamoDBにアクセスできるよう、ポリシーを追加します。</p>
+<ol type="1">
+<li>IAMコンソールで <code>handson-furl-lambda-role</code> を開きます</li>
+<li><strong>ポリシーをアタッチ</strong> をクリック</li>
+<li><code>AmazonDynamoDBReadOnlyAccess</code> を追加します</li>
+</ol>
+<h3 is-upgraded>Lambda関数コードの更新</h3>
+<p>Lambda関数のコードを以下に更新します。</p>
+<pre><code language="language-python" class="language-python">import json
+import boto3
+
+
+dynamodb = boto3.resource(&#39;dynamodb&#39;)
+table = dynamodb.Table(&#39;handson-api-keys&#39;)
+
+
+def validate_api_key(api_key):
+    &#34;&#34;&#34;DynamoDBでAPIキーを検証する&#34;&#34;&#34;
+    if not api_key:
+        return False
+    try:
+        response = table.get_item(Key={&#39;api_key&#39;: api_key})
+        return &#39;Item&#39; in response
+    except Exception:
+        return False
+
+
+def lambda_handler(event, context):
+    &#34;&#34;&#34;Lambda Function URL用のテキスト要約API（APIキー認証付き）&#34;&#34;&#34;
+
+    http_method = event.get(&#39;requestContext&#39;, {}).get(&#39;http&#39;, {}).get(&#39;method&#39;, &#39;GET&#39;)
+
+    # GETリクエスト: API情報を返す
+    if http_method == &#39;GET&#39;:
+        return {
+            &#39;statusCode&#39;: 200,
+            &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json; charset=utf-8&#39;},
+            &#39;body&#39;: json.dumps({
+                &#39;service&#39;: &#39;テキスト要約API（Lambda版・認証あり）&#39;,
+                &#39;version&#39;: &#39;2.0&#39;,
+                &#39;usage&#39;: &#39;POSTリクエストで {&#34;api_key&#34;: &#34;...&#34;, &#34;text&#34;: &#34;...&#34;, &#34;max_sentences&#34;: 3} を送信&#39;
+            }, ensure_ascii=False)
+        }
+
+    # POSTリクエスト: APIキー認証 + テキスト要約
+    if http_method == &#39;POST&#39;:
+        try:
+            body = event.get(&#39;body&#39;, &#39;{}&#39;)
+            if event.get(&#39;isBase64Encoded&#39;, False):
+                import base64
+                body = base64.b64decode(body).decode(&#39;utf-8&#39;)
+            data = json.loads(body)
+
+            # APIキーの検証
+            api_key = data.get(&#39;api_key&#39;, &#39;&#39;)
+            if not validate_api_key(api_key):
+                return {
+                    &#39;statusCode&#39;: 403,
+                    &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json; charset=utf-8&#39;},
+                    &#39;body&#39;: json.dumps({
+                        &#39;error&#39;: &#39;無効なAPIキーです&#39;
+                    }, ensure_ascii=False)
+                }
+
+            text = data.get(&#39;text&#39;, &#39;&#39;)
+            max_sentences = data.get(&#39;max_sentences&#39;, 3)
+
+            if not text:
+                return {
+                    &#39;statusCode&#39;: 400,
+                    &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json; charset=utf-8&#39;},
+                    &#39;body&#39;: json.dumps({&#39;error&#39;: &#39;テキストが指定されていません&#39;}, ensure_ascii=False)
+                }
+
+            # 簡易要約処理
+            if &#39;。&#39; in text:
+                sentences = [s.strip() + &#39;。&#39; for s in text.split(&#39;。&#39;) if s.strip()]
+            else:
+                sentences = [s.strip() + &#39;.&#39; for s in text.split(&#39;.&#39;) if s.strip()]
+
+            summary_sentences = sentences[:max_sentences]
+            summary = &#39;&#39;.join(summary_sentences) if &#39;。&#39; in text else &#39; &#39;.join(summary_sentences)
+
+            return {
+                &#39;statusCode&#39;: 200,
+                &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json; charset=utf-8&#39;},
+                &#39;body&#39;: json.dumps({
+                    &#39;original_length&#39;: len(text),
+                    &#39;summary&#39;: summary,
+                    &#39;sentence_count&#39;: len(sentences),
+                    &#39;summary_sentence_count&#39;: len(summary_sentences)
+                }, ensure_ascii=False)
+            }
+        except json.JSONDecodeError:
+            return {
+                &#39;statusCode&#39;: 400,
+                &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json; charset=utf-8&#39;},
+                &#39;body&#39;: json.dumps({&#39;error&#39;: &#39;JSONの形式が不正です&#39;}, ensure_ascii=False)
+            }
+
+    return {
+        &#39;statusCode&#39;: 405,
+        &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json; charset=utf-8&#39;},
+        &#39;body&#39;: json.dumps({&#39;error&#39;: f&#39;{http_method}はサポートされていません&#39;}, ensure_ascii=False)
+    }
+</code></pre>
+<p><strong>Deploy</strong> をクリックして関数を更新します。</p>
+<h3 is-upgraded>テスト</h3>
+<pre># APIキーなし → 403
+curl -X POST https://{Function URL}/ \
+  -H &#34;Content-Type: application/json&#34; \
+  -d &#39;{&#34;text&#34;: &#34;テストです。&#34;}&#39;
+
+# APIキーあり → 200
+curl -X POST https://{Function URL}/ \
+  -H &#34;Content-Type: application/json&#34; \
+  -d &#39;{&#34;api_key&#34;: &#34;handson-demo-key-2026&#34;, &#34;text&#34;: &#34;テストです。要約します。&#34;, &#34;max_sentences&#34;: 1}&#39;
+</pre>
+<h2 is-upgraded>暫定対策の限界</h2>
+<p>スプレッドシートやDynamoDBでのキー照合は暫定対策であり、以下の課題が残ります。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>課題</p>
+</td><td colspan="1" rowspan="1"><p>説明</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>レートリミットなし</p>
+</td><td colspan="1" rowspan="1"><p>大量リクエストを防げない</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>DDoS対策なし</p>
+</td><td colspan="1" rowspan="1"><p>エンドポイントへの攻撃を防げない</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>キー管理の煩雑さ</p>
+</td><td colspan="1" rowspan="1"><p>キーのローテーションや失効管理が手動</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ログ・監査</p>
+</td><td colspan="1" rowspan="1"><p>APIの利用状況を体系的に把握しづらい</p>
+</td></tr>
+</table>
+<p>Positive : 暫定対策は小規模なプロトタイプやデモでは有効ですが、本格運用には次に学ぶAPI Gateway + WAFの構成が推奨されます。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="API Gatewayの構築" duration="15">
+        <h2 is-upgraded>本格的なAPI構成へ</h2>
+<p>ここからは、Lambda Function URLの代わりにAPI Gatewayを使った本格的な構成を構築します。</p>
+<h2 is-upgraded>Lambda関数の準備</h2>
+<p>API Gateway用にLambda関数を更新します。既存の <code>handson-text-summarizer</code> のコードを以下に更新します。<br> （DynamoDBのAPIキー認証は、API Gateway側のAPIキー認証に置き換えるため削除します）</p>
+<pre><code language="language-python" class="language-python">import json
+
+
+def lambda_handler(event, context):
+    &#34;&#34;&#34;API Gateway用のテキスト要約API&#34;&#34;&#34;
+
+    http_method = event.get(&#39;httpMethod&#39;, &#39;GET&#39;)
+
+    if http_method == &#39;GET&#39;:
+        return {
+            &#39;statusCode&#39;: 200,
+            &#39;headers&#39;: {
+                &#39;Content-Type&#39;: &#39;application/json; charset=utf-8&#39;,
+                &#39;Access-Control-Allow-Origin&#39;: &#39;*&#39;
+            },
+            &#39;body&#39;: json.dumps({
+                &#39;service&#39;: &#39;テキスト要約API&#39;,
+                &#39;version&#39;: &#39;3.0&#39;,
+                &#39;description&#39;: &#39;API Gateway + WAF経由のセキュアなAPI&#39;
+            }, ensure_ascii=False)
+        }
+
+    if http_method == &#39;POST&#39;:
+        try:
+            body = event.get(&#39;body&#39;, &#39;{}&#39;)
+            data = json.loads(body) if isinstance(body, str) else body
+
+            text = data.get(&#39;text&#39;, &#39;&#39;)
+            max_sentences = data.get(&#39;max_sentences&#39;, 3)
+
+            if not text:
+                return {
+                    &#39;statusCode&#39;: 400,
+                    &#39;headers&#39;: {
+                        &#39;Content-Type&#39;: &#39;application/json; charset=utf-8&#39;,
+                        &#39;Access-Control-Allow-Origin&#39;: &#39;*&#39;
+                    },
+                    &#39;body&#39;: json.dumps({&#39;error&#39;: &#39;テキストが指定されていません&#39;}, ensure_ascii=False)
+                }
+
+            if &#39;。&#39; in text:
+                sentences = [s.strip() + &#39;。&#39; for s in text.split(&#39;。&#39;) if s.strip()]
+            else:
+                sentences = [s.strip() + &#39;.&#39; for s in text.split(&#39;.&#39;) if s.strip()]
+
+            summary_sentences = sentences[:max_sentences]
+            summary = &#39;&#39;.join(summary_sentences) if &#39;。&#39; in text else &#39; &#39;.join(summary_sentences)
+
+            return {
+                &#39;statusCode&#39;: 200,
+                &#39;headers&#39;: {
+                    &#39;Content-Type&#39;: &#39;application/json; charset=utf-8&#39;,
+                    &#39;Access-Control-Allow-Origin&#39;: &#39;*&#39;
+                },
+                &#39;body&#39;: json.dumps({
+                    &#39;original_length&#39;: len(text),
+                    &#39;summary&#39;: summary,
+                    &#39;sentence_count&#39;: len(sentences),
+                    &#39;summary_sentence_count&#39;: len(summary_sentences)
+                }, ensure_ascii=False)
+            }
+        except json.JSONDecodeError:
+            return {
+                &#39;statusCode&#39;: 400,
+                &#39;headers&#39;: {
+                    &#39;Content-Type&#39;: &#39;application/json; charset=utf-8&#39;,
+                    &#39;Access-Control-Allow-Origin&#39;: &#39;*&#39;
+                },
+                &#39;body&#39;: json.dumps({&#39;error&#39;: &#39;JSONの形式が不正です&#39;}, ensure_ascii=False)
+            }
+
+    return {
+        &#39;statusCode&#39;: 405,
+        &#39;headers&#39;: {
+            &#39;Content-Type&#39;: &#39;application/json; charset=utf-8&#39;,
+            &#39;Access-Control-Allow-Origin&#39;: &#39;*&#39;
+        },
+        &#39;body&#39;: json.dumps({&#39;error&#39;: f&#39;{http_method}はサポートされていません&#39;}, ensure_ascii=False)
+    }
+</code></pre>
+<p><strong>Deploy</strong> をクリックして更新します。</p>
+<p>Positive : API Gatewayの「Lambdaプロキシ統合」を使用する場合、イベント形式が Function URL とは異なります。<code>httpMethod</code> でHTTPメソッドを判定する点に注意してください。</p>
+<h2 is-upgraded>Function URLの削除</h2>
+<p>API Gateway経由に切り替えるため、既存のFunction URLを削除します。</p>
+<ol type="1">
+<li>Lambda関数の <strong>設定</strong> → <strong>関数URL</strong> → <strong>削除</strong></li>
+</ol>
+<h2 is-upgraded>REST APIの作成</h2>
+<ol type="1">
+<li>AWSマネジメントコンソールから <strong>API Gateway</strong> を選択します</li>
+<li><strong>APIを作成</strong> → <strong>REST API</strong> の <strong>構築</strong> をクリックします</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>API名</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-text-summarizer-api</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>説明</p>
+</td><td colspan="1" rowspan="1"><p>テキスト要約REST API</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>エンドポイントタイプ</p>
+</td><td colspan="1" rowspan="1"><p>リージョン</p>
+</td></tr>
+</table>
+<ol type="1" start="3">
+<li><strong>APIの作成</strong> をクリックします</li>
+</ol>
+<h2 is-upgraded>リソースとメソッドの作成</h2>
+<ol type="1">
+<li><strong>リソースの作成</strong> をクリックします</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>リソース名</p>
+</td><td colspan="1" rowspan="1"><p><code>summarize</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>CORS</p>
+</td><td colspan="1" rowspan="1"><p>有効にする</p>
+</td></tr>
+</table>
+<ol type="1" start="2">
+<li><code>/summarize</code> を選択 → <strong>メソッドの作成</strong> をクリック（GETとPOSTの2つ作成）</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>統合タイプ</p>
+</td><td colspan="1" rowspan="1"><p>Lambda関数</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Lambdaプロキシ統合</p>
+</td><td colspan="1" rowspan="1"><p>有効</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Lambda関数</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-text-summarizer</code></p>
+</td></tr>
+</table>
+<h2 is-upgraded>APIのデプロイ</h2>
+<ol type="1">
+<li><strong>APIのデプロイ</strong> をクリックします</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ステージ</p>
+</td><td colspan="1" rowspan="1"><p><em>新しいステージ</em></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ステージ名</p>
+</td><td colspan="1" rowspan="1"><p><code>dev</code></p>
+</td></tr>
+</table>
+<ol type="1" start="2">
+<li><strong>デプロイ</strong> をクリックし、エンドポイントURLをメモします</li>
+</ol>
+<pre><code>https://{api-id}.execute-api.ap-northeast-1.amazonaws.com/dev/summarize
+</code></pre>
+<h2 is-upgraded>動作確認</h2>
+<pre>curl https://{api-id}.execute-api.ap-northeast-1.amazonaws.com/dev/summarize
+
+curl -X POST https://{api-id}.execute-api.ap-northeast-1.amazonaws.com/dev/summarize \
+  -H &#34;Content-Type: application/json&#34; \
+  -d &#39;{&#34;text&#34;: &#34;AWSは包括的なクラウドプラットフォームです。200以上のサービスを提供しています。多くの企業がAWSを利用しています。&#34;, &#34;max_sentences&#34;: 2}&#39;
+</pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="APIキー認証の追加" duration="15">
+        <h2 is-upgraded>使用量プランの作成</h2>
+<ol type="1">
+<li>API Gatewayコンソールの <strong>使用量プラン</strong> → <strong>作成</strong> をクリックします</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>プラン名</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-basic-plan</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>スロットリング - レート</p>
+</td><td colspan="1" rowspan="1"><p>10（リクエスト/秒）</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>スロットリング - バースト</p>
+</td><td colspan="1" rowspan="1"><p>5</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>クォータ</p>
+</td><td colspan="1" rowspan="1"><p>1000リクエスト/日</p>
+</td></tr>
+</table>
+<ol type="1" start="2">
+<li>APIステージ <code>handson-text-summarizer-api</code> / <code>dev</code> を関連付けます</li>
+</ol>
+<h2 is-upgraded>APIキーの作成</h2>
+<ol type="1">
+<li><strong>APIキーの作成と使用量プランへの追加</strong> をクリックします</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>名前</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-test-key</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>自動生成</p>
+</td><td colspan="1" rowspan="1"><p>有効</p>
+</td></tr>
+</table>
+<ol type="1" start="2">
+<li>作成されたキーの値をメモします</li>
+</ol>
+<h2 is-upgraded>メソッドにAPIキー要求を設定</h2>
+<ol type="1">
+<li><code>/summarize</code> の <strong>GET</strong> と <strong>POST</strong> 両方のメソッドで、<strong>APIキーが必須</strong> を <code>true</code> に設定します</li>
+<li><strong>APIのデプロイ</strong> で <code>dev</code> ステージに再デプロイします</li>
+</ol>
+<h2 is-upgraded>テスト</h2>
+<pre># APIキーなし → 403 Forbidden
+curl https://{api-id}.execute-api.ap-northeast-1.amazonaws.com/dev/summarize
+
+# APIキーあり → 200 OK
+curl -H &#34;x-api-key: {あなたのAPIキー}&#34; \
+  https://{api-id}.execute-api.ap-northeast-1.amazonaws.com/dev/summarize
+
+# POSTリクエスト + APIキー
+curl -X POST \
+  -H &#34;x-api-key: {あなたのAPIキー}&#34; \
+  -H &#34;Content-Type: application/json&#34; \
+  -d &#39;{&#34;text&#34;: &#34;テストです。要約します。&#34;, &#34;max_sentences&#34;: 1}&#39; \
+  https://{api-id}.execute-api.ap-northeast-1.amazonaws.com/dev/summarize
+</pre>
+<p>Positive : API Gatewayの<code>x-api-key</code>ヘッダーによる認証は、DynamoDBによる暫定対策と比べて、レートリミット・使用量制御・キー管理が組み込みで提供されます。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="AWS WAFの構築と連携" duration="20">
+        <h2 is-upgraded>AWS WAFとは</h2>
+<p>AWS WAF（Web Application Firewall）は、Webアプリケーションを一般的な攻撃から保護するサービスです。<br> API Gatewayと連携することで、APIに対する不正アクセスを自動的にブロックできます。</p>
+<h2 is-upgraded>Web ACLの作成</h2>
+<ol type="1">
+<li>AWSマネジメントコンソールから <strong>WAF &amp; Shield</strong> を選択します</li>
+<li><strong>Web ACLs</strong> → <strong>Create web ACL</strong> をクリックします</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Name</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-api-waf</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Description</p>
+</td><td colspan="1" rowspan="1"><p>ハンズオンAPI用WAF</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Resource type</p>
+</td><td colspan="1" rowspan="1"><p>Regional resources</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Region</p>
+</td><td colspan="1" rowspan="1"><p>Asia Pacific (Tokyo)</p>
+</td></tr>
+</table>
+<ol type="1" start="3">
+<li><strong>Associated AWS resources</strong> の <strong>Add AWS resources</strong> をクリックします</li>
+<li>リソースタイプ <strong>Amazon API Gateway REST API</strong> を選択し、<code>handson-text-summarizer-api</code> の <code>dev</code> ステージを追加します</li>
+<li><strong>Next</strong> をクリックします</li>
+</ol>
+<h2 is-upgraded>マネージドルールの追加</h2>
+<ol type="1">
+<li><strong>Add managed rule groups</strong> をクリックします</li>
+<li><strong>AWS managed rule groups</strong> を展開します</li>
+<li>以下のルールグループを <strong>Add to web ACL</strong> でオンにします</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>ルールグループ</p>
+</td><td colspan="1" rowspan="1"><p>説明</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>AWSManagedRulesCommonRuleSet</p>
+</td><td colspan="1" rowspan="1"><p>一般的なWebアプリケーション攻撃を防御</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>AWSManagedRulesKnownBadInputsRuleSet</p>
+</td><td colspan="1" rowspan="1"><p>既知の悪意のある入力パターンを検出</p>
+</td></tr>
+</table>
+<ol type="1" start="4">
+<li><strong>Add rules</strong> をクリックします</li>
+</ol>
+<h2 is-upgraded>レートベースルールの追加</h2>
+<p>大量リクエストによるDDoS攻撃を防ぐため、レートベースのルールを追加します。</p>
+<ol type="1">
+<li><strong>Add my own rules and rule groups</strong> → <strong>Rule builder</strong> を選択します</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Name</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-rate-limit</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Type</p>
+</td><td colspan="1" rowspan="1"><p>Rate-based rule</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Rate limit</p>
+</td><td colspan="1" rowspan="1"><p>100（5分あたり）</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Action</p>
+</td><td colspan="1" rowspan="1"><p>Block</p>
+</td></tr>
+</table>
+<ol type="1" start="2">
+<li><strong>Add rule</strong> をクリックします</li>
+</ol>
+<h2 is-upgraded>デフォルトアクションの設定</h2>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Default web ACL action for requests that don&#39;t match any rules</p>
+</td><td colspan="1" rowspan="1"><p>Allow</p>
+</td></tr>
+</table>
+<ol type="1" start="3">
+<li><strong>Next</strong> → <strong>Next</strong> → <strong>Create web ACL</strong> をクリックします</li>
+</ol>
+<p>Positive : マネージドルールはAWSが管理・更新するため、最新のセキュリティ脅威に自動的に対応できます。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="WAFの動作確認" duration="10">
+        <h2 is-upgraded>正常アクセスの確認</h2>
+<p>APIキーを使って正常にアクセスできることを確認します。</p>
+<pre>curl -H &#34;x-api-key: {あなたのAPIキー}&#34; \
+  https://{api-id}.execute-api.ap-northeast-1.amazonaws.com/dev/summarize
+</pre>
+<p>正常なレスポンスが返れば、WAFが正常なリクエストを通過させていることを確認できます。</p>
+<h2 is-upgraded>WAFの監視ダッシュボード</h2>
+<ol type="1">
+<li><strong>WAF &amp; Shield</strong> コンソールで <code>handson-api-waf</code> を選択します</li>
+<li><strong>Overview</strong> タブでリクエスト数とブロック数を確認します</li>
+</ol>
+<h2 is-upgraded>SQLインジェクション攻撃のテスト</h2>
+<p>WAFが悪意のあるリクエストをブロックすることを確認します。</p>
+<pre># SQLインジェクション風のリクエスト → WAFがブロック
+curl -X POST \
+  -H &#34;x-api-key: {あなたのAPIキー}&#34; \
+  -H &#34;Content-Type: application/json&#34; \
+  -d &#39;{&#34;text&#34;: &#34;SELECT * FROM users; DROP TABLE users;--&#34;}&#39; \
+  https://{api-id}.execute-api.ap-northeast-1.amazonaws.com/dev/summarize
+</pre>
+<p>WAFがブロックした場合、<code>403 Forbidden</code> が返ります。</p>
+<h2 is-upgraded>レートリミットのテスト</h2>
+<p>短時間に大量のリクエストを送信して、レートリミットが機能することを確認します。</p>
+<pre># 連続リクエストでレートリミットをテスト
+for i in $(seq 1 120); do
+  echo &#34;Request $i: $(curl -s -o /dev/null -w &#39;%{http_code}&#39; \
+    -H &#39;x-api-key: {あなたのAPIキー}&#39; \
+    https://{api-id}.execute-api.ap-northeast-1.amazonaws.com/dev/summarize)&#34;
+done
+</pre>
+<p>100リクエストを超えた辺りから <code>403</code> レスポンスが返り始めれば、レートリミットが機能しています。</p>
+<p>Negative : レートベースのルールは5分間隔で評価されるため、即座にブロックされるわけではありません。テスト時はこの点を考慮してください。</p>
+<h2 is-upgraded>構成の進化を振り返る</h2>
+<table>
+<tr><td colspan="1" rowspan="1"><p>構成</p>
+</td><td colspan="1" rowspan="1"><p>認証</p>
+</td><td colspan="1" rowspan="1"><p>レートリミット</p>
+</td><td colspan="1" rowspan="1"><p>攻撃防御</p>
+</td><td colspan="1" rowspan="1"><p>運用負荷</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>GAS（単体）</p>
+</td><td colspan="1" rowspan="1"><p>なし</p>
+</td><td colspan="1" rowspan="1"><p>GAS制限のみ</p>
+</td><td colspan="1" rowspan="1"><p>なし</p>
+</td><td colspan="1" rowspan="1"><p>低</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>GAS + スプレッドシート照合</p>
+</td><td colspan="1" rowspan="1"><p>簡易キー</p>
+</td><td colspan="1" rowspan="1"><p>なし</p>
+</td><td colspan="1" rowspan="1"><p>なし</p>
+</td><td colspan="1" rowspan="1"><p>中</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Lambda Function URL（単体）</p>
+</td><td colspan="1" rowspan="1"><p>なし</p>
+</td><td colspan="1" rowspan="1"><p>なし</p>
+</td><td colspan="1" rowspan="1"><p>なし</p>
+</td><td colspan="1" rowspan="1"><p>低</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Lambda + DynamoDB照合</p>
+</td><td colspan="1" rowspan="1"><p>簡易キー</p>
+</td><td colspan="1" rowspan="1"><p>なし</p>
+</td><td colspan="1" rowspan="1"><p>なし</p>
+</td><td colspan="1" rowspan="1"><p>中</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>API Gateway + APIキー</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>APIキー</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>✅</strong></p>
+</td><td colspan="1" rowspan="1"><p>なし</p>
+</td><td colspan="1" rowspan="1"><p>中</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>API Gateway + WAF + Lambda</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>APIキー</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>✅</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>✅</strong></p>
+</td><td colspan="1" rowspan="1"><p>中〜高</p>
+</td></tr>
+</table>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="リソースの削除" duration="10">
+        <h2 is-upgraded>作成したリソースの削除</h2>
+<p>ハンズオンが完了したら、以下のリソースを削除して料金の発生を防ぎましょう。</p>
+<p>削除順序は以下の通りです。</p>
+<ol type="1">
+<li><strong>AWS WAF</strong> Web ACL <code>handson-api-waf</code> の削除 <ul>
+<li>WAF &amp; Shield → Web ACLs → <code>handson-api-waf</code> → Delete</li>
+</ul>
+</li>
+<li><strong>APIキー </strong><code>handson-test-key</code> の削除</li>
+<li><strong>使用量プラン </strong><code>handson-basic-plan</code> の削除</li>
+<li><strong>API Gateway </strong><code>handson-text-summarizer-api</code> の削除</li>
+<li><strong>DynamoDBテーブル </strong><code>handson-api-keys</code> の削除</li>
+<li><strong>Lambda関数 </strong><code>handson-text-summarizer</code> の削除</li>
+<li><strong>IAMロール </strong><code>handson-furl-lambda-role</code> の削除</li>
+<li><strong>GASプロジェクト </strong><code>handson-text-api</code> の削除（任意）</li>
+<li><strong>スプレッドシート </strong><code>APIKeys</code> の削除（任意）</li>
+</ol>
+<h2 is-upgraded>AWS CLIでの一括削除</h2>
+<pre># WAF Web ACLの削除
+WAF_ACL_ID=$(aws wafv2 list-web-acls --scope REGIONAL --region ap-northeast-1 \
+  --query &#34;WebACLs[?Name==&#39;handson-api-waf&#39;].Id&#34; --output text)
+WAF_ACL_LOCK=$(aws wafv2 get-web-acl --name handson-api-waf --scope REGIONAL \
+  --id $WAF_ACL_ID --region ap-northeast-1 --query &#34;LockToken&#34; --output text)
+aws wafv2 delete-web-acl --name handson-api-waf --scope REGIONAL \
+  --id $WAF_ACL_ID --lock-token $WAF_ACL_LOCK --region ap-northeast-1
+
+# API Gateway関連の削除
+API_ID=$(aws apigateway get-rest-apis \
+  --query &#34;items[?name==&#39;handson-text-summarizer-api&#39;].id&#34; --output text)
+KEY_ID=$(aws apigateway get-api-keys \
+  --query &#34;items[?name==&#39;handson-test-key&#39;].id&#34; --output text)
+PLAN_ID=$(aws apigateway get-usage-plans \
+  --query &#34;items[?name==&#39;handson-basic-plan&#39;].id&#34; --output text)
+
+aws apigateway delete-api-key --api-key $KEY_ID
+aws apigateway delete-usage-plan --usage-plan-id $PLAN_ID
+aws apigateway delete-rest-api --rest-api-id $API_ID
+
+# DynamoDBテーブルの削除
+aws dynamodb delete-table --table-name handson-api-keys
+
+# Lambda関数の削除
+aws lambda delete-function --function-name handson-text-summarizer
+
+# IAMロールの削除
+aws iam detach-role-policy --role-name handson-furl-lambda-role \
+  --policy-arn arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+aws iam detach-role-policy --role-name handson-furl-lambda-role \
+  --policy-arn arn:aws:iam::aws:policy/AmazonDynamoDBReadOnlyAccess
+aws iam delete-role --role-name handson-furl-lambda-role
+</pre>
+<p>Negative : リソースの削除を忘れると、特にWAFとAPI Gatewayで意図しない料金が発生する可能性があります。必ず全てのリソースを削除してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="まとめ" duration="5">
+        <h2 is-upgraded>学んだこと</h2>
+<p>このハンズオンでは、サーバレスAPIの構築と保護について段階的に学びました。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>ステップ</p>
+</td><td colspan="1" rowspan="1"><p>内容</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>GAS Webアプリ</p>
+</td><td colspan="1" rowspan="1"><p>最も手軽なAPI公開方法を体験</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Lambda Function URL</p>
+</td><td colspan="1" rowspan="1"><p>AWS上での同等構成を体験</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>GAS vs Lambda 比較</p>
+</td><td colspan="1" rowspan="1"><p>実行時間制限・コスト・制約の違い</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>暫定セキュリティ対策</p>
+</td><td colspan="1" rowspan="1"><p>スプレッドシート/DynamoDBでのキー照合</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>API Gateway</p>
+</td><td colspan="1" rowspan="1"><p>本格的なAPI管理基盤</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>APIキー認証</p>
+</td><td colspan="1" rowspan="1"><p>アクセス制御とレートリミット</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>AWS WAF</p>
+</td><td colspan="1" rowspan="1"><p>Web攻撃からの保護</p>
+</td></tr>
+</table>
+<h2 is-upgraded>ハンズオンシリーズの振り返り</h2>
+<table>
+<tr><td colspan="1" rowspan="1"><p>#</p>
+</td><td colspan="1" rowspan="1"><p>テーマ</p>
+</td><td colspan="1" rowspan="1"><p>使用サービス</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>09</p>
+</td><td colspan="1" rowspan="1"><p>テキストの翻訳・音声化</p>
+</td><td colspan="1" rowspan="1"><p>Lambda, Step Functions, S3, Translate, Polly</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>10</p>
+</td><td colspan="1" rowspan="1"><p>静的Webサイトホスティング</p>
+</td><td colspan="1" rowspan="1"><p>CDK, CloudFront, S3, CloudWatch</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>11</p>
+</td><td colspan="1" rowspan="1"><p>動的Webアプリ</p>
+</td><td colspan="1" rowspan="1"><p>Amplify</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>12</p>
+</td><td colspan="1" rowspan="1"><p>サーバレスAPIの構築と保護</p>
+</td><td colspan="1" rowspan="1"><p>GAS, Lambda, API Gateway, WAF, DynamoDB</p>
+</td></tr>
+</table>
+<h2 is-upgraded>発展課題</h2>
+<ul>
+<li>API GatewayにCognitoユーザープールを連携して、ユーザー認証を追加してみましょう</li>
+<li>カスタムドメインを設定してAPIのURLを独自ドメインにしてみましょう</li>
+<li>Lambda関数でAmazon Bedrockと連携し、AI要約を実装してみましょう</li>
+<li>WAFのルールをカスタマイズして、特定のIPアドレスのみ許可してみましょう</li>
+<li>CloudWatch Logsでアクセスログを分析してみましょう</li>
+</ul>
+<h2 is-upgraded>参考リンク</h2>
+<p><br>  [AWS Lambda Function URL ドキュメント](https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/lambda-urls.html)<br><br>  [Amazon API Gateway ドキュメント](https://docs.aws.amazon.com/ja_jp/apigateway/)<br><br>  [AWS WAF ドキュメント](https://docs.aws.amazon.com/ja_jp/waf/)<br><br>  [Google Apps Script ドキュメント](https://developers.google.com/apps-script)<br></p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
