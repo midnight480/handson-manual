@@ -49,7 +49,8 @@ Step 4: API Gateway + WAF + Lambda（本格的・セキュアな構成）
 
 * AWSアカウントを持っていること
 * Googleアカウントを持っていること
-* AWS CLIがインストール・設定済みであること
+* GitHubアカウントを持っていること
+* GitHub Codespaces でAWS CLIが利用可能であること（[環境構築ハンズオン](../00-Install-AWS-CLI-to-RPI/web/) を参照）
 
 Positive
 : 本ハンズオンは初心者向けの内容です。GAS、Lambda、API Gateway、WAF を段階的に学んでいきます。

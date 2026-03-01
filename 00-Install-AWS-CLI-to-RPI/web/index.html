@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="theme-color" content="#4F7DC9">
   <meta charset="UTF-8">
-  <title>How to Install AWS CLI to Raspberry Pi</title>
+  <title>AWS CLI 環境構築ハンズオン — CloudShell &amp; GitHub Codespaces</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
@@ -21,135 +21,320 @@
 </head>
 <body>
   <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
-  <google-codelab codelab-gaid="xxxxxx"
+  <google-codelab codelab-gaid="196534296"
                   codelab-ga4id=""
                   id="00-Install-AWS-CLI-to-RPI"
-                  title="How to Install AWS CLI to Raspberry Pi"
+                  title="AWS CLI 環境構築ハンズオン — CloudShell &amp; GitHub Codespaces"
                   environment="web"
                   feedback-link="https://github.com/midnight480/handson-manual">
     
-      <google-codelab-step label="Enviorment" duration="1">
-        <h2 is-upgraded>Machine</h2>
-<p><br>  [SWITCHSCIENCE - Raspberry Pi 3 Model B+](https://www.switch-science.com/catalog/3850/)<br></p>
-<p class="image-container"><img alt="RPI" src="img/6963ca18ae2cba5c.jpg"></p>
-<h2 is-upgraded>OS</h2>
+      <google-codelab-step label="はじめに" duration="3">
+        <h2 is-upgraded>ハンズオンの概要</h2>
+<p>このハンズオンでは、AWS CLI を使い始めるための環境を構築します。<br> ローカルPCへのインストールは不要で、以下の2つの方法を紹介します。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>方法</p>
+</td><td colspan="1" rowspan="1"><p>特徴</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>AWS CloudShell</strong></p>
+</td><td colspan="1" rowspan="1"><p>AWSマネジメントコンソールからすぐに使えるブラウザベースのシェル。AWS CLI v2がプリインストール済み</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>GitHub Codespaces</strong></p>
+</td><td colspan="1" rowspan="1"><p>GitHubリポジトリと連携したクラウド開発環境。AWS CLIを手動インストール</p>
+</td></tr>
+</table>
+<h2 is-upgraded>前提条件</h2>
 <ul>
-<li>Raspberry Pi OS</li>
+<li>AWSアカウントを持っていること</li>
+<li>GitHubアカウントを持っていること（Codespaces利用時）</li>
+<li>Webブラウザが利用できること</li>
 </ul>
-<pre>&gt; cat /etc/os-release
-PRETTY_NAME=&#34;Raspbian GNU/Linux 9 (stretch)&#34;
-NAME=&#34;Raspbian GNU/Linux&#34;
-VERSION_ID=&#34;9&#34;
-VERSION=&#34;9 (stretch)&#34;
-ID=raspbian
-ID_LIKE=debian
-HOME_URL=&#34;http://www.raspbian.org/&#34;
-SUPPORT_URL=&#34;http://www.raspbian.org/RaspbianForums&#34;
-BUG_REPORT_URL=&#34;http://www.raspbian.org/RaspbianBugs&#34;
-&gt; uname -a
-Linux raspberrypi 4.14.79-v7+ #1159 SMP Sun Nov 4 17:50:20 GMT 2018 armv7l GNU/Linux
-</pre>
+<p>Positive : どちらの方法もブラウザだけで完結します。ローカルPCの環境を汚さずにAWS CLIを試せます。</p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Install AWS CLI" duration="3">
-        <pre>&gt; sudo apt-get update -y
-...
-パッケージリストを読み込んでいます... 完了
-&gt; sudo apt-get install -y awscli
-...
-python3-rsa (3.4.2-1) を設定しています ...
-python3-jmespath (0.9.0-2) を設定しています ...
-python3-dateutil (2.5.3-2) を設定しています ...
-python3-botocore (1.4.70-1) を設定しています ...
-python3-s3transfer (0.1.9-1) を設定しています ...
-awscli (1.11.13-1) を設定しています ...
-&gt; aws --version
-aws-cli/1.11.13 Python/3.5.3 Linux/4.14.79-v7+ botocore/1.4.70
+      <google-codelab-step label="方法1: AWS CloudShell を使う" duration="5">
+        <h2 is-upgraded>CloudShell とは</h2>
+<p>AWS CloudShell は、AWSマネジメントコンソール内で利用できるブラウザベースのシェル環境です。<br> AWS CLI v2がプリインストールされており、追加のインストール作業は不要です。</p>
+<h2 is-upgraded>CloudShell の起動</h2>
+<ol type="1">
+<li><a href="https://console.aws.amazon.com/" target="_blank">AWSマネジメントコンソール</a> にログインします</li>
+<li>画面上部のナビゲーションバーにある <strong>CloudShell アイコン</strong>（<code>>_</code> マーク）をクリックします</li>
+<li>初回起動時はシェル環境の準備に1〜2分かかります</li>
+</ol>
+<h2 is-upgraded>AWS CLI のバージョン確認</h2>
+<p>CloudShell が起動したら、AWS CLI がインストール済みであることを確認します。</p>
+<pre>aws --version
 </pre>
-<aside class="special"><p><code>sudo apt-get update -y</code>は必ず実施してください</p>
-</aside>
-<aside class="warning"><p>Raspberry Piにインストール可能なAWS CLIは最新版でもv1.x系となります</p>
-</aside>
-<p><br>  [AWS コマンドラインインターフェイス](https://aws.amazon.com/jp/cli/)<br></p>
+<p>以下のような出力が表示されます。</p>
+<pre><code>aws-cli/2.x.x Python/3.x.x Linux/x.x.x source/x86_64.amzn.2023
+</code></pre>
+<p>Positive : CloudShell では AWS CLI v2 がプリインストールされています。ログイン中のIAMユーザー/ロールの権限で自動的に認証されるため、<code>aws configure</code> も不要です。</p>
+<h2 is-upgraded>CloudShell の特徴</h2>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>内容</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>AWS CLI</p>
+</td><td colspan="1" rowspan="1"><p>v2 プリインストール済み</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>認証</p>
+</td><td colspan="1" rowspan="1"><p>ログイン中のIAMユーザー/ロールで自動認証</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ストレージ</p>
+</td><td colspan="1" rowspan="1"><p>ホームディレクトリに1GBの永続ストレージ</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>タイムアウト</p>
+</td><td colspan="1" rowspan="1"><p>20〜30分間操作がないと自動切断</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>リージョン</p>
+</td><td colspan="1" rowspan="1"><p>コンソールで選択中のリージョンが適用</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>コスト</p>
+</td><td colspan="1" rowspan="1"><p>無料</p>
+</td></tr>
+</table>
+<h2 is-upgraded>動作確認</h2>
+<p>いくつかのコマンドを実行して、正常に動作することを確認します。</p>
+<pre># 現在のIAMユーザー/ロールを確認
+aws sts get-caller-identity
+
+# S3バケットの一覧を表示
+aws s3 ls
+
+# 現在のリージョンを確認
+aws configure get region
+</pre>
+<p>Negative : CloudShell はAWSマネジメントコンソールのセッションに依存します。コンソールからログアウトするとシェルも終了します。また、一部のリージョンではCloudShellが利用できない場合があります。</p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="AWS Settings" duration="3">
-        <pre>&gt; aws configure              
-AWS Access Key ID [None]: AKXXXXX
-AWS Secret Access Key [None]: YYYYY
-Default region name [None]: ap-northeast-1
-Default output format [None]: json
-&gt;
-&gt; ls -la ~/.aws
-...
--rw-------  1 pi pi   48  M月 DD HH:MI config
--rw-------  1 pi pi   48  M月 DD HH:MI credential
+      <google-codelab-step label="方法2: GitHub Codespaces を使う" duration="10">
+        <h2 is-upgraded>GitHub Codespaces とは</h2>
+<p>GitHub Codespaces は、GitHub上でクラウドベースの開発環境を提供するサービスです。<br> VS Codeベースのエディタがブラウザ上で動作し、ターミナルも利用できます。</p>
+<h2 is-upgraded>Codespace の作成</h2>
+<ol type="1">
+<li><a href="https://github.com/" target="_blank">GitHub</a> にログインします</li>
+<li>任意のリポジトリを開きます（新規作成でも可）</li>
+<li><strong>Code</strong> ボタン → <strong>Codespaces</strong> タブ → <strong>Create codespace on main</strong> をクリックします</li>
+<li>Codespace の起動を待ちます（1〜2分程度）</li>
+</ol>
+<p>Positive : GitHub Free プランでは、毎月120コア時間のCodespaces無料枠が提供されています。2コアマシンの場合、月60時間利用可能です。</p>
+<h2 is-upgraded>AWS CLI v2 のインストール</h2>
+<p>Codespace のターミナルで以下のコマンドを実行して、AWS CLI v2 をインストールします。</p>
+<pre># インストーラーのダウンロード
+curl &#34;https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip&#34; -o &#34;awscliv2.zip&#34;
+
+# 解凍
+unzip awscliv2.zip
+
+# インストール
+sudo ./aws/install
+
+# インストール確認
+aws --version
 </pre>
-<aside class="special"><p>Shell Script内で実行するAWS CLIで実行する際の権限を設定します</p>
-</aside>
-<aside class="warning"><p>Access Key, Secret Access Keyは管理者から払い出されたものを設定してください。</p>
-</aside>
+<p>以下のような出力が表示されればインストール完了です。</p>
+<pre><code>aws-cli/2.x.x Python/3.x.x Linux/x.x.x source/x86_64.ubuntu
+</code></pre>
+<h2 is-upgraded>不要ファイルの削除</h2>
+<p>インストール後、不要なファイルを削除します。</p>
+<pre>rm -rf awscliv2.zip aws/
+</pre>
+<p>Positive : Codespace を停止・再起動してもインストール済みの AWS CLI は保持されます。ただし、Codespace を削除した場合は再インストールが必要です。</p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Create Shell Script" duration="3">
-        <pre>&gt; vi ZZZZ.sh
-&gt; crontab -e
-# 10分おきに実行
-*/10 * * * * ZZZZ.sh
+      <google-codelab-step label="AWS CLI の初期設定" duration="5">
+        <h2 is-upgraded>認証方法の選択</h2>
+<p>AWS CLI で AWS リソースを操作するには、認証情報の設定が必要です。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>方法</p>
+</td><td colspan="1" rowspan="1"><p>対象環境</p>
+</td><td colspan="1" rowspan="1"><p>説明</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>CloudShell 自動認証</p>
+</td><td colspan="1" rowspan="1"><p>CloudShell</p>
+</td><td colspan="1" rowspan="1"><p>設定不要。ログイン中の権限で自動認証</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>aws configure</code></p>
+</td><td colspan="1" rowspan="1"><p>Codespaces 等</p>
+</td><td colspan="1" rowspan="1"><p>アクセスキーとシークレットキーを設定</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>環境変数</p>
+</td><td colspan="1" rowspan="1"><p>Codespaces 等</p>
+</td><td colspan="1" rowspan="1"><p>環境変数にアクセスキーを設定（一時利用向き）</p>
+</td></tr>
+</table>
+<h2 is-upgraded>aws configure による設定（Codespaces 向け）</h2>
+<p>GitHub Codespaces では <code>aws configure</code> コマンドで認証情報を設定します。</p>
+<pre>aws configure
 </pre>
-<aside class="special"><p>vimの場合、 <code>:wq</code> で保存することになります</p>
-</aside>
-<h2 is-upgraded>ShellScript</h2>
+<p>以下の情報を入力します。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>AWS Access Key ID</p>
+</td><td colspan="1" rowspan="1"><p><code>AKIAXXXXXXXXXXXXXXXX</code>（管理者から払い出されたもの）</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>AWS Secret Access Key</p>
+</td><td colspan="1" rowspan="1"><p><code>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Default region name</p>
+</td><td colspan="1" rowspan="1"><p><code>ap-northeast-1</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Default output format</p>
+</td><td colspan="1" rowspan="1"><p><code>json</code></p>
+</td></tr>
+</table>
+<h2 is-upgraded>設定の確認</h2>
+<pre># 設定ファイルの確認
+cat ~/.aws/config
+
+# 認証情報ファイルの確認（中身は表示しない）
+ls -la ~/.aws/credentials
+
+# 現在のIAMユーザーを確認
+aws sts get-caller-identity
+</pre>
+<p>Negative : アクセスキーとシークレットキーは管理者から払い出されたものを設定してください。キーをGitリポジトリにコミットしないよう注意してください。</p>
+<h2 is-upgraded>環境変数による設定（一時利用向け）</h2>
+<p>一時的に利用する場合は、環境変数で認証情報を設定することもできます。</p>
+<pre>export AWS_ACCESS_KEY_ID=&#34;AKIAXXXXXXXXXXXXXXXX&#34;
+export AWS_SECRET_ACCESS_KEY=&#34;XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&#34;
+export AWS_DEFAULT_REGION=&#34;ap-northeast-1&#34;
+</pre>
+<p>Positive : 環境変数による設定はターミナルを閉じると消えるため、一時的な利用に適しています。Codespace の Secrets 機能を使えば、安全に環境変数を永続化することもできます。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Codespace Secrets の活用（推奨）" duration="5">
+        <h2 is-upgraded>Codespace Secrets とは</h2>
+<p>GitHub Codespace Secrets を使うと、AWS の認証情報を安全にCodespace に設定できます。<br> Secrets はCodespace 起動時に環境変数として自動的に読み込まれます。</p>
+<h2 is-upgraded>Secrets の設定方法</h2>
+<ol type="1">
+<li>GitHubの <strong>Settings</strong> → <strong>Codespaces</strong> を開きます</li>
+<li><strong>Codespace secrets</strong> セクションの <strong>New secret</strong> をクリックします</li>
+<li>以下の3つの Secret を追加します</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Name</p>
+</td><td colspan="1" rowspan="1"><p>Value</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>AWS_ACCESS_KEY_ID</code></p>
+</td><td colspan="1" rowspan="1"><p><code>AKIAXXXXXXXXXXXXXXXX</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>AWS_SECRET_ACCESS_KEY</code></p>
+</td><td colspan="1" rowspan="1"><p><code>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>AWS_DEFAULT_REGION</code></p>
+</td><td colspan="1" rowspan="1"><p><code>ap-northeast-1</code></p>
+</td></tr>
+</table>
+<ol type="1" start="4">
+<li>それぞれの Secret で、利用するリポジトリを選択して <strong>Add secret</strong> をクリックします</li>
+</ol>
+<h2 is-upgraded>設定の確認</h2>
+<p>Codespace を再起動（または新規作成）した後、環境変数が設定されていることを確認します。</p>
+<pre># 環境変数の確認（キーの先頭数文字のみ表示）
+echo &#34;Region: $AWS_DEFAULT_REGION&#34;
+echo &#34;Key ID: ${AWS_ACCESS_KEY_ID:0:8}...&#34;
+
+# AWS CLI での確認
+aws sts get-caller-identity
+</pre>
+<p>Positive : Codespace Secrets を使えば、<code>aws configure</code> を毎回実行する必要がなく、認証情報がGitリポジトリに漏洩するリスクもありません。</p>
+<p>Negative : Codespace Secrets に保存したアクセスキーが漏洩した場合に備え、IAMユーザーには最小権限のポリシーを設定しましょう。また、定期的なキーローテーションも推奨されます。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="動作確認テスト" duration="5">
+        <h2 is-upgraded>CloudShell / Codespaces の共通テスト</h2>
+<p>どちらの環境でも以下のコマンドが正常に実行できることを確認します。</p>
+<h2 is-upgraded>IAM情報の確認</h2>
+<pre>aws sts get-caller-identity
+</pre>
+<pre><code language="language-json" class="language-json">{
+    &#34;UserId&#34;: &#34;AIDAXXXXXXXXXXXXXXXXX&#34;,
+    &#34;Account&#34;: &#34;123456789012&#34;,
+    &#34;Arn&#34;: &#34;arn:aws:iam::123456789012:user/your-username&#34;
+}
+</code></pre>
+<h2 is-upgraded>S3操作の確認</h2>
+<pre># バケット一覧
+aws s3 ls
+
+# テスト用バケットの作成（任意）
+aws s3 mb s3://handson-test-{あなたのアカウントID}
+
+# ファイルのアップロード
+echo &#34;Hello AWS CLI&#34; &gt; test.txt
+aws s3 cp test.txt s3://handson-test-{あなたのアカウントID}/
+
+# ファイルの確認
+aws s3 ls s3://handson-test-{あなたのアカウントID}/
+
+# テスト用バケットの削除
+aws s3 rm s3://handson-test-{あなたのアカウントID}/ --recursive
+aws s3 rb s3://handson-test-{あなたのアカウントID}
+</pre>
+<h2 is-upgraded>リージョンの確認</h2>
+<pre>aws ec2 describe-regions --query &#34;Regions[].RegionName&#34; --output table
+</pre>
+<p>Positive : ここまでの操作がすべて成功すれば、AWS CLI の環境構築は完了です。他のハンズオン（09〜12）を進める準備が整いました。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="2つの方法の比較とまとめ" duration="2">
+        <h2 is-upgraded>CloudShell vs GitHub Codespaces</h2>
+<table>
+<tr><td colspan="1" rowspan="1"><p>比較項目</p>
+</td><td colspan="1" rowspan="1"><p>CloudShell</p>
+</td><td colspan="1" rowspan="1"><p>GitHub Codespaces</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>起動方法</p>
+</td><td colspan="1" rowspan="1"><p>AWSコンソールからワンクリック</p>
+</td><td colspan="1" rowspan="1"><p>GitHubリポジトリから作成</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>AWS CLI</p>
+</td><td colspan="1" rowspan="1"><p>プリインストール済み</p>
+</td><td colspan="1" rowspan="1"><p>手動インストール</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>認証設定</p>
+</td><td colspan="1" rowspan="1"><p>自動（設定不要）</p>
+</td><td colspan="1" rowspan="1"><p><code>aws configure</code> または Secrets</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>エディタ</p>
+</td><td colspan="1" rowspan="1"><p>なし（CLIのみ）</p>
+</td><td colspan="1" rowspan="1"><p>VS Code（フルエディタ）</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ストレージ</p>
+</td><td colspan="1" rowspan="1"><p>1GB（永続）</p>
+</td><td colspan="1" rowspan="1"><p>最大32GB（Codespace 単位）</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>コスト</p>
+</td><td colspan="1" rowspan="1"><p>無料</p>
+</td><td colspan="1" rowspan="1"><p>月120コア時間まで無料</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>向いている用途</p>
+</td><td colspan="1" rowspan="1"><p>AWS CLI の実行のみ</p>
+</td><td colspan="1" rowspan="1"><p>コード開発 + AWS CLI</p>
+</td></tr>
+</table>
+<h2 is-upgraded>使い分けの指針</h2>
 <ul>
-<li>AWS Kinesis Data FirehoseにCSVファイルを送るための定義となります <ul>
-<li>CSVから項目を抽出してJSON形式にしてデータをロードさせる形となります</li>
-<li>もし初期のCSVから出力するデータ形式がJSONの場合は、awkコマンドで切り出している箇所は不要です</li>
+<li><strong>AWS CLI でサクッとコマンドを実行したい</strong> → CloudShell</li>
+<li><strong>コードの開発・編集も一緒に行いたい</strong> → GitHub Codespaces</li>
 </ul>
-</li>
-</ul>
-<pre>#!/bin/bash
- 
-# Kinensis Firehoseのストリーム名を設定
-streamname=${kinesisn-data-firehose-stream-nama}
- 
-while [ 1 ]
-do
-    (
-        time=`date &#39;+%F %T&#39;`
-        col1=$(awk -F= &#39;&#39;)
-        col2=$(awk -F= &#39;&#39;)
-        col3=$(awk -F= &#39;&#39;) 
-        payload=&#39;{\&#34;time\&#34;:\&#34;&#39;$time&#39;\&#34;, \&#34;col1\&#34;:&#39;$col1&#39;, \&#34;col2\&#34;:&#39;$col2&#39;, \&#34;col3\&#34;:&#39;$col3&#39;}&#39;
-        echo $payload
-        aws firehose put-record --delivery-stream-name $streamname --record=&#34;{\&#34;Data\&#34;:\&#34;$payload\n\&#34;}&#34;
-    ) &amp;
-    sleep 15
-done
-</pre>
-<ul>
-<li>参考 <ul>
-<li><a href="https://www.yamamanx.com/ds18b20_raspberry-pi_amazon-kinesis-firehose_s3_athena-quicksight/" target="_blank">DS18B20センサー+Raspberry Piで取得した温度をAmazon Kinesis FirehoseからS3へ格納</a></li>
-</ul>
-</li>
-</ul>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Complete" duration="1">
-        <ul>
-<li>設定作業お疲れさまでした</li>
-</ul>
-<aside class="special"><p>AWS CLIはGUIと比較して、作業者のスキルに依存せず再現性の高い作業も可能となります</p>
-</aside>
-<aside class="warning"><p>AWS CLI v2になると入力可能なコマンドの幅が増えるためRaspberry Piで利用可能になったら変更を推奨します</p>
-</aside>
+<p>Positive : AWS CLI はGUIと比較して、再現性の高い作業が可能です。ここで構築した環境を使って、他のハンズオンに進みましょう。</p>
+<h2 is-upgraded>参考リンク</h2>
+<p><br>  [AWS CloudShell ドキュメント](https://docs.aws.amazon.com/ja_jp/cloudshell/)<br><br>  [AWS CLI v2 インストールガイド](https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/getting-started-install.html)<br><br>  [GitHub Codespaces ドキュメント](https://docs.github.com/ja/codespaces)<br></p>
 
 
       </google-codelab-step>

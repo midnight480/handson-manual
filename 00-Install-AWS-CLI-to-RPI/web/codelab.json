@@ -3,11 +3,11 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2024-02-12T00:07:17+09:00",
+  "updated": "2026-03-01T20:46:24+09:00",
   "id": "00-Install-AWS-CLI-to-RPI",
-  "duration": 11,
-  "title": "How to Install AWS CLI to Raspberry Pi",
-  "summary": "RaspberryPi",
+  "duration": 35,
+  "title": "AWS CLI 環境構築ハンズオン — CloudShell \u0026 GitHub Codespaces",
+  "summary": "AWS CloudShell / GitHub Codespaces で AWS CLI を使い始める環境構築ハンズオン",
   "source": "00-Install-AWS-CLI-to-RPI.md",
   "theme": "",
   "status": [
@@ -21,6 +21,6 @@
     "web"
   ],
   "feedback": "https://github.com/midnight480/handson-manual",
-  "ga": "xxxxxx",
+  "ga": "196534296",
   "url": "00-Install-AWS-CLI-to-RPI"
 }

@@ -27,8 +27,9 @@ CloudWatchでアクセスログの監視も設定します。
 ### 前提条件
 
 * AWSアカウントを持っていること
-* AWS CLIがインストール・設定済みであること
-* Node.js（v18以上）がインストールされていること
+* GitHubアカウントを持っていること
+* GitHub Codespaces でAWS CLIが利用可能であること（[環境構築ハンズオン](../00-Install-AWS-CLI-to-RPI/web/) を参照）
+* Node.jsはCodespaces上にプリインストール済みです
 * TypeScriptの基本的な知識があること（なくても実施可能）
 
 Positive

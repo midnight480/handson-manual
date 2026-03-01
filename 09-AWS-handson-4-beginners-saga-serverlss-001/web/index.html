@@ -52,13 +52,12 @@
 <h2 is-upgraded>前提条件</h2>
 <ul>
 <li>AWSアカウントを持っていること</li>
-<li>AWS CLIがインストール・設定済みであること</li>
+<li>GitHubアカウントを持っていること</li>
+<li>GitHub Codespaces でAWS CLIが利用可能であること（<a href="../00-Install-AWS-CLI-to-RPI/web/" target="_blank">環境構築ハンズオン</a> を参照）</li>
 <li>AWS マネジメントコンソールにログインできること</li>
 </ul>
-<aside class="special"><p>本ハンズオンは初心者向けの内容です。AWSの基本的な操作ができれば問題ありません。</p>
-</aside>
-<aside class="warning"><p>本ハンズオンで作成するリソースには料金が発生する場合があります。ハンズオン終了後は必ずリソースを削除してください。</p>
-</aside>
+<p>Positive : 本ハンズオンは初心者向けの内容です。AWSの基本的な操作ができれば問題ありません。</p>
+<p>Negative : 本ハンズオンで作成するリソースには料金が発生する場合があります。ハンズオン終了後は必ずリソースを削除してください。</p>
 
 
       </google-codelab-step>
@@ -106,8 +105,7 @@
 </td><td colspan="1" rowspan="1"><p>デフォルトのまま</p>
 </td></tr>
 </table>
-<aside class="special"><p>S3バケット名はグローバルで一意である必要があります。アカウントIDを含めることで重複を避けましょう。</p>
-</aside>
+<p>Positive : S3バケット名はグローバルで一意である必要があります。アカウントIDを含めることで重複を避けましょう。</p>
 
 
       </google-codelab-step>
@@ -141,8 +139,7 @@ AmazonTranslateFullAccess
 AmazonPollyFullAccess
 CloudWatchLogsFullAccess
 </code></pre>
-<aside class="warning"><p>本ハンズオンでは簡易化のためFullAccessポリシーを使用しますが、本番環境では最小権限の原則に基づいたポリシーを設定してください。</p>
-</aside>
+<p>Negative : 本ハンズオンでは簡易化のためFullAccessポリシーを使用しますが、本番環境では最小権限の原則に基づいたポリシーを設定してください。</p>
 <h2 is-upgraded>Step Functions用IAMロール</h2>
 <p>同様の手順で、Step Functions用のロールを作成します。</p>
 <table>
@@ -273,8 +270,7 @@ def lambda_handler(event, context):
 <ol type="1" start="3">
 <li><strong>Deploy</strong> をクリックして関数をデプロイします</li>
 </ol>
-<aside class="special"><p>Amazon Translateは多くの言語ペアに対応しています。<code>source_language</code>と<code>target_language</code>を変更することで、様々な言語間の翻訳が可能です。</p>
-</aside>
+<p>Positive : Amazon Translateは多くの言語ペアに対応しています。<code>source_language</code>と<code>target_language</code>を変更することで、様々な言語間の翻訳が可能です。</p>
 
 
       </google-codelab-step>
@@ -424,8 +420,7 @@ def lambda_handler(event, context):
   }
 }
 </code></pre>
-<aside class="warning"><p><code>{アカウントID}</code> は自分のAWSアカウントIDに置き換えてください。</p>
-</aside>
+<p>Negative : <code>{アカウントID}</code> は自分のAWSアカウントIDに置き換えてください。</p>
 <h2 is-upgraded>ステートマシンの設定</h2>
 <table>
 <tr><td colspan="1" rowspan="1"><p>項目</p>
@@ -456,8 +451,7 @@ def lambda_handler(event, context):
 <li><strong>プロパティ</strong> タブを選択します</li>
 <li><strong>イベント通知</strong> セクションの <strong>イベント通知を作成</strong> をクリックします</li>
 </ol>
-<aside class="special"><p>S3イベント通知からStep Functionsを直接起動するには、Amazon EventBridge経由で設定することもできます。</p>
-</aside>
+<p>Positive : S3イベント通知からStep Functionsを直接起動するには、Amazon EventBridge経由で設定することもできます。</p>
 <h2 is-upgraded>EventBridge経由での設定</h2>
 <ol type="1">
 <li>入力用S3バケットの <strong>プロパティ</strong> タブを開きます</li>
@@ -532,8 +526,7 @@ def lambda_handler(event, context):
 aws s3 cp s3://handson-output-{アカウントID}/audio/{生成されたファイル名}.mp3 ./output.mp3
 </pre>
 <p>ダウンロードしたMP3ファイルを再生して、英語の音声が出力されることを確認します。</p>
-<aside class="special"><p>ワークフローがエラーになった場合は、Step Functionsの実行履歴からエラーの詳細を確認してください。Lambda関数のCloudWatch Logsも参考になります。</p>
-</aside>
+<p>Positive : ワークフローがエラーになった場合は、Step Functionsの実行履歴からエラーの詳細を確認してください。Lambda関数のCloudWatch Logsも参考になります。</p>
 
 
       </google-codelab-step>
@@ -568,8 +561,7 @@ aws s3 rm s3://handson-output-{アカウントID} --recursive
 aws s3 rb s3://handson-input-{アカウントID}
 aws s3 rb s3://handson-output-{アカウントID}
 </pre>
-<aside class="warning"><p>リソースの削除を忘れると、意図しない料金が発生する可能性があります。必ず全てのリソースを削除してください。</p>
-</aside>
+<p>Negative : リソースの削除を忘れると、意図しない料金が発生する可能性があります。必ず全てのリソースを削除してください。</p>
 
 
       </google-codelab-step>

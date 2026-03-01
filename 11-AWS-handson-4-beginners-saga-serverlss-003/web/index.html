@@ -44,13 +44,11 @@
 <ul>
 <li>AWSアカウントを持っていること</li>
 <li>GitHubアカウントを持っていること</li>
-<li>Node.js（v18以上）がインストールされていること</li>
-<li>Gitがインストールされていること</li>
+<li>GitHub Codespaces でAWS CLIが利用可能であること（<a href="../00-Install-AWS-CLI-to-RPI/web/" target="_blank">環境構築ハンズオン</a> を参照）</li>
+<li>Node.js / Git はCodespaces上にプリインストール済みです</li>
 </ul>
-<aside class="special"><p>AWS Amplifyは、フロントエンドからバックエンドまで一貫して構築できるフルスタックのサービスです。</p>
-</aside>
-<aside class="warning"><p>本ハンズオンで作成するリソースには料金が発生する場合があります。ハンズオン終了後は必ずアプリを削除してください。</p>
-</aside>
+<p>Positive : AWS Amplifyは、フロントエンドからバックエンドまで一貫して構築できるフルスタックのサービスです。</p>
+<p>Negative : 本ハンズオンで作成するリソースには料金が発生する場合があります。ハンズオン終了後は必ずアプリを削除してください。</p>
 
 
       </google-codelab-step>
@@ -61,8 +59,7 @@
 <pre>npm create amplify@latest -- --yes
 cd my-amplify-app
 </pre>
-<aside class="special"><p><code>npm create amplify@latest</code> コマンドにより、Next.jsベースのAmplifyプロジェクトが自動生成されます。</p>
-</aside>
+<p>Positive : <code>npm create amplify@latest</code> コマンドにより、Next.jsベースのAmplifyプロジェクトが自動生成されます。</p>
 <h2 is-upgraded>プロジェクト構成の確認</h2>
 <pre><code>my-amplify-app/
 ├── amplify/
@@ -118,8 +115,7 @@ export const data = defineData({
   },
 });
 </code></pre>
-<aside class="special"><p><code>a.model()</code> で定義したモデルは自動的にDynamoDBテーブルとGraphQL APIが作成されます。CRUD操作も自動生成されます。</p>
-</aside>
+<p>Positive : <code>a.model()</code> で定義したモデルは自動的にDynamoDBテーブルとGraphQL APIが作成されます。CRUD操作も自動生成されます。</p>
 
 
       </google-codelab-step>
@@ -395,8 +391,7 @@ h1 {
 <p>ローカル開発用のサンドボックス環境を起動します。</p>
 <pre>npx ampx sandbox
 </pre>
-<aside class="special"><p>サンドボックスモードでは、バックエンドのリソースが自動的にAWS上に作成されます。コードを変更するとホットリロードされます。</p>
-</aside>
+<p>Positive : サンドボックスモードでは、バックエンドのリソースが自動的にAWS上に作成されます。コードを変更するとホットリロードされます。</p>
 <p>別のターミナルでフロントエンドの開発サーバーを起動します。</p>
 <pre>npm run dev
 </pre>
@@ -442,8 +437,7 @@ git branch -M main
 git remote add origin https://github.com/{あなたのGitHubユーザー名}/handson-amplify-app.git
 git push -u origin main
 </pre>
-<aside class="warning"><p><code>{あなたのGitHubユーザー名}</code> は自分のGitHubユーザー名に置き換えてください。</p>
-</aside>
+<p>Negative : <code>{あなたのGitHubユーザー名}</code> は自分のGitHubユーザー名に置き換えてください。</p>
 
 
       </google-codelab-step>
@@ -480,8 +474,7 @@ git push -u origin main
 <ol type="1" start="4">
 <li><strong>保存してデプロイ</strong> をクリックします</li>
 </ol>
-<aside class="special"><p>Amplifyがnext.jsアプリを自動検出して適切なビルド設定を構成してくれます。</p>
-</aside>
+<p>Positive : Amplifyがnext.jsアプリを自動検出して適切なビルド設定を構成してくれます。</p>
 <h2 is-upgraded>デプロイの完了を待つ</h2>
 <p>以下のステップが順番に実行されます。</p>
 <ol type="1">
@@ -517,8 +510,7 @@ git commit -m &#34;Update page title&#34;
 git push
 </pre>
 <p>Amplifyコンソールで自動ビルドが開始されることを確認します。</p>
-<aside class="special"><p>AmplifyはGitベースのCI/CDを標準で提供しています。プッシュするだけで自動デプロイが実行されます。</p>
-</aside>
+<p>Positive : AmplifyはGitベースのCI/CDを標準で提供しています。プッシュするだけで自動デプロイが実行されます。</p>
 
 
       </google-codelab-step>
@@ -532,16 +524,14 @@ git push
 <li><strong>アプリを削除</strong> をクリックします</li>
 <li>確認画面で「削除」と入力して <strong>削除</strong> をクリックします</li>
 </ol>
-<aside class="special"><p>Amplifyアプリを削除すると、関連するバックエンドリソース（DynamoDB、AppSync、S3など）も自動的に削除されます。</p>
-</aside>
+<p>Positive : Amplifyアプリを削除すると、関連するバックエンドリソース（DynamoDB、AppSync、S3など）も自動的に削除されます。</p>
 <h2 is-upgraded>GitHubリポジトリの削除（任意）</h2>
 <p>不要であればGitHubリポジトリも削除します。</p>
 <ol type="1">
 <li>GitHubのリポジトリページを開きます</li>
 <li><strong>Settings</strong> → ページ最下部の <strong>Delete this repository</strong> をクリック</li>
 </ol>
-<aside class="warning"><p>リソースの削除を忘れると、意図しない料金が発生する可能性があります。必ずアプリを削除してください。</p>
-</aside>
+<p>Negative : リソースの削除を忘れると、意図しない料金が発生する可能性があります。必ずアプリを削除してください。</p>
 
 
       </google-codelab-step>
@@ -557,7 +547,7 @@ git push
 <li><strong>サンドボックスモード</strong> でのローカル開発</li>
 <li><strong>リアルタイムデータ同期</strong> の実装</li>
 </ul>
-<h2 is-upgraded>3つのハンズオンの振り返り</h2>
+<h2 is-upgraded>4つのハンズオンの振り返り</h2>
 <table>
 <tr><td colspan="1" rowspan="1"><p>#</p>
 </td><td colspan="1" rowspan="1"><p>テーマ</p>
@@ -574,6 +564,10 @@ git push
 <tr><td colspan="1" rowspan="1"><p>11</p>
 </td><td colspan="1" rowspan="1"><p>動的Webアプリホスティング</p>
 </td><td colspan="1" rowspan="1"><p>Amplify</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>12</p>
+</td><td colspan="1" rowspan="1"><p>サーバレスAPIの構築と保護</p>
+</td><td colspan="1" rowspan="1"><p>GAS, Lambda, API Gateway, WAF, DynamoDB</p>
 </td></tr>
 </table>
 <p>それぞれのハンズオンで、サーバレスのユースケースと構築方法を学びました。</p>

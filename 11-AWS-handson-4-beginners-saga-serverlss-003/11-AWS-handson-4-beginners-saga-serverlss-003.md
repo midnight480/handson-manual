@@ -28,8 +28,8 @@ Duration: 0:05:00
 
 * AWSアカウントを持っていること
 * GitHubアカウントを持っていること
-* Node.js（v18以上）がインストールされていること
-* Gitがインストールされていること
+* GitHub Codespaces でAWS CLIが利用可能であること（[環境構築ハンズオン](../00-Install-AWS-CLI-to-RPI/web/) を参照）
+* Node.js / Git はCodespaces上にプリインストール済みです
 
 Positive
 : AWS Amplifyは、フロントエンドからバックエンドまで一貫して構築できるフルスタックのサービスです。
@@ -565,13 +565,14 @@ Duration: 0:05:00
 * **サンドボックスモード** でのローカル開発
 * **リアルタイムデータ同期** の実装
 
-### 3つのハンズオンの振り返り
+### 4つのハンズオンの振り返り
 
 | # | テーマ | 使用サービス |
 |---|--------|------------|
 | 09 | テキストの翻訳・音声化 | Lambda, Step Functions, S3, Translate, Polly |
 | 10 | 静的Webサイトホスティング | CDK, CloudFront, S3, CloudWatch |
 | 11 | 動的Webアプリホスティング | Amplify |
+| 12 | サーバレスAPIの構築と保護 | GAS, Lambda, API Gateway, WAF, DynamoDB |
 
 それぞれのハンズオンで、サーバレスのユースケースと構築方法を学びました。
 

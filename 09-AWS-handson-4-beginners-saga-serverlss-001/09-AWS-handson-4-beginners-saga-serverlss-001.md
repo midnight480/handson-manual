@@ -38,7 +38,8 @@ Duration: 0:05:00
 ### 前提条件
 
 * AWSアカウントを持っていること
-* AWS CLIがインストール・設定済みであること
+* GitHubアカウントを持っていること
+* GitHub Codespaces でAWS CLIが利用可能であること（[環境構築ハンズオン](../00-Install-AWS-CLI-to-RPI/web/) を参照）
 * AWS マネジメントコンソールにログインできること
 
 Positive
