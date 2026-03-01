@@ -44,11 +44,54 @@
 <ul>
 <li>AWSアカウントを持っていること</li>
 <li>GitHubアカウントを持っていること</li>
-<li>GitHub Codespaces でAWS CLIが利用可能であること（<a href="../00-Install-AWS-CLI-to-RPI/web/" target="_blank">環境構築ハンズオン</a> を参照）</li>
-<li>Node.js / Git はCodespaces上にプリインストール済みです</li>
 </ul>
 <p>Positive : AWS Amplifyは、フロントエンドからバックエンドまで一貫して構築できるフルスタックのサービスです。</p>
 <p>Negative : 本ハンズオンで作成するリソースには料金が発生する場合があります。ハンズオン終了後は必ずアプリを削除してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="GitHub Codespaces で開発環境を準備する" duration="10">
+        <h2 is-upgraded>Codespace の作成</h2>
+<ol type="1">
+<li><a href="https://github.com/" target="_blank">GitHub</a> にログインします</li>
+<li>任意のリポジトリを開きます（新規作成でも可）</li>
+<li><strong>Code</strong> ボタン → <strong>Codespaces</strong> タブ → <strong>Create codespace on main</strong> をクリックします</li>
+<li>Codespace の起動を待ちます（1〜2分程度）</li>
+</ol>
+<p>Positive : GitHub Codespaces にはNode.js / Git がプリインストールされています。Amplify CLIもCodespaces上でインストール可能です。</p>
+<h2 is-upgraded>AWS CLI v2 のインストール</h2>
+<p>Codespace のターミナルで以下のコマンドを実行します。</p>
+<pre>curl &#34;https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip&#34; -o &#34;awscliv2.zip&#34;
+unzip awscliv2.zip
+sudo ./aws/install
+rm -rf awscliv2.zip aws/
+aws --version
+</pre>
+<h2 is-upgraded>AWS CLI の認証設定</h2>
+<pre>aws configure
+</pre>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>AWS Access Key ID</p>
+</td><td colspan="1" rowspan="1"><p>管理者から払い出されたキー</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>AWS Secret Access Key</p>
+</td><td colspan="1" rowspan="1"><p>管理者から払い出されたシークレット</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Default region name</p>
+</td><td colspan="1" rowspan="1"><p><code>ap-northeast-1</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Default output format</p>
+</td><td colspan="1" rowspan="1"><p><code>json</code></p>
+</td></tr>
+</table>
+<h2 is-upgraded>設定の確認</h2>
+<pre>aws sts get-caller-identity
+</pre>
+<p>Negative : アクセスキーをGitリポジトリにコミットしないよう注意してください。</p>
 
 
       </google-codelab-step>

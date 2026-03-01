@@ -39,7 +39,6 @@ Duration: 0:05:00
 
 * AWSアカウントを持っていること
 * GitHubアカウントを持っていること
-* GitHub Codespaces でAWS CLIが利用可能であること（[環境構築ハンズオン](../00-Install-AWS-CLI-to-RPI/web/) を参照）
 * AWS マネジメントコンソールにログインできること
 
 Positive
@@ -47,6 +46,50 @@ Positive
 
 Negative
 : 本ハンズオンで作成するリソースには料金が発生する場合があります。ハンズオン終了後は必ずリソースを削除してください。
+
+## GitHub Codespaces で開発環境を準備する
+Duration: 0:10:00
+
+### Codespace の作成
+
+1. [GitHub](https://github.com/) にログインします
+2. 任意のリポジトリを開きます（新規作成でも可）
+3. **Code** ボタン → **Codespaces** タブ → **Create codespace on main** をクリックします
+4. Codespace の起動を待ちます（1〜2分程度）
+
+### AWS CLI v2 のインストール
+
+Codespace のターミナルで以下のコマンドを実行します。
+
+```console
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+rm -rf awscliv2.zip aws/
+aws --version
+```
+
+### AWS CLI の認証設定
+
+```console
+aws configure
+```
+
+| 項目 | 値 |
+|------|-----|
+| AWS Access Key ID | 管理者から払い出されたキー |
+| AWS Secret Access Key | 管理者から払い出されたシークレット |
+| Default region name | `ap-northeast-1` |
+| Default output format | `json` |
+
+### 設定の確認
+
+```console
+aws sts get-caller-identity
+```
+
+Negative
+: アクセスキーをGitリポジトリにコミットしないよう注意してください。
 
 ## S3バケットの作成
 Duration: 0:10:00
