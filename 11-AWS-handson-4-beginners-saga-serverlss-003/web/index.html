@@ -47,8 +47,10 @@
 <li>Node.js（v18以上）がインストールされていること</li>
 <li>Gitがインストールされていること</li>
 </ul>
-<p>Positive : AWS Amplifyは、フロントエンドからバックエンドまで一貫して構築できるフルスタックのサービスです。</p>
-<p>Negative : 本ハンズオンで作成するリソースには料金が発生する場合があります。ハンズオン終了後は必ずアプリを削除してください。</p>
+<aside class="special"><p>AWS Amplifyは、フロントエンドからバックエンドまで一貫して構築できるフルスタックのサービスです。</p>
+</aside>
+<aside class="warning"><p>本ハンズオンで作成するリソースには料金が発生する場合があります。ハンズオン終了後は必ずアプリを削除してください。</p>
+</aside>
 
 
       </google-codelab-step>
@@ -59,7 +61,8 @@
 <pre>npm create amplify@latest -- --yes
 cd my-amplify-app
 </pre>
-<p>Positive : <code>npm create amplify@latest</code> コマンドにより、Next.jsベースのAmplifyプロジェクトが自動生成されます。</p>
+<aside class="special"><p><code>npm create amplify@latest</code> コマンドにより、Next.jsベースのAmplifyプロジェクトが自動生成されます。</p>
+</aside>
 <h2 is-upgraded>プロジェクト構成の確認</h2>
 <pre><code>my-amplify-app/
 ├── amplify/
@@ -115,7 +118,8 @@ export const data = defineData({
   },
 });
 </code></pre>
-<p>Positive : <code>a.model()</code> で定義したモデルは自動的にDynamoDBテーブルとGraphQL APIが作成されます。CRUD操作も自動生成されます。</p>
+<aside class="special"><p><code>a.model()</code> で定義したモデルは自動的にDynamoDBテーブルとGraphQL APIが作成されます。CRUD操作も自動生成されます。</p>
+</aside>
 
 
       </google-codelab-step>
@@ -391,7 +395,8 @@ h1 {
 <p>ローカル開発用のサンドボックス環境を起動します。</p>
 <pre>npx ampx sandbox
 </pre>
-<p>Positive : サンドボックスモードでは、バックエンドのリソースが自動的にAWS上に作成されます。コードを変更するとホットリロードされます。</p>
+<aside class="special"><p>サンドボックスモードでは、バックエンドのリソースが自動的にAWS上に作成されます。コードを変更するとホットリロードされます。</p>
+</aside>
 <p>別のターミナルでフロントエンドの開発サーバーを起動します。</p>
 <pre>npm run dev
 </pre>
@@ -437,7 +442,8 @@ git branch -M main
 git remote add origin https://github.com/{あなたのGitHubユーザー名}/handson-amplify-app.git
 git push -u origin main
 </pre>
-<p>Negative : <code>{あなたのGitHubユーザー名}</code> は自分のGitHubユーザー名に置き換えてください。</p>
+<aside class="warning"><p><code>{あなたのGitHubユーザー名}</code> は自分のGitHubユーザー名に置き換えてください。</p>
+</aside>
 
 
       </google-codelab-step>
@@ -474,7 +480,8 @@ git push -u origin main
 <ol type="1" start="4">
 <li><strong>保存してデプロイ</strong> をクリックします</li>
 </ol>
-<p>Positive : Amplifyがnext.jsアプリを自動検出して適切なビルド設定を構成してくれます。</p>
+<aside class="special"><p>Amplifyがnext.jsアプリを自動検出して適切なビルド設定を構成してくれます。</p>
+</aside>
 <h2 is-upgraded>デプロイの完了を待つ</h2>
 <p>以下のステップが順番に実行されます。</p>
 <ol type="1">
@@ -510,7 +517,8 @@ git commit -m &#34;Update page title&#34;
 git push
 </pre>
 <p>Amplifyコンソールで自動ビルドが開始されることを確認します。</p>
-<p>Positive : AmplifyはGitベースのCI/CDを標準で提供しています。プッシュするだけで自動デプロイが実行されます。</p>
+<aside class="special"><p>AmplifyはGitベースのCI/CDを標準で提供しています。プッシュするだけで自動デプロイが実行されます。</p>
+</aside>
 
 
       </google-codelab-step>
@@ -524,14 +532,16 @@ git push
 <li><strong>アプリを削除</strong> をクリックします</li>
 <li>確認画面で「削除」と入力して <strong>削除</strong> をクリックします</li>
 </ol>
-<p>Positive : Amplifyアプリを削除すると、関連するバックエンドリソース（DynamoDB、AppSync、S3など）も自動的に削除されます。</p>
+<aside class="special"><p>Amplifyアプリを削除すると、関連するバックエンドリソース（DynamoDB、AppSync、S3など）も自動的に削除されます。</p>
+</aside>
 <h2 is-upgraded>GitHubリポジトリの削除（任意）</h2>
 <p>不要であればGitHubリポジトリも削除します。</p>
 <ol type="1">
 <li>GitHubのリポジトリページを開きます</li>
 <li><strong>Settings</strong> → ページ最下部の <strong>Delete this repository</strong> をクリック</li>
 </ol>
-<p>Negative : リソースの削除を忘れると、意図しない料金が発生する可能性があります。必ずアプリを削除してください。</p>
+<aside class="warning"><p>リソースの削除を忘れると、意図しない料金が発生する可能性があります。必ずアプリを削除してください。</p>
+</aside>
 
 
       </google-codelab-step>

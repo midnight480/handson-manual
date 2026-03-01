@@ -68,8 +68,10 @@ awscli (1.11.13-1) を設定しています ...
 &gt; aws --version
 aws-cli/1.11.13 Python/3.5.3 Linux/4.14.79-v7+ botocore/1.4.70
 </pre>
-<p>Positive : <code>sudo apt-get update -y</code>は必ず実施してください</p>
-<p>Negative : Raspberry Piにインストール可能なAWS CLIは最新版でもv1.x系となります</p>
+<aside class="special"><p><code>sudo apt-get update -y</code>は必ず実施してください</p>
+</aside>
+<aside class="warning"><p>Raspberry Piにインストール可能なAWS CLIは最新版でもv1.x系となります</p>
+</aside>
 <p><br>  [AWS コマンドラインインターフェイス](https://aws.amazon.com/jp/cli/)<br></p>
 
 
@@ -87,8 +89,10 @@ Default output format [None]: json
 -rw-------  1 pi pi   48  M月 DD HH:MI config
 -rw-------  1 pi pi   48  M月 DD HH:MI credential
 </pre>
-<p>Positive : Shell Script内で実行するAWS CLIで実行する際の権限を設定します</p>
-<p>Negative : Access Key, Secret Access Keyは管理者から払い出されたものを設定してください。</p>
+<aside class="special"><p>Shell Script内で実行するAWS CLIで実行する際の権限を設定します</p>
+</aside>
+<aside class="warning"><p>Access Key, Secret Access Keyは管理者から払い出されたものを設定してください。</p>
+</aside>
 
 
       </google-codelab-step>
@@ -99,7 +103,8 @@ Default output format [None]: json
 # 10分おきに実行
 */10 * * * * ZZZZ.sh
 </pre>
-<p>Positive : vimの場合、 <code>:wq</code> で保存することになります</p>
+<aside class="special"><p>vimの場合、 <code>:wq</code> で保存することになります</p>
+</aside>
 <h2 is-upgraded>ShellScript</h2>
 <ul>
 <li>AWS Kinesis Data FirehoseにCSVファイルを送るための定義となります <ul>
@@ -141,8 +146,10 @@ done
         <ul>
 <li>設定作業お疲れさまでした</li>
 </ul>
-<p>Positive : AWS CLIはGUIと比較して、作業者のスキルに依存せず再現性の高い作業も可能となります</p>
-<p>Negative : AWS CLI v2になると入力可能なコマンドの幅が増えるためRaspberry Piで利用可能になったら変更を推奨します</p>
+<aside class="special"><p>AWS CLIはGUIと比較して、作業者のスキルに依存せず再現性の高い作業も可能となります</p>
+</aside>
+<aside class="warning"><p>AWS CLI v2になると入力可能なコマンドの幅が増えるためRaspberry Piで利用可能になったら変更を推奨します</p>
+</aside>
 
 
       </google-codelab-step>

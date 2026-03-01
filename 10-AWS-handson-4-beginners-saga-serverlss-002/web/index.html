@@ -45,8 +45,10 @@
 <li>Node.js（v18以上）がインストールされていること</li>
 <li>TypeScriptの基本的な知識があること（なくても実施可能）</li>
 </ul>
-<p>Positive : AWS CDKを使うことで、インフラをコードで管理できます。再現性が高く、環境の複製も容易です。</p>
-<p>Negative : 本ハンズオンで作成するリソースには料金が発生する場合があります。ハンズオン終了後は必ずリソースを削除してください。</p>
+<aside class="special"><p>AWS CDKを使うことで、インフラをコードで管理できます。再現性が高く、環境の複製も容易です。</p>
+</aside>
+<aside class="warning"><p>本ハンズオンで作成するリソースには料金が発生する場合があります。ハンズオン終了後は必ずリソースを削除してください。</p>
+</aside>
 
 
       </google-codelab-step>
@@ -63,7 +65,8 @@ cdk --version
 cd handson-static-hosting
 cdk init app --language typescript
 </pre>
-<p>Positive : <code>cdk init</code> コマンドにより、TypeScriptベースのCDKプロジェクトが自動生成されます。</p>
+<aside class="special"><p><code>cdk init</code> コマンドにより、TypeScriptベースのCDKプロジェクトが自動生成されます。</p>
+</aside>
 <h2 is-upgraded>プロジェクト構成の確認</h2>
 <p>以下のようなディレクトリ構成が生成されます。</p>
 <pre><code>handson-static-hosting/
@@ -319,7 +322,8 @@ export class HandsonStaticHostingStack extends cdk.Stack {
   }
 }
 </code></pre>
-<p>Positive : OAC（Origin Access Control）を使用することで、S3バケットへの直接アクセスをブロックし、CloudFront経由のみでアクセスを許可できます。</p>
+<aside class="special"><p>OAC（Origin Access Control）を使用することで、S3バケットへの直接アクセスをブロックし、CloudFront経由のみでアクセスを許可できます。</p>
+</aside>
 
 
       </google-codelab-step>
@@ -329,7 +333,8 @@ export class HandsonStaticHostingStack extends cdk.Stack {
 <p>初めてCDKを利用する場合は、ブートストラップを実行します。</p>
 <pre>cdk bootstrap aws://{アカウントID}/ap-northeast-1
 </pre>
-<p>Negative : <code>{アカウントID}</code> は自分のAWSアカウントIDに置き換えてください。</p>
+<aside class="warning"><p><code>{アカウントID}</code> は自分のAWSアカウントIDに置き換えてください。</p>
+</aside>
 <h2 is-upgraded>差分確認</h2>
 <p>デプロイ前に変更内容を確認します。</p>
 <pre>cdk diff
@@ -338,7 +343,8 @@ export class HandsonStaticHostingStack extends cdk.Stack {
 <pre>cdk deploy
 </pre>
 <p>デプロイ中に確認が求められた場合は <code>y</code> を入力します。</p>
-<p>Positive : デプロイには数分かかる場合があります。CloudFrontディストリビューションの作成に特に時間がかかります。</p>
+<aside class="special"><p>デプロイには数分かかる場合があります。CloudFrontディストリビューションの作成に特に時間がかかります。</p>
+</aside>
 <h2 is-upgraded>デプロイ完了</h2>
 <p>デプロイが完了すると、以下のような出力が表示されます。</p>
 <pre><code>Outputs:
@@ -367,7 +373,8 @@ HandsonStaticHostingStack.BucketName = handson-website-{アカウントID}
 <li><code>handson-website-dashboard</code> を選択</li>
 <li>リクエスト数とエラー率のグラフを確認</li>
 </ol>
-<p>Positive : CloudFrontのメトリクスはリアルタイムではなく、数分の遅延がある場合があります。</p>
+<aside class="special"><p>CloudFrontのメトリクスはリアルタイムではなく、数分の遅延がある場合があります。</p>
+</aside>
 <h2 is-upgraded>コンテンツの更新</h2>
 <p>Webサイトの内容を更新したい場合は、<code>website/</code> ディレクトリのファイルを編集し、再デプロイします。</p>
 <pre>cdk deploy
@@ -383,14 +390,16 @@ HandsonStaticHostingStack.BucketName = handson-website-{アカウントID}
 <pre>cdk destroy
 </pre>
 <p>確認が求められた場合は <code>y</code> を入力します。</p>
-<p>Positive : CDKの <code>RemovalPolicy.DESTROY</code> と <code>autoDeleteObjects: true</code> を設定済みのため、S3バケットも含めて全て自動削除されます。</p>
+<aside class="special"><p>CDKの <code>RemovalPolicy.DESTROY</code> と <code>autoDeleteObjects: true</code> を設定済みのため、S3バケットも含めて全て自動削除されます。</p>
+</aside>
 <h2 is-upgraded>CDKブートストラップリソースの削除（任意）</h2>
 <p>CDKブートストラップで作成されたS3バケットとCloudFormationスタックが残ります。<br> 完全にクリーンアップしたい場合は以下を実行してください。</p>
 <ol type="1">
 <li>S3コンソールで <code>cdk-hnb659fds-assets-{アカウントID}-ap-northeast-1</code> バケットを空にして削除</li>
 <li>CloudFormationコンソールで <code>CDKToolkit</code> スタックを削除</li>
 </ol>
-<p>Negative : CDKブートストラップを削除すると、次回CDKを使用する際に再度ブートストラップが必要になります。他のCDKプロジェクトにも影響するため、削除は慎重に行ってください。</p>
+<aside class="warning"><p>CDKブートストラップを削除すると、次回CDKを使用する際に再度ブートストラップが必要になります。他のCDKプロジェクトにも影響するため、削除は慎重に行ってください。</p>
+</aside>
 
 
       </google-codelab-step>

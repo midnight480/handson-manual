@@ -64,7 +64,8 @@ SerializationVersion           1.1.0.1
 aws-cli/2.2.5 Python/3.8.8 Windows/10 exe/AMD64 prompt/off
 &gt; 
 </code></pre>
-<p>Negative : アクセスキー、シークレットアクセスキーは管理を徹底すること</p>
+<aside class="warning"><p>アクセスキー、シークレットアクセスキーは管理を徹底すること</p>
+</aside>
 <pre><code>&gt; aws configure --profile cli-users
 AWS Access Key ID [None]: AKI********
 AWS Secret Access Key [None]: ********
@@ -72,7 +73,8 @@ Default region name [None]: ap-northeast-1
 Default output format [None]: json
 &gt;
 </code></pre>
-<p>Positive : AWS CLIで実行するときは必ず実行すること</p>
+<aside class="special"><p>AWS CLIで実行するときは必ず実行すること</p>
+</aside>
 <pre><code>&gt; aws sts get-caller-identity --profile cli-users
 {
     &#34;UserId&#34;: &#34;AID******&#34;,
@@ -176,7 +178,8 @@ $instanceid=&#34;i-******&#34;
 $rebootops=&#34;--no-reboot/--reboot&#34;
 aws ec2 create-image --name $aminame --instance-id $instanceid --profile cli-users $rebootops
 </code></pre>
-<p>Positive : rebootops で再起動の有無をパラメータとして定義することが可能にしています</p>
+<aside class="special"><p>rebootops で再起動の有無をパラメータとして定義することが可能にしています</p>
+</aside>
 <h3 is-upgraded>sample</h3>
 <pre><code>&gt; $aminame=&#34;backup-images&#34;
 &gt; $instanceid=&#34;i-******&#34;
@@ -211,7 +214,8 @@ aws ec2 create-snapshot --volume-id $volid --profile cli-users
 
 &gt; 
 </code></pre>
-<p>Negative : To create a snapshot for EBS volumes that serve as root devices, you should stop the instance before taking the snapshot.ルートボリュームは停止してからでないと取得してはいけません</p>
+<aside class="warning"><p>To create a snapshot for EBS volumes that serve as root devices, you should stop the instance before taking the snapshot.ルートボリュームは停止してからでないと取得してはいけません</p>
+</aside>
 <h2 is-upgraded><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/create-tags.html" target="_blank">create-tags</a></h2>
 <p>特定のリソースに対してTagをつけるコマンド</p>
 <pre><code>$target=&#34;i-***/vol-***&#34;
