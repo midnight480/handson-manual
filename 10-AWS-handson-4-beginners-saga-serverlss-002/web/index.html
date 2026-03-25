@@ -20,9 +20,8 @@
   </style>
 </head>
 <body>
-  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
   <google-codelab codelab-gaid="196534296"
-                  codelab-ga4id=""
                   id="10-AWS-handson-4-beginners-saga-serverlss-002"
                   title="サーバレスで静的Webサイトをホスティングするハンズオン"
                   environment="web"
@@ -51,23 +50,79 @@
       </google-codelab-step>
     
       <google-codelab-step label="GitHub Codespaces で開発環境を準備する" duration="10">
-        <h2 is-upgraded>Codespace の作成</h2>
+        <h2 is-upgraded>テンプレートからリポジトリを作成</h2>
 <ol type="1">
 <li><a href="https://github.com/" target="_blank">GitHub</a> にログインします</li>
-<li>任意のリポジトリを開きます（新規作成でも可）</li>
-<li><strong>Code</strong> ボタン → <strong>Codespaces</strong> タブ → <strong>Create codespace on main</strong> をクリックします</li>
-<li>Codespace の起動を待ちます（1〜2分程度）</li>
+<li>テンプレートリポジトリ <a href="https://github.com/midnight480/aws-handson-template" target="_blank">midnight480/aws-handson-template</a> を開きます</li>
+<li><strong>Use this template</strong> → <strong>Create a new repository</strong> をクリックします</li>
+<li>リポジトリ名に任意の名前を入力し、<strong>Create repository</strong> をクリックします</li>
 </ol>
-<p>Positive : GitHub Codespaces にはNode.js / Git がプリインストールされています。このハンズオンで使用するAWS CDKもCodespaces上で利用可能です。</p>
-<h2 is-upgraded>AWS CLI v2 のインストール</h2>
-<p>Codespace のターミナルで以下のコマンドを実行します。</p>
-<pre>curl &#34;https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip&#34; -o &#34;awscliv2.zip&#34;
-unzip awscliv2.zip
-sudo ./aws/install
-rm -rf awscliv2.zip aws/
-aws --version
+<h2 is-upgraded>Codespace の起動</h2>
+<ol type="1">
+<li>作成したリポジトリの画面で <strong>Code</strong> ボタンをクリックします</li>
+<li><strong>Codespaces</strong> タブ → <strong>Create codespace on main</strong> をクリックします</li>
+<li>Codespace の起動を待ちます（初回は3〜5分程度）</li>
+</ol>
+<p>Positive : テンプレートリポジトリには開発環境の設定（devcontainer）が含まれており、AWS CLI、Python 3.12、Node.js が自動的にインストールされます。</p>
+<h2 is-upgraded>AWS CLI の動作確認</h2>
+<p>Codespace が起動したら、ターミナルで AWS CLI がインストールされていることを確認します。</p>
+<pre>aws --version
 </pre>
-<h2 is-upgraded>AWS CLI の認証設定</h2>
+<p><code>aws-cli/2.x.x</code> のようにバージョンが表示されればOKです。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="IAMユーザーの作成" duration="10">
+        <h2 is-upgraded>IAMユーザーの作成手順</h2>
+<p>AWS CLI から AWS リソースを操作するために、IAM ユーザーを作成してアクセスキーを発行します。</p>
+<ol type="1">
+<li>AWS マネジメントコンソールにログインします</li>
+<li>サービス一覧から <strong>IAM</strong> を選択します</li>
+<li>左メニューの <strong>ユーザー</strong> をクリックします</li>
+<li><strong>ユーザーを作成</strong> をクリックします</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目</p>
+</td><td colspan="1" rowspan="1"><p>値</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ユーザー名</p>
+</td><td colspan="1" rowspan="1"><p><code>handson-user</code>（任意の名前）</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>AWS マネジメントコンソールへのアクセスを提供</p>
+</td><td colspan="1" rowspan="1"><p>チェック不要</p>
+</td></tr>
+</table>
+<ol type="1" start="5">
+<li><strong>次へ</strong> をクリックします</li>
+</ol>
+<h2 is-upgraded>許可の設定</h2>
+<ol type="1">
+<li><strong>ポリシーを直接アタッチする</strong> を選択します</li>
+<li>検索ボックスに <code>AdministratorAccess</code> と入力します</li>
+<li><strong>AdministratorAccess</strong> にチェックを入れます</li>
+<li><strong>次へ</strong> をクリックします</li>
+<li>内容を確認し、<strong>ユーザーの作成</strong> をクリックします</li>
+</ol>
+<p>Positive : 本ハンズオンでは簡易化のため AdministratorAccess を付与しますが、AWS Organizations のSCP（サービスコントロールポリシー）により、実際に利用できるサービスは制限されています。本番環境では最小権限の原則に基づいた権限設定を行ってください。</p>
+<h2 is-upgraded>アクセスキーの発行</h2>
+<ol type="1">
+<li>作成したユーザーの詳細画面を開きます</li>
+<li><strong>セキュリティ認証情報</strong> タブをクリックします</li>
+<li><strong>アクセスキー</strong> セクションの <strong>アクセスキーを作成</strong> をクリックします</li>
+<li>ユースケースで <strong>コマンドラインインターフェイス (CLI)</strong> を選択します</li>
+<li>確認のチェックボックスにチェックを入れ、<strong>次へ</strong> をクリックします</li>
+<li><strong>アクセスキーを作成</strong> をクリックします</li>
+<li><strong>アクセスキー</strong> と <strong>シークレットアクセスキー</strong> をメモします</li>
+</ol>
+<p>Negative : シークレットアクセスキーはこの画面でしか確認できません。必ずメモしてください。紛失した場合は、アクセスキーを削除して新しく作成し直す必要があります。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="AWS CLI の認証設定" duration="5">
+        <h2 is-upgraded>認証情報の設定</h2>
+<p>Codespace のターミナルで以下のコマンドを実行し、先ほど発行したアクセスキーを設定します。</p>
 <pre>aws configure
 </pre>
 <table>
@@ -75,10 +130,10 @@ aws --version
 </td><td colspan="1" rowspan="1"><p>値</p>
 </td></tr>
 <tr><td colspan="1" rowspan="1"><p>AWS Access Key ID</p>
-</td><td colspan="1" rowspan="1"><p>管理者から払い出されたキー</p>
+</td><td colspan="1" rowspan="1"><p>発行したアクセスキー</p>
 </td></tr>
 <tr><td colspan="1" rowspan="1"><p>AWS Secret Access Key</p>
-</td><td colspan="1" rowspan="1"><p>管理者から払い出されたシークレット</p>
+</td><td colspan="1" rowspan="1"><p>発行したシークレットアクセスキー</p>
 </td></tr>
 <tr><td colspan="1" rowspan="1"><p>Default region name</p>
 </td><td colspan="1" rowspan="1"><p><code>ap-northeast-1</code></p>
@@ -90,7 +145,8 @@ aws --version
 <h2 is-upgraded>設定の確認</h2>
 <pre>aws sts get-caller-identity
 </pre>
-<p>Negative : アクセスキーをGitリポジトリにコミットしないよう注意してください。</p>
+<p>正しく設定されていれば、アカウントIDやユーザーARNが表示されます。</p>
+<p>Negative : アクセスキーをGitリポジトリにコミットしないよう注意してください。<code>.gitignore</code> にAWS認証情報ファイルの除外設定が含まれていますが、環境変数やコード内にハードコードしないよう気をつけましょう。</p>
 
 
       </google-codelab-step>
@@ -435,6 +491,14 @@ HandsonStaticHostingStack.BucketName = handson-website-{アカウントID}
 <li>CloudFormationコンソールで <code>CDKToolkit</code> スタックを削除</li>
 </ol>
 <p>Negative : CDKブートストラップを削除すると、次回CDKを使用する際に再度ブートストラップが必要になります。他のCDKプロジェクトにも影響するため、削除は慎重に行ってください。</p>
+<h2 is-upgraded>IAMユーザーの削除</h2>
+<p>ハンズオン用に作成した IAM ユーザーを削除します。</p>
+<ol type="1">
+<li>IAMコンソールで <strong>ユーザー</strong> → <code>handson-user</code> を選択</li>
+<li><strong>削除</strong> をクリック（アクセスキーも自動的に削除されます）</li>
+</ol>
+<h2 is-upgraded>GitHub Codespace の削除（任意）</h2>
+<p>不要であれば Codespace を削除します（GitHub の Codespaces 管理画面から）。</p>
 
 
       </google-codelab-step>

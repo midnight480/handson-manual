@@ -60,26 +60,81 @@ Negative
 ## GitHub Codespaces で開発環境を準備する
 Duration: 0:10:00
 
-### Codespace の作成
+### テンプレートからリポジトリを作成
 
 1. [GitHub](https://github.com/) にログインします
-2. 任意のリポジトリを開きます（新規作成でも可）
-3. **Code** ボタン → **Codespaces** タブ → **Create codespace on main** をクリックします
-4. Codespace の起動を待ちます（1〜2分程度）
+2. テンプレートリポジトリ [midnight480/aws-handson-template](https://github.com/midnight480/aws-handson-template) を開きます
+3. **Use this template** → **Create a new repository** をクリックします
+4. リポジトリ名に任意の名前を入力し、**Create repository** をクリックします
 
-### AWS CLI v2 のインストール
+### Codespace の起動
 
-Codespace のターミナルで以下のコマンドを実行します。
+1. 作成したリポジトリの画面で **Code** ボタンをクリックします
+2. **Codespaces** タブ → **Create codespace on main** をクリックします
+3. Codespace の起動を待ちます（初回は3〜5分程度）
+
+Positive
+: テンプレートリポジトリには開発環境の設定（devcontainer）が含まれており、AWS CLI、Python 3.12、Node.js が自動的にインストールされます。
+
+### AWS CLI の動作確認
+
+Codespace が起動したら、ターミナルで AWS CLI がインストールされていることを確認します。
 
 ```console
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-sudo ./aws/install
-rm -rf awscliv2.zip aws/
 aws --version
 ```
 
-### AWS CLI の認証設定
+`aws-cli/2.x.x` のようにバージョンが表示されればOKです。
+
+## IAMユーザーの作成
+Duration: 0:10:00
+
+### IAMユーザーの作成手順
+
+AWS CLI から AWS リソースを操作するために、IAM ユーザーを作成してアクセスキーを発行します。
+
+1. AWS マネジメントコンソールにログインします
+2. サービス一覧から **IAM** を選択します
+3. 左メニューの **ユーザー** をクリックします
+4. **ユーザーを作成** をクリックします
+
+| 項目 | 値 |
+|------|-----|
+| ユーザー名 | `handson-user`（任意の名前） |
+| AWS マネジメントコンソールへのアクセスを提供 | チェック不要 |
+
+5. **次へ** をクリックします
+
+### 許可の設定
+
+1. **ポリシーを直接アタッチする** を選択します
+2. 検索ボックスに `AdministratorAccess` と入力します
+3. **AdministratorAccess** にチェックを入れます
+4. **次へ** をクリックします
+5. 内容を確認し、**ユーザーの作成** をクリックします
+
+Positive
+: 本ハンズオンでは簡易化のため AdministratorAccess を付与しますが、AWS Organizations のSCP（サービスコントロールポリシー）により、実際に利用できるサービスは制限されています。本番環境では最小権限の原則に基づいた権限設定を行ってください。
+
+### アクセスキーの発行
+
+1. 作成したユーザーの詳細画面を開きます
+2. **セキュリティ認証情報** タブをクリックします
+3. **アクセスキー** セクションの **アクセスキーを作成** をクリックします
+4. ユースケースで **コマンドラインインターフェイス (CLI)** を選択します
+5. 確認のチェックボックスにチェックを入れ、**次へ** をクリックします
+6. **アクセスキーを作成** をクリックします
+7. **アクセスキー** と **シークレットアクセスキー** をメモします
+
+Negative
+: シークレットアクセスキーはこの画面でしか確認できません。必ずメモしてください。紛失した場合は、アクセスキーを削除して新しく作成し直す必要があります。
+
+## AWS CLI の認証設定
+Duration: 0:05:00
+
+### 認証情報の設定
+
+Codespace のターミナルで以下のコマンドを実行し、先ほど発行したアクセスキーを設定します。
 
 ```console
 aws configure
@@ -87,8 +142,8 @@ aws configure
 
 | 項目 | 値 |
 |------|-----|
-| AWS Access Key ID | 管理者から払い出されたキー |
-| AWS Secret Access Key | 管理者から払い出されたシークレット |
+| AWS Access Key ID | 発行したアクセスキー |
+| AWS Secret Access Key | 発行したシークレットアクセスキー |
 | Default region name | `ap-northeast-1` |
 | Default output format | `json` |
 
@@ -98,8 +153,10 @@ aws configure
 aws sts get-caller-identity
 ```
 
+正しく設定されていれば、アカウントIDやユーザーARNが表示されます。
+
 Negative
-: アクセスキーをGitリポジトリにコミットしないよう注意してください。
+: アクセスキーをGitリポジトリにコミットしないよう注意してください。`.gitignore` にAWS認証情報ファイルの除外設定が含まれていますが、環境変数やコード内にハードコードしないよう気をつけましょう。
 
 ## GASでWebアプリAPIを作成する
 Duration: 0:15:00
@@ -1049,6 +1106,8 @@ Duration: 0:10:00
 7. **IAMロール** `handson-furl-lambda-role` の削除
 8. **GASプロジェクト** `handson-text-api` の削除（任意）
 9. **スプレッドシート** `APIKeys` の削除（任意）
+10. **IAMユーザー** `handson-user` を削除（アクセスキーも自動的に削除されます）
+11. **GitHub Codespace** 不要であれば Codespace を削除（GitHub の Codespaces 管理画面から）
 
 ### AWS CLIでの一括削除
 
