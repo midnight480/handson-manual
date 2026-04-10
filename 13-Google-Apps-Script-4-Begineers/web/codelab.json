@@ -1,0 +1,26 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2026-04-10T22:58:22+09:00",
+  "id": "13-google-apps-script-4-begineers",
+  "duration": 752,
+  "title": "生成AI×GAS 業務自動化プロフェッショナル養成講座 〜異なる視点で作り上げる、次世代の業務改善バイブル〜",
+  "summary": "生成AI×GAS 業務自動化プロフェッショナル養成講座 〜異なる視点で作り上げる、次世代の業務改善バイブル〜",
+  "source": "/Users/tetsuya/Documents/src/handson-manual/13-Google-Apps-Script-4-Begineers/13-Google-Apps-Script-4-Begineers.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "codelab",
+    "markdown"
+  ],
+  "tags": [
+    "web"
+  ],
+  "feedback": "https://github.com/midnight480/handson-manual",
+  "ga": "196534296",
+  "url": "13-google-apps-script-4-begineers"
+}

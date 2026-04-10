@@ -1,0 +1,4665 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>生成AI×GAS 業務自動化プロフェッショナル養成講座 〜異なる視点で作り上げる、次世代の業務改善バイブル〜</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid="196534296"
+                  codelab-ga4id=""
+                  id="13-google-apps-script-4-begineers"
+                  title="生成AI×GAS 業務自動化プロフェッショナル養成講座 〜異なる視点で作り上げる、次世代の業務改善バイブル〜"
+                  environment="web"
+                  feedback-link="https://github.com/midnight480/handson-manual">
+    
+      <google-codelab-step label="【序章】本プロジェクトの進め方" duration="5">
+        <p>この講座は、単にGAS（Google Apps Script）の構文を暗記するためのものではありません。**「生成AIという強力な相棒と共に、目の前の面倒な業務をどう自動化していくか」**を実践的に学ぶためのバイブルです。</p>
+<h2 is-upgraded>3つの役割（視点）</h2>
+<p>この教科書は、読者のみなさんが以下のいずれかの視点を持って取り組むことで、より生きた知識となります。</p>
+<ul>
+<li><strong>【学ぶ人（ビギナー）】</strong>: 「どこが難しいか」を言葉にして、業務の課題を見つける。</li>
+<li><strong>【動かす人（チャレンジャー）】</strong>: AIの力を借りてとにかく「動くコード」を試し、エラーと向き合う。</li>
+<li><strong>【伝える人（メンター）】</strong>: 学んだ内容を実際の業務プロセスにどう当てはめるかを考え、周囲に広める。</li>
+</ul>
+<h2 is-upgraded>GitHubを活用したポートフォリオ・履歴管理</h2>
+<p>学習成果をただの「練習」で終わらせず、あなたの「実績」として形に残すために、プロのエンジニアが利用する「GitHub」というサービスを使用します。</p>
+<ul>
+<li><strong>GitHubとは？</strong>: エンジニア向けの「ソースコード専用のGoogleドライブ」または「履歴書」のようなプラットフォームです。</li>
+<li><strong>なぜ使うのか？</strong>: コードの変更履歴がすべて残り、自分がどれだけ学習し、どんなツールを作れるようになったかを、世界中（あるいは転職・評価の場）で客観的に証明できるからです。</li>
+</ul>
+<p>初心者の方は、最初は特別なツールを使わずにWebブラウザ上でコードを管理するだけで問題ありません。後半の章では、プロのエンジニアが開発現場で実際に使用している「clasp（クラスプ）」というツールを用いた手元のパソコンでの本格的なソースコード管理や、「TypeScript」を用いた高度な開発手法へのステップアップも用意しています。</p>
+<aside class="special"><p>非エンジニアの方も安心してください！まずは誰でもできる「画面のクリック」や「コピー＆ペースト」で動く体験を積むことから始めます。焦らず、ご自身のペースで確実に進めていきましょう。</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="第1章 仕事を楽にしたっていい" duration="15">
+        <p>この章では、プログラミングや自動化に対する「マインドセット（心の持ち方）」と、ハンズオンの準備を行います。</p>
+<h2 is-upgraded>01-01 無駄な仕事が多いと気づいてしまった</h2>
+<p>日々の業務で「PDFの内容を手作業でExcelに転記している」「毎日決まった時間に同じ文面のメールを送っている」「複数のシステムに同じ顧客データを二重入力している」といった経験はありませんか？ 「これ、毎日同じ作業の繰り返しだな」と感じるその違和感こそが、業務改善の第一歩です。無駄な仕事に気づく目を持つことが、自動化エンジニアとしての最初の才能です。</p>
+<h2 is-upgraded>01-02 自分でやる必要のない仕事は、誰かに任せよう</h2>
+<p>ルーティンワークは人ではなく、コンピューター（プログラム）に任せる時代です。 人間がやるべき仕事は「考えること」「企画すること」「顧客とコミュニケーションを取ること」です。データをコピーして貼り付けるだけの単純作業は、遠慮なく自動化システムに丸投げしてしまいましょう。仕事を楽にすることは、決して「手抜き」ではなく、より価値の高い業務へ時間を投資するための「戦略」です。</p>
+<h2 is-upgraded>01-03 目の前の業務を自動化してくれるヒーローはこない</h2>
+<p>「いつか会社が便利なシステムを導入してくれるだろう」「誰かITに詳しい人がなんとかしてくれるはず」と待っていても、あなたの目の前にある特定の面倒な作業をピンポイントで解決してくれるヒーローは、残念ながら永遠に現れません。 だからこそ、最前線で業務を行う「あなた自身」が課題を解決する手段を持つ必要があるのです。</p>
+<h2 is-upgraded>01-04 誰でも仕事を自動化する側になれる</h2>
+<p>「でも、プログラミングなんてしたことがない」と不安になる必要はありません。 現在はChatGPTやClaudeなどの「生成AI」が強力なコード作成アシスタントとして存在しています。あなたが「どのような業務を」「どう改善したいか」という業務知識を持っていれば、プログラミング言語の細かな文法は生成AIが補ってくれます。誰もが思いつきを形にできる、素晴らしい時代が到来しているのです。</p>
+<h2 is-upgraded>01-05 そろばん → 電卓 → Excel の次に進もう</h2>
+<p>かつて、計算の主流はそろばんでした。それが電卓になり、Excelという表計算ソフトへと進化しました。道具は常に進化しています。Excelのピボットテーブルやマクロ（VBA）に留まることなく、次はWeb上でシームレスに連携する「クラウド」と「GASによる自動化」という新しい道具を使いこなすステップへ進みましょう。</p>
+<h2 is-upgraded>01-06 一歩を踏み出すかどうかで、未来は変わる</h2>
+<p>知識として知っていることと、実際に手を動かして「システムが勝手に動く感動」を味わうことには雲泥の差があります。失敗してもパソコンが壊れることはありません。まずは以下の準備から始めて、未来を変える第一歩を踏み出しましょう。</p>
+<h2 is-upgraded>01-07 Googleドライブを準備する</h2>
+<p>GASを動かす土台となる「Googleドライブ」を開きます。</p>
+<ol type="1">
+<li>Googleアカウントにログインした状態でブラウザを開きます。</li>
+<li>画面右上の点々マーク（Googleアプリ）から「ドライブ」を選択します。</li>
+<li>今回の講座用のファイルをまとめるために、左上の「+ 新規」ボタンから「新しいフォルダ」を作成し、名前を <code>GAS業務改善</code> としておきましょう。</li>
+</ol>
+<h2 is-upgraded>01-08 Google スプレッドシートを準備する</h2>
+<p>作成したフォルダの中に、作業用のスプレッドシートを用意します。</p>
+<ol type="1">
+<li><code>GAS業務改善</code> フォルダを開きます。</li>
+<li>画面の空白の場所で右クリック（または左上の「+ 新規」ボタン）し、「Google スプレッドシート」&gt;「空白のスプレッドシート」を選択します。</li>
+<li>シートが新しく開いたら、画面左上の「無題のスプレッドシート」という文字をクリックし、ファイル名を <code>自動化の第一歩</code> に変更してください。</li>
+</ol>
+<h2 is-upgraded>演習問題 1</h2>
+<p>作成したGoogleスプレッドシート（<code>自動化の第一歩</code>）を開き、シート1の <code>A1</code> セルに「私の自動化宣言：〇〇の業務をなくす！」と、あなたの無くしたい業務を一つ書き込んでみてください。</p>
+<h2 is-upgraded>Tips 1: 身の回りの「面倒くさい」をメモする習慣</h2>
+<p>自動化のネタは日常にたくさん転がっています。「データを探すのが面倒だな」「毎週この報告ウザいな」と心が動いた瞬間に、手元のメモ帳やチャットツールの自分宛の部屋に書き留める習慣をつけましょう。不満の数だけ、あなたが活躍できる自動化のチャンスがあります！</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="第2章 Excelを超えるパワフルな世界 - SpreadSheet -" duration="20">
+        <p>GASによるプログラミングに入る前に、Googleスプレッドシート単体が持つ「魔法のような関数」をマスターします。実は、GASを書かなくても関数だけで解決する業務改善は山のようにあります。</p>
+<h2 is-upgraded>02-01 「表計算ソフトと言えば Excel」からの脱却</h2>
+<p>Googleスプレッドシートは単なるWeb版Excelではありません。複数人の同時編集、自動保存、バージョン履歴の復元は当然のこととして、クラウドにあるからこそ可能な「他のファイルやWebサイトとの連携機能」が最大の強みです。</p>
+<h2 is-upgraded>02-02 社員一覧・顧客一覧など、いつも同じデータをコピペ。もっと楽な方法はない？</h2>
+<p>Aというファイルにある名簿を、Bのファイルに手作業でコピペしていませんか？ <code>IMPORTRANGE</code> 関数を使えば、別のファイルのデータをリアルタイムに同期できます。元データが更新されれば、あなたのシートも勝手に更新されます。</p>
+<p><strong>構文例</strong>:</p>
+<pre><code language="language-text" class="language-text">=IMPORTRANGE(&#34;スプレッドシートのURL&#34;, &#34;シート1!A1:D100&#34;)
+</code></pre>
+<p>※初回の読み込み時に「アクセスを許可」というボタンが出るので、それをクリックするだけで同期が始まります。</p>
+<h2 is-upgraded>02-03 データが追加されるたびに、数式をコピーするのがめんどくさい。よい方法は？</h2>
+<p>行を追加するたびに、上の行から数式をドラッグしてコピーするのは危険で手間な作業です。 <code>ARRAYFORMULA</code>（アレイフォーミュラ）関数を使えば、1つのセルに数式を書くだけで、指定した列全体に対して一気に計算を適用できます。</p>
+<p><strong>構文例</strong>（A列とB列を掛け算してC列に表示する場合、C1セルに記入）:</p>
+<pre><code language="language-text" class="language-text">=ARRAYFORMULA(A1:A100 * B1:B100)
+</code></pre>
+<h2 is-upgraded>02-04 売上データから条件にあてはまるデータだけとりだすには？</h2>
+<p>オートフィルタで絞り込んでコピペしていませんか？ <code>FILTER</code> 関数を活用すると、条件に合致するデータだけを美しく別の場所に抽出（リアルタイム更新）できます。</p>
+<p><strong>構文例</strong>（A列からC列のデータのうち、B列が「完了」となっている行だけを抜き出す）:</p>
+<pre><code language="language-text" class="language-text">=FILTER(A:C, B:B = &#34;完了&#34;)
+</code></pre>
+<p>さらに高度なSQLのようなデータ抽出をしたい場合は、 <code>QUERY</code>（クエリ）関数が強力な武器になります。</p>
+<h2 is-upgraded>02-05 名前から苗字だけ抜き出したい。文字列の一部だけ抜き出すには？</h2>
+<p><code>REGEXEXTRACT</code> などの関数を使うと、「正規表現」という文字検索のルールを用いて、複雑なテキストから必要な部分だけをピンポイントで抜き出すことができます。</p>
+<p><strong>構文例</strong>（A1セルの「山田 太郎」からスペース前の「山田」だけ抜き出す）:</p>
+<pre><code language="language-text" class="language-text">=REGEXEXTRACT(A1, &#34;^(.+) &#34;)
+</code></pre>
+<h2 is-upgraded>02-06 ウェブの情報をスプレッドシートにまとめたい。簡単にデータを集めるには？</h2>
+<p>手作業でのスクレイピング（情報収集）はもう不要です。 <code>IMPORTXML</code> や <code>IMPORTHTML</code> 関数を使うと、Webサイトの表データや特定のテキストをダイレクトにシートへ表示させることができます。競合他社の価格調査などに威力を発揮します。</p>
+<h2 is-upgraded>演習問題 2</h2>
+<p>ご自身のスプレッドシートで以下の作業を行ってください。</p>
+<ol type="1">
+<li>A列の1行目〜5行目に「100, 200, 300, 400, 500」と入力します。</li>
+<li>B1セルに <code>=ARRAYFORMULA(A1:A5 * 1.1)</code> と入力し、B列全体に消費税（10%）込みの金額（110, 220, 330...）が自動的に展開される体験をしてください。</li>
+</ol>
+<h2 is-upgraded>Tips 2: スプレッドシート関数とGASの使い分け</h2>
+<p>「これって関数でやるべき？GASでやるべき？」と迷うことがあります。 原則として、<strong>「シート内部での計算、データの表示形式の変更、抽出」はシートの関数（ARRAYFORMULAやFILTER）を使い、「メールの送信、PDF出力、外部API連携、データの定期的な一括削除処理」など動きを伴う処理はGAS</strong>を使う、という棲み分けがベストプラクティスです。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="第3章 あらゆる業務の効率化を実現する Google Apps Script" duration="40">
+        <p>いよいよGAS（Google Apps Script）を用いて、アプリケーションを自動で動かすプログラミングの世界に入ります。</p>
+<h2 is-upgraded>03-01 さあ、可能性を広げよう</h2>
+<p>スプレッドシート関数の範囲を超え、ここからは「Googleのサービスを自由自在に操る魔法の杖」であるGASを手に入れます。</p>
+<h2 is-upgraded>03-02 業務効率化の新常識 Google Apps Script</h2>
+<p>GASは、Google社が提供しているJavaScriptベースのプログラミング言語です。Gmail、Googleカレンダー、Googleドライブ、Googleドキュメントなど、Workspace上のさまざまなサービスを連携・操作することができます。</p>
+<h2 is-upgraded>03-03 革命的なハードルの低さが魅力</h2>
+<p>プログラミングを始める際、通常は黒い画面（ターミナル）を開き、開発用のソフトをインストールするなど「環境構築」と呼ばれる高い壁があります。 しかしGASは、Webブラウザ（Chromeなど）とGoogleアカウントさえあれば、今すぐ、この10秒後から開発をスタートできます。</p>
+<h2 is-upgraded>03-04 じぶんだけのアシスタントを手にいれる</h2>
+<p>GASのスクリプトはクラウド上（Googleのサーバー上）で実行されます。これはつまり、あなたのパソコンの電源が切れていても、プログラムは文句を言わずに24時間365日働き続けてくれるということです。</p>
+<h2 is-upgraded>03-05 はじめの一歩をふみ出そう</h2>
+<p>実際にエディタ（コードを書く画面）を開いてみましょう。</p>
+<ol type="1">
+<li>第1章で作成したスプレッドシートを開きます。</li>
+<li>上部のメニューバーから <strong>「拡張機能」</strong> ＞ <strong>「Apps Script」</strong> をクリックします。</li>
+<li>新しいタブが開き、<code>function myFunction() { ... }</code> と書かれたエディタ画面が表示されたら準備完了です！</li>
+</ol>
+<h2 is-upgraded>03-06 スプレッドシート関数と構造は同じ</h2>
+<p>プログラミング言語といっても恐れることはありません。 シートの関数が <code>=SUM(A1:A10)</code> のように「何をするか（SUM）」と「対象（引数: A1:A10）」で構成されるのと同じく、GASも <code>SpreadsheetApp.getActiveSpreadsheet()</code> のように「対象を操作する命令をドット（.）で繋いでいく」というルールに基づいています。</p>
+<h2 is-upgraded>03-07 実践-1 日次報告メールの下書きを毎日自動で生成しよう</h2>
+<p>まずはコードをコピー＆ペーストして、実際に動かしてみましょう。 エディタ上に最初から記載されている文字をすべて消して、以下のコードを貼り付けてください。</p>
+<pre><code language="language-javascript" class="language-javascript">function createDraftEmail() {
+  // ① 宛先や件名、本文を変数に用意する
+  const recipient = &#34;manager@example.com&#34;;
+  const subject = &#34;【日次報告】本日の業務進捗&#34;;
+  const body = &#34;お疲れ様です。\n本日の日報を報告いたします。\n\n・タスクA：完了\n・タスクB：進行中\n\nよろしくお願いいたします。&#34;;
+  
+  // ② Gmailのサービスを呼び出し、下書きを作成する機能(createDraft)を実行する
+  GmailApp.createDraft(recipient, subject, body);
+}
+</code></pre>
+<p>貼り付けたら、フロッピーディスクのアイコン（またはCtrl+S / Cmd+S）で保存し、上部の**「実行」**ボタンをクリックします。</p>
+<aside class="warning"><p>【重要】初回実行時には「承認が必要です」というポップアップが出ます。「権限を確認」→「自身のアカウントを選択」→「詳細」→最下部の「（安全ではないページに）移動」→「許可」をクリックしてください。これは自分自身のプログラムにGmail操作の許可を与える標準的なセキュリティの仕組みです。</p>
+</aside>
+<p>実行完了後、ご自身のGmailの「下書き」フォルダを確認してみてください。自動的にメールが作成されているはずです！</p>
+<h2 is-upgraded>03-08 実践-2 週次ミーティングの報告シートをコピーしよう</h2>
+<p>「テンプレートとなるシート」を毎週手でコピーしていませんか？これも自動化できます。 スプレッドシートに「テンプレート」という名前のシートを作成してから、以下のコードを実行してください。</p>
+<pre><code language="language-javascript" class="language-javascript">function copyWeeklySheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const templateSheet = ss.getSheetByName(&#34;テンプレート&#34;); // 対象シートを名前で取得
+  
+  // Utilitiesを使って今日の日付を 20260410 のような文字列へ変換
+  const today = Utilities.formatDate(new Date(), &#34;JST&#34;, &#34;yyyyMMdd&#34;);
+  
+  // テンプレートシートをコピーし、名前を変更する
+  templateSheet.copyTo(ss).setName(today + &#34;_週次報告&#34;);
+}
+</code></pre>
+<h2 is-upgraded>03-09 実践-3 ストレスフリーなタスク管理を実現しよう</h2>
+<p>GASを使えば見た目の制御も可能です。たとえば、スプレッドシートのチェックボックスを判定して、終わったタスクの行の背景色をグレーにし、取り消し線を引くこともできます。これらを組み合わせれば、高額なタスク管理ツールを契約しなくても、自社専用の使いやすいツールを自作できます。</p>
+<pre><code language="language-javascript" class="language-javascript">function formatCompletedTasks() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  // 2行目から100行目までのデータを取得（A列がチェックボックスと仮定）
+  const range = sheet.getRange(&#34;A2:C100&#34;); 
+  const values = range.getValues();
+  
+  values.forEach((row, index) =&gt; {
+    const isChecked = row[0]; // A列の値（true / false）
+    const targetRow = sheet.getRange(index + 2, 1, 1, 3); // 該当する行のA〜C列
+    
+    if (isChecked === true) {
+      targetRow.setBackground(&#34;#f0f0f0&#34;); // 背景をグレーに
+      targetRow.setFontLine(&#34;line-through&#34;); // 取り消し線を引く
+    } else {
+      targetRow.setBackground(&#34;#ffffff&#34;); // 背景を白に戻す
+      targetRow.setFontLine(&#34;none&#34;); // 取り消し線を消す
+    }
+  });
+}
+</code></pre>
+<h2 is-upgraded>演習問題 3</h2>
+<p>「実践-1」のコードを修正し、<code>body</code>（メール本文）の末尾に、ご自身の「明日の目標：〇〇」という一文が追記された下書きを作成するようにコードを書き換えて実行してください。（文字の繋がりや改行 <code>\n</code> に注意しましょう）</p>
+<h2 is-upgraded>Tips 3: 生成AI（ChatGPTなど）をGASの先生にする</h2>
+<p>「特定のセルの色を変えるGASの書き方がわからない...」と悩んだら、Google検索で何時間も悩むのではなく、生成AIに相談しましょう。 <strong>プロンプトの例</strong>: 「Google Apps Scriptのコードを書いてください。現在のスプレッドシートの、シート名『TODO』の、A列にチェックボックス（TRUE）が入っている行について、その行の背景色をグレー（#f0f0f0）に変更したいです。」 生成AIを横に置きながら、コードを生成してもらい、コピペして微調整していくのが現代の最強の開発スタイルです。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="第4章 自動化でさらなるレベルアップ" duration="40">
+        <p>プログラムの「動かし方」がわかったところで、次は複数のアプリを連携させ、より高度な業務改善システムへと進化させます。</p>
+<h2 is-upgraded>04-01 事務職からのピボット</h2>
+<p>GASの力を身につけたあなたは、もう単なる「手作業をこなす作業者」ではありません。これからは、チーム全体の生産性を飛躍させる「業務プロセスの構築者（Developer）」としてキャリアを広げることができます。</p>
+<h2 is-upgraded>04-02 実践-4 フォームとカレンダーの連携でイベント運営の工数削減</h2>
+<p>「Googleフォームから申し込みが入ったら、カレンダーに自動で予定を登録し、申込者にありがとうメールを自動送信する」。 これはGASの超定番の連携です。フォームの送信という「イベント」をきっかけに動くシステムは、24時間無人受付システムを構築するのと同じ効果を生みます。</p>
+<pre><code language="language-javascript" class="language-javascript">// Googleフォームの「送信時」トリガーに設定する関数
+function onFormSubmitCreateEvent(e) {
+  // 送信されたフォームの回答データ（配列）を取得
+  const responses = e.values; 
+  const title = responses[1] + &#34;様 面談設定&#34;; // 2番目の質問（名前）を利用
+  const dateStr = responses[2]; // 3番目の質問（希望日時 例:&#34;2026/04/15 10:00&#34;）を利用
+  
+  // 文字列の日付をプログラムで扱えるDate型に変換
+  const startTime = new Date(dateStr);
+  const endTime = new Date(startTime.getTime() + 60 * 60 * 1000); // 1時間後に設定
+  
+  // デフォルトのカレンダーに予定を追加
+  CalendarApp.getDefaultCalendar().createEvent(title, startTime, endTime);
+}
+</code></pre>
+<h2 is-upgraded>04-03 実践-5 スライド報告資料を自動生成しよう</h2>
+<p>毎月のプレゼン資料、数字だけ書き換えていませんか？ GASを使えば、スプレッドシートにまとめた売上データを読み取り、Googleスライドの指定したテキスト枠やグラフへ自動的にデータを流し込み、完成した資料（PDF）のURLを関係者にメールすることまでワンクリックで完了します。</p>
+<pre><code language="language-javascript" class="language-javascript">// スプレッドシートの数値をスライドへ反映する
+function updateSlideReport() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const salesTotal = ss.getRange(&#34;B2&#34;).getValue(); // シートのB2セルから売上を取得
+  
+  // 対象のGoogleスライドをIDで指定して開く
+  const presentation = SlidesApp.openById(&#34;あなたのスライドIDを指定してください&#34;);
+  const slide = presentation.getSlides()[0]; // 1枚目のスライドを取得
+  
+  // スライド内の &#34;&#123;&#123;SALES}}&#34; という文字列を、実際の売上数値に一括置換する
+  slide.replaceAllText(&#34;&#123;&#123;SALES}}&#34;, salesTotal + &#34; 円&#34;);
+}
+</code></pre>
+<h2 is-upgraded>04-04 実践-6 スプレッドシートの更新通知で情報キャッチをスムーズに</h2>
+<p>シートが誰かによって編集された瞬間に、自動的にSlackやChatwork、Google Chatに「〇〇行目が更新されました」と通知を飛ばすことができます。これにより「シート更新しました」という報告チャットの手間自体を抹殺できます。</p>
+<pre><code language="language-javascript" class="language-javascript">// スプレッドシートの「編集時」トリガーに設定する関数
+function onEditTrigger(e) {
+  const sheet = e.source.getActiveSheet();
+  const row = e.range.getRow();
+  const col = e.range.getColumn();
+  const value = e.value;
+  
+  // A列（カラム番号1）が編集された時だけ通知する条件
+  if (col === 1) {
+    const message = sheet.getName() + &#34;の &#34; + row + &#34;行目が更新されました。\n入力内容: &#34; + value;
+    // 今回は画面右下のポップアップ（トースト通知）で代用します
+    // ※ 実際にSlackなどに送る場合は5章で紹介するUrlFetchAppを使います
+    SpreadsheetApp.getActiveSpreadsheet().toast(message, &#34;更新通知&#34;);
+  }
+}
+</code></pre>
+<h2 is-upgraded>04-05 実践-7 カレンダー連携で勤務報告を効率化 繰り返し処理 forEach</h2>
+<p>月報を書くときに見ている自分のカレンダー予定を、一瞬でスプレッドシートに書き出すスクリプトです。ここではプログラミングの基本である「繰り返し処理 (<code>forEach</code>)」を使用しています。複数のデータを順番に取り出して処理する感覚を掴みましょう。</p>
+<pre><code language="language-javascript" class="language-javascript">function getCalendarEvents() {
+  const now = new Date();
+  // 今日から1週間後までの時間を計算
+  const oneWeekLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+  
+  // 指定期間のイベント（予定）をすべて取得し、配列(リスト)で保存
+  const events = CalendarApp.getDefaultCalendar().getEvents(now, oneWeekLater);
+  
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  // eventsの中から1つずつ予定(event)を取り出し、シートの各行へ書き込んでいく
+  events.forEach((event, index) =&gt; {
+    // indexは0から始まる通し番号。2行目から書き込むため index + 2 とする
+    sheet.getRange(index + 2, 1).setValue(event.getTitle());     // A列：予定タイトル
+    sheet.getRange(index + 2, 2).setValue(event.getStartTime()); // B列：開始時間
+  });
+}
+</code></pre>
+<h2 is-upgraded>04-06 わくわくする未来を実現しよう</h2>
+<p>単一のアプリ操作から、「アプリ間をつなぐハブ」としてのGASへ。これらを駆使すれば、「名刺をスキャンしたら、ドライブに保存され、シートに情報が整理され、サンクスメールが送信される」など、アイデア次第で思い描いた未来の働き方を実現できます。</p>
+<h2 is-upgraded>演習問題 4</h2>
+<p>「実践-7」のカレンダー予定取得コードに機能を少し追加してください。 <code>forEach</code> の処理ブロックの中にコードを1行追加し、スプレッドシートのC列（3列目）に、カレンダーイベントの「終了時間（ <code>event.getEndTime()</code> で取得可能）」が書き出されるように変更して実行してください。</p>
+<h2 is-upgraded>Tips 4: トリガーを活用して「完全自動化」を達成しよう</h2>
+<p>今までのようにエディタを開いて手動で「実行」ボタンを押していては半自動です。 GASエディタ左側にある「時計のマーク」をクリックすると「トリガー（引き金）」の設定画面が開きます。ここで「毎日朝9時に実行する」や「スプレッドシートが編集された時に実行する」と設定するだけで、人間が関与しなくても勝手に動く「完全自動化」を達成できます。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="第5章 さらなるアドバンステクニックの『紹介』" duration="40">
+        <p>ここからは、趣味の効率化を脱却し、より高度で、より壊れにくく、よりチーム・企業に貢献していくためのプロフェッショナルな技術（アドバンステクニック）を紹介します。</p>
+<h2 is-upgraded>05-01 業務を変革するようなアイデアを実現するために</h2>
+<p>複雑なシステムを作る場合、ただ動くだけのコードから、「エラーに強い堅牢な設計」「セキュリティの考慮」「他者との連携開発（バージョン管理）」が必須になってきます。</p>
+<h2 is-upgraded>05-02 『WebAPI』を使って、『ChatGPT』『Slack』などの外部ツールと連携する</h2>
+<p>Googleのサービス内だけでなく、外部のアプリケーションと通信する技術が <code>UrlFetchApp</code>（WebAPIの使用）です。 <strong>例</strong>: ChatGPTのAPIをGASから呼び出し、シート上の顧客からの問い合わせテキストを解析させ、自動でAIに返信文面を下書きさせる、といった夢の連携もこの機能で実現します。</p>
+<pre><code language="language-javascript" class="language-javascript">// UrlFetchAppを使ってSlackにメッセージを投稿する基本コード例
+function sendMessageToSlack() {
+  const webhookUrl = &#34;https://hooks.slack.com/services/XXXXXX/XXXXXX/XXXXXX&#34;;
+  
+  // 送信するメッセージのデータ部分
+  const payload = {
+    &#34;text&#34;: &#34;GASからSlackへ自動通知のテストです！&#34;
+  };
+  
+  // 通信のルール（POST送信、JSON対応）を定義
+  const options = {
+    &#34;method&#34;: &#34;post&#34;,
+    &#34;contentType&#34;: &#34;application/json&#34;,
+    &#34;payload&#34;: JSON.stringify(payload)
+  };
+  
+  // 外部APIへHTTPリクエストを送信
+  UrlFetchApp.fetch(webhookUrl, options);
+}
+</code></pre>
+<h2 is-upgraded>05-03 ミスなく安心安全に自動化するために</h2>
+<p>外部サービスが落ちている時など、予期せぬエラーは必ず起きます。 プログラムに <code>try...catch</code> 文を記述することで、「もしエラーが起きてもプログラム全体をクラッシュさせずに、管理者へメールでエラー内容を通知する」といった安全なエラーハンドリング（代替処理）が可能となります。</p>
+<pre><code language="language-javascript" class="language-javascript">// エラーでシステムが止まらないためのフェイルセーフ設計
+function safeExecution() {
+  try {
+    // 成功させたいメイン処理
+    const calculation = 100 * 50; 
+    
+    // エラーを起こすテスト（存在しないメソッドを呼び出す）
+    SpreadsheetApp.getNonExistentMethod();
+    
+  } catch (error) {
+    // 上のtryブロック内でエラーが起きた場合、プログラムがクラッシュせずにここへ避難してくる
+    console.error(&#34;エラーが発生しました: &#34; + error.message);
+    
+    // 【ベストプラクティス】エラー内容を管理者のGmailへひっそりと通知する
+    // GmailApp.sendEmail(&#34;admin@example.com&#34;, &#34;GASエラー通知&#34;, &#34;エラー内容: &#34; + error.stack);
+  } finally {
+    // 成功・失敗に関わらず、最後に必ず実行したい処理を書く
+    console.log(&#34;一連の処理を安全に終了しました。&#34;);
+  }
+}
+</code></pre>
+<h2 is-upgraded>05-04 組織にとって価値ある資産にするために</h2>
+<p>あなたが異動・退職した後にそのプログラムが動かなくなる「属人化」を防ぐ必要があります。 「変数名にわかりやすい英語（名詞や動詞）を使う」「複雑なロジックの上には日本語でコメントを残す」など、後継者（未来の自分や同僚）が読み解ける『ドキュメント（コードとしての運用保守性）』を常に意識しましょう。</p>
+<h2 is-upgraded>05-05 よくあるエラーと解消方法</h2>
+<ul>
+<li><strong>&#34;Exceeded maximum execution time&#34;（実行時間超過）</strong>: GASは1回の処理につき原則「6分間」しか実行できないというルールがあります。大量のデータ処理は、数回に分けて処理するバッチ設計など工夫が必要です。</li>
+<li><strong>&#34;Permission denied&#34;（権限不足）</strong>: スクリプトが触ろうとしているシートやAPIの権限付与に不備があります。もう一度承認プロセス（OAuth）を確認してください。</li>
+</ul>
+<h2 is-upgraded>05-06 データをわかりやすく表現するなら『Looker Studio』</h2>
+<p>GASで自動収集・整理したデータをより活かすため、Googleが提供するBIツール「Looker Studio」と連携しましょう。スプレッドシートをデータ元（データベース）とし、経営層やチームがパッと見て直感で理解できる美しいダッシュボードが一瞬で作成可能です。</p>
+<h2 is-upgraded>05-07 未経験独学の壁を乗り越えて：clasp と TypeScript の扉</h2>
+<p>さらなる高みを目指す方は「clasp（クラスプ）」と「TypeScript」の導入をおすすめします。</p>
+<ul>
+<li><strong>clasp</strong>: PCのローカル環境（手元のパソコン）からGoogleのクラウド上のGASプロジェクトへコードを直接アップロード・ダウンロードするツールです。Webエディタから脱却し、VSCodeなどの強力なエディタを使えるほか、本プロジェクトの目的でもある**「GitHubへのソースコード連携」が圧倒的に容易**になります。</li>
+<li><strong>TypeScript</strong>: Googleや世界のトップ企業が採用している強力なプログラミング言語です。最大のメリットは「型」の存在により、実行する前にエディタ上で「ここのコード、文字じゃなくて数字が入る場所ですよ！」とミスを教えてくれることです。claspを使うと、手元で書いたTypeScriptファイル（.ts）は、クラウドに自動でGAS用のJavaScriptに変換（トランスパイル）されてアップロードされます。</li>
+</ul>
+<h2 is-upgraded>05-08 新たな潮流：Google Workspace CLI</h2>
+<p>さらなる最新動向として、Google公式から提供されている<strong>Google Workspace CLI</strong>（<a href="https://github.com/googleworkspace/cli" target="_blank">https://github.com/googleworkspace/cli</a>）にも注目です。 GASのコード管理に特化した「clasp」とは異なり、こちらはターミナル（コマンドライン）から直接Gmailの送信やカレンダーの検索、Googleドライブのファイル管理など、あらゆるWorkspaceの機能をスクリプトを書かずとも直接操作することができます。 今後エンジニアリングを深めていく中で、自動化の引き出しの一つとして知っておくと非常に強力な武器となるはずです。</p>
+<h2 is-upgraded>演習問題 5（中・上級者向けの高度な演習）</h2>
+<ol type="1">
+<li>Node.jsがインストールされているローカルパソコンのターミナル（黒い画面）を開き、<code>npm install -g @google/clasp</code> を実行しclaspをインストールしてください。</li>
+<li><code>clasp login</code> を実行してGoogleアカウントとPCを連携します。</li>
+<li>既存のGASプロジェクトのスクリプトIDを確認し、<code>clasp clone [スクリプトID]</code> を実行してプロジェクトを手元（ローカル）にダウンロードしてください。</li>
+<li>ダウンロードされた <code>.js</code> ファイルの拡張子を <code>.ts</code> に変更し、TypeScriptの構文（型定義など）を少し追加して編集した後、<code>clasp push</code> を実行し、クラウド上のGASへ反映される動作確認を完了させてください。</li>
+</ol>
+<aside class="special"><p>TypeScriptの導入やターミナルの操作は、初学者にとって最初は魔法の呪文のようで壁に感じるかもしれません。しかし、今は生成AIという強力な24時間対応の家庭教師がプロンプト一つで教えてくれます。エラーのない安全でプロフェッショナルなシステムを目指し、ぜひ勇気を持って一歩踏み出してみてください！</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="おわりに" duration="2">
+        <p>お疲れ様でした！このバイブルは、皆さんが業務課題にぶつかり、「わからない」と悩み、「こうしたら動いた！」という現場の発見の数だけ、皆さんと共にどんどん進化し分厚い教科書になっていくことでしょう。 ここで学んだ知識と、GitHubに一つ一つ積み上げたコードは「実績（自動化ポートフォリオ）」として、あなたの今後のキャリアを強力に支える武器となるはずです。</p>
+<p>さあ、AIを相棒に、よりラクで、よりクリエイティブな「未来の働き方」を手に入れに行きましょう！</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="補講：演習問題の解答例" duration="0">
+        <h2 is-upgraded>演習問題 1 の解答例</h2>
+<p>A1セルを選択し、「私の自動化宣言：〇〇の業務をなくす！」と入力できていれば正解です。 （※GASのコードではなく、あくまでスプレッドシートの操作と自動化への意識づけとなります）</p>
+<h2 is-upgraded>演習問題 2 の解答例</h2>
+<p>B1セルに以下を入力します。</p>
+<pre><code language="language-text" class="language-text">=ARRAYFORMULA(A1:A5 * 1.1)
+</code></pre>
+<h2 is-upgraded>演習問題 3 の解答例</h2>
+<p><code>body</code>（メール本文）の変数定義部分を以下のように修正できていれば正解です。（改行文字 <code>\n</code> が適切に入っているかがポイントです）</p>
+<pre><code language="language-javascript" class="language-javascript">function createDraftEmail() {
+  const recipient = &#34;manager@example.com&#34;;
+  const subject = &#34;【日次報告】本日の業務進捗&#34;;
+  
+  // 本文の最後に改行(\n)と明日の目標を追加
+  const body = &#34;お疲れ様です。\n本日の日報を報告いたします。\n\n・タスクA：完了\n・タスクB：進行中\n\n明日の目標：〇〇\n\nよろしくお願いいたします。&#34;;
+  
+  GmailApp.createDraft(recipient, subject, body);
+}
+</code></pre>
+<h2 is-upgraded>演習問題 4 の解答例</h2>
+<p><code>sheet.getRange(index + 2, 3).setValue(event.getEndTime());</code> という1行が、<code>forEach</code> ブロックの中に追加されていれば正解です。</p>
+<pre><code language="language-javascript" class="language-javascript">function getCalendarEvents() {
+  const now = new Date();
+  const oneWeekLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+  
+  const events = CalendarApp.getDefaultCalendar().getEvents(now, oneWeekLater);
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  events.forEach((event, index) =&gt; {
+    sheet.getRange(index + 2, 1).setValue(event.getTitle());     // A列：予定タイトル
+    sheet.getRange(index + 2, 2).setValue(event.getStartTime()); // B列：開始時間
+    // 以下の1行を追加：C列（3列目）に終了時間をセット
+    sheet.getRange(index + 2, 3).setValue(event.getEndTime());   
+  });
+}
+</code></pre>
+<h2 is-upgraded>演習問題 5 の解答例</h2>
+<p>こちらはGASではなく、手元のパソコン（ターミナル）で実行するコマンド群です。以下のように順番に打てていれば正解です。</p>
+<pre><code language="language-bash" class="language-bash"># 1. claspのインストール
+npm install -g @google/clasp
+
+# 2. Googleアカウントでのログイン（ブラウザが開きます）
+clasp login
+
+# 3. プロジェクトのクローン（実際のスクリプトIDに置き換えます）
+clasp clone 1a2B3c4D5e...（実際のID）...VwXyZ
+
+# 4. TypeScriptなどに拡張子を変更・編集後、クラウドへプッシュ
+clasp push
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="補講：実践コードの全量まとめ" duration="0">
+        <p>各章で登場した実践コードの全体版です。コピー＆ペーストしてそのまま使えます。</p>
+<h2 is-upgraded>実践-1 の全体コード：日次報告メールの下書き自動生成</h2>
+<pre><code language="language-javascript" class="language-javascript">function createDraftEmail() {
+  // 宛先・件名・本文を定義する
+  const recipient = &#34;manager@example.com&#34;;
+  const subject = &#34;【日次報告】本日の業務進捗&#34;;
+  const body =
+    &#34;お疲れ様です。\n&#34; +
+    &#34;本日の日報を報告いたします。\n\n&#34; +
+    &#34;・タスクA：完了\n&#34; +
+    &#34;・タスクB：進行中\n\n&#34; +
+    &#34;よろしくお願いいたします。&#34;;
+
+  // Gmailに下書きとして保存する
+  GmailApp.createDraft(recipient, subject, body);
+}
+</code></pre>
+<h2 is-upgraded>実践-2 の全体コード：週次ミーティングの報告シートをコピー</h2>
+<pre><code language="language-javascript" class="language-javascript">function copyWeeklySheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+  // 「テンプレート」という名前のシートを取得する（事前に作成が必要）
+  const templateSheet = ss.getSheetByName(&#34;テンプレート&#34;);
+  if (!templateSheet) {
+    SpreadsheetApp.getUi().alert(&#34;「テンプレート」シートが見つかりません。先に作成してください。&#34;);
+    return;
+  }
+
+  // 今日の日付を「20260410」形式の文字列に変換する
+  const today = Utilities.formatDate(new Date(), &#34;JST&#34;, &#34;yyyyMMdd&#34;);
+
+  // テンプレートをコピーして、新しいシート名を設定する
+  templateSheet.copyTo(ss).setName(today + &#34;_週次報告&#34;);
+  SpreadsheetApp.getActiveSpreadsheet().toast(&#34;シートをコピーしました：&#34; + today + &#34;_週次報告&#34;);
+}
+</code></pre>
+<h2 is-upgraded>実践-3 の全体コード：チェックボックスで完了タスクを自動フォーマット</h2>
+<pre><code language="language-javascript" class="language-javascript">function formatCompletedTasks() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+
+  // A列（チェックボックス）・B列（タスク名）・C列（担当者）が入っている前提
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 2) return; // データが2行目以降にない場合は何もしない
+
+  const values = sheet.getRange(2, 1, lastRow - 1, 3).getValues();
+
+  values.forEach((row, index) =&gt; {
+    const isChecked = row[0]; // A列：チェックボックスの値（true / false）
+    const targetRow = sheet.getRange(index + 2, 1, 1, 3); // 該当する行のA〜C列
+
+    if (isChecked === true) {
+      targetRow.setBackground(&#34;#f0f0f0&#34;); // 背景をグレーに
+      targetRow.setFontLine(&#34;line-through&#34;); // 取り消し線を引く
+    } else {
+      targetRow.setBackground(&#34;#ffffff&#34;); // 背景を白に戻す
+      targetRow.setFontLine(&#34;none&#34;); // 取り消し線を消す
+    }
+  });
+}
+</code></pre>
+<h2 is-upgraded>実践-4 の全体コード：Googleフォーム送信時にカレンダーへ予定を自動登録</h2>
+<pre><code language="language-javascript" class="language-javascript">// ※この関数は、Googleフォームに紐づくスプレッドシートの「送信時」トリガーに設定して使います
+function onFormSubmitCreateEvent(e) {
+  // フォームの回答値を配列で取得（e.valuesはフォームに並んでいる質問の順番通り）
+  const responses = e.values;
+  // responses[0] はタイムスタンプ（自動）
+  const applicantName = responses[1]; // 質問1：申込者名
+  const dateStr = responses[2];       // 質問2：希望日時（例: &#34;2026/04/15 10:00&#34;）
+
+  // 日時文字列をDate型オブジェクトに変換する
+  const startTime = new Date(dateStr);
+  const endTime = new Date(startTime.getTime() + 60 * 60 * 1000); // 開始から1時間後
+
+  // カレンダーに予定を追加する
+  const title = applicantName + &#34; 様 面談&#34;;
+  CalendarApp.getDefaultCalendar().createEvent(title, startTime, endTime);
+
+  // 申込者へ確認メールを送信する
+  GmailApp.sendEmail(
+    e.namedValues[&#34;メールアドレス&#34;][0], // フォームの「メールアドレス」質問の回答
+    &#34;【受付完了】面談のご予約ありがとうございます&#34;,
+    applicantName + &#34; 様\n\nご予約を受け付けました。\n日時：&#34; + dateStr + &#34;\nよろしくお願いいたします。&#34;
+  );
+}
+</code></pre>
+<h2 is-upgraded>実践-5 の全体コード：スプレッドシートの数値をGoogleスライドへ自動反映</h2>
+<pre><code language="language-javascript" class="language-javascript">function updateSlideReport() {
+  // スプレッドシートからデータを取得する
+  const ss = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const salesTotal = ss.getRange(&#34;B2&#34;).getValue(); // B2セルの売上合計
+  const reportMonth = ss.getRange(&#34;A1&#34;).getValue(); // A1セルの対象月（例：2026年4月）
+
+  // 対象のGoogleスライドをIDで指定して取得する（URLの /d/ 以降の文字列がID）
+  const SLIDE_ID = &#34;ここにスライドのIDを入力してください&#34;;
+  const presentation = SlidesApp.openById(SLIDE_ID);
+  const slide = presentation.getSlides()[0]; // 1枚目のスライドを操作
+
+  // スライド内のプレースホルダーテキストを実データで置換する
+  slide.replaceAllText(&#34;&#123;&#123;MONTH}}&#34;, reportMonth + &#34; 実績&#34;);
+  slide.replaceAllText(&#34;&#123;&#123;SALES}}&#34;, salesTotal.toLocaleString() + &#34; 円&#34;);
+
+  SpreadsheetApp.getActiveSpreadsheet().toast(&#34;スライドへの反映が完了しました。&#34;);
+}
+</code></pre>
+<h2 is-upgraded>実践-6 の全体コード：シート編集時にトースト＆Slack通知</h2>
+<pre><code language="language-javascript" class="language-javascript">// ※この関数は「編集時」トリガーに設定して使います
+function onEditTrigger(e) {
+  const sheet = e.source.getActiveSheet();
+  const row = e.range.getRow();
+  const col = e.range.getColumn();
+  const newValue = e.value;
+
+  // 1行目（ヘッダー行）の編集は無視する
+  if (row === 1) return;
+
+  // A列（カラム番号1）が編集された時だけ処理する
+  if (col === 1) {
+    const message =
+      &#34;シート「&#34; + sheet.getName() + &#34;」の &#34; + row + &#34; 行目が更新されました。\n&#34; +
+      &#34;入力内容: &#34; + newValue;
+
+    // ① トースト通知（画面右下にポップアップ）
+    SpreadsheetApp.getActiveSpreadsheet().toast(message, &#34;編集通知&#34;, 5);
+
+    // ② Slack Incoming Webhookへ通知する場合はコメントを外してください
+    // const webhookUrl = &#34;https://hooks.slack.com/services/XXXXXX/XXXXXX/XXXXXX&#34;;
+    // UrlFetchApp.fetch(webhookUrl, {
+    //   method: &#34;post&#34;,
+    //   contentType: &#34;application/json&#34;,
+    //   payload: JSON.stringify({ text: message })
+    // });
+  }
+}
+</code></pre>
+<h2 is-upgraded>実践-7 の全体コード（演習問題 4 解答版）：カレンダー予定をシートへ書き出し</h2>
+<pre><code language="language-javascript" class="language-javascript">function getCalendarEvents() {
+  const now = new Date();
+  // 今日から1週間分の予定を取得する範囲を設定
+  const oneWeekLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+  // デフォルトのカレンダーから指定期間のイベントを全件取得
+  const events = CalendarApp.getDefaultCalendar().getEvents(now, oneWeekLater);
+
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+
+  // 既存データのクリア（2行目以降のA〜C列）
+  if (sheet.getLastRow() &gt;= 2) {
+    sheet.getRange(2, 1, sheet.getLastRow() - 1, 3).clearContent();
+  }
+
+  // 1行目にヘッダーを設定
+  sheet.getRange(&#34;A1&#34;).setValue(&#34;予定タイトル&#34;);
+  sheet.getRange(&#34;B1&#34;).setValue(&#34;開始日時&#34;);
+  sheet.getRange(&#34;C1&#34;).setValue(&#34;終了日時&#34;);
+
+  // カレンダーイベントを1件ずつ行へ書き込む
+  events.forEach((event, index) =&gt; {
+    sheet.getRange(index + 2, 1).setValue(event.getTitle());     // A列：タイトル
+    sheet.getRange(index + 2, 2).setValue(event.getStartTime()); // B列：開始時間
+    sheet.getRange(index + 2, 3).setValue(event.getEndTime());   // C列：終了時間（演習4の追加分）
+  });
+
+  SpreadsheetApp.getActiveSpreadsheet().toast(events.length + &#34; 件の予定を書き出しました。&#34;);
+}
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第1章 Google Apps Scriptの基礎知識" duration="20">
+        <h2 is-upgraded>01-01 Google Apps Scriptとは</h2>
+<p>Google Apps Script（GAS）は、Googleが提供するクラウドベースのスクリプト環境です。JavaScriptをベースとした言語で記述し、GoogleのサーバーでホストされているためローカルのPCにインストールする必要がありません。</p>
+<p>GASは「Google Apps Script IDE」（統合開発環境）をWebブラウザ上で提供しており、コードの記述・デバッグ・実行がすべてブラウザ内で完結します。また、作成したスクリプトはGoogleのクラウドサーバー上で実行されるため、自分のPCがオフラインでも動作し続けます。</p>
+<pre><code language="language-javascript" class="language-javascript">// 最初のGASコード：ログにメッセージを出力する
+function helloGAS() {
+  Logger.log(&#34;Hello, Google Apps Script!&#34;);
+  console.log(&#34;コンソールにも出力できます&#34;);
+}
+</code></pre>
+<h2 is-upgraded>01-02 Google AppsとGoogle Workspace</h2>
+<p>Google Workspace（旧G Suite）は、Googleが提供するクラウドベースの業務用アプリケーション群です。GASはこれらすべてのアプリケーションとネイティブに連携できます。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>サービス</p>
+</td><td colspan="1" rowspan="1"><p>GASでの操作例</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Gmail</p>
+</td><td colspan="1" rowspan="1"><p>メール送受信・下書き作成</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Googleスプレッドシート</p>
+</td><td colspan="1" rowspan="1"><p>データ読み書き・書式設定</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Googleドライブ</p>
+</td><td colspan="1" rowspan="1"><p>ファイル・フォルダ操作</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Googleカレンダー</p>
+</td><td colspan="1" rowspan="1"><p>予定の作成・取得</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Googleドキュメント</p>
+</td><td colspan="1" rowspan="1"><p>文書の作成・編集</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Googleフォーム</p>
+</td><td colspan="1" rowspan="1"><p>フォーム作成・回答取得</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Googleスライド</p>
+</td><td colspan="1" rowspan="1"><p>プレゼン資料の自動生成</p>
+</td></tr>
+</table>
+<pre><code language="language-javascript" class="language-javascript">// 各サービスの起点となるAppクラスを確認するコード
+function checkServices() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  Logger.log(&#34;スプレッドシート名: &#34; + ss.getName());
+
+  const user = Session.getActiveUser();
+  Logger.log(&#34;実行ユーザー: &#34; + user.getEmail());
+}
+</code></pre>
+<h2 is-upgraded>01-03 GASで操作できるアプリケーション</h2>
+<p>GASから操作できる主なGoogleサービスと、それぞれの「Appクラス（サービスのエントリーポイント）」を確認しましょう。</p>
+<pre><code language="language-javascript" class="language-javascript">function listAvailableServices() {
+  // スプレッドシート
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+
+  // Gmail
+  const threads = GmailApp.getInboxThreads(0, 5);
+
+  // ドライブ
+  const rootFolder = DriveApp.getRootFolder();
+
+  // カレンダー
+  const calendar = CalendarApp.getDefaultCalendar();
+
+  // ドキュメント（スタンドアロンプロジェクトから）
+  // const doc = DocumentApp.create(&#34;新しいドキュメント&#34;);
+
+  Logger.log(&#34;スプレッドシート: &#34; + spreadsheet.getName());
+  Logger.log(&#34;受信トレイのスレッド数: &#34; + threads.length);
+  Logger.log(&#34;ドライブのルートフォルダ: &#34; + rootFolder.getName());
+  Logger.log(&#34;カレンダー名: &#34; + calendar.getName());
+}
+</code></pre>
+<h2 is-upgraded>01-04 GASを学ぶ上で知っておくべき注意点</h2>
+<p>GASには通常のJavaScript環境とは異なるいくつかの制限があります。開発前に把握しておきましょう。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>制限事項</p>
+</td><td colspan="1" rowspan="1"><p>内容</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>実行時間</p>
+</td><td colspan="1" rowspan="1"><p>1回の実行につき最大6分（無料）/ 30分（Workspace）</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>同時実行</p>
+</td><td colspan="1" rowspan="1"><p>同一スクリプトの並列実行不可</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>URL Fetch</p>
+</td><td colspan="1" rowspan="1"><p>1日あたり最大20,000回（無料）</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>メール送信</p>
+</td><td colspan="1" rowspan="1"><p>1日あたり最大100通（無料）</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>スプレッドシートのセル</p>
+</td><td colspan="1" rowspan="1"><p>最大1,000万セル</p>
+</td></tr>
+</table>
+<pre><code language="language-javascript" class="language-javascript">// 実行時間制限への対処例：キャッシュ（続きの位置）を保存して再実行
+function batchProcessWithResume() {
+  const startTime = new Date().getTime();
+  const LIMIT_MS = 5 * 60 * 1000; // 5分でセーフに切り上げ
+
+  const props = PropertiesService.getScriptProperties();
+  let startRow = Number(props.getProperty(&#34;lastRow&#34;) || 2);
+
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow();
+
+  for (let row = startRow; row &lt;= lastRow; row++) {
+    // 5分経過したら位置を保存して終了
+    if (new Date().getTime() - startTime &gt; LIMIT_MS) {
+      props.setProperty(&#34;lastRow&#34;, row.toString());
+      Logger.log(row + &#34;行目で一時停止。次回はここから再開します。&#34;);
+      return;
+    }
+    // 実際の処理
+    const value = sheet.getRange(row, 1).getValue();
+    sheet.getRange(row, 2).setValue(value + &#34;_処理済&#34;);
+  }
+  // すべて完了したらキャッシュを削除
+  props.deleteProperty(&#34;lastRow&#34;);
+  Logger.log(&#34;全行の処理が完了しました&#34;);
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第1章</h2>
+<p><code>helloGAS()</code> 関数を参考に、自分の名前とメールアドレスを <code>Logger.log()</code> で出力する <code>myInfo()</code> という関数を作成してください。実行後、エディタ左上の「実行ログ」で出力を確認してみましょう。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第2章 スクリプトエディタとダッシュボード" duration="25">
+        <h2 is-upgraded>02-01 はじめてのGAS</h2>
+<p>スクリプトエディタを初めて開く手順と、各UIパーツの役割を確認しましょう。</p>
+<ol type="1">
+<li>Googleスプレッドシートまたはドライブを開きます。</li>
+<li><strong>「拡張機能」→「Apps Script」</strong> または <strong>「新規」→「その他」→「Google Apps Script」</strong> を選択します。</li>
+<li>エディタが開くと <code>function myFunction() {}</code> というデフォルトコードが表示されます。</li>
+</ol>
+<pre><code language="language-javascript" class="language-javascript">// エディタを確認するための基本コード
+function editorCheck() {
+  // Loggerはクラシック実行ログに出力される
+  Logger.log(&#34;Logger による出力です&#34;);
+
+  // console.logはV8エンジン以降で使用可能（実行ログに出力）
+  console.log(&#34;console.log による出力です&#34;);
+
+  // ユーザーに向けたダイアログ表示
+  SpreadsheetApp.getUi().alert(&#34;スクリプトが実行されました！&#34;);
+}
+</code></pre>
+<h2 is-upgraded>02-02 プロジェクトとスクリプト</h2>
+<p>GASのコードは「プロジェクト」単位で管理されます。1つのプロジェクトは複数の <code>.gs</code> ファイル（スクリプトファイル）を持てます。</p>
+<pre><code language="language-javascript" class="language-javascript">// 複数ファイルを活用する例
+// --- utils.gs ---
+function formatCurrency(value) {
+  return &#34;¥&#34; + value.toLocaleString();
+}
+
+// --- main.gs ---
+function showSalesReport() {
+  const sales = 1250000;
+  // 別ファイルの関数を呼び出せる
+  const formatted = formatCurrency(sales);
+  Logger.log(&#34;今月の売上: &#34; + formatted);
+}
+</code></pre>
+<h2 is-upgraded>02-03 スクリプトエディタの編集機能</h2>
+<p>エディタには補完・検索・整形などの機能があります。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>操作</p>
+</td><td colspan="1" rowspan="1"><p>ショートカット</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>保存</p>
+</td><td colspan="1" rowspan="1"><p>Ctrl/Cmd + S</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>実行</p>
+</td><td colspan="1" rowspan="1"><p>Ctrl/Cmd + Enter</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>コメントアウト</p>
+</td><td colspan="1" rowspan="1"><p>Ctrl/Cmd + /</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>検索</p>
+</td><td colspan="1" rowspan="1"><p>Ctrl/Cmd + F</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>検索＆置換</p>
+</td><td colspan="1" rowspan="1"><p>Ctrl/Cmd + H</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>自動整形</p>
+</td><td colspan="1" rowspan="1"><p>Shift + Alt + F</p>
+</td></tr>
+</table>
+<pre><code language="language-javascript" class="language-javascript">// オートコンプリートを体験するためのコード
+// SpreadsheetApp. と入力すると候補が出ることを確認
+function autoCompleteDemo() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  // ss. と入力してみてください → メソッド一覧が表示されます
+  const sheet = ss.getActiveSheet();
+  const range = sheet.getRange(&#34;A1&#34;);
+  range.setValue(&#34;オートコンプリート成功！&#34;);
+}
+</code></pre>
+<h2 is-upgraded>02-04 ログとデバッグ</h2>
+<p>GASでは <code>Logger.log()</code> / <code>console.log()</code> のほか、ブレークポイントを使ったデバッグが可能です。</p>
+<pre><code language="language-javascript" class="language-javascript">function debugDemo() {
+  const data = [10, 20, &#34;hello&#34;, null, undefined, true];
+
+  data.forEach((item, index) =&gt; {
+    // typeof で型を確認しながらデバッグ
+    Logger.log(&#34;index=&#34; + index + &#34; value=&#34; + item + &#34; type=&#34; + typeof item);
+  });
+
+  // console.error / console.warn も使える
+  console.warn(&#34;これは警告メッセージです&#34;);
+  console.error(&#34;これはエラーメッセージです（実行は止まりません）&#34;);
+}
+
+// スタックトレースを含む詳細ログ
+function detailedLog() {
+  try {
+    const result = riskyOperation();
+    Logger.log(&#34;成功: &#34; + result);
+  } catch (e) {
+    // error.stackでスタックトレースを取得
+    Logger.log(&#34;エラー発生: &#34; + e.message);
+    Logger.log(&#34;スタック: &#34; + e.stack);
+  }
+}
+
+function riskyOperation() {
+  throw new Error(&#34;意図的なエラーです&#34;);
+}
+</code></pre>
+<h2 is-upgraded>02-05 権限と許可</h2>
+<p>GASはGoogleのサービスにアクセスするため、初回実行時に「OAuthスコープ」の認可が必要です。</p>
+<pre><code language="language-javascript" class="language-javascript">// appsscript.json に記載が必要なスコープ例（自動設定も可能）
+// {
+//   &#34;oauthScopes&#34;: [
+//     &#34;https://www.googleapis.com/auth/spreadsheets&#34;,
+//     &#34;https://www.googleapis.com/auth/gmail.send&#34;,
+//     &#34;https://www.googleapis.com/auth/drive&#34;
+//   ]
+// }
+
+// 現在の実行ユーザーとスコープを確認
+function checkAuth() {
+  const user = Session.getActiveUser();
+  Logger.log(&#34;実行ユーザー: &#34; + user.getEmail());
+
+  const effectiveUser = Session.getEffectiveUser();
+  Logger.log(&#34;有効ユーザー: &#34; + effectiveUser.getEmail());
+}
+</code></pre>
+<h2 is-upgraded>02-06 サポートメニューとリファレンス</h2>
+<p>GASのリファレンスはエディタの「？」メニューまたは以下のURLから参照できます。</p>
+<pre><code language="language-javascript" class="language-javascript">// 公式リファレンスで確認すべき主なドキュメント
+// https://developers.google.com/apps-script/reference
+
+function openReferenceLinks() {
+  // エディタのヘルプメニューから「Apps Script リファレンス」をクリック
+  // またはコード中のクラス名にカーソルを当ててF1キーを押せばリファレンスへ
+  Logger.log(&#34;SpreadsheetAppの詳細は Reference &gt; Spreadsheet Service を参照&#34;);
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第2章</h2>
+<p><code>debugDemo()</code> を参考に、A1〜A5セルのデータを読み込み、各セルの値と型を <code>Logger.log()</code> で出力する <code>inspectCells()</code> 関数を作成してください。スプレッドシートのA列に数字・文字・空白を混在させてからテストしてみましょう。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第3章 基本構文" duration="30">
+        <h2 is-upgraded>03-01 JavaScriptの基本</h2>
+<p>GASはJavaScript（ECMAScript 2019 以降）をベースにしています。JavaScriptの基本的な特徴を押さえましょう。</p>
+<pre><code language="language-javascript" class="language-javascript">function jsBasics() {
+  // セミコロンは省略可能だが、つける方がより安全
+  Logger.log(&#34;文字列リテラル&#34;);
+
+  // テンプレートリテラル（バッククォート）
+  const name = &#34;田中&#34;;
+  Logger.log(`こんにちは、${name}さん！`);
+
+  // 複数行文字列もテンプレートリテラルで
+  const multiLine = `1行目
+2行目
+3行目`;
+  Logger.log(multiLine);
+}
+</code></pre>
+<h2 is-upgraded>03-02 変数・定数</h2>
+<p>GASでは <code>var</code>（非推奨）・<code>let</code>（変数）・<code>const</code>（定数）の3種類の宣言があります。</p>
+<pre><code language="language-javascript" class="language-javascript">function variableDemo() {
+  // const: 再代入不可（推奨。オブジェクトや配列の中身は変更可能）
+  const PI = 3.14159;
+  const config = { env: &#34;production&#34;, maxRetry: 3 };
+  config.env = &#34;staging&#34;; // ← オブジェクトの中身は変更できる
+  // PI = 3; // ← これはエラーになる
+
+  // let: ブロックスコープ変数（ループカウンタ等に使用）
+  let count = 0;
+  count++;
+  Logger.log(&#34;count: &#34; + count);
+
+  // var: 関数スコープ（旧来の書き方。現在は非推奨）
+  var oldStyle = &#34;使わない方がよい&#34;;
+  Logger.log(oldStyle);
+
+  Logger.log(&#34;PI=&#34; + PI + &#34; env=&#34; + config.env);
+}
+</code></pre>
+<h2 is-upgraded>03-03 データ型</h2>
+<p>JavaScriptには7種類のプリミティブ型があります。</p>
+<pre><code language="language-javascript" class="language-javascript">function dataTypeDemo() {
+  // プリミティブ型
+  const num = 42;           // Number
+  const str = &#34;テキスト&#34;;   // String
+  const bool = true;        // Boolean
+  const nothing = null;     // Null
+  let undef;                // Undefined
+  const big = 9007199254740993n; // BigInt（GASでは稀）
+  const sym = Symbol(&#34;id&#34;); // Symbol（GASでは稀）
+
+  Logger.log(typeof num);   // &#34;number&#34;
+  Logger.log(typeof str);   // &#34;string&#34;
+  Logger.log(typeof bool);  // &#34;boolean&#34;
+  Logger.log(typeof nothing); // &#34;object&#34;（JavaScript の歴史的バグ）
+  Logger.log(typeof undef); // &#34;undefined&#34;
+
+  // 型変換
+  Logger.log(String(123));      // &#34;123&#34;
+  Logger.log(Number(&#34;456&#34;));    // 456
+  Logger.log(Number(&#34;abc&#34;));    // NaN
+  Logger.log(Boolean(0));       // false
+  Logger.log(Boolean(&#34;&#34;));      // false
+  Logger.log(Boolean(&#34;a&#34;));     // true
+  Logger.log(Boolean(null));    // false
+
+  // NaN のチェック
+  Logger.log(isNaN(NaN));       // true
+  Logger.log(Number.isNaN(NaN)); // true（より厳密）
+}
+</code></pre>
+<h2 is-upgraded>03-04 配列</h2>
+<p>配列は複数の値を順序付きで格納するデータ構造です。</p>
+<pre><code language="language-javascript" class="language-javascript">function arrayDemo() {
+  // 配列の宣言
+  const fruits = [&#34;りんご&#34;, &#34;みかん&#34;, &#34;ぶどう&#34;];
+
+  Logger.log(fruits[0]);          // &#34;りんご&#34;（0始まり）
+  Logger.log(fruits.length);      // 3
+
+  // 追加・削除
+  fruits.push(&#34;バナナ&#34;);          // 末尾に追加
+  fruits.unshift(&#34;いちご&#34;);       // 先頭に追加
+  fruits.pop();                    // 末尾を削除
+  fruits.shift();                  // 先頭を削除
+
+  // スプレッド演算子
+  const moreFruits = [...fruits, &#34;メロン&#34;, &#34;スイカ&#34;];
+
+  // 分割代入
+  const [first, second, ...rest] = fruits;
+  Logger.log(&#34;first=&#34; + first + &#34; second=&#34; + second);
+  Logger.log(&#34;rest=&#34; + rest.join(&#34;, &#34;));
+
+  // よく使うメソッド
+  Logger.log(fruits.indexOf(&#34;みかん&#34;)); // 0（見つからなければ-1）
+  Logger.log(fruits.includes(&#34;ぶどう&#34;)); // true
+  Logger.log(fruits.join(&#34; / &#34;));
+  Logger.log(fruits.slice(0, 2));       // 部分配列
+  Logger.log(fruits.reverse());         // 逆順（元の配列も変更される）
+}
+</code></pre>
+<h2 is-upgraded>03-05 オブジェクト</h2>
+<p>オブジェクトは「キーと値」のペアでデータを管理する構造体です。</p>
+<pre><code language="language-javascript" class="language-javascript">function objectDemo() {
+  // オブジェクトリテラル
+  const user = {
+    name: &#34;山田太郎&#34;,
+    age: 30,
+    email: &#34;yamada@example.com&#34;,
+    address: {
+      city: &#34;東京&#34;,
+      zip: &#34;100-0001&#34;
+    }
+  };
+
+  // プロパティのアクセス
+  Logger.log(user.name);           // ドット記法
+  Logger.log(user[&#34;email&#34;]);       // ブラケット記法（動的キーに便利）
+  Logger.log(user.address.city);   // ネストされたオブジェクト
+
+  // 分割代入
+  const { name, age, address: { city } } = user;
+  Logger.log(`${name}(${age})は${city}在住`);
+
+  // スプレッド演算子でコピー・マージ
+  const updatedUser = { ...user, age: 31, phone: &#34;000-0000-0000&#34; };
+  Logger.log(updatedUser.age + &#34; &#34; + updatedUser.phone);
+
+  // オブジェクトのキー・値・エントリを取得
+  Logger.log(Object.keys(user));
+  Logger.log(Object.values(user));
+  Object.entries(user).forEach(([key, val]) =&gt; {
+    if (typeof val !== &#34;object&#34;) Logger.log(key + &#34;: &#34; + val);
+  });
+}
+</code></pre>
+<h2 is-upgraded>03-06 算術演算子と代入演算子</h2>
+<p>数値計算と変数への代入で使う演算子一覧です。</p>
+<pre><code language="language-javascript" class="language-javascript">function operatorDemo() {
+  // 算術演算子
+  Logger.log(10 + 3);   // 13（加算）
+  Logger.log(10 - 3);   // 7（減算）
+  Logger.log(10 * 3);   // 30（乗算）
+  Logger.log(10 / 3);   // 3.333...（除算）
+  Logger.log(10 % 3);   // 1（剰余：割り算の余り）
+  Logger.log(2 ** 8);   // 256（べき乗）
+
+  // 代入演算子の省略形
+  let x = 10;
+  x += 5;   // x = x + 5 → 15
+  x -= 3;   // x = x - 3 → 12
+  x *= 2;   // x = x * 2 → 24
+  x /= 4;   // x = x / 4 → 6
+  x %= 4;   // x = x % 4 → 2
+  Logger.log(&#34;x = &#34; + x);
+
+  // 文字列と数値の演算（型強制）
+  Logger.log(&#34;5&#34; + 3);     // &#34;53&#34;（文字列連結が優先）
+  Logger.log(&#34;5&#34; - 3);     // 2（減算は数値変換される）
+  Logger.log(+&#34;5&#34; + 3);    // 8（+演算子で数値変換）
+  Logger.log(parseInt(&#34;5px&#34;)); // 5（先頭の数字部分だけ取得）
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第3章</h2>
+<p>スプレッドシートのA1〜A10セルに金額（数値）を入力し、合計・平均・最大値・最小値を計算してB1〜B4セルにそれぞれ書き出す <code>calcStats()</code> 関数を作成してください。配列操作（<code>reduce</code>, <code>Math.max</code>, <code>Math.min</code>）を使って計算してみましょう。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第4章 制御構文" duration="30">
+        <h2 is-upgraded>04-01 if文による条件分岐</h2>
+<p>条件の真偽によって処理を分岐させます。</p>
+<pre><code language="language-javascript" class="language-javascript">function ifDemo() {
+  const score = 75;
+
+  if (score &gt;= 90) {
+    Logger.log(&#34;評価: S&#34;);
+  } else if (score &gt;= 70) {
+    Logger.log(&#34;評価: A&#34;);
+  } else if (score &gt;= 50) {
+    Logger.log(&#34;評価: B&#34;);
+  } else {
+    Logger.log(&#34;評価: C&#34;);
+  }
+
+  // 三項演算子（短い条件式に便利）
+  const result = score &gt;= 60 ? &#34;合格&#34; : &#34;不合格&#34;;
+  Logger.log(result);
+
+  // Nullish合体演算子（??）：null/undefinedの場合だけデフォルト値を使う
+  const userInput = null;
+  const displayName = userInput ?? &#34;名前未設定&#34;;
+  Logger.log(displayName); // &#34;名前未設定&#34;
+
+  // オプショナルチェイン（?.）：ネストされたプロパティが存在しない場合にエラーを防ぐ
+  const config = null;
+  Logger.log(config?.apiKey ?? &#34;APIキー未設定&#34;); // エラーにならない
+}
+</code></pre>
+<h2 is-upgraded>04-02 条件式と比較演算子・論理演算子</h2>
+<pre><code language="language-javascript" class="language-javascript">function comparisonDemo() {
+  // 比較演算子
+  Logger.log(5 == &#34;5&#34;);   // true（型変換あり：非推奨）
+  Logger.log(5 === &#34;5&#34;);  // false（型変換なし：推奨）
+  Logger.log(5 != &#34;5&#34;);   // false
+  Logger.log(5 !== &#34;5&#34;);  // true
+  Logger.log(5 &gt; 3);      // true
+  Logger.log(5 &gt;= 5);     // true
+
+  // 論理演算子
+  Logger.log(true &amp;&amp; false); // false（AND：両方trueのとき）
+  Logger.log(true || false); // true（OR：どちらかtrueのとき）
+  Logger.log(!true);         // false（NOT）
+
+  // 短絡評価（&amp;&amp;/||の特性を活用）
+  const value = null;
+  const safe = value &amp;&amp; value.toString(); // valueがnullなら&amp;&amp;以降は評価されない
+  Logger.log(safe); // null
+
+  const fallback = value || &#34;デフォルト値&#34;;
+  Logger.log(fallback); // &#34;デフォルト値&#34;
+
+  // 偽値（falsy）一覧：これらはすべてif文でfalseとして扱われる
+  // false, 0, &#34;&#34;, null, undefined, NaN
+  const falsyValues = [false, 0, &#34;&#34;, null, undefined, NaN];
+  falsyValues.forEach(v =&gt; {
+    if (!v) Logger.log(String(v) + &#34; は偽値です&#34;);
+  });
+}
+</code></pre>
+<h2 is-upgraded>04-03 switch文による多岐分岐</h2>
+<p>複数の条件に対して明確に処理を振り分けるときに使います。</p>
+<pre><code language="language-javascript" class="language-javascript">function switchDemo() {
+  const dayOfWeek = new Date().getDay(); // 0=日, 1=月, ..., 6=土
+
+  switch (dayOfWeek) {
+    case 0:
+      Logger.log(&#34;今日は日曜日&#34;);
+      break;
+    case 1:
+      Logger.log(&#34;今日は月曜日&#34;);
+      break;
+    case 2:
+    case 3:
+    case 4:
+      Logger.log(&#34;今日は火/水/木曜日&#34;);
+      break;
+    case 5:
+      Logger.log(&#34;今日は金曜日 🎉&#34;);
+      break;
+    case 6:
+      Logger.log(&#34;今日は土曜日&#34;);
+      break;
+    default:
+      Logger.log(&#34;不明な曜日&#34;);
+  }
+}
+</code></pre>
+<h2 is-upgraded>04-04 while文による繰り返し</h2>
+<p>条件が真である間、処理を繰り返します。</p>
+<pre><code language="language-javascript" class="language-javascript">function whileDemo() {
+  // while: 条件をチェックしてからループ
+  let n = 1;
+  let sum = 0;
+  while (n &lt;= 10) {
+    sum += n;
+    n++;
+  }
+  Logger.log(&#34;1〜10の合計: &#34; + sum); // 55
+
+  // do...while: 最低1回は実行してから条件チェック
+  let count = 0;
+  do {
+    count++;
+    Logger.log(&#34;do-while実行回数: &#34; + count);
+  } while (count &lt; 3);
+}
+</code></pre>
+<h2 is-upgraded>04-05 for文による繰り返し</h2>
+<p>カウンタを使った繰り返し処理の基本形です。</p>
+<pre><code language="language-javascript" class="language-javascript">function forDemo() {
+  // 基本のfor文
+  for (let i = 0; i &lt; 5; i++) {
+    Logger.log(&#34;i = &#34; + i);
+  }
+
+  // スプレッドシートの行を走査する実践例
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow();
+
+  for (let row = 2; row &lt;= lastRow; row++) { // 2行目（ヘッダー除外）から最終行まで
+    const name = sheet.getRange(row, 1).getValue();
+    const score = sheet.getRange(row, 2).getValue();
+    if (score &gt;= 80) {
+      Logger.log(name + &#34; さんは高得点（&#34; + score + &#34;点）です！&#34;);
+    }
+  }
+}
+</code></pre>
+<h2 is-upgraded>04-06 for...of文による繰り返し</h2>
+<p>配列や文字列などの「反復可能なオブジェクト」の要素を順番に処理します。</p>
+<pre><code language="language-javascript" class="language-javascript">function forOfDemo() {
+  const members = [&#34;Alice&#34;, &#34;Bob&#34;, &#34;Charlie&#34;, &#34;Diana&#34;];
+
+  // 配列の要素を順番に取り出す
+  for (const name of members) {
+    Logger.log(&#34;メンバー: &#34; + name);
+  }
+
+  // 文字列の1文字ずつを処理
+  for (const char of &#34;GAS&#34;) {
+    Logger.log(&#34;文字: &#34; + char);
+  }
+
+  // entries()でindexも取得
+  for (const [index, name] of members.entries()) {
+    Logger.log(index + &#34;: &#34; + name);
+  }
+}
+</code></pre>
+<h2 is-upgraded>04-07 for...in文による繰り返し</h2>
+<p>オブジェクトのすべてのキーを列挙します。</p>
+<pre><code language="language-javascript" class="language-javascript">function forInDemo() {
+  const userInfo = {
+    name: &#34;山田太郎&#34;,
+    department: &#34;営業部&#34;,
+    years: 5,
+    role: &#34;マネージャー&#34;
+  };
+
+  // オブジェクトのキーを列挙
+  for (const key in userInfo) {
+    Logger.log(key + &#34;: &#34; + userInfo[key]);
+  }
+
+  // 注意：配列への for...in は非推奨（for-of または forEach を使うこと）
+}
+</code></pre>
+<h2 is-upgraded>04-08 繰り返し処理の中断とスキップ</h2>
+<p><code>break</code> で繰り返しを中断し、<code>continue</code> で次のイテレーションへスキップします。</p>
+<pre><code language="language-javascript" class="language-javascript">function breakContinueDemo() {
+  const data = [10, 25, -5, 40, 0, 15, -3, 100];
+
+  Logger.log(&#34;--- break: 最初の負の値で処理を中断 ---&#34;);
+  for (const val of data) {
+    if (val &lt; 0) {
+      Logger.log(&#34;負の値 &#34; + val + &#34; が見つかりました。処理を中断します。&#34;);
+      break;
+    }
+    Logger.log(&#34;処理中: &#34; + val);
+  }
+
+  Logger.log(&#34;--- continue: 0以下はスキップして合計を計算 ---&#34;);
+  let positiveSum = 0;
+  for (const val of data) {
+    if (val &lt;= 0) continue; // 0以下はスキップ
+    positiveSum += val;
+  }
+  Logger.log(&#34;正の値の合計: &#34; + positiveSum);
+}
+</code></pre>
+<h2 is-upgraded>04-09 try...catch文と例外処理</h2>
+<p>エラーが発生しても処理を安全に続けるための構文です。</p>
+<pre><code language="language-javascript" class="language-javascript">function tryCatchDemo() {
+  // 基本のtry-catch-finally
+  try {
+    const data = JSON.parse(&#39;{&#34;name&#34;: &#34;田中&#34;}&#39;); // 正常なJSON
+    Logger.log(&#34;パース成功: &#34; + data.name);
+
+    const invalid = JSON.parse(&#34;これはJSONではない&#34;); // エラーが発生
+    Logger.log(&#34;この行は実行されない&#34;);
+
+  } catch (e) {
+    // Errorオブジェクトのプロパティ
+    Logger.log(&#34;エラー名: &#34; + e.name);        // &#34;SyntaxError&#34;など
+    Logger.log(&#34;メッセージ: &#34; + e.message);
+    Logger.log(&#34;スタック: &#34; + e.stack);
+
+    // エラーをメールで通知する実践的な例
+    // GmailApp.sendEmail(&#34;admin@example.com&#34;, &#34;GASエラー: &#34; + e.name, e.stack);
+
+  } finally {
+    // エラーの有無に関わらず必ず実行
+    Logger.log(&#34;処理終了（finally）&#34;);
+  }
+
+  // カスタムエラーをthrowする
+  function divide(a, b) {
+    if (b === 0) throw new Error(&#34;ゼロ除算は禁止です&#34;);
+    return a / b;
+  }
+
+  try {
+    Logger.log(divide(10, 2)); // 5
+    Logger.log(divide(10, 0)); // エラー
+  } catch (e) {
+    Logger.log(&#34;捕捉: &#34; + e.message);
+  }
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第4章</h2>
+<p>スプレッドシートのA列に「100, 0, 50, -20, 80, null, 60」が入っているとして、以下の条件で処理する <code>filterAndSum()</code> 関数を書いてください。</p>
+<ul>
+<li>null や空のセルはスキップ（<code>continue</code>）</li>
+<li>0以下の値が見つかったらそのセルを赤色に塗る</li>
+<li>正の値のみを合計してB1セルに出力</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第5章 関数" duration="20">
+        <h2 is-upgraded>05-01 関数とは</h2>
+<p>関数は処理をひとまとめにして名前をつけ、繰り返し呼び出せるようにしたものです。GASのすべてのコードは関数の中に書きます。</p>
+<pre><code language="language-javascript" class="language-javascript">// 関数宣言
+function greet(name) {
+  return &#34;こんにちは、&#34; + name + &#34;さん！&#34;;
+}
+Logger.log(greet(&#34;田中&#34;)); // &#34;こんにちは、田中さん！&#34;
+
+// デフォルト引数（引数が渡されなかった場合の初期値）
+function greetWithDefault(name = &#34;ゲスト&#34;, greeting = &#34;こんにちは&#34;) {
+  return greeting + &#34;、&#34; + name + &#34;さん！&#34;;
+}
+Logger.log(greetWithDefault());          // &#34;こんにちは、ゲストさん！&#34;
+Logger.log(greetWithDefault(&#34;山田&#34;));    // &#34;こんにちは、山田さん！&#34;
+Logger.log(greetWithDefault(&#34;田中&#34;, &#34;やあ&#34;)); // &#34;やあ、田中さん！&#34;
+
+// 残余引数（可変長引数）
+function sumAll(...numbers) {
+  return numbers.reduce((total, n) =&gt; total + n, 0);
+}
+Logger.log(sumAll(1, 2, 3, 4, 5)); // 15
+
+// 複数の値を返す（分割代入を活用）
+function getMinMax(arr) {
+  return [Math.min(...arr), Math.max(...arr)];
+}
+const [min, max] = getMinMax([3, 1, 4, 1, 5, 9, 2, 6]);
+Logger.log(&#34;min=&#34; + min + &#34; max=&#34; + max); // min=1 max=9
+</code></pre>
+<h2 is-upgraded>05-02 関数リテラル</h2>
+<p>関数を値として変数に代入したり、引数として渡したりできます。</p>
+<pre><code language="language-javascript" class="language-javascript">function functionLiteralDemo() {
+  // 関数式（変数に代入）
+  const double = function(n) { return n * 2; };
+  Logger.log(double(5)); // 10
+
+  // アロー関数（省略形）
+  const triple = (n) =&gt; n * 3;
+  const add = (a, b) =&gt; a + b;
+  Logger.log(triple(4)); // 12
+  Logger.log(add(3, 7)); // 10
+
+  // 複数行のアロー関数
+  const processData = (data) =&gt; {
+    const filtered = data.filter(n =&gt; n &gt; 0);
+    const total = filtered.reduce((sum, n) =&gt; sum + n, 0);
+    return total / filtered.length;
+  };
+  Logger.log(processData([-1, 5, 3, -2, 8])); // 5.333...
+
+  // 高階関数（関数を引数に取る関数）
+  const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const evens = numbers.filter(n =&gt; n % 2 === 0);   // [2,4,6,8,10]
+  const doubled = evens.map(n =&gt; n * 2);             // [4,8,12,16,20]
+  const total = doubled.reduce((sum, n) =&gt; sum + n, 0); // 60
+  Logger.log(&#34;偶数の2倍の合計: &#34; + total);
+
+  // GASでの実践例：スプレッドシートのデータを処理
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const data = sheet.getRange(&#34;A2:B10&#34;).getValues();
+  const highScorers = data
+    .filter(row =&gt; row[1] &gt;= 80)         // B列が80以上
+    .map(row =&gt; row[0] + &#34;(&#34; + row[1] + &#34;点)&#34;); // A列に点数付きで整形
+  Logger.log(&#34;高得点者: &#34; + highScorers.join(&#34;, &#34;));
+}
+</code></pre>
+<h2 is-upgraded>05-03 スコープ</h2>
+<p>変数は宣言した場所によってアクセスできる範囲（スコープ）が決まります。</p>
+<pre><code language="language-javascript" class="language-javascript">// グローバルスコープ（トップレベル）
+const GLOBAL_CONFIG = {
+  sheetName: &#34;データ&#34;,
+  emailTo: &#34;admin@example.com&#34;
+};
+
+function scopeDemo() {
+  // 関数スコープ（この関数内でのみ有効）
+  const localVar = &#34;ローカル変数&#34;;
+  Logger.log(localVar);
+  Logger.log(GLOBAL_CONFIG.sheetName); // グローバル変数にはアクセスできる
+
+  // ブロックスコープ（let/const はブロック内でのみ有効）
+  if (true) {
+    const blockVar = &#34;ブロック変数&#34;;
+    let blockLet = &#34;ブロックlet&#34;;
+    Logger.log(blockVar); // OK（ブロック内）
+  }
+  // Logger.log(blockVar); // ← エラー！ブロック外からはアクセス不可
+
+  // クロージャ（関数が外側のスコープを記憶する）
+  function makeCounter() {
+    let count = 0;
+    return function() {
+      count++;
+      return count;
+    };
+  }
+  const counter = makeCounter();
+  Logger.log(counter()); // 1
+  Logger.log(counter()); // 2
+  Logger.log(counter()); // 3
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第5章</h2>
+<p>スプレッドシートのA列に商品名、B列に価格、C列に数量が入っているとき、各行の「小計（価格×数量）」を計算してD列に書き込み、最後にE1セルに消費税（10%）込みの合計を書き出す <code>calcInvoice()</code> 関数を作成してください。小計の計算は関数（<code>calcSubtotal(price, qty)</code>）に切り出して実装してみましょう。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第6章 クラスとオブジェクト" duration="25">
+        <h2 is-upgraded>06-01 オブジェクト・プロパティ・メソッド</h2>
+<p>オブジェクトはプロパティ（データ）とメソッド（処理）をひとまとめにした設計図の「実体」です。</p>
+<pre><code language="language-javascript" class="language-javascript">function objectMethodDemo() {
+  // メソッドを持つオブジェクト
+  const calculator = {
+    // プロパティ
+    history: [],
+    // メソッド（短縮記法）
+    add(a, b) {
+      const result = a + b;
+      this.history.push(`${a}+${b}=${result}`); // thisで自身を参照
+      return result;
+    },
+    getHistory() {
+      return this.history.join(&#34; / &#34;);
+    }
+  };
+
+  Logger.log(calculator.add(3, 5));  // 8
+  Logger.log(calculator.add(10, 7)); // 17
+  Logger.log(calculator.getHistory()); // &#34;3+5=8 / 10+7=17&#34;
+}
+</code></pre>
+<h2 is-upgraded>06-02 クラスとインスタンス化</h2>
+<p><code>class</code> キーワードを使ってオブジェクトの設計図（クラス）を定義し、<code>new</code> でインスタンスを生成します。</p>
+<pre><code language="language-javascript" class="language-javascript">// GASでの実践的なクラス例：Slackメッセージ送信クラス
+class SlackNotifier {
+  constructor(webhookUrl, channel = &#34;#general&#34;) {
+    this.webhookUrl = webhookUrl;
+    this.channel = channel;
+    this.messageCount = 0;
+  }
+
+  send(text, emoji = &#34;:memo:&#34;) {
+    const payload = {
+      channel: this.channel,
+      text: emoji + &#34; &#34; + text
+    };
+    // 実際に送信する場合は以下を有効化
+    // UrlFetchApp.fetch(this.webhookUrl, {
+    //   method: &#34;post&#34;,
+    //   contentType: &#34;application/json&#34;,
+    //   payload: JSON.stringify(payload)
+    // });
+    this.messageCount++;
+    Logger.log(`[Slack送信 ${this.messageCount}件目] ${payload.text} → ${this.channel}`);
+    return this;  // メソッドチェーン用にthisを返す
+  }
+
+  sendError(message) {
+    return this.send(message, &#34;:red_circle:&#34;);
+  }
+}
+
+function classDemo() {
+  const notifier = new SlackNotifier(&#34;https://hooks.slack.com/....&#34;, &#34;#alerts&#34;);
+  notifier
+    .send(&#34;日次バッチ処理を開始します&#34;)
+    .send(&#34;データ取込み完了: 150件&#34;)
+    .sendError(&#34;一部データに不備がありました&#34;);
+  Logger.log(&#34;送信件数: &#34; + notifier.messageCount);
+}
+</code></pre>
+<h2 is-upgraded>06-03 メソッドとプロトタイプ</h2>
+<p>JavaScriptのクラスはプロトタイプチェーンに基づいており、継承が可能です。</p>
+<pre><code language="language-javascript" class="language-javascript">// 基底クラス
+class Report {
+  constructor(title, date) {
+    this.title = title;
+    this.date = date || new Date();
+  }
+
+  getHeader() {
+    return `=== ${this.title} (${Utilities.formatDate(this.date, &#34;JST&#34;, &#34;yyyy/MM/dd&#34;)}) ===`;
+  }
+
+  generate() {
+    return this.getHeader() + &#34;\n（基底クラスの内容）&#34;;
+  }
+}
+
+// 派生クラス（継承）
+class SalesReport extends Report {
+  constructor(date, salesData) {
+    super(&#34;月次売上レポート&#34;, date); // 親クラスのコンストラクタを呼ぶ
+    this.salesData = salesData;
+  }
+
+  // オーバーライド
+  generate() {
+    const header = this.getHeader(); // 親のメソッドを呼ぶ
+    const total = this.salesData.reduce((sum, item) =&gt; sum + item.amount, 0);
+    const lines = this.salesData.map(item =&gt; `  ${item.name}: ¥${item.amount.toLocaleString()}`);
+    return [header, ...lines, `  合計: ¥${total.toLocaleString()}`].join(&#34;\n&#34;);
+  }
+}
+
+function inheritanceDemo() {
+  const report = new SalesReport(new Date(), [
+    { name: &#34;商品A&#34;, amount: 120000 },
+    { name: &#34;商品B&#34;, amount: 85000 },
+    { name: &#34;商品C&#34;, amount: 230000 }
+  ]);
+  Logger.log(report.generate());
+  Logger.log(report instanceof Report);       // true
+  Logger.log(report instanceof SalesReport);  // true
+}
+</code></pre>
+<h2 is-upgraded>06-04 静的メンバー</h2>
+<p>インスタンスを作らずに呼び出せるクラスメソッド（<code>static</code>）です。</p>
+<pre><code language="language-javascript" class="language-javascript">class DateUtils {
+  // 静的メソッド（インスタンス不要で呼び出せる）
+  static getToday() {
+    return Utilities.formatDate(new Date(), &#34;JST&#34;, &#34;yyyy/MM/dd&#34;);
+  }
+
+  static isWeekend(date) {
+    const day = date.getDay();
+    return day === 0 || day === 6;
+  }
+
+  static addDays(date, days) {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
+  // 静的プロパティ
+  static get HOLIDAYS() {
+    return [&#34;2026-01-01&#34;, &#34;2026-01-02&#34;]; // 祝日リスト（簡易版）
+  }
+}
+
+function staticDemo() {
+  Logger.log(DateUtils.getToday());
+  Logger.log(&#34;今日は週末？: &#34; + DateUtils.isWeekend(new Date()));
+  Logger.log(&#34;1週間後: &#34; + Utilities.formatDate(DateUtils.addDays(new Date(), 7), &#34;JST&#34;, &#34;yyyy/MM/dd&#34;));
+  Logger.log(&#34;祝日: &#34; + DateUtils.HOLIDAYS.join(&#34;, &#34;));
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第6章</h2>
+<p><code>Employee</code>（従業員）クラスを作成してください。コンストラクタで <code>name</code>・<code>department</code>・<code>salary</code> を受け取り、<code>getAnnualSalary()</code>（年収を返す）と <code>toString()</code>（「田中 / 営業部 / 月給¥xx」形式の文字列を返す）メソッドを実装してください。複数の従業員を配列に格納し、一番高い年収の人の情報をログに出力してみましょう。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第7章 JavaScriptの組み込みオブジェクト" duration="35">
+        <h2 is-upgraded>07-01 組み込みオブジェクト</h2>
+<p>JavaScriptには最初から使えるビルトインオブジェクトが多数存在します。</p>
+<pre><code language="language-javascript" class="language-javascript">function builtinOverview() {
+  Logger.log(typeof Number);   // &#34;function&#34;（コンストラクタ）
+  Logger.log(typeof String);   // &#34;function&#34;
+  Logger.log(typeof Array);    // &#34;function&#34;
+  Logger.log(typeof Math);     // &#34;object&#34;（コンストラクタなし）
+  Logger.log(typeof JSON);     // &#34;object&#34;
+  Logger.log(typeof Date);     // &#34;function&#34;
+}
+</code></pre>
+<h2 is-upgraded>07-02 数値を取り扱う - Numberオブジェクト</h2>
+<pre><code language="language-javascript" class="language-javascript">function numberDemo() {
+  Logger.log(Number.MAX_SAFE_INTEGER); // 9007199254740991
+  Logger.log(Number.MIN_SAFE_INTEGER); // -9007199254740991
+  Logger.log(Number.EPSILON);          // 2.220446049250313e-16
+  Logger.log(Number.isInteger(3.0));   // true
+  Logger.log(Number.isFinite(Infinity)); // false
+  Logger.log(Number.isNaN(NaN));       // true
+  Logger.log(Number.parseInt(&#34;42px&#34;)); // 42
+  Logger.log(Number.parseFloat(&#34;3.14cm&#34;)); // 3.14
+
+  const price = 1234567.89;
+  Logger.log(price.toFixed(0));        // &#34;1234568&#34;（小数点以下0桁）
+  Logger.log(price.toFixed(2));        // &#34;1234567.89&#34;
+  Logger.log(price.toLocaleString(&#34;ja-JP&#34;, { style: &#34;currency&#34;, currency: &#34;JPY&#34; })); // &#34;¥1,234,568&#34;
+  Logger.log((0.1 + 0.2).toFixed(1)); // &#34;0.3&#34;（浮動小数点誤差を回避）
+}
+</code></pre>
+<h2 is-upgraded>07-03 文字列を取り扱う - Stringオブジェクト</h2>
+<pre><code language="language-javascript" class="language-javascript">function stringDemo() {
+  const s = &#34;Hello, Google Apps Script!&#34;;
+
+  Logger.log(s.length);                   // 26
+  Logger.log(s.toUpperCase());            // &#34;HELLO, GOOGLE APPS SCRIPT!&#34;
+  Logger.log(s.toLowerCase());            // &#34;hello, google apps script!&#34;
+  Logger.log(s.includes(&#34;Google&#34;));       // true
+  Logger.log(s.startsWith(&#34;Hello&#34;));      // true
+  Logger.log(s.endsWith(&#34;!&#34;));            // true
+  Logger.log(s.indexOf(&#34;Google&#34;));        // 7
+  Logger.log(s.slice(7, 13));            // &#34;Google&#34;
+  Logger.log(s.replace(&#34;Google&#34;, &#34;GAS&#34;)); // &#34;Hello, GAS Apps Script!&#34;
+  Logger.log(s.split(&#34;, &#34;));             // [&#34;Hello&#34;, &#34;Google Apps Script!&#34;]
+  Logger.log(&#34;  trim me  &#34;.trim());      // &#34;trim me&#34;
+  Logger.log(&#34;abc&#34;.repeat(3));           // &#34;abcabcabc&#34;
+  Logger.log(&#34;5&#34;.padStart(3, &#34;0&#34;));      // &#34;005&#34;（ゼロパディング）
+
+  // テンプレートリテラル（実践例）
+  const name = &#34;田中&#34;, score = 92;
+  const message = `${name}さん、今月のスコアは${score}点です（${score &gt;= 90 ? &#34;優秀&#34; : &#34;良好&#34;}）`;
+  Logger.log(message);
+}
+</code></pre>
+<h2 is-upgraded>07-04 配列を取り扱う - Arrayオブジェクト</h2>
+<pre><code language="language-javascript" class="language-javascript">function arrayMethodDemo() {
+  const nums = [5, 2, 8, 1, 9, 3, 7, 4, 6];
+
+  // 変換・フィルタ・集計
+  const doubled = nums.map(n =&gt; n * 2);           // すべて2倍
+  const evens = nums.filter(n =&gt; n % 2 === 0);     // 偶数のみ
+  const total = nums.reduce((s, n) =&gt; s + n, 0);   // 合計
+  const sorted = [...nums].sort((a, b) =&gt; a - b);  // 昇順ソート
+
+  Logger.log(&#34;doubled: &#34; + doubled);
+  Logger.log(&#34;evens: &#34; + evens);
+  Logger.log(&#34;total: &#34; + total);
+  Logger.log(&#34;sorted: &#34; + sorted);
+
+  // 検索
+  Logger.log(nums.find(n =&gt; n &gt; 7));         // 8（最初に7より大きい数）
+  Logger.log(nums.findIndex(n =&gt; n &gt; 7));    // 2（そのインデックス）
+  Logger.log(nums.some(n =&gt; n &gt; 8));         // true
+  Logger.log(nums.every(n =&gt; n &gt; 0));        // true
+
+  // 変形
+  const matrix = [[1, 2], [3, 4], [5, 6]];
+  const flat = matrix.flat();               // [1,2,3,4,5,6]
+  Logger.log(&#34;flat: &#34; + flat);
+
+  // GASでスプレッドシートデータを2次元配列で処理
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const data = sheet.getRange(&#34;A2:C10&#34;).getValues();
+  const processed = data
+    .filter(row =&gt; row[0] !== &#34;&#34;)  // 空行を除外
+    .map(row =&gt; ({
+      name: row[0],
+      score: row[1],
+      grade: row[1] &gt;= 80 ? &#34;A&#34; : row[1] &gt;= 60 ? &#34;B&#34; : &#34;C&#34;
+    }));
+  Logger.log(JSON.stringify(processed.slice(0, 3)));
+}
+</code></pre>
+<h2 is-upgraded>07-05 関数を取り扱う - Functionオブジェクト</h2>
+<pre><code language="language-javascript" class="language-javascript">function functionObjectDemo() {
+  // bind: thisと引数を固定した新しい関数を作る
+  function multiply(a, b) { return a * b; }
+  const double = multiply.bind(null, 2); // 第1引数を2に固定
+  const triple = multiply.bind(null, 3);
+  Logger.log(double(5));  // 10
+  Logger.log(triple(5));  // 15
+
+  // call/apply: thisを指定して関数を即時実行
+  function introduce() {
+    return `私は${this.name}（${this.role}）です`;
+  }
+  const person = { name: &#34;田中&#34;, role: &#34;エンジニア&#34; };
+  Logger.log(introduce.call(person)); // &#34;私は田中（エンジニア）です&#34;
+
+  // 関数の引数の数
+  Logger.log(multiply.length); // 2（引数の数）
+}
+</code></pre>
+<h2 is-upgraded>07-06 日付・時刻を取り扱う - Dateオブジェクト</h2>
+<pre><code language="language-javascript" class="language-javascript">function dateDemo() {
+  const now = new Date();
+  Logger.log(&#34;現在日時: &#34; + now);
+  Logger.log(&#34;年: &#34; + now.getFullYear());
+  Logger.log(&#34;月: &#34; + (now.getMonth() + 1)); // 月は0始まりなので+1
+  Logger.log(&#34;日: &#34; + now.getDate());
+  Logger.log(&#34;曜日: &#34; + now.getDay()); // 0=日...6=土
+  Logger.log(&#34;時: &#34; + now.getHours());
+  Logger.log(&#34;分: &#34; + now.getMinutes());
+  Logger.log(&#34;ミリ秒タイムスタンプ: &#34; + now.getTime());
+
+  // Utilitiesと組み合わせた日付フォーマット（GAS推奨）
+  Logger.log(Utilities.formatDate(now, &#34;JST&#34;, &#34;yyyy/MM/dd HH:mm:ss&#34;));
+  Logger.log(Utilities.formatDate(now, &#34;JST&#34;, &#34;yyyyMMdd&#34;));
+
+  // 日付の計算
+  const twoWeeksLater = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+  Logger.log(&#34;2週間後: &#34; + Utilities.formatDate(twoWeeksLater, &#34;JST&#34;, &#34;yyyy/MM/dd&#34;));
+
+  // 月初め・月末の計算
+  const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+  const lastDay  = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  Logger.log(&#34;月初め: &#34; + Utilities.formatDate(firstDay, &#34;JST&#34;, &#34;yyyy/MM/dd&#34;));
+  Logger.log(&#34;月末: &#34; + Utilities.formatDate(lastDay, &#34;JST&#34;, &#34;yyyy/MM/dd&#34;));
+}
+</code></pre>
+<h2 is-upgraded>07-07 正規表現を取り扱う - RegExpオブジェクト</h2>
+<pre><code language="language-javascript" class="language-javascript">function regexDemo() {
+  // メールアドレスの検証
+  const emailRe = /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
+  Logger.log(emailRe.test(&#34;user@example.com&#34;)); // true
+  Logger.log(emailRe.test(&#34;invalid-email&#34;));    // false
+
+  // 電話番号の抽出
+  const text = &#34;連絡先：090-1234-5678 または 03-1234-5678 まで&#34;;
+  const phoneRe = /\d{2,4}-\d{2,4}-\d{4}/g;
+  const phones = text.match(phoneRe);
+  Logger.log(&#34;電話番号: &#34; + phones.join(&#34;, &#34;));
+
+  // 置換（replace）
+  const csv = &#34;田中, 山田, 佐藤 ,鈴木&#34;;
+  const cleaned = csv.replace(/\s*,\s*/g, &#34;,&#34;); // カンマ周りの空白を除去
+  Logger.log(cleaned); // &#34;田中,山田,佐藤,鈴木&#34;
+
+  // グループキャプチャ
+  const dateStr = &#34;2026-04-10&#34;;
+  const match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (match) {
+    Logger.log(`年:${match[1]} 月:${match[2]} 日:${match[3]}`);
+  }
+}
+</code></pre>
+<h2 is-upgraded>07-08 例外情報を取得する - Errorオブジェクト</h2>
+<pre><code language="language-javascript" class="language-javascript">function errorObjectDemo() {
+  // Errorの種類
+  const errorTypes = [
+    new Error(&#34;一般エラー&#34;),
+    new TypeError(&#34;型エラー&#34;),
+    new RangeError(&#34;範囲エラー&#34;),
+    new ReferenceError(&#34;参照エラー&#34;),
+    new SyntaxError(&#34;構文エラー&#34;)
+  ];
+
+  errorTypes.forEach(err =&gt; {
+    Logger.log(`[${err.name}] ${err.message}`);
+  });
+
+  // カスタムエラークラス
+  class ApiError extends Error {
+    constructor(message, statusCode) {
+      super(message);
+      this.name = &#34;ApiError&#34;;
+      this.statusCode = statusCode;
+    }
+  }
+
+  try {
+    throw new ApiError(&#34;レート制限を超えました&#34;, 429);
+  } catch (e) {
+    Logger.log(`${e.name} (${e.statusCode}): ${e.message}`);
+  }
+}
+</code></pre>
+<h2 is-upgraded>07-09 数学演算を実行する - Mathオブジェクト</h2>
+<pre><code language="language-javascript" class="language-javascript">function mathDemo() {
+  Logger.log(Math.PI);              // 3.141592653589793
+  Logger.log(Math.E);               // 2.718281828459045
+  Logger.log(Math.abs(-42));        // 42（絶対値）
+  Logger.log(Math.round(4.5));      // 5（四捨五入）
+  Logger.log(Math.floor(4.9));      // 4（切り捨て）
+  Logger.log(Math.ceil(4.1));       // 5（切り上げ）
+  Logger.log(Math.max(1, 5, 3));    // 5
+  Logger.log(Math.min(1, 5, 3));    // 1
+  Logger.log(Math.pow(2, 10));      // 1024
+  Logger.log(Math.sqrt(144));       // 12
+  Logger.log(Math.log2(1024));      // 10
+  Logger.log(Math.random());        // 0〜1未満のランダムな数
+
+  // 指定範囲内のランダム整数
+  function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  Logger.log(&#34;1〜100のランダム: &#34; + randomInt(1, 100));
+
+  // 配列の最大・最小（スプレッド演算子でMathに渡す）
+  const scores = [78, 92, 55, 88, 73];
+  Logger.log(&#34;最高点: &#34; + Math.max(...scores));
+  Logger.log(&#34;最低点: &#34; + Math.min(...scores));
+}
+</code></pre>
+<h2 is-upgraded>07-10 JSONデータを取り扱う - JSONオブジェクト</h2>
+<pre><code language="language-javascript" class="language-javascript">function jsonDemo() {
+  // オブジェクト → JSON文字列
+  const user = { name: &#34;田中&#34;, age: 30, tags: [&#34;GAS&#34;, &#34;自動化&#34;] };
+  const json = JSON.stringify(user);
+  Logger.log(json); // {&#34;name&#34;:&#34;田中&#34;,&#34;age&#34;:30,&#34;tags&#34;:[&#34;GAS&#34;,&#34;自動化&#34;]}
+
+  // インデント付きで整形
+  Logger.log(JSON.stringify(user, null, 2));
+
+  // JSON文字列 → オブジェクト
+  const parsed = JSON.parse(json);
+  Logger.log(parsed.name + &#34; / &#34; + parsed.tags.join(&#34;, &#34;));
+
+  // replacer（特定キーのみシリアライズ）
+  const partial = JSON.stringify(user, [&#34;name&#34;, &#34;age&#34;]);
+  Logger.log(partial); // {&#34;name&#34;:&#34;田中&#34;,&#34;age&#34;:30}
+
+  // GASでの実践：PropertiesServiceにオブジェクトを保存
+  const props = PropertiesService.getScriptProperties();
+  props.setProperty(&#34;config&#34;, JSON.stringify({ maxRow: 1000, debug: false }));
+  const config = JSON.parse(props.getProperty(&#34;config&#34;));
+  Logger.log(&#34;maxRow: &#34; + config.maxRow);
+}
+</code></pre>
+<h2 is-upgraded>07-11 オブジェクトを取り扱う - Objectオブジェクト</h2>
+<pre><code language="language-javascript" class="language-javascript">function objectUtilDemo() {
+  const src = { a: 1, b: 2 };
+  const ext = { b: 99, c: 3 };
+
+  // Object.assign: オブジェクトのマージ（浅いコピー）
+  const merged = Object.assign({}, src, ext);
+  Logger.log(JSON.stringify(merged)); // {&#34;a&#34;:1,&#34;b&#34;:99,&#34;c&#34;:3}
+
+  // Object.keys / values / entries
+  Logger.log(Object.keys(merged));   // [&#34;a&#34;,&#34;b&#34;,&#34;c&#34;]
+  Logger.log(Object.values(merged)); // [1,99,3]
+  Logger.log(JSON.stringify(Object.entries(merged))); // [[&#34;a&#34;,1],[&#34;b&#34;,99],[&#34;c&#34;,3]]
+
+  // Object.freeze: オブジェクトを変更不可にする
+  const CONSTANTS = Object.freeze({ MAX: 100, MIN: 0 });
+  // CONSTANTS.MAX = 999; // strictモードではエラー、通常は無視される
+  Logger.log(CONSTANTS.MAX); // 100
+
+  // Object.fromEntries: entries → オブジェクトに変換
+  const pairs = [[&#34;x&#34;, 10], [&#34;y&#34;, 20], [&#34;z&#34;, 30]];
+  const obj = Object.fromEntries(pairs);
+  Logger.log(JSON.stringify(obj)); // {&#34;x&#34;:10,&#34;y&#34;:20,&#34;z&#34;:30}
+
+  // Object.hasOwn: プロパティの存在チェック（推奨）
+  Logger.log(Object.hasOwn(merged, &#34;a&#34;)); // true
+  Logger.log(Object.hasOwn(merged, &#34;d&#34;)); // false
+}
+</code></pre>
+<h2 is-upgraded>07-12 グローバル関数</h2>
+<pre><code language="language-javascript" class="language-javascript">function globalFunctionsDemo() {
+  // 数値変換
+  Logger.log(parseInt(&#34;10&#34;, 10));   // 10（10進数として解析）
+  Logger.log(parseInt(&#34;0xff&#34;, 16)); // 255（16進数）
+  Logger.log(parseFloat(&#34;3.14pi&#34;)); // 3.14
+  Logger.log(isNaN(&#34;hello&#34;));       // true
+  Logger.log(isFinite(1e308));      // true（Infinityでなければtrue）
+
+  // エンコード・デコード
+  const url = &#34;https://example.com/search?q=Google スプレッドシート&#34;;
+  const encoded = encodeURIComponent(&#34;Google スプレッドシート&#34;);
+  Logger.log(encoded); // &#34;Google%20%E3%82%B9%E3%83%97%E3%83%AC...&#34;
+  Logger.log(decodeURIComponent(encoded));
+
+  // eval（使用は非推奨・セキュリティリスクあり）
+  // Logger.log(eval(&#34;2 + 2&#34;)); // 4（動的コード実行）
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第7章</h2>
+<p>スプレッドシートのA列に以下の電話番号が混在して入っているとします（スペースあり・ハイフン形式混在）。正規表現を使って統一形式（<code>xxx-xxxx-xxxx</code>）に変換してB列に書き出す <code>normalizePhones()</code> 関数を作成してください。</p>
+<ul>
+<li><code>090 1234 5678</code></li>
+<li><code>09012345678</code></li>
+<li><code>090-1234-5678</code></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第8章 スプレッドシート" duration="45">
+        <h2 is-upgraded>08-01 Spreadsheetサービス</h2>
+<p><code>SpreadsheetApp</code> はスプレッドシート操作のエントリーポイントです。ここからすべての操作が始まります。</p>
+<pre><code language="language-javascript" class="language-javascript">function spreadsheetServiceOverview() {
+  // 現在アクティブなスプレッドシートを取得
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+  // IDで特定のスプレッドシートを取得（別のファイルにアクセス）
+  // const ss = SpreadsheetApp.openById(&#34;スプレッドシートID&#34;);
+
+  // URLで取得
+  // const ss = SpreadsheetApp.openByUrl(&#34;https://docs.google.com/...&#34;);
+
+  Logger.log(&#34;スプレッドシート名: &#34; + ss.getName());
+  Logger.log(&#34;スプレッドシートID: &#34; + ss.getId());
+  Logger.log(&#34;URL: &#34; + ss.getUrl());
+}
+</code></pre>
+<h2 is-upgraded>08-02 SpreadsheetAppクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function spreadsheetAppDemo() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+  // ファイル全体の情報
+  Logger.log(&#34;スプレッドシート名: &#34; + ss.getName());
+  Logger.log(&#34;オーナー: &#34; + ss.getOwner().getEmail());
+  Logger.log(&#34;最終更新日: &#34; + ss.getLastUpdated());
+
+  // スプレッドシートのロケール設定
+  Logger.log(&#34;ロケール: &#34; + ss.getSpreadsheetLocale());
+  Logger.log(&#34;タイムゾーン: &#34; + ss.getSpreadsheetTimeZone());
+
+  // すべてのシートの一覧
+  const sheets = ss.getSheets();
+  sheets.forEach(sheet =&gt; Logger.log(&#34;シート: &#34; + sheet.getName()));
+
+  // 通知（ユーザーへのフィードバック）
+  ss.toast(&#34;処理中です...&#34;, &#34;自動化スクリプト&#34;, 5); // 5秒間表示
+}
+</code></pre>
+<h2 is-upgraded>08-03 スプレッドシートを操作する - Spreadsheetクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function spreadsheetClassDemo() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+  // シートの作成・取得・削除
+  const newSheet = ss.insertSheet(&#34;新しいシート&#34;);
+  const sheet1 = ss.getSheetByName(&#34;シート1&#34;);
+  const activeSheet = ss.getActiveSheet();
+
+  // シートのコピー
+  const copied = sheet1.copyTo(ss);
+  copied.setName(&#34;シート1のコピー&#34;);
+
+  // シートの移動（インデックスで管理）
+  ss.setActiveSheet(newSheet);
+
+  // 名前付き範囲の設定
+  ss.setNamedRange(&#34;データ範囲&#34;, sheet1.getRange(&#34;A1:D100&#34;));
+  const namedRange = ss.getRangeByName(&#34;データ範囲&#34;);
+  Logger.log(&#34;名前付き範囲: &#34; + namedRange.getA1Notation());
+
+  // 後始末（作成したシートを削除）
+  ss.deleteSheet(newSheet);
+  ss.deleteSheet(copied);
+}
+</code></pre>
+<h2 is-upgraded>08-04 シートを操作する - Sheetクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function sheetClassDemo() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+
+  // シートの情報
+  Logger.log(&#34;シート名: &#34; + sheet.getName());
+  Logger.log(&#34;最終行: &#34; + sheet.getLastRow());
+  Logger.log(&#34;最終列: &#34; + sheet.getLastColumn());
+  Logger.log(&#34;最大行数: &#34; + sheet.getMaxRows());
+
+  // 行・列の操作
+  sheet.insertRowBefore(2);          // 2行目の前に行を挿入
+  sheet.insertColumnAfter(3);        // 3列目の後に列を挿入
+  sheet.deleteRow(10);               // 10行目を削除
+  sheet.deleteColumn(5);             // 5列目を削除
+  sheet.hideRow(sheet.getRange(&#34;5:5&#34;));  // 5行目を非表示
+  sheet.showRows(5, 1);             // 5行目から1行を表示
+
+  // 行・列の高さ/幅
+  sheet.setRowHeight(1, 40);        // 1行目の高さを40に
+  sheet.setColumnWidth(1, 150);     // A列の幅を150に
+
+  // シートの保護
+  const protection = sheet.protect().setDescription(&#34;管理者のみ編集可&#34;);
+  // protection.addEditor(&#34;admin@example.com&#34;);
+
+  // データのソート（A列昇順）
+  const dataRange = sheet.getRange(&#34;A2:D&#34; + sheet.getLastRow());
+  dataRange.sort({ column: 1, ascending: true });
+
+  // シートのクリア
+  // sheet.clearContents(); // コンテンツのみ
+  // sheet.clearFormats();  // 書式のみ
+  // sheet.clear();         // すべてクリア
+}
+</code></pre>
+<h2 is-upgraded>08-05 セル範囲を操作する - Rangeクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function rangeClassDemo() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+
+  // 範囲の取得（様々な方法）
+  const singleCell = sheet.getRange(&#34;B3&#34;);
+  const byRowCol  = sheet.getRange(3, 2);           // 行番号, 列番号
+  const multiCell = sheet.getRange(&#34;A1:C5&#34;);
+  const bySize    = sheet.getRange(1, 1, 5, 3);     // 行, 列, 行数, 列数
+
+  // 値の読み書き
+  singleCell.setValue(&#34;こんにちは&#34;);
+  const val = singleCell.getValue();
+  Logger.log(&#34;値: &#34; + val);
+
+  // 複数セルを一括で読み書き（配列で高速化）
+  const data = [
+    [&#34;商品A&#34;, 100, 50],
+    [&#34;商品B&#34;, 200, 30],
+    [&#34;商品C&#34;, 150, 80]
+  ];
+  sheet.getRange(2, 1, data.length, data[0].length).setValues(data);
+  const readData = sheet.getRange(2, 1, 3, 3).getValues();
+  Logger.log(JSON.stringify(readData));
+
+  // 書式設定
+  const headerRange = sheet.getRange(&#34;A1:C1&#34;);
+  headerRange.setBackground(&#34;#1a237e&#34;);     // 背景色
+  headerRange.setFontColor(&#34;#ffffff&#34;);       // 文字色
+  headerRange.setFontWeight(&#34;bold&#34;);         // 太字
+  headerRange.setFontSize(12);              // フォントサイズ
+  headerRange.setHorizontalAlignment(&#34;center&#34;); // 中央揃え
+
+  // 数式の設定
+  sheet.getRange(&#34;D2&#34;).setFormula(&#34;=B2*C2&#34;);
+  sheet.getRange(&#34;D2:D&#34; + (data.length + 1)).setFormulaR1C1(&#34;=RC[-2]*RC[-1]&#34;);
+
+  // 範囲の情報
+  Logger.log(&#34;行数: &#34; + multiCell.getNumRows());
+  Logger.log(&#34;列数: &#34; + multiCell.getNumColumns());
+  Logger.log(&#34;A1表記: &#34; + multiCell.getA1Notation());
+}
+</code></pre>
+<h2 is-upgraded>08-06 配列を使ったデータ処理</h2>
+<pre><code language="language-javascript" class="language-javascript">function batchProcessDemo() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+
+  // ❌ 遅い方法（ループの中でgetValue/setValueを繰り返す）
+  // for (let r = 2; r &lt;= 100; r++) {
+  //   const val = sheet.getRange(r, 1).getValue();
+  //   sheet.getRange(r, 2).setValue(val * 1.1);
+  // }
+
+  // ✅ 速い方法（一括取得 → 処理 → 一括書き込み）
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 2) return;
+
+  // 1回のAPIコールでA列全体を取得
+  const values = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+
+  // 処理（配列の操作はメモリ上なので高速）
+  const results = values.map(([val]) =&gt; {
+    if (!val || isNaN(val)) return [&#34;&#34;];
+    return [Math.round(val * 1.1)]; // 10%増しにして整数化
+  });
+
+  // 1回のAPIコールでB列全体に書き込む
+  sheet.getRange(2, 2, results.length, 1).setValues(results);
+  Logger.log(results.length + &#34;行を処理しました&#34;);
+}
+</code></pre>
+<h2 is-upgraded>08-07 カスタム関数</h2>
+<pre><code language="language-javascript" class="language-javascript">/**
+ * 税込み金額を計算します（スプレッドシート関数として使用可能）
+ * @param {number} price 税抜き価格
+ * @param {number} [taxRate=0.1] 税率（デフォルト10%）
+ * @return {number} 税込み価格
+ * @customfunction
+ */
+function TAX(price, taxRate) {
+  taxRate = taxRate || 0.1;
+  if (typeof price !== &#34;number&#34;) return &#34;ERROR: 数値を入力してください&#34;;
+  return Math.ceil(price * (1 + taxRate));
+}
+
+/**
+ * 名前をフルネームに変換します
+ * @param {string} lastName 姓
+ * @param {string} firstName 名
+ * @return {string} フルネーム（姓 名）
+ * @customfunction
+ */
+function FULLNAME(lastName, firstName) {
+  return (lastName + &#34; &#34; + firstName).trim();
+}
+
+// スプレッドシート上で =TAX(1000) → 1100
+// スプレッドシート上で =FULLNAME(&#34;田中&#34;,&#34;太郎&#34;) → &#34;田中 太郎&#34;
+</code></pre>
+<h2 is-upgraded>演習問題 第8章</h2>
+<p>スプレッドシートの「売上データ」シートに A列:日付 B列:担当者名 C列:売上金額 が100行あるとします。以下の処理を一括処理（配列）で実装してください。</p>
+<ol type="1">
+<li>C列の売上金額の合計・平均をD1・D2セルに表示</li>
+<li>B列の担当者ごとに合計売上を集計し、「集計」シートのA列:担当者名、B列:合計売上 に書き出す</li>
+<li>集計シートのデータを金額の降順にソートする</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第9章 Gmail" duration="30">
+        <h2 is-upgraded>09-01 Gmailサービス</h2>
+<p><code>GmailApp</code> は Gmailの操作全般を担うサービスです。メールの送受信、下書き、ラベル、スレッドを操作できます。</p>
+<pre><code language="language-javascript" class="language-javascript">function gmailServiceOverview() {
+  // 受信トレイのスレッド数を確認
+  const threads = GmailApp.getInboxThreads();
+  Logger.log(&#34;受信トレイのスレッド数: &#34; + threads.length);
+
+  // 未読メールの件数
+  const unreadThreads = GmailApp.search(&#34;is:unread&#34;);
+  Logger.log(&#34;未読スレッド数: &#34; + unreadThreads.length);
+}
+</code></pre>
+<h2 is-upgraded>09-02 GmailAppクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function gmailAppDemo() {
+  // メールを送信
+  GmailApp.sendEmail(
+    &#34;recipient@example.com&#34;,
+    &#34;テストメール&#34;,
+    &#34;これはGASから送信したメールです。&#34;,
+    {
+      name: &#34;GAS自動送信&#34;,          // 送信者表示名
+      cc: &#34;cc@example.com&#34;,          // CC
+      bcc: &#34;bcc@example.com&#34;,        // BCC
+      replyTo: &#34;reply@example.com&#34;,  // 返信先
+      htmlBody: &#34;&lt;b&gt;HTML形式&lt;/b&gt;のメールです。&lt;br&gt;GASから送信しました。&#34;
+    }
+  );
+
+  // 下書きを作成
+  const draft = GmailApp.createDraft(
+    &#34;manager@example.com&#34;,
+    &#34;【週次報告】&#34; + Utilities.formatDate(new Date(), &#34;JST&#34;, &#34;M月d日&#34;),
+    &#34;報告内容をここに記述します。&#34;
+  );
+  Logger.log(&#34;下書き作成: &#34; + draft.getId());
+
+  // メールを検索
+  const searchResults = GmailApp.search(&#34;label:重要 after:2026/01/01&#34;, 0, 10);
+  Logger.log(&#34;検索結果: &#34; + searchResults.length + &#34;件&#34;);
+}
+</code></pre>
+<h2 is-upgraded>09-03 スレッドを取得する</h2>
+<pre><code language="language-javascript" class="language-javascript">function getThreadsDemo() {
+  // 受信トレイから10件取得
+  const threads = GmailApp.getInboxThreads(0, 10);
+
+  threads.forEach(thread =&gt; {
+    Logger.log(&#34;---&#34;);
+    Logger.log(&#34;件名: &#34; + thread.getFirstMessageSubject());
+    Logger.log(&#34;メッセージ数: &#34; + thread.getMessageCount());
+    Logger.log(&#34;未読: &#34; + thread.isUnread());
+    Logger.log(&#34;最終更新: &#34; + thread.getLastMessageDate());
+  });
+
+  // 特定の検索クエリでスレッドを取得
+  const importantThreads = GmailApp.search(&#34;is:important is:unread&#34;);
+  Logger.log(&#34;重要・未読: &#34; + importantThreads.length + &#34; スレッド&#34;);
+}
+</code></pre>
+<h2 is-upgraded>09-04 スレッドを取り扱う - GmailThreadクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function threadClassDemo() {
+  const threads = GmailApp.getInboxThreads(0, 5);
+  if (threads.length === 0) return;
+
+  const thread = threads[0];
+
+  // スレッドの操作
+  Logger.log(&#34;件名: &#34; + thread.getFirstMessageSubject());
+  Logger.log(&#34;ラベル: &#34; + thread.getLabels().map(l =&gt; l.getName()).join(&#34;, &#34;));
+
+  // スレッドにスターを付ける
+  // thread.markImportant();
+  // thread.addLabel(GmailApp.getUserLabelByName(&#34;処理済み&#34;));
+
+  // スレッドをゴミ箱へ
+  // thread.moveToTrash();
+
+  // スレッドをアーカイブ
+  // thread.moveToArchive();
+}
+</code></pre>
+<h2 is-upgraded>09-05 メッセージを取得する</h2>
+<pre><code language="language-javascript" class="language-javascript">function getMessagesDemo() {
+  const threads = GmailApp.getInboxThreads(0, 3);
+  threads.forEach(thread =&gt; {
+    const messages = thread.getMessages();
+    Logger.log(&#34;=== スレッド: &#34; + thread.getFirstMessageSubject() + &#34; ===&#34;);
+    messages.forEach(msg =&gt; {
+      Logger.log(&#34;  差出人: &#34; + msg.getFrom());
+      Logger.log(&#34;  本文（先頭100文字）: &#34; + msg.getPlainBody().slice(0, 100));
+    });
+  });
+}
+</code></pre>
+<h2 is-upgraded>09-06 メッセージを取り扱う - GmailMessageクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function messageClassDemo() {
+  const threads = GmailApp.getInboxThreads(0, 1);
+  if (!threads.length) return;
+
+  const message = threads[0].getMessages()[0];
+
+  // メッセージ情報の取得
+  Logger.log(&#34;差出人: &#34; + message.getFrom());
+  Logger.log(&#34;宛先: &#34; + message.getTo());
+  Logger.log(&#34;件名: &#34; + message.getSubject());
+  Logger.log(&#34;日時: &#34; + message.getDate());
+  Logger.log(&#34;未読: &#34; + message.isUnread());
+  Logger.log(&#34;スター: &#34; + message.isStarred());
+
+  // 本文の取得
+  const plainBody = message.getPlainBody();
+  const htmlBody = message.getBody();
+  Logger.log(&#34;プレーンテキスト: &#34; + plainBody.slice(0, 200));
+
+  // 添付ファイルの処理
+  const attachments = message.getAttachments();
+  attachments.forEach(att =&gt; {
+    Logger.log(&#34;添付: &#34; + att.getName() + &#34; (&#34; + att.getSize() + &#34; bytes)&#34;);
+    // Driveに保存する場合
+    // DriveApp.getRootFolder().createFile(att);
+  });
+
+  // 返信する
+  // message.reply(&#34;承知しました。確認します。&#34;);
+
+  // 既読にする
+  // message.markRead();
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第9章</h2>
+<p>GmailApp.search() を使って「subject:請求書」で検索し、見つかったスレッドのメッセージについて、差出人・件名・日付・添付ファイル名をスプレッドシートの「Gmailログ」シートに書き出す <code>logInvoiceEmails()</code> 関数を作成してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第10章 ドライブ" duration="30">
+        <h2 is-upgraded>10-01 Driveサービス</h2>
+<p><code>DriveApp</code> はGoogleドライブのファイル・フォルダを操作するサービスです。</p>
+<pre><code language="language-javascript" class="language-javascript">function driveServiceOverview() {
+  const root = DriveApp.getRootFolder();
+  Logger.log(&#34;ルートフォルダ名: &#34; + root.getName());
+  Logger.log(&#34;ルートフォルダID: &#34; + root.getId());
+
+  // 使用中のストレージ（バイト）
+  Logger.log(&#34;使用ストレージ: &#34; + DriveApp.getStorageUsed() + &#34; bytes&#34;);
+  Logger.log(&#34;合計ストレージ: &#34; + DriveApp.getStorageLimit() + &#34; bytes&#34;);
+}
+</code></pre>
+<h2 is-upgraded>10-02 DriveAppクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function driveAppDemo() {
+  // ファイル・フォルダをIDで取得
+  // const file = DriveApp.getFileById(&#34;ファイルID&#34;);
+  // const folder = DriveApp.getFolderById(&#34;フォルダID&#34;);
+
+  // 名前で検索
+  const files = DriveApp.getFilesByName(&#34;報告書.pdf&#34;);
+  while (files.hasNext()) {
+    const f = files.next();
+    Logger.log(&#34;ファイル名: &#34; + f.getName() + &#34; URL: &#34; + f.getUrl());
+  }
+
+  // テキストファイルをドライブに作成
+  const newFile = DriveApp.createFile(&#34;テスト.txt&#34;, &#34;GASで作成したファイルです&#34;, MimeType.PLAIN_TEXT);
+  Logger.log(&#34;作成: &#34; + newFile.getName() + &#34; / &#34; + newFile.getUrl());
+
+  // 後始末
+  newFile.setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>10-03 フォルダを操作する - Folderクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function folderClassDemo() {
+  const root = DriveApp.getRootFolder();
+
+  // フォルダの作成
+  const folder = root.createFolder(&#34;GAS_作業フォルダ&#34;);
+  Logger.log(&#34;フォルダ作成: &#34; + folder.getName());
+
+  // サブフォルダの作成
+  const subFolder = folder.createFolder(&#34;2026年&#34;);
+  subFolder.createFolder(&#34;04月&#34;);
+
+  // フォルダ内のファイル一覧
+  folder.createFile(&#34;sample.txt&#34;, &#34;サンプル内容&#34;, MimeType.PLAIN_TEXT);
+  const files = folder.getFiles();
+  while (files.hasNext()) {
+    Logger.log(&#34;ファイル: &#34; + files.next().getName());
+  }
+
+  // フォルダの移動・コピー
+  Logger.log(&#34;フォルダURL: &#34; + folder.getUrl());
+
+  // 後始末
+  folder.setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>10-04 ファイルを操作する - Fileクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function fileClassDemo() {
+  // テキストファイルを作成
+  const file = DriveApp.createFile(
+    &#34;gas_report.txt&#34;,
+    &#34;GASで生成したレポートです。\n作成日時: &#34; + new Date().toString(),
+    MimeType.PLAIN_TEXT
+  );
+
+  // ファイルの情報
+  Logger.log(&#34;名前: &#34; + file.getName());
+  Logger.log(&#34;ID: &#34; + file.getId());
+  Logger.log(&#34;URL: &#34; + file.getUrl());
+  Logger.log(&#34;サイズ: &#34; + file.getSize() + &#34; bytes&#34;);
+  Logger.log(&#34;MIMEタイプ: &#34; + file.getMimeType());
+  Logger.log(&#34;作成日: &#34; + file.getDateCreated());
+  Logger.log(&#34;更新日: &#34; + file.getLastUpdated());
+  Logger.log(&#34;オーナー: &#34; + file.getOwner().getEmail());
+
+  // ファイルの操作
+  file.setName(&#34;gas_report_renamed.txt&#34;);
+  file.setDescription(&#34;GASで自動生成されたレポート&#34;);
+  const newFile = file.makeCopy(&#34;gas_report_copy.txt&#34;);
+
+  // コンテンツの読み込み
+  const content = file.getBlob().getDataAsString();
+  Logger.log(&#34;内容: &#34; + content);
+
+  // 後始末
+  file.setTrashed(true);
+  newFile.setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>10-05 フォルダ・ファイルのコレクションを操作する</h2>
+<pre><code language="language-javascript" class="language-javascript">function collectionDemo() {
+  const root = DriveApp.getRootFolder();
+
+  // ファイルのイテレーション
+  const allFiles = root.getFiles();
+  const fileList = [];
+  while (allFiles.hasNext()) {
+    const f = allFiles.next();
+    fileList.push({ name: f.getName(), size: f.getSize(), url: f.getUrl() });
+  }
+  Logger.log(&#34;ルートのファイル数: &#34; + fileList.length);
+
+  // フォルダのイテレーション
+  const allFolders = root.getFolders();
+  while (allFolders.hasNext()) {
+    const folder = allFolders.next();
+    Logger.log(&#34;フォルダ: &#34; + folder.getName());
+  }
+
+  // 検索でファイルを取得
+  const query = &#34;mimeType=&#39;application/pdf&#39; and modifiedTime &gt; &#39;2026-01-01&#39;&#34;;
+  const pdfFiles = DriveApp.searchFiles(query);
+  while (pdfFiles.hasNext()) {
+    const pdf = pdfFiles.next();
+    Logger.log(&#34;PDF: &#34; + pdf.getName());
+  }
+}
+</code></pre>
+<h2 is-upgraded>10-06 フォルダ・ファイルの共有と権限を操作する</h2>
+<pre><code language="language-javascript" class="language-javascript">function sharingDemo() {
+  const file = DriveApp.createFile(&#34;共有テスト.txt&#34;, &#34;共有のテスト&#34;, MimeType.PLAIN_TEXT);
+
+  // 特定ユーザーに編集権限を付与
+  file.addEditor(&#34;editor@example.com&#34;);
+
+  // 特定ユーザーに閲覧権限を付与
+  file.addViewer(&#34;viewer@example.com&#34;);
+
+  // リンクを知っている全員が閲覧可能にする
+  file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  Logger.log(&#34;共有URL: &#34; + file.getUrl());
+
+  // 権限の確認
+  Logger.log(&#34;アクセスタイプ: &#34; + file.getSharingAccess());
+  Logger.log(&#34;権限: &#34; + file.getSharingPermission());
+
+  // エディター・ビューワーの一覧
+  file.getEditors().forEach(e =&gt; Logger.log(&#34;編集者: &#34; + e.getEmail()));
+  file.getViewers().forEach(v =&gt; Logger.log(&#34;閲覧者: &#34; + v.getEmail()));
+
+  // 権限を削除
+  file.removeEditor(&#34;editor@example.com&#34;);
+
+  // 後始末
+  file.setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第10章</h2>
+<p>スプレッドシートのA列にファイル名のリストがある状態で、Googleドライブの「レポート置き場」というフォルダ内で各ファイルを検索し、見つかった場合はB列にそのファイルのURL、C列にファイルサイズ（KB）を書き出す <code>findFilesFromSheet()</code> 関数を作成してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第11章 カレンダー" duration="25">
+        <h2 is-upgraded>11-01 Calendarサービス</h2>
+<p><code>CalendarApp</code> はGoogleカレンダーの操作サービスです。予定の作成・取得・更新・削除が可能です。</p>
+<pre><code language="language-javascript" class="language-javascript">function calendarServiceOverview() {
+  // デフォルトカレンダー（メインカレンダー）を取得
+  const defaultCal = CalendarApp.getDefaultCalendar();
+  Logger.log(&#34;デフォルトカレンダー: &#34; + defaultCal.getName());
+
+  // すべてのカレンダーを取得
+  const allCals = CalendarApp.getAllCalendars();
+  allCals.forEach(cal =&gt; Logger.log(&#34;カレンダー: &#34; + cal.getName() + &#34; / &#34; + cal.getId()));
+
+  // IDで特定のカレンダーを取得
+  // const calendar = CalendarApp.getCalendarById(&#34;カレンダーID&#34;);
+}
+</code></pre>
+<h2 is-upgraded>11-02 CalendarAppクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function calendarAppDemo() {
+  const app = CalendarApp;
+
+  // カレンダーを名前で検索
+  const cals = app.getCalendarsByName(&#34;仕事&#34;);
+  if (cals.length &gt; 0) {
+    Logger.log(&#34;仕事カレンダー: &#34; + cals[0].getId());
+  }
+
+  // 新しいカレンダーを作成
+  // const newCal = app.createCalendar(&#34;プロジェクトX&#34;, { timeZone: &#34;Asia/Tokyo&#34; });
+  // Logger.log(&#34;新規カレンダー: &#34; + newCal.getName());
+}
+</code></pre>
+<h2 is-upgraded>11-03 カレンダーを操作する - Calendarクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function calendarClassDemo() {
+  const cal = CalendarApp.getDefaultCalendar();
+
+  // カレンダーの情報
+  Logger.log(&#34;名前: &#34; + cal.getName());
+  Logger.log(&#34;ID: &#34; + cal.getId());
+  Logger.log(&#34;タイムゾーン: &#34; + cal.getTimeZone());
+  Logger.log(&#34;色: &#34; + cal.getColor());
+
+  // イベントの作成
+  const now = new Date();
+  const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+
+  const event = cal.createEvent(
+    &#34;GAS学習ミーティング&#34;,
+    now,
+    oneHourLater,
+    {
+      description: &#34;GASの学習進捗を共有するミーティングです。&#34;,
+      location: &#34;会議室A&#34;,
+      guests: &#34;colleague@example.com&#34;,
+      sendInvites: false
+    }
+  );
+  Logger.log(&#34;作成したイベントID: &#34; + event.getId());
+
+  // 終日イベントの作成
+  const allDayEvent = cal.createAllDayEvent(
+    &#34;プロジェクト締め切り&#34;,
+    new Date(2026, 3, 30) // 2026年4月30日（月は0始まり）
+  );
+  Logger.log(&#34;終日イベント: &#34; + allDayEvent.getTitle());
+
+  // 定期イベント（毎週月曜日）
+  // cal.createEventSeries(&#34;週次MTG&#34;, start, end, {
+  //   frequency: CalendarApp.EventFrequency.WEEKLY,
+  //   daysOfWeek: [CalendarApp.Weekday.MONDAY]
+  // });
+
+  // 指定期間のイベントを取得
+  const weekEvents = cal.getEvents(now, new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000));
+  Logger.log(&#34;今週のイベント数: &#34; + weekEvents.length);
+
+  // 後始末
+  event.deleteEvent();
+  allDayEvent.deleteEvent();
+}
+</code></pre>
+<h2 is-upgraded>11-04 イベントを操作する - CalendarEventクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function calendarEventDemo() {
+  const cal = CalendarApp.getDefaultCalendar();
+  const now = new Date();
+  const end = new Date(now.getTime() + 60 * 60 * 1000);
+
+  const event = cal.createEvent(&#34;テストイベント&#34;, now, end);
+
+  // イベントの情報取得
+  Logger.log(&#34;タイトル: &#34; + event.getTitle());
+  Logger.log(&#34;説明: &#34; + event.getDescription());
+  Logger.log(&#34;場所: &#34; + event.getLocation());
+  Logger.log(&#34;開始: &#34; + event.getStartTime());
+  Logger.log(&#34;終了: &#34; + event.getEndTime());
+  Logger.log(&#34;作成者: &#34; + event.getCreators().join(&#34;, &#34;));
+  Logger.log(&#34;終日イベント: &#34; + event.isAllDayEvent());
+
+  // イベントの更新
+  event.setTitle(&#34;更新されたイベント&#34;);
+  event.setDescription(&#34;GASで自動作成・更新しました&#34;);
+  event.setLocation(&#34;オンライン（Google Meet）&#34;);
+  event.setColor(CalendarApp.EventColor.CYAN);
+
+  // ゲストの追加・確認
+  // event.addGuest(&#34;guest@example.com&#34;);
+  const guests = event.getGuestList();
+  Logger.log(&#34;ゲスト数: &#34; + guests.length);
+
+  // リマインダーの設定
+  event.addEmailReminder(60);    // 1時間前にメールリマインダー
+  event.addPopupReminder(30);    // 30分前にポップアップ
+  Logger.log(&#34;リマインダー: &#34; + JSON.stringify(event.getPopupReminders()));
+
+  // イベントの削除
+  event.deleteEvent();
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第11章</h2>
+<p>「今月の予定」をカレンダーから取得してスプレッドシートに書き出す機能を拡張してください。</p>
+<ul>
+<li>A列: 予定タイトル</li>
+<li>B列: 開始日時</li>
+<li>C列: 終了日時</li>
+<li>D列: 場所</li>
+<li>E列: 終日イベントかどうか（TRUE/FALSE）</li>
+</ul>
+<p>なお、取得後に「終日イベントのみ表示」と「期間でフィルタ」をシート上で切り替えられるよう、フィルタを設定するコードも追加してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第12章 ドキュメント" duration="30">
+        <h2 is-upgraded>12-01 Documentサービス</h2>
+<p><code>DocumentApp</code> はGoogleドキュメントを操作するサービスです。</p>
+<pre><code language="language-javascript" class="language-javascript">function documentServiceOverview() {
+  // 新規ドキュメントを作成
+  const doc = DocumentApp.create(&#34;GAS生成ドキュメント&#34;);
+  Logger.log(&#34;ドキュメントID: &#34; + doc.getId());
+  Logger.log(&#34;URL: &#34; + doc.getUrl());
+
+  // 後始末
+  DriveApp.getFileById(doc.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>12-02 DocumentAppクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function documentAppDemo() {
+  // IDでドキュメントを開く
+  // const doc = DocumentApp.openById(&#34;ドキュメントID&#34;);
+
+  // アクティブなドキュメント（ドキュメントにバインドされたスクリプトの場合）
+  // const doc = DocumentApp.getActiveDocument();
+
+  // 新規作成
+  const doc = DocumentApp.create(&#34;テストドキュメント&#34;);
+  Logger.log(&#34;名前: &#34; + doc.getName());
+  Logger.log(&#34;ID: &#34; + doc.getId());
+
+  DriveApp.getFileById(doc.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>12-03 ドキュメントを操作する - Documentクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function documentClassDemo() {
+  const doc = DocumentApp.create(&#34;議事録テンプレート&#34;);
+  const body = doc.getBody();
+
+  // タイトル・見出しの追加
+  body.appendParagraph(&#34;2026年4月 定例ミーティング議事録&#34;)
+    .setHeading(DocumentApp.ParagraphHeading.TITLE);
+  body.appendParagraph(&#34;開催日時：2026年4月10日（木）14:00〜15:00&#34;)
+    .setHeading(DocumentApp.ParagraphHeading.HEADING2);
+
+  // 本文段落の追加
+  body.appendParagraph(&#34;参加者：田中、山田、佐藤&#34;);
+  body.appendParagraph(&#34;&#34;); // 空行
+
+  // リスト（箇条書き）
+  body.appendParagraph(&#34;議題&#34;).setHeading(DocumentApp.ParagraphHeading.HEADING2);
+  const item1 = body.appendListItem(&#34;Q1売上報告&#34;);
+  item1.setGlyphType(DocumentApp.GlyphType.BULLET);
+  const item2 = body.appendListItem(&#34;来月の計画について&#34;);
+  item2.setGlyphType(DocumentApp.GlyphType.BULLET);
+
+  // 水平線を追加
+  body.appendHorizontalRule();
+
+  // ドキュメント全体を保存
+  doc.saveAndClose();
+
+  Logger.log(&#34;議事録を作成しました: &#34; + doc.getUrl());
+  DriveApp.getFileById(doc.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>12-04 セクションを操作する</h2>
+<pre><code language="language-javascript" class="language-javascript">function sectionDemo() {
+  const doc = DocumentApp.create(&#34;セクションテスト&#34;);
+  const body = doc.getBody();
+
+  // 段落の取得と操作
+  body.appendParagraph(&#34;第1段落：はじめに&#34;);
+  body.appendParagraph(&#34;第2段落：概要説明&#34;);
+  body.appendParagraph(&#34;第3段落：まとめ&#34;);
+
+  // 要素の数
+  Logger.log(&#34;要素数: &#34; + body.getNumChildren());
+
+  // インデックスで要素を取得
+  const firstChild = body.getChild(0);
+  Logger.log(&#34;最初の要素タイプ: &#34; + firstChild.getType());
+
+  // 要素の削除
+  // body.removeChild(firstChild);
+
+  doc.saveAndClose();
+  DriveApp.getFileById(doc.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>12-05 段落・リストアイテムを操作する</h2>
+<pre><code language="language-javascript" class="language-javascript">function paragraphDemo() {
+  const doc = DocumentApp.create(&#34;段落テスト&#34;);
+  const body = doc.getBody();
+
+  // 段落の書式設定
+  const para = body.appendParagraph(&#34;重要なお知らせ&#34;);
+  para.setHeading(DocumentApp.ParagraphHeading.HEADING1);
+  para.setAlignment(DocumentApp.HorizontalAlignment.CENTER);
+  para.setSpacingBefore(12);
+  para.setSpacingAfter(6);
+  para.setIndentFirstLine(0);
+
+  // 番号付きリスト
+  const listItems = [&#34;手順1: ログインする&#34;, &#34;手順2: ファイルを開く&#34;, &#34;手順3: 編集する&#34;];
+  listItems.forEach(text =&gt; {
+    const item = body.appendListItem(text);
+    item.setGlyphType(DocumentApp.GlyphType.NUMBER);
+    item.setNestingLevel(0);
+  });
+
+  doc.saveAndClose();
+  DriveApp.getFileById(doc.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>12-06 テキストオブジェクトを操作する</h2>
+<pre><code language="language-javascript" class="language-javascript">function textObjectDemo() {
+  const doc = DocumentApp.create(&#34;テキスト書式テスト&#34;);
+  const body = doc.getBody();
+
+  const para = body.appendParagraph(&#34;このテキストには様々な書式が適用されています。&#34;);
+  const text = para.editAsText();
+
+  // 部分的な書式設定（文字オフセット指定）
+  text.setBold(0, 5, true);             // 0〜5文字目を太字
+  text.setItalic(7, 12, true);          // 7〜12文字目をイタリック
+  text.setUnderline(14, 20, true);      // 14〜20文字目に下線
+  text.setForegroundColor(22, 28, &#34;#e53935&#34;); // 赤色
+  text.setFontSize(0, 5, 16);           // 最初の6文字をフォントサイズ16に
+
+  doc.saveAndClose();
+  DriveApp.getFileById(doc.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>12-07 文字列の編集と書式設定</h2>
+<pre><code language="language-javascript" class="language-javascript">function textEditDemo() {
+  const doc = DocumentApp.create(&#34;文字列編集テスト&#34;);
+  const body = doc.getBody();
+
+  const para = body.appendParagraph(&#34;初期テキストです。&#34;);
+
+  // テキストの追加・挿入
+  para.appendText(&#34;\n追記されたテキストです。&#34;);
+
+  // 段落のテキスト全体に書式を適用
+  const text = para.editAsText();
+  text.setFontFamily(&#34;Noto Sans JP&#34;);
+  text.setFontSize(11);
+
+  doc.saveAndClose();
+  DriveApp.getFileById(doc.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>12-08 文字列の置換と検索</h2>
+<pre><code language="language-javascript" class="language-javascript">function findReplaceDemo() {
+  const doc = DocumentApp.create(&#34;置換テスト&#34;);
+  const body = doc.getBody();
+
+  body.appendParagraph(&#34;こんにちは、&#123;&#123;NAME}}さん。&#34;);
+  body.appendParagraph(&#34;本日の日付は &#123;&#123;DATE}} です。&#34;);
+  body.appendParagraph(&#34;プロジェクト: &#123;&#123;PROJECT}}&#34;);
+
+  // プレースホルダーを実際の値で置換
+  const replacements = {
+    &#34;&#123;&#123;NAME}}&#34;: &#34;田中太郎&#34;,
+    &#34;&#123;&#123;DATE}}&#34;: Utilities.formatDate(new Date(), &#34;JST&#34;, &#34;yyyy年MM月dd日&#34;),
+    &#34;&#123;&#123;PROJECT}}&#34;: &#34;GAS自動化プロジェクト&#34;
+  };
+
+  Object.entries(replacements).forEach(([placeholder, value]) =&gt; {
+    body.replaceText(placeholder, value);
+  });
+
+  // 検索して書式を適用
+  const search = body.findText(&#34;GAS自動化&#34;);
+  if (search) {
+    search.getElement().editAsText()
+      .setBold(search.getStartOffset(), search.getEndOffsetInclusive(), true)
+      .setForegroundColor(search.getStartOffset(), search.getEndOffsetInclusive(), &#34;#1565c0&#34;);
+  }
+
+  doc.saveAndClose();
+  DriveApp.getFileById(doc.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第12章</h2>
+<p>スプレッドシートの「社員情報」シート（A列:氏名 B列:部署 C列:入社年）のデータを読み込み、各社員ごとに「社員証明書テンプレート」ドキュメントのコピーを作成して <code>&#123;&#123;NAME}}</code>, <code>&#123;&#123;DEPT}}</code>, <code>&#123;&#123;YEAR}}</code> をプレースホルダーとして置換し、指定のドライブフォルダに保存する <code>generateCertificates()</code> 関数を作成してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第13章 スライド" duration="25">
+        <h2 is-upgraded>13-01 Slidesサービス</h2>
+<pre><code language="language-javascript" class="language-javascript">function slidesServiceOverview() {
+  // 新規プレゼンテーション作成
+  const pres = SlidesApp.create(&#34;GASプレゼン&#34;);
+  Logger.log(&#34;プレゼンID: &#34; + pres.getId());
+  Logger.log(&#34;URL: &#34; + pres.getUrl());
+
+  DriveApp.getFileById(pres.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>13-02 SlidesAppクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function slidesAppDemo() {
+  // IDで既存のプレゼンを開く
+  // const pres = SlidesApp.openById(&#34;プレゼンID&#34;);
+
+  const pres = SlidesApp.create(&#34;テストプレゼン&#34;);
+  Logger.log(&#34;名前: &#34; + pres.getName());
+  Logger.log(&#34;スライド数: &#34; + pres.getSlides().length);
+
+  DriveApp.getFileById(pres.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>13-03 プレゼンテーションを操作する - Presentationクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function presentationClassDemo() {
+  const pres = SlidesApp.create(&#34;月次レポート&#34;);
+
+  // スライドの追加
+  const slide1 = pres.getSlides()[0]; // 最初のスライド
+  const slide2 = pres.appendSlide(SlidesApp.PredefinedLayout.TITLE_AND_BODY);
+  const slide3 = pres.appendSlide(SlidesApp.PredefinedLayout.BLANK);
+
+  Logger.log(&#34;スライド数: &#34; + pres.getSlides().length);
+  Logger.log(&#34;スライドの幅: &#34; + pres.getPageWidth() + &#34; EMU&#34;);
+
+  // スライドに一括テキスト置換
+  pres.replaceAllText(&#34;&#123;&#123;MONTH}}&#34;, &#34;4月&#34;);
+  pres.replaceAllText(&#34;&#123;&#123;YEAR}}&#34;, &#34;2026&#34;);
+
+  // 保存
+  pres.saveAndClose();
+
+  DriveApp.getFileById(pres.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>13-04 スライドを操作する - Slideクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function slideClassDemo() {
+  const pres = SlidesApp.create(&#34;スライド操作テスト&#34;);
+  const slide = pres.getSlides()[0];
+
+  // スライドのレイアウトを変更
+  // slide.applyLayout(pres.getLayouts()[0]);
+
+  // スライドにテキストボックスを追加
+  const textBox = slide.insertTextBox(&#34;Hello, Slides API!&#34;, 100, 100, 400, 100);
+  textBox.getText().getTextStyle().setBold(true).setFontSize(24);
+
+  // スライドに図形を追加
+  const shape = slide.insertShape(SlidesApp.ShapeType.RECTANGLE, 50, 50, 200, 100);
+  shape.getFill().setSolidFill(&#34;#1a237e&#34;);
+  shape.getText().appendText(&#34;GAS&#34;).getTextStyle()
+    .setForegroundColor(&#34;#ffffff&#34;)
+    .setFontSize(32)
+    .setBold(true);
+
+  // スプレッドシートのチャートを埋め込む（事前にチャートが必要）
+  // const ss = SpreadsheetApp.openById(&#34;スプレッドシートID&#34;);
+  // const chart = ss.getSheets()[0].getCharts()[0];
+  // slide.insertSheetsChart(chart);
+
+  pres.saveAndClose();
+  DriveApp.getFileById(pres.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>13-05 ページ要素を操作する</h2>
+<pre><code language="language-javascript" class="language-javascript">function pageElementDemo() {
+  const pres = SlidesApp.create(&#34;ページ要素テスト&#34;);
+  const slide = pres.getSlides()[0];
+
+  // テキストボックスを追加
+  slide.insertTextBox(&#34;要素1&#34;, 50, 50, 200, 50);
+  slide.insertTextBox(&#34;要素2&#34;, 300, 50, 200, 50);
+
+  // ページ要素の一覧
+  const elements = slide.getPageElements();
+  elements.forEach((el, i) =&gt; {
+    Logger.log(&#34;要素 &#34; + i + &#34;: タイプ=&#34; + el.getPageElementType());
+    Logger.log(&#34;  位置: left=&#34; + el.getLeft() + &#34; top=&#34; + el.getTop());
+    Logger.log(&#34;  サイズ: w=&#34; + el.getWidth() + &#34; h=&#34; + el.getHeight());
+  });
+
+  // 要素を選択・変換
+  const firstEl = elements[0];
+  firstEl.setLeft(100);
+  firstEl.setTop(200);
+
+  pres.saveAndClose();
+  DriveApp.getFileById(pres.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>13-06 テキスト範囲と文字列の操作</h2>
+<pre><code language="language-javascript" class="language-javascript">function slideTextDemo() {
+  const pres = SlidesApp.create(&#34;テキスト操作テスト&#34;);
+  const slide = pres.getSlides()[0];
+
+  const box = slide.insertTextBox(&#34;&#34;, 50, 50, 600, 300);
+  const textRange = box.getText();
+
+  // テキストの追加と書式設定
+  const para1 = textRange.appendParagraph(&#34;2026年4月 月次報告&#34;);
+  para1.getRange().getTextStyle()
+    .setBold(true)
+    .setFontSize(20)
+    .setForegroundColor(&#34;#1a237e&#34;);
+
+  textRange.appendParagraph(&#34;&#34;); // 空行
+  textRange.appendParagraph(&#34;売上: ¥1,250,000（前月比 +8.3%）&#34;)
+    .getRange().getTextStyle().setFontSize(14);
+
+  pres.saveAndClose();
+  DriveApp.getFileById(pres.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第13章</h2>
+<p>スプレッドシートの「月次KPI」シート（A列:指標名 B列:目標値 C列:実績値 D列:達成率）を読み込み、Googleスライドのテンプレートの各スライドへデータを流し込む <code>generateKPISlides()</code> 関数を作成してください。達成率が100%以上の場合は緑色、未達の場合は赤色でテキストを表示してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第14章 フォーム" duration="25">
+        <h2 is-upgraded>14-01 Formsサービス</h2>
+<pre><code language="language-javascript" class="language-javascript">function formsServiceOverview() {
+  // 新規フォームを作成
+  const form = FormApp.create(&#34;アンケートフォーム&#34;);
+  Logger.log(&#34;フォームURL: &#34; + form.getPublishedUrl());
+  Logger.log(&#34;フォームID: &#34; + form.getId());
+
+  // 後始末
+  DriveApp.getFileById(form.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>14-02 FormAppクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function formAppDemo() {
+  // IDでフォームを開く
+  // const form = FormApp.openById(&#34;フォームID&#34;);
+
+  // 新規作成して設定
+  const form = FormApp.create(&#34;参加申込フォーム&#34;);
+  form.setTitle(&#34;GAS勉強会 参加申込&#34;);
+  form.setDescription(&#34;参加希望の方は以下のフォームにご記入ください。&#34;);
+  form.setConfirmationMessage(&#34;ご応募ありがとうございます。後日ご連絡いたします。&#34;);
+  form.setAllowResponseEdits(true);    // 回答の編集を許可
+  form.setLimitOneResponsePerUser(true); // 1ユーザー1回
+
+  Logger.log(&#34;フォームURL: &#34; + form.getPublishedUrl());
+  Logger.log(&#34;編集URL: &#34; + form.getEditUrl());
+
+  DriveApp.getFileById(form.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>14-03 フォームを操作する - Formクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function formClassDemo() {
+  const form = FormApp.create(&#34;イベント申込&#34;);
+
+  // テキスト入力（短文）
+  const nameItem = form.addTextItem();
+  nameItem.setTitle(&#34;お名前&#34;).setRequired(true);
+
+  // テキスト入力（長文）
+  const commentItem = form.addParagraphTextItem();
+  commentItem.setTitle(&#34;ご要望・コメント&#34;).setRequired(false);
+
+  // ラジオボタン（単一選択）
+  const roleItem = form.addMultipleChoiceItem();
+  roleItem.setTitle(&#34;ご所属&#34;)
+    .setChoiceValues([&#34;会社員&#34;, &#34;学生&#34;, &#34;フリーランス&#34;, &#34;その他&#34;])
+    .setRequired(true);
+
+  // チェックボックス（複数選択）
+  const topicItem = form.addCheckboxItem();
+  topicItem.setTitle(&#34;興味のあるトピック（複数可）&#34;)
+    .setChoiceValues([&#34;GAS基礎&#34;, &#34;スプレッドシート自動化&#34;, &#34;Gmail連携&#34;, &#34;API連携&#34;]);
+
+  // ドロップダウン
+  const timeItem = form.addListItem();
+  timeItem.setTitle(&#34;希望参加時間&#34;)
+    .setChoices([
+      timeItem.createChoice(&#34;午前の部（10:00〜12:00）&#34;),
+      timeItem.createChoice(&#34;午後の部（14:00〜16:00）&#34;),
+      timeItem.createChoice(&#34;どちらでも可&#34;)
+    ]);
+
+  // 日付入力
+  const dateItem = form.addDateItem();
+  dateItem.setTitle(&#34;都合の良い日程&#34;).setRequired(true);
+
+  // セクション区切り
+  form.addSectionHeaderItem().setTitle(&#34;確認事項&#34;);
+
+  // 線形尺度
+  const satisfactionItem = form.addScaleItem();
+  satisfactionItem.setTitle(&#34;過去のイベントへの満足度&#34;)
+    .setBounds(1, 5)
+    .setLabels(&#34;とても不満&#34;, &#34;とても満足&#34;);
+
+  Logger.log(&#34;フォーム作成完了: &#34; + form.getPublishedUrl());
+  Logger.log(&#34;アイテム数: &#34; + form.getItems().length);
+
+  DriveApp.getFileById(form.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>14-04 アイテムを操作する</h2>
+<pre><code language="language-javascript" class="language-javascript">function formItemDemo() {
+  const form = FormApp.create(&#34;アイテム操作テスト&#34;);
+
+  // アイテムを追加
+  form.addTextItem().setTitle(&#34;名前&#34;);
+  form.addMultipleChoiceItem().setTitle(&#34;性別&#34;)
+    .setChoiceValues([&#34;男性&#34;, &#34;女性&#34;, &#34;回答しない&#34;]);
+
+  // 既存アイテムの取得と操作
+  const items = form.getItems();
+  items.forEach(item =&gt; {
+    Logger.log(&#34;アイテム: &#34; + item.getTitle() + &#34; タイプ: &#34; + item.getType());
+  });
+
+  // フォームの回答を取得
+  const responses = form.getResponses();
+  Logger.log(&#34;回答数: &#34; + responses.length);
+
+  // 送信後の回答シートを設定
+  // form.setDestination(FormApp.DestinationType.SPREADSHEET, &#34;スプレッドシートID&#34;);
+
+  DriveApp.getFileById(form.getId()).setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第14章</h2>
+<p>「社内研修申込フォーム」をGASで作成してください。フォームには以下のアイテムを含めてください。</p>
+<ul>
+<li>氏名（テキスト、必須）</li>
+<li>所属部署（ドロップダウン：総務、営業、開発、その他）</li>
+<li>希望研修日（日付）</li>
+<li>参加動機（段落テキスト）</li>
+<li>事前スキル（チェックボックス：GAS初心者、JavaScript経験あり、GASスクリプト経験あり）</li>
+<li>満足度評価（線形尺度 1〜5） フォームを作成したあと、フォームIDとURLをスプレッドシートのA1・B1セルに書き出してください。</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第15章 翻訳" duration="10">
+        <h2 is-upgraded>15-01 LanguageサービスとLanguageAppクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function languageDemo() {
+  // テキストを翻訳
+  const english = LanguageApp.translate(&#34;こんにちは、世界！&#34;, &#34;ja&#34;, &#34;en&#34;);
+  Logger.log(&#34;英訳: &#34; + english); // &#34;Hello, World!&#34;
+
+  const french = LanguageApp.translate(&#34;I love Google Apps Script&#34;, &#34;en&#34;, &#34;fr&#34;);
+  Logger.log(&#34;仏訳: &#34; + french);
+
+  const detected = LanguageApp.translate(&#34;GAS は素晴らしい&#34;, &#34;auto&#34;, &#34;en&#34;);
+  Logger.log(&#34;自動検出→英語: &#34; + detected);
+
+  // スプレッドシートのデータを一括翻訳
+  function translateSheet() {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const lastRow = sheet.getLastRow();
+    if (lastRow &lt; 2) return;
+
+    const sourceData = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+    const translated = sourceData.map(([text]) =&gt; {
+      if (!text) return [&#34;&#34;];
+      const result = LanguageApp.translate(String(text), &#34;ja&#34;, &#34;en&#34;);
+      Utilities.sleep(200); // APIレート制限対策
+      return [result];
+    });
+
+    sheet.getRange(2, 2, translated.length, 1).setValues(translated);
+    Logger.log(&#34;翻訳完了: &#34; + translated.length + &#34;件&#34;);
+  }
+  translateSheet();
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第15章</h2>
+<p>スプレッドシートのA列に日本語テキストが入っているとき、B列に英語翻訳・C列に中国語翻訳（簡体字）・D列にフランス語翻訳を一括で書き出す <code>multiTranslate()</code> 関数を作成してください。APIコール過多によるエラーを防ぐため <code>Utilities.sleep()</code> を適切に挿入してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第16章 Baseサービス" duration="15">
+        <h2 is-upgraded>16-01 Baseサービスとは</h2>
+<p>BaseサービスはGASのコア機能（ログ・セッション・ユーザー情報など）を提供します。</p>
+<pre><code language="language-javascript" class="language-javascript">function baseServiceOverview() {
+  // Loggerクラス（クラシックログ）
+  Logger.log(&#34;Logger is part of Base Service&#34;);
+
+  // consoleオブジェクト（V8エンジン以降）
+  console.log(&#34;console.log&#34;);
+  console.info(&#34;console.info&#34;);
+  console.warn(&#34;console.warn&#34;);
+  console.error(&#34;console.error&#34;);
+
+  // ログの取得（実行後に取得できる）
+  const logs = Logger.getLog();
+  Logger.log(&#34;ログ内容の長さ: &#34; + logs.length);
+}
+</code></pre>
+<h2 is-upgraded>16-02 ログ</h2>
+<pre><code language="language-javascript" class="language-javascript">function loggingDemo() {
+  // 構造化ログ（JSON形式で出力すると読みやすい）
+  const user = { name: &#34;田中&#34;, role: &#34;admin&#34; };
+  console.log(&#34;ユーザー情報:&#34;, JSON.stringify(user));
+
+  // タイムスタンプ付きログ
+  function logWithTime(message) {
+    const ts = Utilities.formatDate(new Date(), &#34;JST&#34;, &#34;HH:mm:ss.SSS&#34;);
+    Logger.log(&#34;[&#34; + ts + &#34;] &#34; + message);
+  }
+  logWithTime(&#34;バッチ処理開始&#34;);
+  Utilities.sleep(500);
+  logWithTime(&#34;データ取得完了&#34;);
+  logWithTime(&#34;バッチ処理終了&#34;);
+
+  // エラーログをGmailで通知（本番環境向け）
+  function sendErrorLog(funcName, error) {
+    const subject = &#34;【GASエラー】&#34; + funcName;
+    const body = [
+      &#34;エラー名: &#34; + error.name,
+      &#34;メッセージ: &#34; + error.message,
+      &#34;スタック: &#34; + error.stack,
+      &#34;発生時刻: &#34; + new Date().toString()
+    ].join(&#34;\n&#34;);
+    // GmailApp.sendEmail(&#34;admin@example.com&#34;, subject, body);
+    Logger.log(body);
+  }
+  try {
+    throw new Error(&#34;テストエラー&#34;);
+  } catch(e) {
+    sendErrorLog(&#34;loggingDemo&#34;, e);
+  }
+}
+</code></pre>
+<h2 is-upgraded>16-03 セッションとユーザー</h2>
+<pre><code language="language-javascript" class="language-javascript">function sessionAndUserDemo() {
+  // 実行ユーザー（スクリプトを実行している人）
+  const activeUser = Session.getActiveUser();
+  Logger.log(&#34;実行ユーザー: &#34; + activeUser.getEmail());
+
+  // 有効ユーザー（トリガー実行時は所有者になる場合がある）
+  const effectiveUser = Session.getEffectiveUser();
+  Logger.log(&#34;有効ユーザー: &#34; + effectiveUser.getEmail());
+
+  // スクリプトの一時キー（セッション内でユニーク）
+  const tempKey = Session.getTemporaryActiveUserKey();
+  Logger.log(&#34;一時キー: &#34; + tempKey);
+
+  // タイムゾーン
+  Logger.log(&#34;スクリプトタイムゾーン: &#34; + Session.getScriptTimeZone());
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第16章</h2>
+<p>GASのトリガーで毎日1回実行するバッチ処理を設計してください。実行開始・終了のログを記録し、エラーが発生した場合は管理者メール（<code>admin@example.com</code>）にエラー内容を送信するラッパー関数 <code>runDailyBatch()</code> を作成してください。内部で呼び出す処理は <code>processDailyData()</code> という別関数として定義してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第17章 ユーザーインターフェース" duration="25">
+        <h2 is-upgraded>17-01 UIの操作とUiクラス</h2>
+<p>スプレッドシートやドキュメントのメニュー・ダイアログを操作するクラスです。</p>
+<pre><code language="language-javascript" class="language-javascript">function uiOverview() {
+  const ui = SpreadsheetApp.getUi();
+  // または DocumentApp.getUi() / SlidesApp.getUi()
+  Logger.log(&#34;UIクラス取得完了&#34;);
+}
+</code></pre>
+<h2 is-upgraded>17-02 ダイアログ</h2>
+<pre><code language="language-javascript" class="language-javascript">function dialogDemo() {
+  const ui = SpreadsheetApp.getUi();
+
+  // 情報ダイアログ（OKボタンのみ）
+  ui.alert(&#34;処理が完了しました！&#34;, ui.ButtonSet.OK);
+
+  // 確認ダイアログ（YES/NOボタン）
+  const response = ui.alert(
+    &#34;確認&#34;,
+    &#34;このシートのデータをすべてクリアしますか？&#34;,
+    ui.ButtonSet.YES_NO
+  );
+  if (response === ui.Button.YES) {
+    Logger.log(&#34;YES が押されました&#34;);
+    // SpreadsheetApp.getActiveSheet().clearContents();
+  } else {
+    Logger.log(&#34;NO または キャンセル が押されました&#34;);
+  }
+
+  // 入力ダイアログ
+  const result = ui.prompt(
+    &#34;担当者名を入力してください&#34;,
+    ui.ButtonSet.OK_CANCEL
+  );
+  if (result.getSelectedButton() === ui.Button.OK) {
+    const name = result.getResponseText();
+    Logger.log(&#34;入力された名前: &#34; + name);
+    SpreadsheetApp.getActiveSheet().getRange(&#34;A1&#34;).setValue(name);
+  }
+}
+</code></pre>
+<h2 is-upgraded>17-03 メニュー</h2>
+<pre><code language="language-javascript" class="language-javascript">// スプレッドシートが開いたときに自動実行（シンプルトリガー）
+function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu(&#34;🚀 自動化メニュー&#34;)
+    .addItem(&#34;📧 日報メールを下書き作成&#34;, &#34;createDraftEmail&#34;)
+    .addItem(&#34;📅 シートをコピー&#34;, &#34;copyWeeklySheet&#34;)
+    .addSeparator()
+    .addSubMenu(
+      ui.createMenu(&#34;📊 レポート&#34;)
+        .addItem(&#34;月次レポートを生成&#34;, &#34;generateMonthlyReport&#34;)
+        .addItem(&#34;Slackへ通知&#34;, &#34;sendMessageToSlack&#34;)
+    )
+    .addSeparator()
+    .addItem(&#34;⚙️ 設定&#34;, &#34;openSettingsDialog&#34;)
+    .addToUi();
+}
+
+function openSettingsDialog() {
+  SpreadsheetApp.getUi().alert(&#34;設定画面（今後実装予定）&#34;);
+}
+</code></pre>
+<h2 is-upgraded>17-04 スプレッドシートのUIを拡張する</h2>
+<pre><code language="language-javascript" class="language-javascript">function advancedUiDemo() {
+  const ui = SpreadsheetApp.getUi();
+
+  // HTMLダイアログ（リッチなUIを表示）
+  const htmlContent = HtmlService.createHtmlOutput(`
+    &lt;html&gt;
+      &lt;body style=&#34;font-family: Arial, sans-serif; padding: 20px;&#34;&gt;
+        &lt;h2&gt;📊 データ設定&lt;/h2&gt;
+        &lt;p&gt;処理するシート名を入力してください：&lt;/p&gt;
+        &lt;input type=&#34;text&#34; id=&#34;sheetName&#34; placeholder=&#34;例: 売上データ&#34; style=&#34;width:100%;padding:8px;&#34;&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;button onclick=&#34;google.script.host.close()&#34; style=&#34;padding:8px 16px;&#34;&gt;閉じる&lt;/button&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+  `).setWidth(400).setHeight(200);
+
+  ui.showModalDialog(htmlContent, &#34;データ設定&#34;);
+
+  // サイドバーを表示
+  const sideBar = HtmlService.createHtmlOutput(`
+    &lt;html&gt;&lt;body&gt;
+      &lt;h3&gt;ヘルプ&lt;/h3&gt;
+      &lt;ul&gt;
+        &lt;li&gt;A列に名前を入力&lt;/li&gt;
+        &lt;li&gt;B列に点数を入力&lt;/li&gt;
+        &lt;li&gt;メニューから実行&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/body&gt;&lt;/html&gt;
+  `).setTitle(&#34;使い方ガイド&#34;);
+  // ui.showSidebar(sideBar);
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第17章</h2>
+<p>スプレッドシートに「自動化ツール」カスタムメニューを追加してください。メニューには「データ集計」「PDFとして書き出し」「管理者に報告」の3つのサブメニューを用意し、それぞれクリックしたときに何の処理が実行されるかを <code>alert()</code> で説明するダミー関数を作成してください。「PDFとして書き出し」押下時はシート名を入力するプロンプトを表示し、入力された名前を使って書き出し予定のファイル名を <code>alert()</code> で確認してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第18章 ファイルとデータの操作" duration="20">
+        <h2 is-upgraded>18-01 Blobオブジェクト</h2>
+<p>Blobはバイナリデータ（画像・PDF・CSVなど）を扱うためのオブジェクトです。</p>
+<pre><code language="language-javascript" class="language-javascript">function blobDemo() {
+  // 文字列からBlobを作成
+  const text = &#34;GASで生成したCSVデータ\n名前,点数\n田中,85\n山田,72&#34;;
+  const blob = Utilities.newBlob(text, &#34;text/csv&#34;, &#34;results.csv&#34;);
+
+  Logger.log(&#34;名前: &#34; + blob.getName());
+  Logger.log(&#34;MIMEタイプ: &#34; + blob.getContentType());
+  Logger.log(&#34;サイズ: &#34; + blob.getBytes().length + &#34; bytes&#34;);
+  Logger.log(&#34;内容: &#34; + blob.getDataAsString());
+
+  // BlobをGoogleドライブに保存
+  const file = DriveApp.createFile(blob);
+  Logger.log(&#34;保存完了: &#34; + file.getUrl());
+
+  // スプレッドシートをPDFとして取得（Blob形式）
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const url = ss.getUrl().replace(&#34;/edit&#34;, &#34;/export?format=pdf&amp;portrait=true&amp;size=A4&#34;);
+  // const pdfBlob = UrlFetchApp.fetch(url, { headers: { Authorization: &#34;Bearer &#34; + ScriptApp.getOAuthToken() } }).getBlob();
+  // pdfBlob.setName(&#34;report.pdf&#34;);
+  // DriveApp.createFile(pdfBlob);
+
+  file.setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>18-02 添付ファイルを操作する</h2>
+<pre><code language="language-javascript" class="language-javascript">function attachmentDemo() {
+  // Gmailの添付ファイルをドライブに保存する
+  function saveAttachmentsToDrive() {
+    const threads = GmailApp.search(&#34;has:attachment subject:報告書 newer_than:7d&#34;);
+    const folder = DriveApp.createFolder(&#34;添付ファイル_&#34; +
+      Utilities.formatDate(new Date(), &#34;JST&#34;, &#34;yyyyMMdd&#34;));
+
+    threads.forEach(thread =&gt; {
+      thread.getMessages().forEach(msg =&gt; {
+        msg.getAttachments().forEach(att =&gt; {
+          const file = folder.createFile(att);
+          Logger.log(&#34;保存: &#34; + file.getName() + &#34; (&#34; + file.getSize() + &#34; bytes)&#34;);
+        });
+      });
+    });
+    Logger.log(&#34;フォルダ: &#34; + folder.getUrl());
+  }
+  saveAttachmentsToDrive();
+
+  // メール送信時の添付ファイル
+  function sendWithAttachment() {
+    // Blobからファイルを作成してメールに添付
+    const data = [[&#34;名前&#34;,&#34;スコア&#34;],[&#34;田中&#34;,90],[&#34;山田&#34;,75]];
+    const csvContent = data.map(row =&gt; row.join(&#34;,&#34;)).join(&#34;\n&#34;);
+    const csvBlob = Utilities.newBlob(csvContent, &#34;text/csv&#34;, &#34;scores.csv&#34;);
+
+    GmailApp.sendEmail(
+      &#34;recipient@example.com&#34;,
+      &#34;スコア一覧をお送りします&#34;,
+      &#34;添付ファイルをご確認ください。&#34;,
+      { attachments: [csvBlob] }
+    );
+  }
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第18章</h2>
+<p>スプレッドシートの「請求書データ」シート（A:顧客名 B:金額 C:品目）を読み込み、以下を実行する <code>generateAndSendInvoice()</code> 関数を作成してください。</p>
+<ol type="1">
+<li>データをCSV形式のBlobとして生成</li>
+<li>Googleドライブの「請求書」フォルダに保存</li>
+<li>保存したファイルを添付して顧客にメール送信（<code>customer@example.com</code> 宛）</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第19章 Utilitiesサービス" duration="20">
+        <h2 is-upgraded>19-01 Utilitiesサービス</h2>
+<p>Utilitiesサービスは、日付フォーマット・ZIP圧縮・エンコード・ランダム生成などのユーティリティ機能を提供します。</p>
+<pre><code language="language-javascript" class="language-javascript">function utilitiesOverview() {
+  // スリープ（ミリ秒単位）
+  Logger.log(&#34;処理開始&#34;);
+  Utilities.sleep(1000); // 1秒待機
+  Logger.log(&#34;1秒後&#34;);
+
+  // ランダムバイト列を生成（セキュアなトークン生成に利用）
+  const randomBytes = Utilities.getUuid();
+  Logger.log(&#34;UUID: &#34; + randomBytes);
+
+  // Base64エンコード・デコード
+  const text = &#34;Hello, GAS!&#34;;
+  const encoded = Utilities.base64Encode(text);
+  const decoded = Utilities.base64DecodeWebSafe(encoded);
+  Logger.log(&#34;エンコード: &#34; + encoded);
+  Logger.log(&#34;デコード: &#34; + Utilities.newBlob(decoded).getDataAsString());
+}
+</code></pre>
+<h2 is-upgraded>19-02 ZIPファイルとCSVファイル</h2>
+<pre><code language="language-javascript" class="language-javascript">function zipAndCsvDemo() {
+  // 複数ファイルをZIP圧縮
+  const file1 = Utilities.newBlob(&#34;ファイル1の内容&#34;, &#34;text/plain&#34;, &#34;file1.txt&#34;);
+  const file2 = Utilities.newBlob(&#34;ファイル2の内容&#34;, &#34;text/plain&#34;, &#34;file2.txt&#34;);
+  const zipBlob = Utilities.zip([file1, file2], &#34;archive.zip&#34;);
+
+  const zipFile = DriveApp.createFile(zipBlob);
+  Logger.log(&#34;ZIP作成: &#34; + zipFile.getName() + &#34; / &#34; + zipFile.getUrl());
+
+  // ZIPを展開
+  const unzipped = Utilities.unzip(zipBlob);
+  unzipped.forEach(b =&gt; Logger.log(&#34;展開: &#34; + b.getName()));
+
+  // CSVデータを2次元配列に変換
+  const csvData = &#34;名前,年齢,部署\n田中,30,営業\n山田,25,開発\n佐藤,35,総務&#34;;
+  const parsed = Utilities.parseCsv(csvData);
+  Logger.log(&#34;CSV行数: &#34; + parsed.length);
+  parsed.forEach(row =&gt; Logger.log(row.join(&#34; | &#34;)));
+
+  // 区切り文字を指定してパース（タブ区切り）
+  const tsvData = &#34;田中\t30\t営業&#34;;
+  const tsvParsed = Utilities.parseCsv(tsvData, &#34;\t&#34;);
+  Logger.log(JSON.stringify(tsvParsed));
+
+  zipFile.setTrashed(true);
+}
+</code></pre>
+<h2 is-upgraded>19-03 日時を文字列化する</h2>
+<pre><code language="language-javascript" class="language-javascript">function dateFormattingDemo() {
+  const now = new Date();
+
+  // よく使うフォーマットパターン
+  const formats = [
+    &#34;yyyy/MM/dd&#34;,
+    &#34;yyyy年MM月dd日&#34;,
+    &#34;yyyyMMdd&#34;,
+    &#34;HH:mm:ss&#34;,
+    &#34;yyyy/MM/dd HH:mm:ss&#34;,
+    &#34;EEE, MMM d, yyyy&#34;,   // &#34;Thu, Apr 10, 2026&#34;
+    &#34;M月d日（E）&#34;          // &#34;4月10日（木）&#34;
+  ];
+
+  formats.forEach(fmt =&gt; {
+    Logger.log(fmt + &#34; → &#34; + Utilities.formatDate(now, &#34;JST&#34;, fmt));
+  });
+
+  // UTCとJSTの使い分け
+  Logger.log(&#34;JST: &#34; + Utilities.formatDate(now, &#34;Asia/Tokyo&#34;, &#34;yyyy/MM/dd HH:mm:ss&#34;));
+  Logger.log(&#34;UTC: &#34; + Utilities.formatDate(now, &#34;UTC&#34;, &#34;yyyy/MM/dd HH:mm:ss&#34;));
+  Logger.log(&#34;PST: &#34; + Utilities.formatDate(now, &#34;America/Los_Angeles&#34;, &#34;yyyy/MM/dd HH:mm:ss&#34;));
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第19章</h2>
+<p>スプレッドシートの「月次データ」シート全体を以下の処理で加工してください。</p>
+<ol type="1">
+<li>シートのデータをCSV文字列に変換する</li>
+<li>CSV文字列を <code>text/csv</code> BlobとしてZIPに圧縮する</li>
+<li>ZIPファイルを「バックアップ_YYYYMMDD.zip」という名前でドライブに保存する</li>
+<li>処理完了をトースト通知で表示する</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第20章 プロパティサービス" duration="20">
+        <h2 is-upgraded>20-01 プロパティストア</h2>
+<p>プロパティサービスは、スクリプト・ドキュメント・ユーザーの設定値（APIキーや設定情報）をクラウド上に永続保存するためのKVSです。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>ストア</p>
+</td><td colspan="1" rowspan="1"><p>スコープ</p>
+</td><td colspan="1" rowspan="1"><p>用途</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ScriptProperties</p>
+</td><td colspan="1" rowspan="1"><p>スクリプト単位・全ユーザー共有</p>
+</td><td colspan="1" rowspan="1"><p>APIキー・共通設定</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>UserProperties</p>
+</td><td colspan="1" rowspan="1"><p>スクリプト単位・ユーザー別</p>
+</td><td colspan="1" rowspan="1"><p>ユーザーの個人設定</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>DocumentProperties</p>
+</td><td colspan="1" rowspan="1"><p>ドキュメント単位・全ユーザー</p>
+</td><td colspan="1" rowspan="1"><p>ドキュメント固有の設定</p>
+</td></tr>
+</table>
+<h2 is-upgraded>20-02 PropertiesサービスとPropertiesServiceクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">function propertiesServiceDemo() {
+  // スクリプトプロパティ（最も多く使われる）
+  const scriptProps = PropertiesService.getScriptProperties();
+
+  // ユーザープロパティ
+  const userProps = PropertiesService.getUserProperties();
+
+  // ドキュメントプロパティ（ドキュメントバインドスクリプトのみ）
+  // const docProps = PropertiesService.getDocumentProperties();
+
+  Logger.log(&#34;ScriptProps keys: &#34; + JSON.stringify(scriptProps.getKeys()));
+  Logger.log(&#34;UserProps keys: &#34; + JSON.stringify(userProps.getKeys()));
+}
+</code></pre>
+<h2 is-upgraded>20-03 Propertiesクラス - プロパティストアの読み書き</h2>
+<pre><code language="language-javascript" class="language-javascript">function propertiesReadWriteDemo() {
+  const props = PropertiesService.getScriptProperties();
+
+  // 値の書き込み
+  props.setProperty(&#34;SLACK_WEBHOOK_URL&#34;, &#34;https://hooks.slack.com/...&#34;);
+  props.setProperty(&#34;MAX_ROWS&#34;, &#34;1000&#34;);
+  props.setProperty(&#34;LAST_RUN&#34;, new Date().toString());
+
+  // 複数のプロパティを一括設定
+  props.setProperties({
+    &#34;API_KEY&#34;: &#34;sk-xxxxxx&#34;,
+    &#34;DEBUG_MODE&#34;: &#34;false&#34;,
+    &#34;VERSION&#34;: &#34;1.2.0&#34;
+  });
+
+  // 値の読み込み
+  const slackUrl = props.getProperty(&#34;SLACK_WEBHOOK_URL&#34;);
+  const maxRows = Number(props.getProperty(&#34;MAX_ROWS&#34;));
+  const allProps = props.getProperties(); // すべてのプロパティをオブジェクトで取得
+  Logger.log(&#34;SLACK_URL: &#34; + slackUrl);
+  Logger.log(&#34;MAX_ROWS: &#34; + maxRows);
+  Logger.log(&#34;全プロパティ: &#34; + JSON.stringify(allProps));
+
+  // プロパティの削除
+  props.deleteProperty(&#34;LAST_RUN&#34;);
+  props.deleteAllProperties(); // 全削除（注意！）
+}
+
+// 実践：APIキーを安全に管理する
+function safeApiKeyUsage() {
+  // ❌ コードに直接書くのは絶対にNG（GitHubに上がると危険）
+  // const apiKey = &#34;sk-xxxxxxxxxxxxxxxx&#34;;
+
+  // ✅ PropertiesServiceから取得する（安全）
+  const apiKey = PropertiesService.getScriptProperties().getProperty(&#34;OPENAI_API_KEY&#34;);
+  if (!apiKey) {
+    throw new Error(&#34;APIキーが設定されていません。スクリプトプロパティにOPENAI_API_KEYを追加してください。&#34;);
+  }
+  Logger.log(&#34;APIキー取得成功（先頭5文字）: &#34; + apiKey.substring(0, 5) + &#34;...&#34;);
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第20章</h2>
+<p>バッチ処理のレジューム（再開）機能をプロパティサービスを使って実装してください。</p>
+<ul>
+<li><code>startBatchProcess()</code>: 処理を開始する（スクリプトプロパティに現在行を保存しながら処理）</li>
+<li><code>resetBatchProcess()</code>: スクリプトプロパティをクリアして処理をリセットする</li>
+<li>A列のデータを1行ずつ処理し、処理完了した行番号を <code>LAST_PROCESSED_ROW</code> というキーで保存する</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第21章 イベントとトリガー" duration="30">
+        <h2 is-upgraded>21-01 シンプルトリガー</h2>
+<p>シンプルトリガーは、決まった名前の関数をGASが自動的に呼び出す仕組みです。設定不要でそのまま動作します。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>関数名</p>
+</td><td colspan="1" rowspan="1"><p>発動タイミング</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>onOpen(e)</code></p>
+</td><td colspan="1" rowspan="1"><p>ファイルが開かれた時</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>onEdit(e)</code></p>
+</td><td colspan="1" rowspan="1"><p>セルが編集された時（スプレッドシートのみ）</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>onSelectionChange(e)</code></p>
+</td><td colspan="1" rowspan="1"><p>セルの選択が変わった時</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>onFormSubmit(e)</code></p>
+</td><td colspan="1" rowspan="1"><p>フォームが送信された時（フォームバインド）</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>doGet(e)</code></p>
+</td><td colspan="1" rowspan="1"><p>GASウェブアプリへGETリクエストが来た時</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>doPost(e)</code></p>
+</td><td colspan="1" rowspan="1"><p>GASウェブアプリへPOSTリクエストが来た時</p>
+</td></tr>
+</table>
+<pre><code language="language-javascript" class="language-javascript">// シンプルトリガーの例
+
+// ファイルを開いた時のトリガー
+function onOpen(e) {
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu(&#34;🤖 自動化&#34;)
+    .addItem(&#34;日報を作成&#34;, &#34;createDailyReport&#34;)
+    .addToUi();
+  Logger.log(&#34;スプレッドシートが開かれました&#34;);
+}
+
+// セルが編集された時のトリガー（軽い処理のみ推奨）
+function onEdit(e) {
+  const range = e.range;
+  const sheet = range.getSheet();
+  const row = range.getRow();
+  const col = range.getColumn();
+  const value = e.value;
+  const oldValue = e.oldValue;
+
+  // B列のステータスが「完了」に変更されたら行を緑色に
+  if (sheet.getName() === &#34;タスク管理&#34; &amp;&amp; col === 2 &amp;&amp; value === &#34;完了&#34;) {
+    sheet.getRange(row, 1, 1, sheet.getLastColumn())
+      .setBackground(&#34;#c8e6c9&#34;);
+    Logger.log(&#34;行 &#34; + row + &#34; を完了済みとしてマーク&#34;);
+  }
+}
+
+// セル選択変更のトリガー
+function onSelectionChange(e) {
+  const range = e.range;
+  // 選択中のセルの値をA1に表示する（デモ用）
+  if (range.getSheet().getName() === &#34;データ&#34;) {
+    SpreadsheetApp.getActiveSpreadsheet()
+      .toast(&#34;選択中: &#34; + range.getA1Notation() + &#34; = &#34; + range.getValue(), &#34;セル情報&#34;, 2);
+  }
+}
+</code></pre>
+<h2 is-upgraded>21-02 インストーラブルトリガー</h2>
+<p>インストーラブルトリガーは、ユーザーが明示的に設定するトリガーです。時刻指定や他のファイルのフォーム送信イベントにも対応できます。</p>
+<pre><code language="language-javascript" class="language-javascript">// トリガーをコードで管理する（推奨：ソースコードとして管理できる）
+
+// 既存のトリガーを削除してから再設定する
+function setupTriggers() {
+  // 既存のすべてのトリガーを削除
+  ScriptApp.getProjectTriggers().forEach(trigger =&gt; {
+    ScriptApp.deleteTrigger(trigger);
+  });
+
+  // 毎日9時に実行するトリガー
+  ScriptApp.newTrigger(&#34;dailyMorningTask&#34;)
+    .timeBased()
+    .everyDays(1)
+    .atHour(9)
+    .create();
+
+  // 毎週月曜日8時半に実行するトリガー
+  ScriptApp.newTrigger(&#34;weeklyReport&#34;)
+    .timeBased()
+    .onWeekDay(ScriptApp.WeekDay.MONDAY)
+    .atHour(8)
+    .nearestMinute(30)
+    .create();
+
+  // 毎月1日に実行するトリガー
+  ScriptApp.newTrigger(&#34;monthlyReport&#34;)
+    .timeBased()
+    .onMonthDay(1)
+    .atHour(10)
+    .create();
+
+  // 隔30分でポーリングするトリガー
+  ScriptApp.newTrigger(&#34;pollForUpdates&#34;)
+    .timeBased()
+    .everyMinutes(30)
+    .create();
+
+  // スプレッドシートが開かれた時のインストーラブルトリガー
+  const ss = SpreadsheetApp.getActive();
+  ScriptApp.newTrigger(&#34;onOpenInstallable&#34;)
+    .forSpreadsheet(ss)
+    .onOpen()
+    .create();
+
+  // フォーム送信時のインストーラブルトリガー
+  // const form = FormApp.openById(&#34;フォームID&#34;);
+  // ScriptApp.newTrigger(&#34;onFormSubmitInstallable&#34;)
+  //   .forForm(form)
+  //   .onFormSubmit()
+  //   .create();
+
+  Logger.log(&#34;トリガーの設定が完了しました&#34;);
+  listTriggers();
+}
+
+// トリガーの一覧を表示
+function listTriggers() {
+  const triggers = ScriptApp.getProjectTriggers();
+  triggers.forEach(t =&gt; {
+    Logger.log(&#34;トリガー: &#34; + t.getHandlerFunction() +
+      &#34; / タイプ: &#34; + t.getEventType() +
+      &#34; / ソース: &#34; + t.getTriggerSource());
+  });
+}
+
+// 特定のトリガーを削除
+function deleteTriggerByFunction(funcName) {
+  ScriptApp.getProjectTriggers()
+    .filter(t =&gt; t.getHandlerFunction() === funcName)
+    .forEach(t =&gt; ScriptApp.deleteTrigger(t));
+  Logger.log(funcName + &#34; のトリガーを削除しました&#34;);
+}
+
+// トリガーで呼び出される関数
+function dailyMorningTask() {
+  Logger.log(&#34;朝9時の自動処理: &#34; + new Date());
+}
+function weeklyReport() {
+  Logger.log(&#34;週次レポート処理: &#34; + new Date());
+}
+function monthlyReport() {
+  Logger.log(&#34;月次レポート処理: &#34; + new Date());
+}
+function pollForUpdates() {
+  Logger.log(&#34;30分ポーリング: &#34; + new Date());
+}
+</code></pre>
+<h2 is-upgraded>21-03 イベントオブジェクト</h2>
+<p>トリガーが発火した際に渡されるイベントオブジェクト <code>e</code> の内容を確認します。</p>
+<pre><code language="language-javascript" class="language-javascript">// onEdit トリガーのイベントオブジェクト詳細
+function onEditDetailed(e) {
+  Logger.log(&#34;=== onEdit イベントオブジェクト ===&#34;);
+  Logger.log(&#34;変更後の値: &#34; + e.value);
+  Logger.log(&#34;変更前の値: &#34; + e.oldValue);
+  Logger.log(&#34;セル範囲: &#34; + e.range.getA1Notation());
+  Logger.log(&#34;シート名: &#34; + e.range.getSheet().getName());
+  Logger.log(&#34;ユーザー: &#34; + e.user.getEmail());
+  Logger.log(&#34;スプレッドシート名: &#34; + e.source.getName());
+}
+
+// onFormSubmit トリガーのイベントオブジェクト詳細
+function onFormSubmitDetailed(e) {
+  Logger.log(&#34;=== onFormSubmit イベントオブジェクト ===&#34;);
+  Logger.log(&#34;タイムスタンプ: &#34; + e.values[0]);
+  Logger.log(&#34;全回答（配列）: &#34; + JSON.stringify(e.values));
+
+  // namedValues: 質問名をキーにした回答
+  const namedVals = e.namedValues;
+  Object.entries(namedVals).forEach(([question, answers]) =&gt; {
+    Logger.log(&#34;質問[&#34; + question + &#34;] → &#34; + answers[0]);
+  });
+
+  // レスポンスオブジェクト
+  const response = e.response;
+  Logger.log(&#34;回答ID: &#34; + response.getId());
+  Logger.log(&#34;回答時刻: &#34; + response.getTimestamp());
+}
+</code></pre>
+<h2 is-upgraded>21-04 Scriptサービス</h2>
+<pre><code language="language-javascript" class="language-javascript">function scriptServiceDemo() {
+  // OAuthトークンの取得（UrlFetchAppでAPIを呼ぶ際に必要）
+  const token = ScriptApp.getOAuthToken();
+  Logger.log(&#34;OAuthトークン（先頭20文字）: &#34; + token.substring(0, 20) + &#34;...&#34;);
+
+  // スクリプトのサービスURL（ウェブアプリとして公開した場合のURL）
+  const serviceUrl = ScriptApp.getService().getUrl();
+  Logger.log(&#34;サービスURL: &#34; + serviceUrl);
+
+  // 残り実行時間の確認（6分制限のうち残り何秒か）
+  // ヒント：タイムアウト直前に処理を安全に中断するために使う
+  // Logger.log(&#34;残り実行時間: &#34; + ScriptApp.getRemainingTime() + &#34;ms&#34;);
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第21章</h2>
+<p>以下の要件を満たすトリガー管理システムを実装してください。</p>
+<ol type="1">
+<li><code>setupAllTriggers()</code>: 毎朝9時 + 毎週月曜8時 + フォーム送信時 の3種類のトリガーを設定（既存削除後に再設定）</li>
+<li><code>listTriggers()</code>: 設定済みのトリガーを一覧表示してスプレッドシートのA列に書き出す</li>
+<li><code>onEdit(e)</code>: A列が「完了」に変更されたら自動でB列に完了日時を記録する</li>
+<li>フォーム送信時のイベントで <code>e.namedValues</code> から「氏名」と「メールアドレス」を取り出して送信確認メールを送信する</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第22章 外部サイトへのアクセス" duration="25">
+        <h2 is-upgraded>22-01 Url Fetchサービス</h2>
+<p><code>UrlFetchApp</code> はHTTPリクエストを送信して外部APIと通信するためのサービスです。</p>
+<pre><code language="language-javascript" class="language-javascript">function urlFetchOverview() {
+  // 最もシンプルなGETリクエスト
+  const response = UrlFetchApp.fetch(&#34;https://api.github.com/users/octocat&#34;);
+  Logger.log(&#34;ステータスコード: &#34; + response.getResponseCode());
+  Logger.log(&#34;レスポンス（先頭200文字）: &#34; + response.getContentText().substring(0, 200));
+}
+</code></pre>
+<h2 is-upgraded>22-02 HTTPリクエストとHTTPレスポンス</h2>
+<pre><code language="language-javascript" class="language-javascript">function httpRequestDemo() {
+  // GETリクエスト（シンプル）
+  const getResponse = UrlFetchApp.fetch(&#34;https://httpbin.org/get&#34;);
+  Logger.log(&#34;GET Status: &#34; + getResponse.getResponseCode());
+
+  // POSTリクエスト（JSONボディ）
+  const postOptions = {
+    method: &#34;post&#34;,
+    contentType: &#34;application/json&#34;,
+    payload: JSON.stringify({ name: &#34;田中&#34;, score: 95 }),
+    headers: {
+      &#34;Authorization&#34;: &#34;Bearer &#34; + PropertiesService.getScriptProperties().getProperty(&#34;API_KEY&#34;),
+      &#34;X-Custom-Header&#34;: &#34;GAS-Client&#34;
+    },
+    muteHttpExceptions: true  // エラーステータスでも例外を投げない（推奨）
+  };
+  const postResponse = UrlFetchApp.fetch(&#34;https://httpbin.org/post&#34;, postOptions);
+  Logger.log(&#34;POST Status: &#34; + postResponse.getResponseCode());
+
+  // レスポンスオブジェクトの操作
+  const res = UrlFetchApp.fetch(&#34;https://httpbin.org/get&#34;);
+  Logger.log(&#34;ステータス: &#34; + res.getResponseCode());      // 200
+  Logger.log(&#34;Content-Type: &#34; + res.getHeaders()[&#34;Content-Type&#34;]);
+  const json = JSON.parse(res.getContentText());
+  Logger.log(&#34;URL: &#34; + json.url);
+
+  // 複数URLへの並列リクエスト（高速）
+  const urls = [
+    &#34;https://api.github.com/repos/google/clasp&#34;,
+    &#34;https://api.github.com/repos/googleworkspace/cli&#34;
+  ];
+  const requests = urls.map(url =&gt; ({ url, muteHttpExceptions: true }));
+  const responses = UrlFetchApp.fetchAll(requests);
+  responses.forEach((r, i) =&gt; {
+    const data = JSON.parse(r.getContentText());
+    Logger.log(urls[i] + &#34; → ⭐ &#34; + (data.stargazers_count || &#34;N/A&#34;));
+  });
+}
+</code></pre>
+<h2 is-upgraded>22-03 HTML・JSONからデータを取り出す</h2>
+<pre><code language="language-javascript" class="language-javascript">function parseResponseDemo() {
+  // JSONレスポンスの解析
+  function fetchAndParseJson(url) {
+    const response = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+    if (response.getResponseCode() !== 200) {
+      throw new Error(&#34;HTTPエラー: &#34; + response.getResponseCode());
+    }
+    return JSON.parse(response.getContentText());
+  }
+
+  // 天気APIの例（OpenWeatherMap）
+  // const apiKey = PropertiesService.getScriptProperties().getProperty(&#34;WEATHER_API_KEY&#34;);
+  // const weather = fetchAndParseJson(`https://api.openweathermap.org/data/2.5/weather?q=Tokyo&amp;appid=${apiKey}&amp;lang=ja&amp;units=metric`);
+  // Logger.log(&#34;東京の天気: &#34; + weather.weather[0].description + &#34; &#34; + weather.main.temp + &#34;℃&#34;);
+
+  // ChatGPT API呼び出しの例
+  function callChatGPT(prompt) {
+    const apiKey = PropertiesService.getScriptProperties().getProperty(&#34;OPENAI_API_KEY&#34;);
+    const response = UrlFetchApp.fetch(&#34;https://api.openai.com/v1/chat/completions&#34;, {
+      method: &#34;post&#34;,
+      contentType: &#34;application/json&#34;,
+      headers: { &#34;Authorization&#34;: &#34;Bearer &#34; + apiKey },
+      payload: JSON.stringify({
+        model: &#34;gpt-4o&#34;,
+        messages: [{ role: &#34;user&#34;, content: prompt }],
+        max_tokens: 500
+      }),
+      muteHttpExceptions: true
+    });
+    const result = JSON.parse(response.getContentText());
+    return result.choices[0].message.content;
+  }
+  // Logger.log(callChatGPT(&#34;GASで業務自動化するメリットを3つ教えてください&#34;));
+
+  // Slack通知の完全版
+  function notifySlack(message, channel = &#34;#general&#34;) {
+    const webhookUrl = PropertiesService.getScriptProperties().getProperty(&#34;SLACK_WEBHOOK_URL&#34;);
+    if (!webhookUrl) throw new Error(&#34;SLACK_WEBHOOK_URLが設定されていません&#34;);
+
+    const payload = { text: message, channel };
+    const response = UrlFetchApp.fetch(webhookUrl, {
+      method: &#34;post&#34;,
+      contentType: &#34;application/json&#34;,
+      payload: JSON.stringify(payload),
+      muteHttpExceptions: true
+    });
+    Logger.log(&#34;Slack通知: &#34; + response.getResponseCode());
+  }
+  // notifySlack(&#34;GASバッチ処理が完了しました :white_check_mark:&#34;);
+
+  // GitHub APIでissueを作成する
+  function createGitHubIssue(owner, repo, title, body) {
+    const token = PropertiesService.getScriptProperties().getProperty(&#34;GITHUB_TOKEN&#34;);
+    const response = UrlFetchApp.fetch(
+      `https://api.github.com/repos/${owner}/${repo}/issues`,
+      {
+        method: &#34;post&#34;,
+        contentType: &#34;application/json&#34;,
+        headers: { &#34;Authorization&#34;: &#34;token &#34; + token },
+        payload: JSON.stringify({ title, body }),
+        muteHttpExceptions: true
+      }
+    );
+    const issue = JSON.parse(response.getContentText());
+    Logger.log(&#34;Issue作成: #&#34; + issue.number + &#34; &#34; + issue.html_url);
+    return issue;
+  }
+  // createGitHubIssue(&#34;midnight480&#34;, &#34;handson-manual&#34;, &#34;バグ報告&#34;, &#34;詳細をここに...&#34;);
+}
+</code></pre>
+<h2 is-upgraded>演習問題 第22章</h2>
+<p>GitHubのPublic APIを使って、自分のリポジトリ一覧を取得しスプレッドシートに書き出す <code>fetchMyRepos()</code> 関数を作成してください。</p>
+<ul>
+<li><code>GET https://api.github.com/users/{username}/repos</code> を使用</li>
+<li>A列:リポジトリ名 B列:説明 C列:スター数 D列:最終更新日をスプレッドシートに書き出す</li>
+<li>スター数の降順でソートする</li>
+<li>エラーが発生した場合は <code>muteHttpExceptions: true</code> でハンドリングし、エラーメッセージをログに出力する</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="技術リファレンス編 第23章 ライブラリ" duration="20">
+        <h2 is-upgraded>23-01 ライブラリを使用する</h2>
+<p>GASのライブラリとは、他のプロジェクトから再利用できるスクリプト群です。頻繁に使う処理をライブラリ化することで、複数のプロジェクト間でコードを共有できます。</p>
+<pre><code language="language-javascript" class="language-javascript">// ライブラリの追加手順：
+// エディタ左サイドバーの「ライブラリ（＋）」→ スクリプトIDを入力 → バージョンを選択
+
+// よく使われるサードパーティライブラリ
+// ① moment.gs（日付操作）
+//   スクリプトID: 15hgNOjKHUG4UtyZl9clqBbl23sDvWMS8pfDJOyIapZk5RBqwL3i-rlCo
+// ② GASMailer（HTMLメール送信の簡略化）
+
+// ライブラリ使用例（Momentを使った日付操作）
+// function momentDemo() {
+//   const today = Moment.moment(); // ライブラリのオブジェクトを呼び出す
+//   Logger.log(today.format(&#34;YYYY年MM月DD日&#34;));
+//   Logger.log(today.add(7, &#34;days&#34;).format(&#34;YYYY/MM/DD&#34;));
+//   Logger.log(today.startOf(&#34;month&#34;).format(&#34;YYYY/MM/DD&#34;)); // 月初め
+// }
+</code></pre>
+<h2 is-upgraded>23-02 ライブラリを作成する</h2>
+<pre><code language="language-javascript" class="language-javascript">// ライブラリとして公開するコードの例
+
+/**
+ * スプレッドシートのデータを2次元配列で取得するユーティリティ
+ * @param {string} spreadsheetId スプレッドシートID
+ * @param {string} sheetName シート名
+ * @param {boolean} hasHeader ヘッダー行があるか否か
+ * @return {Object[]} ヘッダーをキーとしたオブジェクトの配列
+ */
+function getSheetAsObjects(spreadsheetId, sheetName, hasHeader = true) {
+  const ss = SpreadsheetApp.openById(spreadsheetId);
+  const sheet = ss.getSheetByName(sheetName);
+  if (!sheet) throw new Error(&#34;シート「&#34; + sheetName + &#34;」が見つかりません&#34;);
+
+  const data = sheet.getDataRange().getValues();
+  if (!hasHeader || data.length &lt;= 1) return data;
+
+  const headers = data[0];
+  return data.slice(1)
+    .filter(row =&gt; row.some(cell =&gt; cell !== &#34;&#34;)) // 空行除外
+    .map(row =&gt;
+      Object.fromEntries(headers.map((h, i) =&gt; [h, row[i]]))
+    );
+}
+
+/**
+ * 配列データをスプレッドシートに書き出すユーティリティ
+ * @param {Object[]} records 書き出すデータ（オブジェクトの配列）
+ * @param {string} spreadsheetId スプレッドシートID
+ * @param {string} sheetName シート名（存在しない場合は作成）
+ */
+function writeObjectsToSheet(records, spreadsheetId, sheetName) {
+  if (!records || records.length === 0) {
+    Logger.log(&#34;書き出すデータがありません&#34;);
+    return;
+  }
+  const ss = SpreadsheetApp.openById(spreadsheetId);
+  let sheet = ss.getSheetByName(sheetName);
+  if (!sheet) sheet = ss.insertSheet(sheetName);
+  sheet.clearContents();
+
+  const headers = Object.keys(records[0]);
+  const rows = records.map(rec =&gt; headers.map(h =&gt; rec[h] !== undefined ? rec[h] : &#34;&#34;));
+
+  sheet.getRange(1, 1, 1, headers.length).setValues([headers]).setFontWeight(&#34;bold&#34;);
+  if (rows.length &gt; 0) {
+    sheet.getRange(2, 1, rows.length, headers.length).setValues(rows);
+  }
+  Logger.log(rows.length + &#34;件を「&#34; + sheetName + &#34;」シートに書き出しました&#34;);
+}
+
+// ライブラリ化の手順：
+// 1. エディタの「プロジェクト設定」→ スクリプトIDをコピー
+// 2. 使いたいプロジェクトで「ライブラリ（＋）」に貼り付け
+// 3. バージョンを「HEAD（開発モード）」または特定バージョンで固定
+// 4. 識別子（例: MyLib）を設定 → MyLib.getSheetAsObjects(...) で呼び出せる
+</code></pre>
+<h2 is-upgraded>演習問題 第23章</h2>
+<p>自分用のユーティリティライブラリ「GASUtils」を設計してください。以下の関数を実装し、別のスプレッドシートプロジェクトからライブラリとして呼び出せるか確認してください。</p>
+<ol type="1">
+<li><code>sendSlackNotification(message)</code>: Slack通知を送る（WebhookURLはScriptPropertiesから取得）</li>
+<li><code>appendLogToSheet(sheetName, message)</code>: ログ用シートに日時とメッセージを追記する</li>
+<li><code>getLastRowOf(sheet, column)</code>: 指定列の最終行番号を返す（空白セルを除いた実質的な最終行）</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="補講：技術リファレンス編 演習問題の解答例" duration="10">
+        <p>各章の演習問題の模範解答コードです。コピー＆ペーストしてそのまま動かせます。</p>
+<h2 is-upgraded>技術リファレンス編 第1章の解答：myInfo()</h2>
+<pre><code language="language-javascript" class="language-javascript">function myInfo() {
+  const name = &#34;田中太郎&#34;; // ← ご自身の名前に変更してください
+  const email = Session.getActiveUser().getEmail(); // 実行ユーザーのメールアドレスを自動取得
+
+  Logger.log(&#34;名前: &#34; + name);
+  Logger.log(&#34;メールアドレス: &#34; + email);
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第2章の解答：inspectCells()</h2>
+<pre><code language="language-javascript" class="language-javascript">function inspectCells() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  // A1〜A5セルの値を一括取得
+  const values = sheet.getRange(&#34;A1:A5&#34;).getValues();
+
+  values.forEach((row, index) =&gt; {
+    const val = row[0];
+    const cellName = &#34;A&#34; + (index + 1);
+    Logger.log(cellName + &#34;: 値=[&#34; + val + &#34;] 型=&#34; + typeof val
+      + (val === &#34;&#34; ? &#34; (空白)&#34; : &#34;&#34;));
+  });
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第3章の解答：calcStats()</h2>
+<pre><code language="language-javascript" class="language-javascript">function calcStats() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const values = sheet.getRange(&#34;A1:A10&#34;).getValues()
+    .map(r =&gt; r[0])
+    .filter(v =&gt; typeof v === &#34;number&#34; &amp;&amp; !isNaN(v));
+
+  if (values.length === 0) {
+    SpreadsheetApp.getActiveSpreadsheet().toast(&#34;A列に数値データがありません&#34;);
+    return;
+  }
+
+  const sum = values.reduce((s, n) =&gt; s + n, 0);
+  const avg = sum / values.length;
+  const max = Math.max(...values);
+  const min = Math.min(...values);
+
+  // B1〜B4に結果を書き出す
+  const results = [[&#34;合計&#34;, sum], [&#34;平均&#34;, avg], [&#34;最大値&#34;, max], [&#34;最小値&#34;, min]];
+  results.forEach(([label, value], i) =&gt; {
+    sheet.getRange(i + 1, 2).setValue(value);
+    sheet.getRange(i + 1, 3).setValue(label);
+  });
+
+  Logger.log(&#34;合計=&#34; + sum + &#34; 平均=&#34; + avg.toFixed(2) + &#34; 最大=&#34; + max + &#34; 最小=&#34; + min);
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第4章の解答：filterAndSum()</h2>
+<pre><code language="language-javascript" class="language-javascript">function filterAndSum() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 1) return;
+
+  const values = sheet.getRange(1, 1, lastRow, 1).getValues();
+  let positiveSum = 0;
+
+  values.forEach(([val], index) =&gt; {
+    const row = index + 1;
+    const cell = sheet.getRange(row, 1);
+
+    // null・空・非数値はスキップ
+    if (val === null || val === &#34;&#34; || typeof val !== &#34;number&#34;) return;
+
+    if (val &lt;= 0) {
+      // 0以下は赤色に塗る
+      cell.setBackground(&#34;#ef9a9a&#34;);
+    } else {
+      // 正の値のみ合計
+      positiveSum += val;
+      cell.setBackground(null); // 背景色をリセット
+    }
+  });
+
+  // B1セルに正の値の合計を出力
+  sheet.getRange(&#34;B1&#34;).setValue(positiveSum);
+  Logger.log(&#34;正の値の合計: &#34; + positiveSum);
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第5章の解答：calcInvoice()</h2>
+<pre><code language="language-javascript" class="language-javascript">// 小計計算を別関数に切り出す
+function calcSubtotal(price, qty) {
+  return price * qty;
+}
+
+function calcInvoice() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 2) return;
+
+  // B列(価格)・C列(数量)を一括取得
+  const data = sheet.getRange(2, 2, lastRow - 1, 2).getValues();
+  let totalBeforeTax = 0;
+
+  const subtotals = data.map(([price, qty]) =&gt; {
+    if (!price || !qty) return [0];
+    const subtotal = calcSubtotal(price, qty);
+    totalBeforeTax += subtotal;
+    return [subtotal];
+  });
+
+  // D列に小計を一括書き込み
+  sheet.getRange(2, 4, subtotals.length, 1).setValues(subtotals);
+
+  // E1セルに消費税込み合計
+  const totalWithTax = Math.ceil(totalBeforeTax * 1.1);
+  sheet.getRange(&#34;E1&#34;).setValue(totalWithTax);
+
+  Logger.log(&#34;税抜き合計: &#34; + totalBeforeTax + &#34;円 / 税込み合計: &#34; + totalWithTax + &#34;円&#34;);
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第6章の解答：Employeeクラス</h2>
+<pre><code language="language-javascript" class="language-javascript">class Employee {
+  constructor(name, department, salary) {
+    this.name = name;
+    this.department = department;
+    this.salary = salary; // 月給
+  }
+
+  getAnnualSalary() {
+    return this.salary * 12;
+  }
+
+  toString() {
+    return `${this.name} / ${this.department} / 月給¥${this.salary.toLocaleString()}`;
+  }
+}
+
+function highlightTopEarner() {
+  const employees = [
+    new Employee(&#34;田中&#34;, &#34;営業部&#34;, 350000),
+    new Employee(&#34;山田&#34;, &#34;開発部&#34;, 480000),
+    new Employee(&#34;佐藤&#34;, &#34;総務部&#34;, 310000),
+    new Employee(&#34;鈴木&#34;, &#34;マーケ部&#34;, 420000)
+  ];
+
+  // 年収が最も高い社員を抽出
+  const topEarner = employees.reduce((best, emp) =&gt;
+    emp.getAnnualSalary() &gt; best.getAnnualSalary() ? emp : best
+  );
+
+  Logger.log(&#34;最高年収者: &#34; + topEarner.toString());
+  Logger.log(&#34;年収: ¥&#34; + topEarner.getAnnualSalary().toLocaleString());
+
+  // 全員をログ出力
+  employees.forEach(emp =&gt; Logger.log(emp.toString() + &#34; 年収¥&#34; + emp.getAnnualSalary().toLocaleString()));
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第7章の解答：normalizePhones()</h2>
+<pre><code language="language-javascript" class="language-javascript">function normalizePhones() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 1) return;
+
+  const values = sheet.getRange(1, 1, lastRow, 1).getValues();
+
+  const normalized = values.map(([phone]) =&gt; {
+    if (!phone) return [&#34;&#34;];
+    // 数字のみ抽出（スペース・ハイフン・その他を除去）
+    const digits = String(phone).replace(/[^\d]/g, &#34;&#34;);
+    // 11桁の携帯番号を xxx-xxxx-xxxx 形式に整形
+    if (digits.length === 11) {
+      return [digits.slice(0, 3) + &#34;-&#34; + digits.slice(3, 7) + &#34;-&#34; + digits.slice(7)];
+    }
+    // 10桁の市外局番付き番号を xx-xxxx-xxxx 形式に
+    if (digits.length === 10) {
+      return [digits.slice(0, 2) + &#34;-&#34; + digits.slice(2, 6) + &#34;-&#34; + digits.slice(6)];
+    }
+    return [phone + &#34;（形式不明）&#34;];
+  });
+
+  // B列に一括書き込み
+  sheet.getRange(1, 2, normalized.length, 1).setValues(normalized);
+  Logger.log(&#34;電話番号の正規化が完了しました（&#34; + normalized.length + &#34;件）&#34;);
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第8章の解答：スプレッドシート売上集計</h2>
+<pre><code language="language-javascript" class="language-javascript">function aggregateSalesData() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const dataSheet = ss.getSheetByName(&#34;売上データ&#34;) || ss.getActiveSheet();
+  const lastRow = dataSheet.getLastRow();
+  if (lastRow &lt; 2) return;
+
+  // A:日付 B:担当者 C:売上金額 を一括取得
+  const data = dataSheet.getRange(2, 1, lastRow - 1, 3).getValues()
+    .filter(row =&gt; row[2] !== &#34;&#34; &amp;&amp; !isNaN(row[2]));
+
+  // 合計・平均の計算
+  const amounts = data.map(r =&gt; Number(r[2]));
+  const total = amounts.reduce((s, n) =&gt; s + n, 0);
+  const average = total / amounts.length;
+
+  dataSheet.getRange(&#34;D1&#34;).setValue(total);
+  dataSheet.getRange(&#34;D2&#34;).setValue(Math.round(average));
+  Logger.log(&#34;合計: &#34; + total + &#34; / 平均: &#34; + Math.round(average));
+
+  // 担当者別集計（Map を使用）
+  const salesByPerson = new Map();
+  data.forEach(([, name, amount]) =&gt; {
+    salesByPerson.set(name, (salesByPerson.get(name) || 0) + Number(amount));
+  });
+
+  // 集計シートへ書き出し
+  let summarySheet = ss.getSheetByName(&#34;集計&#34;);
+  if (!summarySheet) summarySheet = ss.insertSheet(&#34;集計&#34;);
+  summarySheet.clearContents();
+  summarySheet.getRange(&#34;A1:B1&#34;).setValues([[&#34;担当者&#34;, &#34;合計売上&#34;]]).setFontWeight(&#34;bold&#34;);
+
+  const summaryData = [...salesByPerson.entries()]
+    .sort((a, b) =&gt; b[1] - a[1]); // 金額の降順でソート
+
+  summarySheet.getRange(2, 1, summaryData.length, 2).setValues(summaryData);
+  Logger.log(&#34;集計シートに &#34; + summaryData.length + &#34;人分を書き出しました&#34;);
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第9章の解答：logInvoiceEmails()</h2>
+<pre><code language="language-javascript" class="language-javascript">function logInvoiceEmails() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let logSheet = ss.getSheetByName(&#34;Gmailログ&#34;);
+  if (!logSheet) logSheet = ss.insertSheet(&#34;Gmailログ&#34;);
+  logSheet.clearContents();
+
+  // ヘッダー行
+  logSheet.getRange(&#34;A1:E1&#34;).setValues([[&#34;差出人&#34;, &#34;件名&#34;, &#34;日付&#34;, &#34;添付ファイル名&#34;, &#34;スレッドID&#34;]])
+    .setFontWeight(&#34;bold&#34;);
+
+  const threads = GmailApp.search(&#34;subject:請求書&#34;, 0, 20);
+  const rows = [];
+
+  threads.forEach(thread =&gt; {
+    thread.getMessages().forEach(msg =&gt; {
+      const attachments = msg.getAttachments();
+      const attNames = attachments.length &gt; 0
+        ? attachments.map(a =&gt; a.getName()).join(&#34;, &#34;)
+        : &#34;（なし）&#34;;
+      rows.push([
+        msg.getFrom(),
+        msg.getSubject(),
+        Utilities.formatDate(msg.getDate(), &#34;JST&#34;, &#34;yyyy/MM/dd HH:mm&#34;),
+        attNames,
+        thread.getId()
+      ]);
+    });
+  });
+
+  if (rows.length &gt; 0) {
+    logSheet.getRange(2, 1, rows.length, 5).setValues(rows);
+  }
+  Logger.log(&#34;Gmailログに &#34; + rows.length + &#34;件を書き出しました&#34;);
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第10章の解答：findFilesFromSheet()</h2>
+<pre><code language="language-javascript" class="language-javascript">function findFilesFromSheet() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 1) return;
+
+  // 「レポート置き場」フォルダを検索
+  const folderIterator = DriveApp.getFoldersByName(&#34;レポート置き場&#34;);
+  const targetFolder = folderIterator.hasNext() ? folderIterator.next() : null;
+
+  const fileNames = sheet.getRange(1, 1, lastRow, 1).getValues();
+
+  const results = fileNames.map(([fileName]) =&gt; {
+    if (!fileName) return [&#34;&#34;, &#34;&#34;];
+    let url = &#34;見つかりません&#34;;
+    let sizeKB = &#34;&#34;;
+
+    const iterator = targetFolder
+      ? targetFolder.getFilesByName(String(fileName))
+      : DriveApp.getFilesByName(String(fileName));
+
+    if (iterator.hasNext()) {
+      const file = iterator.next();
+      url = file.getUrl();
+      sizeKB = Math.round(file.getSize() / 1024 * 10) / 10; // KB単位（小数1桁）
+    }
+    return [url, sizeKB];
+  });
+
+  sheet.getRange(1, 2, results.length, 2).setValues(results);
+  Logger.log(results.length + &#34;件のファイル検索が完了しました&#34;);
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第11章の解答：getThisMonthCalendar()</h2>
+<pre><code language="language-javascript" class="language-javascript">function getThisMonthCalendar() {
+  const now = new Date();
+  const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+
+  const events = CalendarApp.getDefaultCalendar().getEvents(firstDay, lastDay);
+
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(&#34;今月の予定&#34;);
+  if (!sheet) sheet = ss.insertSheet(&#34;今月の予定&#34;);
+  sheet.clearContents();
+
+  // ヘッダー
+  sheet.getRange(&#34;A1:E1&#34;).setValues([[&#34;タイトル&#34;, &#34;開始日時&#34;, &#34;終了日時&#34;, &#34;場所&#34;, &#34;終日イベント&#34;]])
+    .setFontWeight(&#34;bold&#34;);
+
+  const rows = events.map(event =&gt; [
+    event.getTitle(),
+    event.isAllDayEvent() ? &#34;&#34; : Utilities.formatDate(event.getStartTime(), &#34;JST&#34;, &#34;yyyy/MM/dd HH:mm&#34;),
+    event.isAllDayEvent() ? &#34;&#34; : Utilities.formatDate(event.getEndTime(), &#34;JST&#34;, &#34;yyyy/MM/dd HH:mm&#34;),
+    event.getLocation(),
+    event.isAllDayEvent()
+  ]);
+
+  if (rows.length &gt; 0) {
+    sheet.getRange(2, 1, rows.length, 5).setValues(rows);
+  }
+
+  // E列（終日フラグ）でフィルタ設定
+  const range = sheet.getRange(1, 1, rows.length + 1, 5);
+  range.createFilter();
+
+  Logger.log(&#34;今月の予定を &#34; + rows.length + &#34;件書き出しました&#34;);
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第12章の解答：generateCertificates()</h2>
+<pre><code language="language-javascript" class="language-javascript">function generateCertificates() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const dataSheet = ss.getSheetByName(&#34;社員情報&#34;);
+  if (!dataSheet) throw new Error(&#34;「社員情報」シートが見つかりません&#34;);
+
+  const TEMPLATE_ID = PropertiesService.getScriptProperties().getProperty(&#34;CERT_TEMPLATE_ID&#34;);
+  if (!TEMPLATE_ID) throw new Error(&#34;CERT_TEMPLATE_IDをスクリプトプロパティに設定してください&#34;);
+
+  // 保存先フォルダ
+  const folderName = &#34;社員証明書_&#34; + Utilities.formatDate(new Date(), &#34;JST&#34;, &#34;yyyyMMdd&#34;);
+  const folder = DriveApp.createFolder(folderName);
+
+  const data = dataSheet.getRange(2, 1, dataSheet.getLastRow() - 1, 3).getValues()
+    .filter(row =&gt; row[0] !== &#34;&#34;);
+
+  data.forEach(([name, dept, year]) =&gt; {
+    // テンプレートをコピー
+    const templateFile = DriveApp.getFileById(TEMPLATE_ID);
+    const copy = templateFile.makeCopy(name + &#34;_証明書&#34;, folder);
+    const doc = DocumentApp.openById(copy.getId());
+    const body = doc.getBody();
+
+    // プレースホルダーを置換
+    body.replaceText(&#34;\{\{NAME\}\}&#34;, name);
+    body.replaceText(&#34;\{\{DEPT\}\}&#34;, dept);
+    body.replaceText(&#34;\{\{YEAR\}\}&#34;, String(year));
+
+    doc.saveAndClose();
+    Logger.log(&#34;作成: &#34; + name + &#34; → &#34; + copy.getUrl());
+  });
+
+  SpreadsheetApp.getActiveSpreadsheet().toast(
+    data.length + &#34;件の証明書を「&#34; + folderName + &#34;」フォルダに作成しました&#34;
+  );
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第13章の解答：generateKPISlides()</h2>
+<pre><code language="language-javascript" class="language-javascript">function generateKPISlides() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(&#34;月次KPI&#34;);
+  if (!sheet) throw new Error(&#34;「月次KPI」シートが見つかりません&#34;);
+
+  const SLIDE_ID = PropertiesService.getScriptProperties().getProperty(&#34;KPI_SLIDE_ID&#34;);
+  if (!SLIDE_ID) throw new Error(&#34;KPI_SLIDE_IDをスクリプトプロパティに設定してください&#34;);
+
+  const data = sheet.getRange(2, 1, sheet.getLastRow() - 1, 4).getValues()
+    .filter(row =&gt; row[0] !== &#34;&#34;);
+  // A:指標名 B:目標値 C:実績値 D:達成率
+
+  const pres = SlidesApp.openById(SLIDE_ID);
+  const slides = pres.getSlides();
+
+  data.forEach((row, index) =&gt; {
+    const [metricName, target, actual, rate] = row;
+    if (index &gt;= slides.length) return;
+
+    const slide = slides[index];
+    slide.replaceAllText(&#34;&#123;&#123;METRIC}}&#34;, String(metricName));
+    slide.replaceAllText(&#34;&#123;&#123;TARGET}}&#34;, String(target));
+    slide.replaceAllText(&#34;&#123;&#123;ACTUAL}}&#34;, String(actual));
+    slide.replaceAllText(&#34;&#123;&#123;RATE}}&#34;, (Number(rate) * 100).toFixed(1) + &#34;%&#34;);
+
+    // 達成率に応じて色分け（テキストボックスを検索して色を変える）
+    const color = Number(rate) &gt;= 1 ? &#34;#2e7d32&#34; : &#34;#c62828&#34;; // 達成:緑 未達:赤
+    slide.getPageElements().forEach(el =&gt; {
+      if (el.getPageElementType() === SlidesApp.PageElementType.SHAPE) {
+        const text = el.asShape().getText().asString();
+        if (text.includes(&#34;%&#34;)) {
+          el.asShape().getText().getTextStyle().setForegroundColor(color);
+        }
+      }
+    });
+  });
+
+  pres.saveAndClose();
+  Logger.log(&#34;KPIスライドを更新しました（&#34; + data.length + &#34;指標）&#34;);
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第14章の解答：createTrainingForm()</h2>
+<pre><code language="language-javascript" class="language-javascript">function createTrainingForm() {
+  const form = FormApp.create(&#34;社内研修申込フォーム&#34;);
+  form.setTitle(&#34;社内研修 参加申込&#34;);
+  form.setDescription(&#34;研修参加を希望される方はご記入ください。&#34;);
+
+  // 氏名（必須）
+  form.addTextItem().setTitle(&#34;氏名&#34;).setRequired(true);
+
+  // 所属部署（ドロップダウン）
+  form.addListItem().setTitle(&#34;所属部署&#34;)
+    .setChoiceValues([&#34;総務&#34;, &#34;営業&#34;, &#34;開発&#34;, &#34;その他&#34;])
+    .setRequired(true);
+
+  // 希望研修日（日付）
+  form.addDateItem().setTitle(&#34;希望研修日&#34;).setRequired(true);
+
+  // 参加動機（段落テキスト）
+  form.addParagraphTextItem().setTitle(&#34;参加動機&#34;);
+
+  // 事前スキル（チェックボックス）
+  form.addCheckboxItem().setTitle(&#34;事前スキル（当てはまるものすべて）&#34;)
+    .setChoiceValues([&#34;GAS初心者&#34;, &#34;JavaScript経験あり&#34;, &#34;GASスクリプト経験あり&#34;]);
+
+  // 満足度評価（線形尺度）
+  form.addScaleItem().setTitle(&#34;過去の研修への満足度（初参加は回答不要）&#34;)
+    .setBounds(1, 5)
+    .setLabels(&#34;とても不満&#34;, &#34;とても満足&#34;);
+
+  // フォームID・URLをスプレッドシートに保存
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  sheet.getRange(&#34;A1&#34;).setValue(form.getId());
+  sheet.getRange(&#34;B1&#34;).setValue(form.getPublishedUrl());
+
+  Logger.log(&#34;フォーム作成完了&#34;);
+  Logger.log(&#34;URL: &#34; + form.getPublishedUrl());
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第15章の解答：multiTranslate()</h2>
+<pre><code language="language-javascript" class="language-javascript">function multiTranslate() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 1) return;
+
+  const sourceData = sheet.getRange(1, 1, lastRow, 1).getValues();
+  const targets = [
+    { col: 2, lang: &#34;en&#34;, label: &#34;英語&#34; },
+    { col: 3, lang: &#34;zh-CN&#34;, label: &#34;中国語（簡体字）&#34; },
+    { col: 4, lang: &#34;fr&#34;, label: &#34;フランス語&#34; }
+  ];
+
+  targets.forEach(({ col, lang, label }) =&gt; {
+    const translated = sourceData.map(([text]) =&gt; {
+      if (!text) return [&#34;&#34;];
+      try {
+        const result = LanguageApp.translate(String(text), &#34;ja&#34;, lang);
+        Utilities.sleep(300); // API制限対策
+        return [result];
+      } catch (e) {
+        return [&#34;翻訳エラー: &#34; + e.message];
+      }
+    });
+    sheet.getRange(1, col, translated.length, 1).setValues(translated);
+    Logger.log(label + &#34;への翻訳完了&#34;);
+  });
+
+  SpreadsheetApp.getActiveSpreadsheet().toast(&#34;全言語への翻訳が完了しました&#34;);
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第16章の解答：runDailyBatch()</h2>
+<pre><code language="language-javascript" class="language-javascript">function processDailyData() {
+  // メインのバッチ処理の内容（省略可）
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  Logger.log(&#34;processDailyData: &#34; + sheet.getLastRow() + &#34;行を処理中...&#34;);
+  Utilities.sleep(500); // 処理の模倣
+}
+
+function runDailyBatch() {
+  const start = new Date();
+  const ts = () =&gt; Utilities.formatDate(new Date(), &#34;JST&#34;, &#34;HH:mm:ss&#34;);
+
+  try {
+    Logger.log(&#34;[&#34; + ts() + &#34;] 日次バッチ処理を開始します&#34;);
+    processDailyData();
+    Logger.log(&#34;[&#34; + ts() + &#34;] 日次バッチ処理が正常に完了しました&#34;);
+
+  } catch (e) {
+    const errorMsg = [
+      &#34;エラー名: &#34; + e.name,
+      &#34;メッセージ: &#34; + e.message,
+      &#34;スタック: &#34; + e.stack,
+      &#34;発生時刻: &#34; + new Date().toString()
+    ].join(&#34;\n&#34;);
+
+    Logger.log(&#34;[&#34; + ts() + &#34;] エラーが発生しました:\n&#34; + errorMsg);
+    GmailApp.sendEmail(
+      &#34;admin@example.com&#34;,
+      &#34;【GASエラー】日次バッチ処理でエラーが発生しました&#34;,
+      errorMsg
+    );
+
+  } finally {
+    const elapsed = ((new Date() - start) / 1000).toFixed(1);
+    Logger.log(&#34;[&#34; + ts() + &#34;] 処理終了（所要時間: &#34; + elapsed + &#34;秒）&#34;);
+  }
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第17章の解答：カスタムメニューと確認ダイアログ</h2>
+<pre><code language="language-javascript" class="language-javascript">function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu(&#34;🔧 自動化ツール&#34;)
+    .addItem(&#34;📊 データ集計&#34;, &#34;showAggregateInfo&#34;)
+    .addItem(&#34;📄 PDFとして書き出し&#34;, &#34;promptPdfExport&#34;)
+    .addItem(&#34;📧 管理者に報告&#34;, &#34;showReportInfo&#34;)
+    .addToUi();
+}
+
+function showAggregateInfo() {
+  SpreadsheetApp.getUi().alert(
+    &#34;データ集計&#34;,
+    &#34;アクティブシートのデータを集計します。\nA列: 担当者名、B列: 金額が必要です。&#34;,
+    SpreadsheetApp.getUi().ButtonSet.OK
+  );
+}
+
+function promptPdfExport() {
+  const ui = SpreadsheetApp.getUi();
+  const result = ui.prompt(
+    &#34;PDFとして書き出し&#34;,
+    &#34;出力ファイル名を入力してください（例: 月次レポート_2026年4月）&#34;,
+    ui.ButtonSet.OK_CANCEL
+  );
+  if (result.getSelectedButton() === ui.Button.OK) {
+    const fileName = result.getResponseText() || &#34;出力ファイル&#34;;
+    ui.alert(&#34;確認&#34;, &#39;「&#39; + fileName + &#39;.pdf」として書き出します。&#39;, ui.ButtonSet.OK);
+    // 実際のPDF書き出し処理をここに追加
+  }
+}
+
+function showReportInfo() {
+  SpreadsheetApp.getUi().alert(
+    &#34;管理者に報告&#34;,
+    &#34;admin@example.com に集計結果レポートを送信します。&#34;,
+    SpreadsheetApp.getUi().ButtonSet.OK
+  );
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第18章の解答：generateAndSendInvoice()</h2>
+<pre><code language="language-javascript" class="language-javascript">function generateAndSendInvoice() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(&#34;請求書データ&#34;);
+  if (!sheet) throw new Error(&#34;「請求書データ」シートが見つかりません&#34;);
+
+  // A:顧客名 B:金額 C:品目 を読み込む
+  const data = sheet.getRange(2, 1, sheet.getLastRow() - 1, 3).getValues()
+    .filter(row =&gt; row[0] !== &#34;&#34;);
+
+  // CSV文字列を生成
+  const header = &#34;顧客名,金額,品目&#34;;
+  const csvRows = data.map(row =&gt; row.join(&#34;,&#34;));
+  const csvContent = [header, ...csvRows].join(&#34;\n&#34;);
+
+  // Blobを作成
+  const csvBlob = Utilities.newBlob(csvContent, &#34;text/csv; charset=utf-8&#34;, &#34;invoice.csv&#34;);
+
+  // Googleドライブの「請求書」フォルダに保存
+  let folder;
+  const folderIterator = DriveApp.getFoldersByName(&#34;請求書&#34;);
+  folder = folderIterator.hasNext() ? folderIterator.next() : DriveApp.createFolder(&#34;請求書&#34;);
+  const savedFile = folder.createFile(csvBlob);
+  Logger.log(&#34;保存: &#34; + savedFile.getUrl());
+
+  // 顧客にメール送信
+  GmailApp.sendEmail(
+    &#34;customer@example.com&#34;,
+    &#34;【請求書】ご請求金額のご案内&#34;,
+    &#34;いつもお世話になっております。\n請求書データをCSFにてお送りします。\nご確認のほど、よろしくお願いいたします。&#34;,
+    {
+      attachments: [csvBlob],
+      name: &#34;GAS自動送信システム&#34;
+    }
+  );
+
+  SpreadsheetApp.getActiveSpreadsheet()
+    .toast(&#34;請求書を送信しました。ファイル: &#34; + savedFile.getName());
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第19章の解答：backupSheetAsZip()</h2>
+<pre><code language="language-javascript" class="language-javascript">function backupSheetAsZip() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(&#34;月次データ&#34;);
+  if (!sheet) throw new Error(&#34;「月次データ」シートが見つかりません&#34;);
+
+  // シートデータを2次元配列で取得してCSV文字列に変換
+  const data = sheet.getDataRange().getValues();
+  const csvContent = data.map(row =&gt;
+    row.map(cell =&gt; {
+      // セルにカンマや改行が含まれる場合はダブルクォートで囲む
+      const str = String(cell);
+      return str.includes(&#34;,&#34;) || str.includes(&#34;\n&#34;) ? &#39;&#34;&#39; + str + &#39;&#34;&#39; : str;
+    }).join(&#34;,&#34;)
+  ).join(&#34;\n&#34;);
+
+  // CSV → Blob
+  const csvBlob = Utilities.newBlob(csvContent, &#34;text/csv; charset=utf-8&#34;, &#34;monthly_data.csv&#34;);
+
+  // ZIP圧縮
+  const zipBlob = Utilities.zip([csvBlob],
+    &#34;バックアップ_&#34; + Utilities.formatDate(new Date(), &#34;JST&#34;, &#34;yyyyMMdd&#34;) + &#34;.zip&#34;
+  );
+
+  // Googleドライブに保存
+  const file = DriveApp.createFile(zipBlob);
+
+  SpreadsheetApp.getActiveSpreadsheet()
+    .toast(&#34;バックアップ完了: &#34; + file.getName(), &#34;ZIP作成&#34;, 5);
+  Logger.log(&#34;ZIPバックアップ保存: &#34; + file.getUrl());
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第20章の解答：バッチ処理のレジューム機能</h2>
+<pre><code language="language-javascript" class="language-javascript">const PROP_KEY = &#34;LAST_PROCESSED_ROW&#34;;
+
+function startBatchProcess() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const props = PropertiesService.getScriptProperties();
+  const startRow = Number(props.getProperty(PROP_KEY) || 2);
+  const lastRow = sheet.getLastRow();
+  const START_TIME = new Date().getTime();
+  const LIMIT_MS = 5 * 60 * 1000; // 5分でセーフストップ
+
+  Logger.log(&#34;バッチ開始: &#34; + startRow + &#34;行目から再開&#34;);
+
+  for (let row = startRow; row &lt;= lastRow; row++) {
+    // 5分経過でセーフストップ
+    if (new Date().getTime() - START_TIME &gt; LIMIT_MS) {
+      props.setProperty(PROP_KEY, String(row));
+      Logger.log(&#34;タイムアウト: &#34; + row + &#34;行目で中断。次回はここから再開します。&#34;);
+      return;
+    }
+
+    const value = sheet.getRange(row, 1).getValue();
+    if (!value) continue;
+
+    // 実際の処理（ここでは処理済みマークをB列に付ける）
+    sheet.getRange(row, 2).setValue(&#34;✅ 処理済み&#34;);
+    props.setProperty(PROP_KEY, String(row + 1)); // 次回の開始行を保存
+  }
+
+  // 全行完了
+  props.deleteProperty(PROP_KEY);
+  Logger.log(&#34;全行の処理が完了しました（&#34; + (lastRow - 1) + &#34;行）&#34;);
+}
+
+function resetBatchProcess() {
+  PropertiesService.getScriptProperties().deleteProperty(PROP_KEY);
+  Logger.log(&#34;バッチ処理プロパティをリセットしました&#34;);
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第21章の解答：トリガー管理システム</h2>
+<pre><code language="language-javascript" class="language-javascript">function setupAllTriggers() {
+  // 既存のトリガーをすべて削除
+  ScriptApp.getProjectTriggers().forEach(t =&gt; ScriptApp.deleteTrigger(t));
+
+  // 毎朝9時
+  ScriptApp.newTrigger(&#34;dailyMorningTask&#34;).timeBased().everyDays(1).atHour(9).create();
+
+  // 毎週月曜8時
+  ScriptApp.newTrigger(&#34;weeklyMondayTask&#34;)
+    .timeBased().onWeekDay(ScriptApp.WeekDay.MONDAY).atHour(8).nearestMinute(0).create();
+
+  Logger.log(&#34;トリガーを設定しました&#34;);
+  listTriggersToSheet();
+}
+
+function listTriggersToSheet() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const triggers = ScriptApp.getProjectTriggers();
+
+  const headers = [[&#34;関数名&#34;, &#34;イベントタイプ&#34;, &#34;ソース&#34;, &#34;ID&#34;]];
+  const rows = triggers.map(t =&gt; [
+    t.getHandlerFunction(),
+    t.getEventType(),
+    t.getTriggerSource(),
+    t.getUniqueId()
+  ]);
+
+  sheet.clearContents();
+  sheet.getRange(1, 1, 1, 4).setValues(headers).setFontWeight(&#34;bold&#34;);
+  if (rows.length &gt; 0) sheet.getRange(2, 1, rows.length, 4).setValues(rows);
+
+  Logger.log(triggers.length + &#34;個のトリガーを書き出しました&#34;);
+}
+
+function onEdit(e) {
+  const col = e.range.getColumn();
+  const row = e.range.getRow();
+  if (col !== 1 || row === 1) return; // A列でなければスキップ、ヘッダーも除外
+
+  if (e.value === &#34;完了&#34;) {
+    const sheet = e.range.getSheet();
+    const now = Utilities.formatDate(new Date(), &#34;JST&#34;, &#34;yyyy/MM/dd HH:mm:ss&#34;);
+    sheet.getRange(row, 2).setValue(now); // B列に完了日時を記録
+  }
+}
+
+function onFormSubmitForTrigger(e) {
+  const namedVals = e.namedValues;
+  const name = (namedVals[&#34;氏名&#34;] || [&#34;（不明）&#34;])[0];
+  const email = (namedVals[&#34;メールアドレス&#34;] || [&#34;&#34;])[0];
+
+  if (email) {
+    GmailApp.sendEmail(
+      email,
+      &#34;【受付完了】研修申込を受け付けました&#34;,
+      name + &#34; 様\n\nご応募ありがとうございます。\n内容を確認の上、折り返しご連絡いたします。&#34;
+    );
+    Logger.log(&#34;確認メール送信: &#34; + name + &#34; &lt;&#34; + email + &#34;&gt;&#34;);
+  }
+}
+
+function dailyMorningTask() { Logger.log(&#34;朝9時バッチ実行: &#34; + new Date()); }
+function weeklyMondayTask() { Logger.log(&#34;月曜朝バッチ実行: &#34; + new Date()); }
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第22章の解答：fetchMyRepos()</h2>
+<pre><code language="language-javascript" class="language-javascript">function fetchMyRepos() {
+  const USERNAME = PropertiesService.getScriptProperties().getProperty(&#34;GITHUB_USERNAME&#34;);
+  if (!USERNAME) throw new Error(&#34;GITHUB_USERNAMEをスクリプトプロパティに設定してください&#34;);
+
+  const TOKEN = PropertiesService.getScriptProperties().getProperty(&#34;GITHUB_TOKEN&#34;);
+
+  const response = UrlFetchApp.fetch(
+    &#34;https://api.github.com/users/&#34; + USERNAME + &#34;/repos?per_page=100&amp;sort=updated&#34;,
+    {
+      headers: TOKEN ? { &#34;Authorization&#34;: &#34;token &#34; + TOKEN } : {},
+      muteHttpExceptions: true
+    }
+  );
+
+  if (response.getResponseCode() !== 200) {
+    Logger.log(&#34;エラー: &#34; + response.getResponseCode() + &#34; &#34; + response.getContentText());
+    return;
+  }
+
+  const repos = JSON.parse(response.getContentText());
+
+  // スター数の降順でソート
+  repos.sort((a, b) =&gt; b.stargazers_count - a.stargazers_count);
+
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  sheet.clearContents();
+  sheet.getRange(&#34;A1:D1&#34;)
+    .setValues([[&#34;リポジトリ名&#34;, &#34;説明&#34;, &#34;スター数&#34;, &#34;最終更新日&#34;]])
+    .setFontWeight(&#34;bold&#34;);
+
+  const rows = repos.map(repo =&gt; [
+    repo.name,
+    repo.description || &#34;&#34;,
+    repo.stargazers_count,
+    Utilities.formatDate(new Date(repo.updated_at), &#34;JST&#34;, &#34;yyyy/MM/dd&#34;)
+  ]);
+
+  if (rows.length &gt; 0) {
+    sheet.getRange(2, 1, rows.length, 4).setValues(rows);
+  }
+  Logger.log(rows.length + &#34;件のリポジトリを書き出しました&#34;);
+}
+</code></pre>
+<h2 is-upgraded>技術リファレンス編 第23章の解答：GASUtilsライブラリ</h2>
+<pre><code language="language-javascript" class="language-javascript">// ===== GASUtils ライブラリ =====
+// このスクリプトを単独のGASプロジェクトとして保存し、
+// ライブラリとして他のプロジェクトから呼び出す
+
+/**
+ * Slack Incoming Webhookにメッセージを送信する
+ * @param {string} message 送信するメッセージ
+ * @param {string} [channel] 送信チャンネル（省略可）
+ */
+function sendSlackNotification(message, channel) {
+  const webhookUrl = PropertiesService.getScriptProperties().getProperty(&#34;SLACK_WEBHOOK_URL&#34;);
+  if (!webhookUrl) throw new Error(&#34;SLACK_WEBHOOK_URLをスクリプトプロパティに設定してください&#34;);
+
+  const payload = { text: message };
+  if (channel) payload.channel = channel;
+
+  const response = UrlFetchApp.fetch(webhookUrl, {
+    method: &#34;post&#34;,
+    contentType: &#34;application/json&#34;,
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  });
+  Logger.log(&#34;Slack通知送信: &#34; + response.getResponseCode() + &#34; / &#34; + message.substring(0, 50));
+  return response.getResponseCode() === 200;
+}
+
+/**
+ * ログ用シートに日時とメッセージを追記する
+ * @param {string} sheetName ログを追記するシート名
+ * @param {string} message ログメッセージ
+ * @param {string} [level=&#34;INFO&#34;] ログレベル（INFO/WARN/ERROR）
+ */
+function appendLogToSheet(sheetName, message, level) {
+  level = level || &#34;INFO&#34;;
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(sheetName);
+  if (!sheet) {
+    sheet = ss.insertSheet(sheetName);
+    sheet.getRange(&#34;A1:C1&#34;).setValues([[&#34;日時&#34;, &#34;レベル&#34;, &#34;メッセージ&#34;]]).setFontWeight(&#34;bold&#34;);
+  }
+
+  const timestamp = Utilities.formatDate(new Date(), &#34;JST&#34;, &#34;yyyy/MM/dd HH:mm:ss&#34;);
+  sheet.appendRow([timestamp, level, message]);
+  Logger.log(&#34;[&#34; + level + &#34;] &#34; + message);
+}
+
+/**
+ * 指定列の最終行番号を返す（空白セルを除いた実質的な最終行）
+ * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet 対象シート
+ * @param {number} column 列番号（1始まり）
+ * @return {number} 最終行番号
+ */
+function getLastRowOf(sheet, column) {
+  const colData = sheet.getRange(1, column, sheet.getMaxRows(), 1).getValues();
+  for (let i = colData.length - 1; i &gt;= 0; i--) {
+    if (colData[i][0] !== &#34;&#34;) return i + 1;
+  }
+  return 0;
+}
+
+// ===== 呼び出し元プロジェクトでの使用例 =====
+// 前提: ライブラリの識別子を &#34;GASUtils&#34; に設定
+
+// function useSample() {
+//   GASUtils.sendSlackNotification(&#34;バッチ処理が完了しました&#34;);
+//   GASUtils.appendLogToSheet(&#34;実行ログ&#34;, &#34;バッチ処理完了&#34;, &#34;INFO&#34;);
+//   const sheet = SpreadsheetApp.getActiveSheet();
+//   const lastRow = GASUtils.getLastRowOf(sheet, 1);
+//   Logger.log(&#34;A列の最終行: &#34; + lastRow);
+// }
+</code></pre>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
