@@ -31,6 +31,15 @@
       <google-codelab-step label="はじめに" duration="5">
         <h2 is-upgraded>ハンズオンの目的</h2>
 <p>このハンズオンでは、「アプリのログを収集し、可視化・通知する」という Observability (O11y / 可観測性) の基本を学びます。 また、意図的に脆弱性を含んだパッケージを導入し、セキュリティツール（Snyk または Aikido）を使って検知・修復する DevSecOps の基本的な流れを体験します。</p>
+<aside class="special"><p><strong>用語解説: O11y (Observability / 可観測性) とは？</strong></p>
+</aside>
+<p>「Observability」は「O」と「y」の間に11文字あるため「O11y」と略されます。システムの内部状態を「ログ」「メトリクス（数値データ）」「トレース（処理の流れ）」の3つの柱で外部から把握できるようにする考え方です。「サーバーが今どんな状態か」「エラーが起きていないか」を素早く知るための仕組みづくりと考えてください。</p>
+<aside class="special"><p><strong>用語解説: DevSecOps とは？</strong></p>
+</aside>
+<p>「Development（開発）」「Security（セキュリティ）」「Operations（運用）」を組み合わせた言葉です。従来はアプリを作った後にセキュリティチェックを行っていましたが、DevSecOps では開発の早い段階からセキュリティを組み込むことで、脆弱性（セキュリティ上の弱点）を早期に発見・修正します。</p>
+<aside class="special"><p><strong>用語解説: 脆弱性（ぜいじゃくせい）とは？</strong></p>
+</aside>
+<p>ソフトウェアに存在するセキュリティ上の欠陥や弱点のことです。悪意のある攻撃者に悪用されると、データの漏洩やシステムの乗っ取りなどの被害につながる可能性があります。ライブラリ（他の人が作った便利なプログラム部品）の古いバージョンには、既知の脆弱性が含まれていることがあります。</p>
 <h2 is-upgraded>アーキテクチャと使用技術</h2>
 <ul>
 <li><strong>インフラ</strong>: AWS EC2 (CloudFormation で構築)</li>
@@ -39,6 +48,42 @@
 <li><strong>O11yツール</strong>: Amazon CloudWatch, Mackerel (または Datadog / Sentry)</li>
 <li><strong>セキュリティツール</strong>: Snyk または Aikido</li>
 </ul>
+<aside class="special"><p><strong>用語解説: 上記の技術用語について</strong></p>
+</aside>
+<ul>
+<li><strong>EC2 (Elastic Compute Cloud)</strong>: AWS が提供する仮想サーバーです。自分の PC の代わりにクラウド上にサーバーを借りるイメージです。</li>
+<li><strong>CloudFormation</strong>: AWS のリソースをコード（設計図）で自動作成するサービスです。詳しくは後のセクションで説明します。</li>
+<li><strong>Flask</strong>: Python で Web アプリケーションを簡単に作るためのフレームワーク（ひな形）です。</li>
+<li><strong>SQLite</strong>: ファイル1つで動く軽量なデータベースです。サーバーの設定が不要なため、学習用途に最適です。</li>
+<li><strong>CloudWatch</strong>: AWS が提供するログ収集・監視・アラーム通知のサービスです。</li>
+<li><strong>Mackerel / Datadog / Sentry</strong>: AWS 以外の会社が提供する監視・エラー管理の SaaS ツールです。</li>
+</ul>
+<aside class="special"><p><strong>SaaS とは？</strong></p>
+</aside>
+<p>「Software as a Service」の略で、自分でサーバーを用意してインストールすることなく、ブラウザ経由で利用できるサービスのことです。Mackerel や Sentry、Snyk などは、クラウド上で提供されているサービスをそのまま利用します。</p>
+<h2 is-upgraded>2つの環境の使い分けに注意！</h2>
+<p>本ハンズオンでは、2つの異なる Linux 環境を使い分けます。</p>
+<ol type="1">
+<li><strong>Kiro-IDE Remote</strong>: あなたの「作業用 PC」のような環境です。ここで設計図（CloudFormation）を書いたり、セキュリティスキャンを実行したりします。</li>
+<li><strong>ToDo アプリの EC2</strong>: CloudFormation で作成される「サーバー」環境です。アプリが実際に動き、ログが保存される場所です。</li>
+</ol>
+<aside class="special"><p>ターミナルで操作しているのが「どちらの環境か」を常に意識するのが上達の近道です。</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="事前準備: AWS Builder ID の作成" duration="5">
+        <p>Kiro-IDE Remoteなどのツールを利用・連携するために、「<strong>AWS Builder ID</strong>」が必要となります。 AWS Builder ID は AWS や Amazon.co.jp アカウントとは異なる、個人のための無料アカウントです（クレジットカードの登録なども不要です）。</p>
+<ol type="1">
+<li><a href="https://builder.aws.com/start" target="_blank">AWS Builder ID の作成画面</a> にアクセスします。</li>
+<li>個人のメールアドレスを入力し [次へ] をクリックします。</li>
+<li>表示される「名前」を入力して [次へ] をクリックします。</li>
+<li>入力したメールアドレス宛に届いた認証コードを入力して [認証] します。</li>
+<li>パスワードの条件（8〜64文字・大文字と小文字・数値・英数字以外の文字）を満たすパスワードを設定し、[AWS Builder IDを作成] をクリックします。</li>
+</ol>
+<aside class="special"><p>詳しい画面遷移や Community.aws でのプロファイル作成方法については、<a href="https://note.com/s_numaguchi/n/nd5126833389b" target="_blank">こちらの記事 (AWS Builder ID の利用とその作成方法)</a> もあわせてご参照ください。</p>
+</aside>
 
 
       </google-codelab-step>
@@ -54,7 +99,7 @@
 <li>デプロイに必要な以下のパラメータを確認・入力します： <ul>
 <li><strong>UserEmail</strong>: 構築完了メールや通知を受け取るご自身のメールアドレスを入力します。</li>
 <li><strong>Language</strong>: OS の言語設定です。<code>JP</code>（日本語）を選択しておくことを推奨します。</li>
-<li><strong>EnableAdministratorAccess</strong>: 本ハンズオンでは CloudFormation などの AWS リソースを作成・操作するため、<code>true</code> に設定してください。</li>
+<li><strong>EnableAdministratorAccess</strong>: <strong>重要</strong>。本ハンズオンでは CloudFormation などの AWS リソースを作成・操作するため、必ず <code>true</code> に設定してください。これにより、Kiro-IDE のターミナルから AWS コマンドを実行するための権限（IAM ロール）が自動的に付与されます。</li>
 </ul>
 </li>
 <li>画面最下部の「AWS CloudFormation が IAM リソースを作成する場合があることを承認します。」にチェックを入れます。</li>
@@ -69,7 +114,9 @@
 </ul>
 </li>
 <li>指定された URL にアクセスし、ユーザー名とパスワードでログインしてください。</li>
-<li>ログイン後、ブラウザ上で VS Code ライクなエディタとターミナルが使用できることを確認してください。以降の作業はこのエディタ内のターミナルで行います。 <ul>
+<li>ログイン後、ブラウザ上で VS Code ライクなエディタとターミナルが使用できることを確認してください。 <ul>
+<li><strong>エディタ</strong>: 左側のファイルツリーからファイルを管理し、右側の画面で編集します。</li>
+<li><strong>ターミナル</strong>: 画面下部（またはメニューの Terminal &gt; New Terminal）に表示される Linux シェルです。以降のコマンド操作はここで行います。</li>
 <li>※デスクトップ上の Kiro アイコンは最初無効化されています。右クリックで起動を許可（Allow Launching）してから実行してください。</li>
 </ul>
 </li>
@@ -81,13 +128,34 @@
       <google-codelab-step label="インフラとアプリのデプロイ" duration="15">
         <h2 is-upgraded>CloudFormationテンプレートの作成と実行</h2>
 <p>ToDoアプリを動かすためのEC2インスタンスを、CloudFormationを利用して構築します。</p>
+<aside class="special"><p><strong>CloudFormationとは？</strong></p>
+</aside>
+<p>AWS上のインフラ環境（サーバーやネットワークなど）を、設計図（テンプレート）としてコード化して自動構築するサービスです。「スタック」とは、その設計図をもとに作られたAWSリソースのグループのことです。手動で一つずつ設定するよりも、早く・正確にインフラを用意できます。</p>
 <ol type="1">
-<li>Kiro-IDE のエディタを開き、新規ファイル <code>todo-app-template.yaml</code> を作成します。</li>
+<li>Kiro-IDE のエディタを開き、新規ファイル <code>todo-app-template.yaml</code> を作成します。 <ul>
+<li><strong>作成方法</strong>: 左側のファイルエクスプローラーで右クリックし「New File」を選択するか、上部メニューの File &gt; New Text File から作成し、名前を付けて保存します。</li>
+</ul>
+</li>
+</ol>
+<aside class="special"><p><strong>■日本語入力</strong></p>
+</aside>
+<p>もしかしたら、デフォルトで英語になっているかもしれません。<code>Ctrl + Space</code> で直接／日本語を切り替えられますが、半角・全角キーでの切り替えを行いたい場合一度設定を再起動してください。</p>
+<aside class="special"><p><strong>■その他</strong></p>
+</aside>
+<ul>
+<li>Kiro CLI で認証がなかなか進まない場合、<code>kiro-cli login --use-device-flow</code> を試してみてください。</li>
+<li>ターミナルへの Copy &amp; Paste は <code>Ctrl + Shift + V</code> になります。これは Linux の仕様です。</li>
+</ul>
+<ol type="1" start="2">
 <li>以下の内容をコピーして、作成したファイルに貼り付けて保存します。 （※このテンプレートは EC2 の構築、Python・Flask のセットアップ、および脆弱性のあるパッケージの導入を自動で行います）</li>
 </ol>
+<aside class="warning"><p><strong>YAML (ヤムル) ファイルの注意点</strong></p>
+</aside>
+<p>YAML はインデント（行頭の空白の数）で設定の階層構造を表現します。コピー＆ペーストする際に空白がズレてしまうとエラーになるため、そのままの形で貼り付いているか必ず確認してください。</p>
 <pre><code language="language-yaml" class="language-yaml">AWSTemplateFormatVersion: &#39;2010-09-09&#39;
 Description: &#39;ToDo App EC2 Instance for Observability Hands-on&#39;
 Resources:
+  # --- ① IAMロール: EC2がAWSサービス(SSM, CloudWatch)と連携するための「許可証」---
   InstanceRole:
     Type: &#39;AWS::IAM::Role&#39;
     Properties:
@@ -102,12 +170,14 @@ Resources:
         - &#39;arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore&#39;
         - &#39;arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy&#39;
 
+  # --- ② インスタンスプロファイル: IAMロールをEC2に紐づけるための「入れ物」---
   InstanceProfile:
     Type: &#39;AWS::IAM::InstanceProfile&#39;
     Properties:
       Roles:
         - !Ref InstanceRole
 
+  # --- ③ セキュリティグループ: EC2への通信を制御する「ファイアウォール」---
   InstanceSecurityGroup:
     Type: &#39;AWS::EC2::SecurityGroup&#39;
     Properties:
@@ -118,6 +188,7 @@ Resources:
           ToPort: 8080
           CidrIp: 0.0.0.0/0
 
+  # --- ④ EC2インスタンス本体: アプリが動くサーバー ---
   ToDoAppInstance:
     Type: &#39;AWS::EC2::Instance&#39;
     Properties:
@@ -126,6 +197,7 @@ Resources:
       IamInstanceProfile: !Ref InstanceProfile
       SecurityGroupIds:
         - !Ref InstanceSecurityGroup
+      # --- ⑤ UserData: EC2起動時に自動実行されるセットアップスクリプト ---
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
@@ -163,6 +235,7 @@ Resources:
           EOF
           nohup python3 app.py &gt; /dev/null 2&gt;&amp;1 &amp;
 
+# --- ⑥ Outputs: スタック作成後に表示される情報 ---
 Outputs:
   AppURL:
     Value: !Sub &#39;http://${ToDoAppInstance.PublicDnsName}:8080&#39;
@@ -171,6 +244,24 @@ Outputs:
     Value: !Ref ToDoAppInstance
     Description: EC2 Instance ID
 </code></pre>
+<aside class="special"><p><strong>テンプレートの各パーツ解説</strong></p>
+</aside>
+<p>上記のテンプレートは、以下の6つのパーツで構成されています。</p>
+<ol type="1">
+<li><strong>InstanceRole (IAMロール)</strong>: EC2 が SSM（リモート接続）や CloudWatch（ログ送信）を使うための「許可証」です。人間でいう「社員証」のようなもので、これがないと EC2 は他の AWS サービスと連携できません。</li>
+<li><strong>InstanceProfile</strong>: IAM ロールを EC2 に渡すための「入れ物」です。EC2 にロールを直接付けることはできないため、この仲介役が必要です。</li>
+<li><strong>InstanceSecurityGroup</strong>: EC2 への通信を制御する「ファイアウォール（防火壁）」です。ここでは TCP ポート 8080 番への通信を全 IP アドレス（<code>0.0.0.0/0</code>）から許可しています。</li>
+<li><strong>ToDoAppInstance</strong>: 実際の EC2 サーバー本体です。<code>t3.micro</code> は無料利用枠対象の小さなサーバーサイズです。<code>ImageId</code> は OS のテンプレート（Amazon Linux 2023）を指定しています。</li>
+<li><strong>UserData</strong>: EC2 が初めて起動した時に自動実行されるスクリプトです。Python や Flask のインストール、アプリのコード配置、アプリの起動までを自動で行います。</li>
+<li><strong>Outputs</strong>: スタック作成完了後に表示される情報です。アプリの URL やインスタンス ID を確認できます。</li>
+</ol>
+<aside class="special"><p><strong>YAML の特殊な記法について</strong></p>
+</aside>
+<ul>
+<li><code>!Ref InstanceRole</code>: 同じテンプレート内の別リソースを「参照」する関数です。「上で定義した InstanceRole を使う」という意味です。</li>
+<li><code>!Sub</code>: 文字列の中に変数を埋め込む関数です。<code>${ToDoAppInstance.PublicDnsName}</code> の部分が、実際の EC2 の DNS 名に置き換わります。</li>
+<li><code>Fn::Base64</code>: テキストを Base64 形式にエンコード（変換）します。UserData に渡すスクリプトは Base64 形式である必要があるため使用しています。</li>
+</ul>
 <ol type="1" start="3">
 <li>Kiro-IDE のターミナルで以下のコマンドを実行し、ファイルからCloudFormationスタックを作成します。</li>
 </ol>
@@ -179,8 +270,20 @@ Outputs:
   --template-body file://todo-app-template.yaml \
   --capabilities CAPABILITY_IAM
 </pre>
-<ol type="1" start="3">
-<li>スマホやブラウザから構築された ToDo アプリ（例: EC2のパブリックIP:8080）にアクセスし、タスクの追加・完了ができることを確認します。</li>
+<aside class="special"><p><strong>コマンドの解説</strong></p>
+</aside>
+<ul>
+<li><code>--stack-name</code>: この構築セットに付ける名前です。</li>
+<li><code>--template-body</code>: 先ほど作成したファイルのパスを指定します。</li>
+<li><code>--capabilities CAPABILITY_IAM</code>: このテンプレートが、AWS内での権限設定（IAMロールなど）を作成することを許可するためのフラグです。</li>
+</ul>
+<ol type="1" start="4">
+<li>構築完了を確認します。<ul>
+<li>AWS マネジメントコンソールの <strong>CloudFormation</strong> 画面を開き、<code>saga-o11y-handson</code> のステータスが <code>CREATE_COMPLETE</code> になるのを待ちます。</li>
+<li>完了したら、スタックの詳細画面にある「<strong>出力 (Outputs)</strong>」タブを開きます。</li>
+<li>そこに表示されている <code>AppURL</code> をクリック（またはコピーしてブラウザで開く）して、ToDo アプリが表示されるか確認してください。</li>
+</ul>
+</li>
 <li>このToDoアプリは背景でログファイル（例: <code>/var/log/todo-app/app.log</code>）にアクセスログやエラーを出力していることを確認しておきましょう。</li>
 </ol>
 
@@ -190,10 +293,37 @@ Outputs:
       <google-codelab-step label="CloudWatchによるログ取集と通知" duration="15">
         <p>まずはAWSのネイティブサービスである CloudWatch を利用してアプリのログを収集・可視化します。</p>
 <h2 is-upgraded>CloudWatch Agent のインストールと設定</h2>
-<p>EC2 インスタンスにログイン（またはSSMセッションマネージャー経由で接続）し、CloudWatch Agentをインストールします。</p>
+<p>EC2 インスタンスにログイン（※マネジメントコンソールから「SSMセッションマネージャー」を使用すると、ブラウザだけで安全・簡単にLinuxサーバへ接続できます）し、CloudWatch Agentをインストールします。</p>
+<aside class="special"><p><strong>SSM セッションマネージャーでの EC2 接続手順</strong></p>
+</aside>
+<p>SSH キーの設定なしに、ブラウザだけで EC2 に接続できる便利な方法です。</p>
+<ol type="1">
+<li>AWS マネジメントコンソールにログインし、上部の検索バーで「<strong>EC2</strong>」と入力して EC2 ダッシュボードを開きます。</li>
+<li>左メニューの「<strong>インスタンス</strong>」をクリックし、<code>saga-o11y-handson</code> で作成されたインスタンスを見つけます。</li>
+<li>インスタンスのチェックボックスを選択し、画面上部の「<strong>接続</strong>」ボタンをクリックします。</li>
+<li>「セッションマネージャー」タブを選択し、「<strong>接続</strong>」をクリックします。</li>
+<li>ブラウザ上に黒い画面（ターミナル）が開けば接続成功です。 :</li>
+</ol>
+<p>※ 接続できない場合は、EC2 インスタンスのステータスが「実行中 (running)」であること、および CloudFormation テンプレートで IAM ロール（<code>AmazonSSMManagedInstanceCore</code> ポリシー）が正しく設定されていることを確認してください。</p>
+<aside class="special"><p><strong>セッションマネージャーで接続した直後の注意点</strong></p>
+</aside>
+<p>接続直後は <code>sh-5.2$</code> のようなプロンプト（入力待ち表示）になっています。<code>bash</code> と入力して Enter を押すと、より使いやすいシェルに切り替わります。また、<code>sudo su -</code> と入力すると管理者（root）ユーザーに切り替わり、<code>sudo</code> を毎回付ける必要がなくなります。</p>
+<aside class="special"><p><strong>Linux コマンドの補足: </strong><strong><code>sudo</code></strong><strong> とパッケージ管理</strong></p>
+</aside>
+<p>以下のコマンドの先頭にある <code>sudo</code> は、「管理者（スーパーユーザー）権限で実行する」という意味です。ソフトウェアのインストールなどシステム全体に関わる操作を行う際に必要になります。また、<code>yum</code> や <code>dnf</code> は、ソフトウェアをダウンロード・インストールするためのパッケージ管理ツールです。</p>
 <pre>sudo yum install amazon-cloudwatch-agent -y
 </pre>
 <p>ログを転送するための設定ファイル（<code>config.json</code>）を作成し、起動します。</p>
+<aside class="special"><p><strong>GUI エディタを使って編集したい場合</strong></p>
+</aside>
+<ol type="1">
+<li>まず、<strong>Kiro-IDE のエディタ</strong>で <code>config.json</code> という名前の新規ファイルを作成し、以下の JSON 内容を貼り付けて保存します。</li>
+<li>保存した内容をコピーします。</li>
+<li>EC2 インスタンスのターミナル（セッションマネージャー）で <code>sudo nano config.json</code> を実行します。</li>
+<li>コピーした内容をターミナルに貼り付け（Ctrl + Shift + V）て保存します。</li>
+</ol>
+<p>これが、GUI を活用しつつサーバー上のファイルを書き換える最も確実な方法です！</p>
+<p>EC2 のターミナルで以下の設定を作成します。</p>
 <pre><code language="language-json" class="language-json">{
   &#34;logs&#34;: {
     &#34;logs_collected&#34;: {
@@ -210,10 +340,28 @@ Outputs:
   }
 }
 </code></pre>
+<aside class="special"><p><strong>用語解説</strong></p>
+</aside>
+<ul>
+<li><strong>ロググループ</strong>: ログをまとめる器の名前です（例: アプリ名など）。</li>
+<li><strong>ログストリーム</strong>: その器の中の、個別のログファイルの流れです。ここではインスタンスIDを名前にしています。</li>
+</ul>
 <pre>sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:config.json
 </pre>
+<aside class="special"><p><strong>コマンドの解説</strong></p>
+</aside>
+<p>このコマンドは CloudWatch Agent を設定ファイルを読み込んで起動するものです。</p>
+<ul>
+<li><code>-a fetch-config</code>: 「設定を取得して適用する」というアクション指定です。</li>
+<li><code>-m ec2</code>: 実行環境が EC2 であることを指定しています。</li>
+<li><code>-s</code>: エージェントを起動（start）します。</li>
+<li><code>-c file:config.json</code>: 先ほど作成した設定ファイルを指定しています。</li>
+</ul>
 <h2 is-upgraded>通知用 SNS トピックの作成とメール購読 (CLI)</h2>
 <p>まずは、アラーム発生時にメールを通知するための SNS トピックを作成します。Kiro-IDE のターミナルから以下のコマンドを入力します。 （最後に設定する自分のメールアドレス <code>your_email@example.com</code> は、受信可能なものに変更して実行してください）</p>
+<aside class="special"><p><strong>用語解説: SNS (Simple Notification Service) とは？</strong></p>
+</aside>
+<p>AWS が提供する通知サービスです。「トピック」という通知チャンネルを作り、そこにメールアドレスなどの「購読者（サブスクライバー）」を登録しておくと、トピックにメッセージが送られた時に自動で通知が届きます。LINEグループのようなイメージです。</p>
 <pre># SNS トピックの作成
 TOPIC_ARN=$(aws sns create-topic --name todo-app-alerts --query &#39;TopicArn&#39; --output text)
 
@@ -223,9 +371,32 @@ aws sns subscribe \
   --protocol email \
   --notification-endpoint &#34;your_email@example.com&#34;
 </pre>
+<aside class="special"><p><strong>コマンドの解説</strong></p>
+</aside>
+<ul>
+<li><code>aws sns create-topic --name todo-app-alerts</code>: 「todo-app-alerts」という名前の通知チャンネル（トピック）を作成します。</li>
+<li><code>--query 'TopicArn' --output text</code>: コマンドの出力結果から ARN（識別子）だけをテキスト形式で取り出します。</li>
+<li><code>TOPIC_ARN=$(...)</code>: <code>$(...)</code> の中のコマンドを実行し、その結果を <code>TOPIC_ARN</code> という変数に保存します。</li>
+<li><code>aws sns subscribe</code>: トピックにメールアドレスを購読者として登録します。</li>
+<li><code>--protocol email</code>: 通知方法として「メール」を指定しています（他に SMS や HTTPS なども選べます）。</li>
+<li><code>--notification-endpoint</code>: 通知先のメールアドレスを指定します。</li>
+</ul>
+<aside class="special"><p><strong>用語解説: ARN とは？</strong></p>
+</aside>
+<p>「Amazon Resource Name」の略で、AWS 上のあらゆるリソースを一意に識別するための住所のようなものです。<code>arn:aws:sns:ap-northeast-1:123456789012:todo-app-alerts</code> のような形式をしています。</p>
+<aside class="special"><p><strong>Linux コマンドの補足: 変数の利用と </strong><strong><code>\</code></strong><strong> による改行</strong></p>
+</aside>
+<p>上記のコマンドでは、SNS トピック作成時に出力される識別子 (ARN) を <code>TOPIC_ARN</code> という「変数」に一時保存し、直後のメール登録コマンドで <code>$TOPIC_ARN</code> として再利用しています。また、行末の <code>\</code> (バックスラッシュまたは円記号) は、「次の行も同じコマンドとして続く」ことを意味しています。長いコマンドを見やすく改行するための工夫です。</p>
 <p>※ コマンド実行後、入力したメールアドレス宛に「<strong>AWS Notification - Subscription Confirmation</strong>」というメールが届きます。本文中の <code>Confirm subscription</code> を必ずクリックして承認してください。</p>
 <h2 is-upgraded>メトリクスフィルターとアラームの作成 (CLI)</h2>
 <p>アプリのログログループ（<code>todo-app-logs</code>）の中から、<code>ERROR</code> という文字列を含んだ行をカウントし、1分間に1回でも発生したら先ほどの SNS（メール）経由で通知する設定を行います。</p>
+<aside class="special"><p><strong>用語解説: メトリクスフィルターとアラームとは？</strong></p>
+</aside>
+<ul>
+<li><strong>メトリクスフィルター</strong>: ログの中から特定の文字列（パターン）を検索し、見つかった回数を「メトリクス（数値データ）」として記録する仕組みです。</li>
+<li><strong>アラーム</strong>: メトリクスの値が設定した条件（しきい値）を超えた時に、通知などのアクションを実行する仕組みです。</li>
+</ul>
+<p>この2つを組み合わせることで、「ログに ERROR が出たらメールで知らせる」という自動通知が実現できます。</p>
 <pre># ロググループが存在することを保証するために作成（既に存在する場合は作成済みのエラーが出ますが無視して構いません）
 aws logs create-log-group --log-group-name todo-app-logs || true
 
@@ -250,6 +421,31 @@ aws cloudwatch put-metric-alarm \
   --alarm-actions $TOPIC_ARN \
   --treat-missing-data notBreaching
 </pre>
+<aside class="special"><p><strong>メトリクスフィルターのコマンド解説</strong></p>
+</aside>
+<ul>
+<li><code>--log-group-name "todo-app-logs"</code>: 監視対象のロググループ名です。</li>
+<li><code>--filter-name "ErrorFilter"</code>: このフィルターに付ける名前です。</li>
+<li><code>--filter-pattern "ERROR"</code>: ログの中から検索する文字列です。「ERROR」を含む行が見つかるたびにカウントされます。</li>
+<li><code>--metric-transformations</code>: フィルターが一致した時にどんな数値データを記録するかの設定です。</li>
+<li><code>metricName=ErrorCount</code>: 記録するメトリクスの名前（エラー回数）。</li>
+<li><code>metricNamespace=ToDoAppMetrics</code>: メトリクスを分類するグループ名。</li>
+<li><code>metricValue=1</code>: パターンが一致するたびに「1」を記録します。</li>
+<li><code>defaultValue=0</code>: パターンが一致しない場合は「0」を記録します。</li>
+</ul>
+<aside class="special"><p><strong>アラームのコマンド解説</strong></p>
+</aside>
+<ul>
+<li><code>--alarm-name</code>: アラームの名前です。</li>
+<li><code>--metric-name</code> / <code>--namespace</code>: 上で作成したメトリクスフィルターの名前とグループを指定します。</li>
+<li><code>--statistic Sum</code>: 集計方法として「合計」を使います（期間内のエラー回数の合計）。</li>
+<li><code>--period 60</code>: 60秒（1分間）ごとに集計します。</li>
+<li><code>--evaluation-periods 1</code>: 1回の集計期間で判定します（つまり直近1分間）。</li>
+<li><code>--threshold 1</code>: しきい値（基準値）を「1」に設定。エラーが1回以上でアラーム発動です。</li>
+<li><code>--comparison-operator GreaterThanOrEqualToThreshold</code>: 「しきい値以上」で発動する条件です。</li>
+<li><code>--alarm-actions $TOPIC_ARN</code>: アラーム発動時に通知を送る SNS トピックを指定します。</li>
+<li><code>--treat-missing-data notBreaching</code>: データがない期間は「問題なし」として扱います。</li>
+</ul>
 <h2 is-upgraded>マネジメントコンソールでの確認とエラー発生テスト</h2>
 <p>CLI で一気に立ち上げた設定を、実際に画面から確認＆テストしてみましょう。</p>
 <ol type="1">
@@ -273,17 +469,75 @@ aws cloudwatch put-metric-alarm \
 <ol type="1">
 <li><a href="https://mackerel.io/" target="_blank">Mackerel</a> にサインアップし、オーガニゼーションを作成します。</li>
 <li>「新規ホストの登録」画面から、インストールコマンド（APIキーが含まれています）をコピーします。</li>
-<li>Kiro-IDE などのターミナルから、EC2 にログインしコマンドを実行します。</li>
+<li><strong>EC2 インスタンスのターミナル（セッションマネージャー）</strong> にて、コピーしたコマンドを実行します。</li>
 </ol>
 <pre># Mackerelのインストールと起動（ダミー例。実際のコマンドを使用）
 curl -fsSL https://mackerel.io/file/script/setup-all-yum-v2.sh | MACKEREL_APIKEY=&#39;YOUR_API_KEY&#39; sh
 </pre>
-<h2 is-upgraded>アプリケーション監視の設定</h2>
+<aside class="special"><p><strong>コマンドの解説</strong></p>
+</aside>
 <ul>
-<li>Mackerel のダッシュボードに EC2 の CPU やメモリのリソースが表示されることを確認します。</li>
-<li><code>mackerel-agent.conf</code> を編集し、先ほどのアプリのログ (<code>/var/log/todo-app/app.log</code>) を監視し、特定のエラー文字列でアラートを発火させる設定（チェック監視）を追加します。</li>
+<li><code>curl -fsSL <URL></code>: 指定した URL からスクリプト（プログラム）をダウンロードするコマンドです。<code>-fsSL</code> はエラー時に静かに失敗し、リダイレクトに追従するオプションです。</li>
+<li><code>| sh</code>: ダウンロードしたスクリプトをそのまま実行します。<code>|</code>（パイプ）は前のコマンドの出力を次のコマンドに渡す Linux の機能です。</li>
+<li><code>MACKEREL_APIKEY='YOUR_API_KEY'</code>: Mackerel のアカウントに紐づく API キー（認証用の文字列）を環境変数として渡しています。Mackerel の画面からコピーした実際のキーに置き換えてください。</li>
 </ul>
-<p>[!TIP] アプリによっては、コード内に Sentry SDK を組み込むことで、より詳細なスタックトレース付きのエラー収集を体験するのもおすすめです。導入後はわざとアプリで例外(Exception)を発生させて、Sentryのダッシュボードで確認してみましょう。</p>
+<h2 is-upgraded>アプリケーション監視の設定（ログ監視）</h2>
+<p>ダッシュボードへのリソース表示とあわせて、アプリケションログの監視（チェック監視）を追加してみましょう。</p>
+<ol type="1">
+<li>Mackerel のダッシュボードに EC2 の CPU やメモリのリソースが表示されていることを確認します。</li>
+<li>ログ監視を行うために、Mackerel公式のチェックプラグイン集をインストールします。<strong>EC2 のターミナル</strong>で以下のコマンドを実行します。</li>
+</ol>
+<pre>sudo dnf install -y mackerel-check-plugins
+</pre>
+<ol type="1" start="3">
+<li>Mackerel エージェントの設定ファイルを開きます。</li>
+</ol>
+<pre>sudo nano /etc/mackerel-agent/mackerel-agent.conf
+</pre>
+<aside class="special"><p><strong>nano エディタの基本操作</strong></p>
+</aside>
+<p><code>nano</code> は Linux で使えるシンプルなテキストエディタです。画面下部にショートカットキーの一覧が表示されます（<code>^</code> は Ctrl キーを意味します）。</p>
+<ul>
+<li><strong>カーソル移動</strong>: 矢印キーで移動します。</li>
+<li><strong>文字の入力</strong>: そのままキーボードで入力できます。</li>
+<li><strong>保存</strong>: <code>Ctrl + O</code> を押し、ファイル名を確認して <code>Enter</code> を押します。</li>
+<li><strong>終了</strong>: <code>Ctrl + X</code> で nano を閉じます。</li>
+<li><strong>貼り付け</strong>: ブラウザからコピーした内容は <code>Ctrl + Shift + V</code> で貼り付けます。</li>
+<li><strong>行末へ移動</strong>: <code>Ctrl + E</code>、<strong>行頭へ移動</strong>: <code>Ctrl + A</code> が便利です。</li>
+</ul>
+<ol type="1" start="4">
+<li>先ほどのアプリのログ (<code>/var/log/todo-app/app.log</code>) から、特定のエラー文字列（<code>ERROR</code>）を検知してアラートを発火させるため、ファイルの末尾に以下の設定を追記し、保存して閉じます。（※ nano エディタの場合は <code>Ctrl+O</code> -&gt; <code>Enter</code> で保存し、<code>Ctrl+X</code> で終了します）</li>
+</ol>
+<pre><code language="language-toml" class="language-toml">[plugin.checks.todo-app-log]
+command = [&#34;check-log&#34;, &#34;--file&#34;, &#34;/var/log/todo-app/app.log&#34;, &#34;--pattern&#34;, &#34;ERROR&#34;]
+</code></pre>
+<aside class="special"><p><strong>設定ファイル (TOML形式) の解説</strong></p>
+</aside>
+<ul>
+<li><code>[plugin.checks.todo-app-log]</code>: チェック監視プラグインの設定セクションです。<code>todo-app-log</code> は監視項目の名前で、Mackerel のダッシュボードに表示されます。</li>
+<li><code>command</code>: 実行するチェックコマンドです。<code>check-log</code> プラグインが <code>/var/log/todo-app/app.log</code> ファイルを監視し、<code>ERROR</code> という文字列が見つかるとアラートを発報します。</li>
+</ul>
+<ol type="1" start="5">
+<li>設定を反映させるために Mackerel エージェントを再起動します。</li>
+</ol>
+<pre>sudo systemctl restart mackerel-agent
+</pre>
+<aside class="special"><p><strong>Linux コマンドの補足: systemctl とは？</strong></p>
+</aside>
+<p><code>systemctl</code> は Linux のサービス（バックグラウンドで動くプログラム）を管理するコマンドです。</p>
+<ul>
+<li><code>sudo systemctl restart <サービス名></code>: サービスを再起動します（設定変更を反映させたい時に使います）。</li>
+<li><code>sudo systemctl status <サービス名></code>: サービスの現在の状態（動作中か停止中か）を確認できます。</li>
+<li><code>sudo systemctl start <サービス名></code>: サービスを開始します。</li>
+<li><code>sudo systemctl stop <サービス名></code>: サービスを停止します。 :</li>
+</ul>
+<p>設定ファイルを変更した後は <code>restart</code> で再起動しないと変更が反映されません。</p>
+<ol type="1" start="6">
+<li>アプリの <strong>エラー発生用 URL</strong>（<code>http://<EC2のIPまたはパブリックDNS>:8080/error</code>）へ何度かアクセスし、意図的にエラーログを発生させます。</li>
+<li>Mackerel のダッシュボードの左メニュー「<strong>Alerts (アラート)</strong>」から、指定したログ監視アラート（<code>todo-app-log</code>）が CRITICAL として検知・発報していることを確認します。</li>
+</ol>
+<aside class="special"><p>アプリによっては、コード内に Sentry SDK を組み込むことで、より詳細なスタックトレース付きのエラー収集を体験するのもおすすめです。導入後はわざとアプリで例外(Exception)を発生させて、Sentryのダッシュボードで確認してみましょう。</p>
+</aside>
 
 
       </google-codelab-step>
@@ -291,24 +545,53 @@ curl -fsSL https://mackerel.io/file/script/setup-all-yum-v2.sh | MACKEREL_APIKEY
       <google-codelab-step label="脆弱性の検知と修復 (Snyk / Aikido)" duration="20">
         <p>開発と運用（DevSecOps）において、使用しているライブラリ（パッケージ）に脆弱性がないかチェックすることは重要です。 ここでは意図的に古い脆弱なパッケージを入れ、ツールで検知し、安全なバージョンに修復します。</p>
 <h2 is-upgraded>脆弱なパッケージの導入</h2>
-<p>Kiro-IDE 上で、ToDo アプリのソースコードディレクトリに移動し、わざと古いパッケージを指定してインストールします。（例：Python の requests や Jinja2 の古いバージョン）</p>
+<p>Kiro-IDE または EC2 のターミナル上で、作業用のソースコードディレクトリ（フォルダ）に移動し、わざと古いパッケージを指定してインストールします。（例：Python の requests や Jinja2 の古いバージョン）</p>
+<aside class="special"><p><strong>Linux コマンドの補足: ディレクトリの移動</strong></p>
+</aside>
+<p>Linux 環境で特定のフォルダ（ディレクトリ）に移動する場合は、<code>cd</code> (change directory) コマンドを使用します。今回の EC2 の例では、アプリの配置場所である <code>/opt/todo-app</code> に移動する必要があります（例: <code>cd /opt/todo-app</code> を実行）。</p>
 <pre># Pythonの例
 pip install requests==2.19.1
 pip freeze &gt; requirements.txt
 </pre>
+<aside class="special"><p><strong>用語解説</strong></p>
+</aside>
+<ul>
+<li><strong>pip</strong>: Python のライブラリをインストールするためのツールです。</li>
+<li><strong>pip freeze</strong>: 現在インストールされているライブラリとそのバージョンを一覧表示します。</li>
+<li><strong>requirements.txt</strong>: プロジェクトに必要なライブラリを書き出したファイルです。これがあることで、他の環境でも同じ構成を再現できます。 <code>></code> は「コマンドの結果をファイルに書き出す」という Linux の機能（リダイレクト）です。</li>
+</ul>
 <h2 is-upgraded>セキュリティスキャンの実行（例: Snyk）</h2>
 <ol type="1">
 <li><a href="https://snyk.io/" target="_blank">Snyk</a> のアカウントを作成し、CLI メニューの手順に従って Kiro-IDE 環境に Snyk CLI をインストールします。</li>
 <li>認証を行います。</li>
 </ol>
+<aside class="special"><p><strong>用語解説: npm とは？</strong></p>
+</aside>
+<p>「Node Package Manager」の略で、JavaScript / TypeScript のライブラリ（パッケージ）を管理するツールです。Python における <code>pip</code> と同じ役割です。<code>npm install -g snyk</code> の <code>-g</code> は「グローバル（システム全体）にインストールする」という意味で、どのディレクトリからでも <code>snyk</code> コマンドが使えるようになります。</p>
+<aside class="special"><p><strong>Snyk CLI を使うための前提条件</strong></p>
+</aside>
+<p>Snyk CLI を動かすには <strong>Node.js</strong> が必要です。Kiro-IDE 環境には通常プリインストールされていますが、<code>node --version</code> を実行してバージョンが表示されない場合は、以下のコマンドで Node.js をインストールしてください。</p>
+<pre></pre>
+<p>Amazon Linux 2023 の場合</p>
+<p>sudo dnf install -y nodejs</p>
+<pre><code></code></pre>
 <pre>npm install -g snyk
 snyk auth
 </pre>
+<aside class="special"><p><strong>コマンドの解説</strong></p>
+</aside>
+<ul>
+<li><code>npm install -g snyk</code>: Snyk の CLI ツールをグローバルにインストールします。</li>
+<li><code>snyk auth</code>: ブラウザが開き、Snyk アカウントとの認証（ログイン連携）を行います。ブラウザが開かない環境の場合は、<code>snyk auth --token <YOUR_TOKEN></code> のように Snyk の Web 画面から取得したトークンを直接指定することもできます。</li>
+</ul>
 <ol type="1" start="3">
 <li>プロジェクトディレクトリでスキャンを実行します。</li>
 </ol>
 <pre>snyk test
 </pre>
+<aside class="special"><p><strong>コマンドの解説</strong></p>
+</aside>
+<p><code>snyk test</code> は、カレントディレクトリ（現在いるフォルダ）にある <code>requirements.txt</code> や <code>package.json</code> などの依存関係ファイルを読み取り、使用しているライブラリに既知の脆弱性がないかをチェックします。結果には脆弱性の深刻度（Low / Medium / High / Critical）、影響を受けるパッケージ名、推奨される修正バージョンなどが表示されます。</p>
 <ol type="1" start="4">
 <li>古い <code>requests</code> パッケージに「High」や「Critical」な脆弱性が複数見つかることを確認してください。</li>
 </ol>
@@ -318,6 +601,12 @@ snyk auth
 pip install requests --upgrade
 pip freeze &gt; requirements.txt
 </pre>
+<aside class="special"><p><strong>コマンドの解説</strong></p>
+</aside>
+<ul>
+<li><code>pip install requests --upgrade</code>: <code>requests</code> ライブラリを最新の安全なバージョンにアップデートします。<code>--upgrade</code> を付けないと、既にインストール済みの場合は何もしません。</li>
+<li><code>pip freeze > requirements.txt</code>: アップデート後のライブラリ一覧を <code>requirements.txt</code> に上書き保存します。これにより、修正後の安全な状態が記録されます。</li>
+</ul>
 <p>再度 <code>snyk test</code> を実行し、脆弱性が「0」になったことを確認します。</p>
 <aside class="special"><p>このように、定期的にチェックすることで、本番環境に脆弱性が混入するのを未然に防ぐことができます。</p>
 </aside>
@@ -331,6 +620,45 @@ pip freeze &gt; requirements.txt
 <p>Kiro-IDE または AWS マネジメントコンソールから、最初に作成した CloudFormation スタックを削除します。</p>
 <pre>aws cloudformation delete-stack --stack-name saga-o11y-handson
 </pre>
+<aside class="special"><p><strong>コマンドの解説</strong></p>
+</aside>
+<p><code>delete-stack</code> は、指定したスタック名に紐づくすべての AWS リソース（EC2、セキュリティグループ、IAM ロールなど）をまとめて削除します。手動で一つずつ消す必要がないのが CloudFormation の大きなメリットです。</p>
+<aside class="special"><p><strong>削除が完了したか確認する方法</strong></p>
+</aside>
+<p><code>delete-stack</code> コマンドは即座に完了しますが、実際のリソース削除には数分かかります。以下のいずれかの方法で削除完了を確認してください。</p>
+<ul>
+<li><strong>CLI で確認</strong>: 以下のコマンドを実行し、ステータスが <code>DELETE_COMPLETE</code> になるか、スタックが見つからない（エラーになる）ことを確認します。</li>
+</ul>
+<pre></pre>
+<p>aws cloudformation describe-stacks –stack-name saga-o11y-handson</p>
+<pre><code></code></pre>
+<ul>
+<li><strong>マネジメントコンソールで確認</strong>: CloudFormation の画面を開き、フィルターで「削除済み」を含めて表示すると、<code>DELETE_COMPLETE</code> のステータスを確認できます。スタック一覧から消えていれば削除完了です。</li>
+</ul>
+<aside class="warning"><p><strong>削除に失敗した場合</strong></p>
+</aside>
+<p>ステータスが <code>DELETE_FAILED</code> になった場合は、CloudFormation の「イベント」タブでエラー原因を確認してください。手動で追加したリソース（例: セキュリティグループのルールなど）が原因で削除できないことがあります。その場合は、該当リソースを手動で削除してから再度 <code>delete-stack</code> を実行してください。</p>
+<h2 is-upgraded>手動で作成したリソースの削除</h2>
+<p>CloudFormation で管理されていない、CLI で手動作成したリソースも忘れずに削除しましょう。</p>
+<pre># SNS トピックの削除（TOPIC_ARN 変数が残っている場合）
+aws sns delete-topic --topic-arn $TOPIC_ARN
+
+# CloudWatch アラームの削除
+aws cloudwatch delete-alarms --alarm-names &#34;ToDoAppErrorAlarm&#34;
+
+# メトリクスフィルターの削除
+aws logs delete-metric-filter --log-group-name &#34;todo-app-logs&#34; --filter-name &#34;ErrorFilter&#34;
+
+# ロググループの削除
+aws logs delete-log-group --log-group-name &#34;todo-app-logs&#34;
+</pre>
+<aside class="special"><p><strong>TOPIC_ARN 変数が消えてしまった場合</strong></p>
+</aside>
+<p>ターミナルを閉じると変数は消えてしまいます。その場合は以下のコマンドで ARN を確認できます。</p>
+<pre></pre>
+<p>aws sns list-topics</p>
+<pre><code></code></pre>
+<p>表示された一覧から <code>todo-app-alerts</code> を含む ARN をコピーして使用してください。</p>
 <h2 is-upgraded>Kiro-IDE 環境の削除</h2>
 <p>用済みになった場合は、手順に従って Kiro-IDE 自体の CloudFormation スタックも削除してください。</p>
 <h2 is-upgraded>外部サービスの後処理</h2>
