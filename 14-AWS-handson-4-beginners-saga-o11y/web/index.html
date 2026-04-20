@@ -139,12 +139,12 @@
 </ol>
 <aside class="special"><p><strong>■日本語入力</strong></p>
 </aside>
-<p>もしかしたら、デフォルトで英語になっているかもしれません。<code>Ctrl + Space</code> で直接／日本語を切り替えられますが、半角・全角キーでの切り替えを行いたい場合一度設定を再起動してください。</p>
+<p>もしかしたら、デフォルトで英語になっているかもしれません。Windowsの場合は <code>Ctrl + Space</code>、Macの場合は <code>Control + Space</code> や <code>Cmd + Space</code> などで直接／日本語入力を切り替えられる場合があります。半角・全角キーでの切り替えを行いたい場合一度設定を再起動してください。</p>
 <aside class="special"><p><strong>■その他</strong></p>
 </aside>
 <ul>
 <li>Kiro CLI で認証がなかなか進まない場合、<code>kiro-cli login --use-device-flow</code> を試してみてください。</li>
-<li>ターミナルへの Copy &amp; Paste は <code>Ctrl + Shift + V</code> になります。これは Linux の仕様です。</li>
+<li>ターミナルへの貼り付け（Paste）は、Windows の場合は <code>Ctrl + Shift + V</code>、Mac の場合は <code>Cmd + V</code> をお試しください。</li>
 </ul>
 <ol type="1" start="2">
 <li>以下の内容をコピーして、作成したファイルに貼り付けて保存します。 （※このテンプレートは EC2 の構築、Python・Flask のセットアップ、および脆弱性のあるパッケージの導入を自動で行います）</li>
@@ -320,7 +320,7 @@ Outputs:
 <li>まず、<strong>Kiro-IDE のエディタ</strong>で <code>config.json</code> という名前の新規ファイルを作成し、以下の JSON 内容を貼り付けて保存します。</li>
 <li>保存した内容をコピーします。</li>
 <li>EC2 インスタンスのターミナル（セッションマネージャー）で <code>sudo nano config.json</code> を実行します。</li>
-<li>コピーした内容をターミナルに貼り付け（Ctrl + Shift + V）て保存します。</li>
+<li>コピーした内容をターミナルに貼り付け（Windows: <code>Ctrl + Shift + V</code> / Mac: <code>Cmd + V</code>）て保存します。</li>
 </ol>
 <p>これが、GUI を活用しつつサーバー上のファイルを書き換える最も確実な方法です！</p>
 <p>EC2 のターミナルで以下の設定を作成します。</p>
@@ -496,17 +496,17 @@ curl -fsSL https://mackerel.io/file/script/setup-all-yum-v2.sh | MACKEREL_APIKEY
 </pre>
 <aside class="special"><p><strong>nano エディタの基本操作</strong></p>
 </aside>
-<p><code>nano</code> は Linux で使えるシンプルなテキストエディタです。画面下部にショートカットキーの一覧が表示されます（<code>^</code> は Ctrl キーを意味します）。</p>
+<p><code>nano</code> は Linux で使えるシンプルなテキストエディタです。画面下部にショートカットキーの一覧が表示されます（<code>^</code> は Windows/Mac ともに <code>Ctrl</code> キーを意味します。Mac の <code>Cmd</code> ではない点に注意してください）。</p>
 <ul>
 <li><strong>カーソル移動</strong>: 矢印キーで移動します。</li>
 <li><strong>文字の入力</strong>: そのままキーボードで入力できます。</li>
 <li><strong>保存</strong>: <code>Ctrl + O</code> を押し、ファイル名を確認して <code>Enter</code> を押します。</li>
 <li><strong>終了</strong>: <code>Ctrl + X</code> で nano を閉じます。</li>
-<li><strong>貼り付け</strong>: ブラウザからコピーした内容は <code>Ctrl + Shift + V</code> で貼り付けます。</li>
+<li><strong>貼り付け</strong>: ブラウザからコピーした内容は Windowsの場合は <code>Ctrl + Shift + V</code>、Macの場合は <code>Cmd + V</code> で貼り付けます。</li>
 <li><strong>行末へ移動</strong>: <code>Ctrl + E</code>、<strong>行頭へ移動</strong>: <code>Ctrl + A</code> が便利です。</li>
 </ul>
 <ol type="1" start="4">
-<li>先ほどのアプリのログ (<code>/var/log/todo-app/app.log</code>) から、特定のエラー文字列（<code>ERROR</code>）を検知してアラートを発火させるため、ファイルの末尾に以下の設定を追記し、保存して閉じます。（※ nano エディタの場合は <code>Ctrl+O</code> -&gt; <code>Enter</code> で保存し、<code>Ctrl+X</code> で終了します）</li>
+<li>先ほどのアプリのログ (<code>/var/log/todo-app/app.log</code>) から、特定のエラー文字列（<code>ERROR</code>）を検知してアラートを発火させるため、ファイルの末尾に以下の設定を追記し、保存して閉じます。（※ nano エディタの場合は <code>Ctrl+O</code> -&gt; <code>Enter</code> で保存し、<code>Ctrl+X</code> で終了します。Macでも <code>Cmd</code> ではなく <code>Ctrl</code> キーを使用します）</li>
 </ol>
 <pre><code language="language-toml" class="language-toml">[plugin.checks.todo-app-log]
 command = [&#34;check-log&#34;, &#34;--file&#34;, &#34;/var/log/todo-app/app.log&#34;, &#34;--pattern&#34;, &#34;ERROR&#34;]
