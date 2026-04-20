@@ -30,7 +30,7 @@
     
       <google-codelab-step label="はじめに" duration="5">
         <h2 is-upgraded>ハンズオンの目的</h2>
-<p>このハンズオンでは、「アプリのログを収集し、可視化・通知する」という Observability (O11y / 可観測性) の基本を学びます。 また、意図的に脆弱性を含んだパッケージを導入し、セキュリティツール（Snyk または Aikido）を使って検知・修復する DevSecOps の基本的な流れを体験します。</p>
+<p>このハンズオンでは、「アプリのログを収集し、可視化・通知する」という Observability (O11y / 可観測性) の基本を学びます。 また、意図的に脆弱性を含んだパッケージを導入し、セキュリティツール（Snyk）を使って検知・修復する DevSecOps の基本的な流れを体験します。</p>
 <aside class="special"><p><strong>用語解説: O11y (Observability / 可観測性) とは？</strong></p>
 </aside>
 <p>「Observability」は「O」と「y」の間に11文字あるため「O11y」と略されます。システムの内部状態を「ログ」「メトリクス（数値データ）」「トレース（処理の流れ）」の3つの柱で外部から把握できるようにする考え方です。「サーバーが今どんな状態か」「エラーが起きていないか」を素早く知るための仕組みづくりと考えてください。</p>
@@ -45,8 +45,8 @@
 <li><strong>インフラ</strong>: AWS EC2 (CloudFormation で構築)</li>
 <li><strong>アプリケーション</strong>: Python (Flask または Django) / TypeScript 等で作成した簡単な ToDo アプリ (DBは SQLite)</li>
 <li><strong>開発環境</strong>: <strong>Kiro-IDE Remote</strong> を使用して、ブラウザ上で簡単にコーディング・操作を行います。</li>
-<li><strong>O11yツール</strong>: Amazon CloudWatch, Mackerel (または Datadog / Sentry)</li>
-<li><strong>セキュリティツール</strong>: Snyk または Aikido</li>
+<li><strong>O11yツール</strong>: Amazon CloudWatch, Mackerel</li>
+<li><strong>セキュリティツール</strong>: Snyk</li>
 </ul>
 <aside class="special"><p><strong>用語解説: 上記の技術用語について</strong></p>
 </aside>
@@ -56,11 +56,11 @@
 <li><strong>Flask</strong>: Python で Web アプリケーションを簡単に作るためのフレームワーク（ひな形）です。</li>
 <li><strong>SQLite</strong>: ファイル1つで動く軽量なデータベースです。サーバーの設定が不要なため、学習用途に最適です。</li>
 <li><strong>CloudWatch</strong>: AWS が提供するログ収集・監視・アラーム通知のサービスです。</li>
-<li><strong>Mackerel / Datadog / Sentry</strong>: AWS 以外の会社が提供する監視・エラー管理の SaaS ツールです。</li>
+<li><strong>Mackerel</strong>: AWS 以外の会社が提供する監視・エラー管理の SaaS ツールです。</li>
 </ul>
 <aside class="special"><p><strong>SaaS とは？</strong></p>
 </aside>
-<p>「Software as a Service」の略で、自分でサーバーを用意してインストールすることなく、ブラウザ経由で利用できるサービスのことです。Mackerel や Sentry、Snyk などは、クラウド上で提供されているサービスをそのまま利用します。</p>
+<p>「Software as a Service」の略で、自分でサーバーを用意してインストールすることなく、ブラウザ経由で利用できるサービスのことです。Mackerel や Snyk などは、クラウド上で提供されているサービスをそのまま利用します。</p>
 <h2 is-upgraded>2つの環境の使い分けに注意！</h2>
 <p>本ハンズオンでは、2つの異なる Linux 環境を使い分けます。</p>
 <ol type="1">
@@ -463,8 +463,8 @@ aws cloudwatch put-metric-alarm \
 
       </google-codelab-step>
     
-      <google-codelab-step label="外部ツールによる監視 (Mackerel / Sentry)" duration="20">
-        <p>さらに、外部の SaaS 型監視・エラー管理ツール（Mackerel や Sentry など）を利用してみましょう。 ※本シナリオでは Mackerel の例を記載します。</p>
+      <google-codelab-step label="外部ツールによる監視 (Mackerel)" duration="20">
+        <p>さらに、外部の SaaS 型監視ツール（Mackerel など）を利用してみましょう。 ※本シナリオでは Mackerel の例を記載します。</p>
 <h2 is-upgraded>Mackerel エージェントの導入</h2>
 <ol type="1">
 <li><a href="https://mackerel.io/" target="_blank">Mackerel</a> にサインアップし、オーガニゼーションを作成します。</li>
@@ -536,13 +536,11 @@ command = [&#34;check-log&#34;, &#34;--file&#34;, &#34;/var/log/todo-app/app.log
 <li>アプリの <strong>エラー発生用 URL</strong>（<code>http://<EC2のIPまたはパブリックDNS>:8080/error</code>）へ何度かアクセスし、意図的にエラーログを発生させます。</li>
 <li>Mackerel のダッシュボードの左メニュー「<strong>Alerts (アラート)</strong>」から、指定したログ監視アラート（<code>todo-app-log</code>）が CRITICAL として検知・発報していることを確認します。</li>
 </ol>
-<aside class="special"><p>アプリによっては、コード内に Sentry SDK を組み込むことで、より詳細なスタックトレース付きのエラー収集を体験するのもおすすめです。導入後はわざとアプリで例外(Exception)を発生させて、Sentryのダッシュボードで確認してみましょう。</p>
-</aside>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="脆弱性の検知と修復 (Snyk / Aikido)" duration="20">
+      <google-codelab-step label="脆弱性の検知と修復 (Snyk)" duration="20">
         <p>開発と運用（DevSecOps）において、使用しているライブラリ（パッケージ）に脆弱性がないかチェックすることは重要です。 ここでは意図的に古い脆弱なパッケージを入れ、ツールで検知し、安全なバージョンに修復します。</p>
 <h2 is-upgraded>脆弱なパッケージの導入</h2>
 <p>Kiro-IDE または EC2 のターミナル上で、作業用のソースコードディレクトリ（フォルダ）に移動し、わざと古いパッケージを指定してインストールします。（例：Python の requests や Jinja2 の古いバージョン）</p>
@@ -663,8 +661,8 @@ aws logs delete-log-group --log-group-name &#34;todo-app-logs&#34;
 <p>用済みになった場合は、手順に従って Kiro-IDE 自体の CloudFormation スタックも削除してください。</p>
 <h2 is-upgraded>外部サービスの後処理</h2>
 <ul>
-<li><strong>Mackerel / Datadog / Sentry</strong>: 作成したオーガニゼーション、プロジェクト、ホスト設定などを必要に応じて退会・削除してください。</li>
-<li><strong>Snyk / Aikido</strong>: 連携したプロジェクト情報などを削除してください。</li>
+<li><strong>Mackerel</strong>: 作成したオーガニゼーション、ホスト設定などを必要に応じて退会・削除してください。</li>
+<li><strong>Snyk</strong>: 連携したプロジェクト情報などを削除してください。</li>
 </ul>
 <p>以上で本ハンズオンは終了です。お疲れ様でした！</p>
 
