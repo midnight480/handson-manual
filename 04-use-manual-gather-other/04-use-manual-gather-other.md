@@ -28,8 +28,7 @@ Negative
   * [公式](https://gather.town/)
   * [本社所在地](https://pitchbook.com/profiles/company/454511-26#overview)  
     547 Elm Avenue, San Bruno, CA, United States
-  * [料金体系](https://gather.town/pricing)  
-  ※ Free Tier Accommodates 25 Online Users!
+  * [料金体系](https://www.gather.town/pricing)
 
 * 通信仕様
   * [ネットワークについて](https://support.gather.town/help/data-protection-and-encryption#data-encryption)  
@@ -83,7 +82,7 @@ Negative
 : ログイン時にパスワードが必要になるので主催者から通知された情報にあるパスワードを事前に確認してください
 
 Negative
-: 以降の画面はmacOS BigSur 11.3.1, Mozilla Firefox 88.0.1 (64 ビット)で取得した画面となりますが、各自の操作へ影響はないと思います。
+: 以降の画面はmacOS BigSur 11.3.1, Mozilla Firefox 88.0.1 (64 ビット)で取得した画面となりますが、各自の操作への影響はないと思います。アップデートされたGather 2.0では画面構成が大きく変わっている場合があります。
 
 ### （共通操作）プライベートルームのパスワード
 
@@ -203,16 +202,10 @@ Duration: 0:03:00
 
 * 主催者から通知されるURLを利用してください
 
-以下のボタンを押しても構いません
+Positive
+: Gather 2.0（2025年から順次移行）では、リンク形式が変更されています。主催者から提供されるURLを使用してください。
 
-<button>
-  [今回利用するGather Space](https://gather.town/app/8KYOxHXpjMTelpx1/DINER)
-</button>
-
-ブラウザのURLバーに以下をコピーアンドペーストしても構いません
-
-```
-https://gather.town/app/8KYOxHXpjMTelpx1/DINER
-```
+Negative
+: **ご注意: Gather 2.0へのアップデートにより、無料プランは2025年9月にロールアウトされています。継続利用には有料プランへの加入が必要です。**
 
 HAPPY Gather Life !! ＼(^o^)／
