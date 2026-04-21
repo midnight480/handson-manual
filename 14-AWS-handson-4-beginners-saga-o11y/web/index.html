@@ -346,9 +346,8 @@ Outputs:
 <aside class="special"><p><strong>nanoエディタが苦手な方へ（ワンライナーでのファイル作成）</strong></p>
 </aside>
 <p>エディタを使わずに、以下のワンライナーコマンドをターミナルにコピー＆ペーストして実行するだけで、一発でファイルを作成することもできます。</p>
-<pre></pre>
-<p>echo ‘{&#34;logs&#34;: {&#34;logs_collected&#34;: {&#34;files&#34;: {&#34;collect_list&#34;: [{&#34;file_path&#34;: &#34;/var/log/todo-app/app.log&#34;, &#34;log_group_name&#34;: &#34;todo-app-logs&#34;, &#34;log_stream_name&#34;: &#34;{instance_id}&#34;}]}}}}&#39; &gt; config.json</p>
-<pre><code></code></pre>
+<pre>echo &#39;{&#34;logs&#34;: {&#34;logs_collected&#34;: {&#34;files&#34;: {&#34;collect_list&#34;: [{&#34;file_path&#34;: &#34;/var/log/todo-app/app.log&#34;, &#34;log_group_name&#34;: &#34;todo-app-logs&#34;, &#34;log_stream_name&#34;: &#34;{instance_id}&#34;}]}}}}&#39; &gt; config.json
+</pre>
 <aside class="special"><p><strong>用語解説</strong></p>
 </aside>
 <ul>
@@ -526,9 +525,8 @@ command = [&#34;check-log&#34;, &#34;--file&#34;, &#34;/var/log/todo-app/app.log
 <aside class="special"><p><strong>nanoエディタが苦手な方へ（ワンライナーでの追記）</strong></p>
 </aside>
 <p>エディタの操作に自信がない、またはキーボードがうまく反応しない場合は、以下の <code>echo</code> を使ったワンライナーコマンド（1行のコマンド）を貼り付けて実行するだけで、ファイルの末尾に設定を追記できます。</p>
-<pre></pre>
-<p>echo -e ‘\n[plugin.checks.todo-app-log]\ncommand = [&#34;check-log&#34;, &#34;–file&#34;, &#34;/var/log/todo-app/app.log&#34;, &#34;–pattern&#34;, &#34;ERROR&#34;]&#39; | sudo tee -a /etc/mackerel-agent/mackerel-agent.conf</p>
-<pre><code></code></pre>
+<pre>echo -e &#39;\n[plugin.checks.todo-app-log]\ncommand = [&#34;check-log&#34;, &#34;--file&#34;, &#34;/var/log/todo-app/app.log&#34;, &#34;--pattern&#34;, &#34;ERROR&#34;]&#39; | sudo tee -a /etc/mackerel-agent/mackerel-agent.conf
+</pre>
 <aside class="special"><p><strong>設定ファイル (TOML形式) の解説</strong></p>
 </aside>
 <ul>

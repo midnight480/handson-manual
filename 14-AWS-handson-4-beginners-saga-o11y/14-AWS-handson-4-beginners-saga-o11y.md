@@ -340,9 +340,10 @@ EC2 のターミナルで以下の設定を作成します。
 Positive
 : **nanoエディタが苦手な方へ（ワンライナーでのファイル作成）**
 : エディタを使わずに、以下のワンライナーコマンドをターミナルにコピー＆ペーストして実行するだけで、一発でファイルを作成することもできます。
-: ```console
-: echo '{"logs": {"logs_collected": {"files": {"collect_list": [{"file_path": "/var/log/todo-app/app.log", "log_group_name": "todo-app-logs", "log_stream_name": "{instance_id}"}]}}}}' > config.json
-: ```
+
+```console
+echo '{"logs": {"logs_collected": {"files": {"collect_list": [{"file_path": "/var/log/todo-app/app.log", "log_group_name": "todo-app-logs", "log_stream_name": "{instance_id}"}]}}}}' > config.json
+```
 
 Positive
 : **用語解説**
@@ -532,9 +533,10 @@ command = ["check-log", "--file", "/var/log/todo-app/app.log", "--pattern", "ERR
 Positive
 : **nanoエディタが苦手な方へ（ワンライナーでの追記）**
 : エディタの操作に自信がない、またはキーボードがうまく反応しない場合は、以下の `echo` を使ったワンライナーコマンド（1行のコマンド）を貼り付けて実行するだけで、ファイルの末尾に設定を追記できます。
-: ```console
-: echo -e '\n[plugin.checks.todo-app-log]\ncommand = ["check-log", "--file", "/var/log/todo-app/app.log", "--pattern", "ERROR"]' | sudo tee -a /etc/mackerel-agent/mackerel-agent.conf
-: ```
+
+```console
+echo -e '\n[plugin.checks.todo-app-log]\ncommand = ["check-log", "--file", "/var/log/todo-app/app.log", "--pattern", "ERROR"]' | sudo tee -a /etc/mackerel-agent/mackerel-agent.conf
+```
 
 Positive
 : **設定ファイル (TOML形式) の解説**
