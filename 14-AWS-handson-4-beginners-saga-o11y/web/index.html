@@ -345,24 +345,9 @@ Outputs:
 </code></pre>
 <aside class="special"><p><strong>nanoエディタが苦手な方へ（ワンライナーでのファイル作成）</strong></p>
 </aside>
-<p>エディタを使わずに、以下のコマンドをターミナルにコピー＆ペーストして実行するだけで、一発でファイルを作成することもできます。</p>
+<p>エディタを使わずに、以下のワンライナーコマンドをターミナルにコピー＆ペーストして実行するだけで、一発でファイルを作成することもできます。</p>
 <pre></pre>
-<p>cat « ‘EOF&#39; &gt; config.json{&#34;logs&#34;: {&#34;logs_collected&#34;: {&#34;files&#34;: {</p>
-<pre><code>&#34;collect_list&#34;: [
-</code></pre>
-<pre><code>  {
-</code></pre>
-<pre><code>    &#34;file_path&#34;: &#34;/var/log/todo-app/app.log&#34;,
-</code></pre>
-<pre><code>    &#34;log_group_name&#34;: &#34;todo-app-logs&#34;,
-</code></pre>
-<pre><code>    &#34;log_stream_name&#34;: &#34;{instance_id}&#34;
-</code></pre>
-<pre><code>  }
-</code></pre>
-<pre><code>]
-</code></pre>
-<p>}}}}EOF</p>
+<p>echo ‘{&#34;logs&#34;: {&#34;logs_collected&#34;: {&#34;files&#34;: {&#34;collect_list&#34;: [{&#34;file_path&#34;: &#34;/var/log/todo-app/app.log&#34;, &#34;log_group_name&#34;: &#34;todo-app-logs&#34;, &#34;log_stream_name&#34;: &#34;{instance_id}&#34;}]}}}}&#39; &gt; config.json</p>
 <pre><code></code></pre>
 <aside class="special"><p><strong>用語解説</strong></p>
 </aside>

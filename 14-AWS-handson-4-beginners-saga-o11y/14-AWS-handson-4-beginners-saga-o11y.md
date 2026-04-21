@@ -339,25 +339,9 @@ EC2 のターミナルで以下の設定を作成します。
 
 Positive
 : **nanoエディタが苦手な方へ（ワンライナーでのファイル作成）**
-: エディタを使わずに、以下のコマンドをターミナルにコピー＆ペーストして実行するだけで、一発でファイルを作成することもできます。
+: エディタを使わずに、以下のワンライナーコマンドをターミナルにコピー＆ペーストして実行するだけで、一発でファイルを作成することもできます。
 : ```console
-: cat << 'EOF' > config.json
-: {
-:   "logs": {
-:     "logs_collected": {
-:       "files": {
-:         "collect_list": [
-:           {
-:             "file_path": "/var/log/todo-app/app.log",
-:             "log_group_name": "todo-app-logs",
-:             "log_stream_name": "{instance_id}"
-:           }
-:         ]
-:       }
-:     }
-:   }
-: }
-: EOF
+: echo '{"logs": {"logs_collected": {"files": {"collect_list": [{"file_path": "/var/log/todo-app/app.log", "log_group_name": "todo-app-logs", "log_stream_name": "{instance_id}"}]}}}}' > config.json
 : ```
 
 Positive
