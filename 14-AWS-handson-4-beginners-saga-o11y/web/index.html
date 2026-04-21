@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="theme-color" content="#4F7DC9">
   <meta charset="UTF-8">
-  <title>AWS Hands-on for Beginners: Saga O11y &amp; Security</title>
+  <title>AWS Hands-on for Beginners: Saga Edition (O11y &amp; Security)</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
@@ -24,22 +24,25 @@
   <google-codelab codelab-gaid="196534296"
                   codelab-ga4id=""
                   id="14-AWS-handson-4-beginners-saga-o11y"
-                  title="AWS Hands-on for Beginners: Saga O11y &amp; Security"
+                  title="AWS Hands-on for Beginners: Saga Edition (O11y &amp; Security)"
                   environment="web"
                   feedback-link="https://github.com/midnight480/handson-manual">
     
       <google-codelab-step label="はじめに" duration="5">
         <h2 is-upgraded>ハンズオンの目的</h2>
-<p>このハンズオンでは、「アプリのログを収集し、可視化・通知する」という Observability (O11y / 可観測性) の基本を学びます。 また、意図的に脆弱性を含んだパッケージを導入し、セキュリティツール（Snyk）を使って検知・修復する DevSecOps の基本的な流れを体験します。</p>
+<p>このハンズオンは、<strong>佐賀の皆さんにAWSの楽しさを知ってもらうための特別編</strong>です！ 「アプリのログを収集し、可視化・通知する」という Observability (O11y / 可観測性) の基本を学びます。 また、意図的に脆弱性を含んだパッケージを導入し、セキュリティツール（Snyk）を使って検知・修復する DevSecOps の基本的な流れを体験します。</p>
+<aside class="special"><p><strong>タイトルの「Saga」について</strong></p>
+</aside>
+<p>このハンズオンの「Saga」は、マイクロサービスの難しい用語（Sagaパターン）ではなく、**私たちの「佐賀」**を指しています！佐賀のエンジニアや学習者の皆さんが、クラウドの運用とセキュリティの一歩を踏み出すためのガイドです。</p>
 <aside class="special"><p><strong>用語解説: O11y (Observability / 可観測性) とは？</strong></p>
 </aside>
-<p>「Observability」は「O」と「y」の間に11文字あるため「O11y」と略されます。システムの内部状態を「ログ」「メトリクス（数値データ）」「トレース（処理の流れ）」の3つの柱で外部から把握できるようにする考え方です。「サーバーが今どんな状態か」「エラーが起きていないか」を素早く知るための仕組みづくりと考えてください。</p>
+<p>システムの内部状態を「ログ」「メトリクス」「トレース」で把握できるようにする考え方です。お医者さんの診察に例えると、**「熱がある（異常）」と気づくのが「監視」<strong>なら、</strong>「なぜ熱が出たのか（原因）」を調べるのが「O11y」**です。複雑なシステムで「どこが悪いか」を素早く突き止めるための地図を作る作業だと考えてください。</p>
 <aside class="special"><p><strong>用語解説: DevSecOps とは？</strong></p>
 </aside>
-<p>「Development（開発）」「Security（セキュリティ）」「Operations（運用）」を組み合わせた言葉です。従来はアプリを作った後にセキュリティチェックを行っていましたが、DevSecOps では開発の早い段階からセキュリティを組み込むことで、脆弱性（セキュリティ上の弱点）を早期に発見・修正します。</p>
+<p>「Development（開発）」「Security（セキュリティ）」「Operations（運用）」を組み合わせた言葉です。従来はアプリを作った後にセキュリティチェックを行っていましたが、DevSecOps では開発の早い段階からセキュリティを組み込むことで、弱点を早期に発見・修正します。</p>
 <aside class="special"><p><strong>用語解説: 脆弱性（ぜいじゃくせい）とは？</strong></p>
 </aside>
-<p>ソフトウェアに存在するセキュリティ上の欠陥や弱点のことです。悪意のある攻撃者に悪用されると、データの漏洩やシステムの乗っ取りなどの被害につながる可能性があります。ライブラリ（他の人が作った便利なプログラム部品）の古いバージョンには、既知の脆弱性が含まれていることがあります。</p>
+<p>ソフトウェアに存在するセキュリティ上の欠陥や弱点のことです。お店の鍵が壊れていたり、壁に穴が開いていたりするイメージです。放置するとデータの漏洩などの被害につながるため、定期的な点検が必要です。</p>
 <h2 is-upgraded>アーキテクチャと使用技術</h2>
 <ul>
 <li><strong>インフラ</strong>: AWS EC2 (CloudFormation で構築)</li>
@@ -340,6 +343,27 @@ Outputs:
   }
 }
 </code></pre>
+<aside class="special"><p><strong>nanoエディタが苦手な方へ（ワンライナーでのファイル作成）</strong></p>
+</aside>
+<p>エディタを使わずに、以下のコマンドをターミナルにコピー＆ペーストして実行するだけで、一発でファイルを作成することもできます。</p>
+<pre></pre>
+<p>cat « ‘EOF&#39; &gt; config.json{&#34;logs&#34;: {&#34;logs_collected&#34;: {&#34;files&#34;: {</p>
+<pre><code>&#34;collect_list&#34;: [
+</code></pre>
+<pre><code>  {
+</code></pre>
+<pre><code>    &#34;file_path&#34;: &#34;/var/log/todo-app/app.log&#34;,
+</code></pre>
+<pre><code>    &#34;log_group_name&#34;: &#34;todo-app-logs&#34;,
+</code></pre>
+<pre><code>    &#34;log_stream_name&#34;: &#34;{instance_id}&#34;
+</code></pre>
+<pre><code>  }
+</code></pre>
+<pre><code>]
+</code></pre>
+<p>}}}}EOF</p>
+<pre><code></code></pre>
 <aside class="special"><p><strong>用語解説</strong></p>
 </aside>
 <ul>
@@ -514,6 +538,12 @@ curl -fsSL https://mackerel.io/file/script/setup-all-yum-v2.sh | MACKEREL_APIKEY
 <pre><code language="language-toml" class="language-toml">[plugin.checks.todo-app-log]
 command = [&#34;check-log&#34;, &#34;--file&#34;, &#34;/var/log/todo-app/app.log&#34;, &#34;--pattern&#34;, &#34;ERROR&#34;]
 </code></pre>
+<aside class="special"><p><strong>nanoエディタが苦手な方へ（ワンライナーでの追記）</strong></p>
+</aside>
+<p>エディタの操作に自信がない、またはキーボードがうまく反応しない場合は、以下の <code>echo</code> を使ったワンライナーコマンド（1行のコマンド）を貼り付けて実行するだけで、ファイルの末尾に設定を追記できます。</p>
+<pre></pre>
+<p>echo -e ‘\n[plugin.checks.todo-app-log]\ncommand = [&#34;check-log&#34;, &#34;–file&#34;, &#34;/var/log/todo-app/app.log&#34;, &#34;–pattern&#34;, &#34;ERROR&#34;]&#39; | sudo tee -a /etc/mackerel-agent/mackerel-agent.conf</p>
+<pre><code></code></pre>
 <aside class="special"><p><strong>設定ファイル (TOML形式) の解説</strong></p>
 </aside>
 <ul>
@@ -544,13 +574,17 @@ command = [&#34;check-log&#34;, &#34;--file&#34;, &#34;/var/log/todo-app/app.log
       </google-codelab-step>
     
       <google-codelab-step label="脆弱性の検知と修復 (Snyk)" duration="20">
-        <p>開発と運用（DevSecOps）において、使用しているライブラリ（パッケージ）に脆弱性がないかチェックすることは重要です。 ここでは意図的に古い脆弱なパッケージを入れ、ツールで検知し、安全なバージョンに修復します。</p>
+        <p>開発と運用（DevSecOps）において、使用しているライブラリ（パッケージ）に脆弱性がないかチェックすることは重要です。 ここでは<strong>あえて脆弱な古いパッケージ</strong>を導入し、セキュリティツールで検知・修復する流れを体験します。</p>
+<aside class="warning"><p><strong>【重要】わざと古い（悪い）お手本を作ります</strong></p>
+</aside>
+<p>このセクションでは、学習のために意図的に古い脆弱なバージョンをインストールします。<strong>実際の開発現場では、常に最新の安定版を使用し、古いバージョンをそのまま使い続けることは絶対に避けてください！</strong></p>
 <h2 is-upgraded>脆弱なパッケージの導入</h2>
-<p>Kiro-IDE または EC2 のターミナル上で、作業用のソースコードディレクトリ（フォルダ）に移動し、わざと古いパッケージを指定してインストールします。（例：Python の requests や Jinja2 の古いバージョン）</p>
+<p>Kiro-IDE または EC2 のターミナル上で、作業用のソースコードディレクトリ（フォルダ）に移動し、わざと古いパッケージを指定してインストールします。</p>
 <aside class="special"><p><strong>Linux コマンドの補足: ディレクトリの移動</strong></p>
 </aside>
 <p>Linux 環境で特定のフォルダ（ディレクトリ）に移動する場合は、<code>cd</code> (change directory) コマンドを使用します。今回の EC2 の例では、アプリの配置場所である <code>/opt/todo-app</code> に移動する必要があります（例: <code>cd /opt/todo-app</code> を実行）。</p>
 <pre># Pythonの例
+# あえて脆弱性がある古いバージョン(2.19.1)を指定します
 pip install requests==2.19.1
 pip freeze &gt; requirements.txt
 </pre>
@@ -562,6 +596,7 @@ pip freeze &gt; requirements.txt
 <li><strong>requirements.txt</strong>: プロジェクトに必要なライブラリを書き出したファイルです。これがあることで、他の環境でも同じ構成を再現できます。 <code>></code> は「コマンドの結果をファイルに書き出す」という Linux の機能（リダイレクト）です。</li>
 </ul>
 <h2 is-upgraded>セキュリティスキャンの実行（例: Snyk）</h2>
+<p>「Snyk（スニーク）」は、開発中にセキュリティ上の問題を自動で見つけてくれる便利なツールです。佐賀の現場でも、こういったツールを導入して安全な開発を行うことが推奨されます。</p>
 <ol type="1">
 <li><a href="https://snyk.io/" target="_blank">Snyk</a> のアカウントを作成し、CLI メニューの手順に従って Kiro-IDE 環境に Snyk CLI をインストールします。</li>
 <li>認証を行います。</li>
