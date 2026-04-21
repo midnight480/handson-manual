@@ -608,10 +608,11 @@ Positive
 Positive
 : **Snyk CLI を使うための前提条件**
 : Snyk CLI を動かすには **Node.js** が必要です。Kiro-IDE 環境には通常プリインストールされていますが、`node --version` を実行してバージョンが表示されない場合は、以下のコマンドで Node.js をインストールしてください。
-: ```console
-: # Amazon Linux 2023 の場合
-: sudo dnf install -y nodejs
-: ```
+
+```console
+# Amazon Linux 2023 の場合
+sudo dnf install -y nodejs
+```
 
 ```console
 npm install -g snyk
@@ -676,9 +677,12 @@ Positive
 : **削除が完了したか確認する方法**
 : `delete-stack` コマンドは即座に完了しますが、実際のリソース削除には数分かかります。以下のいずれかの方法で削除完了を確認してください。
 : * **CLI で確認**: 以下のコマンドを実行し、ステータスが `DELETE_COMPLETE` になるか、スタックが見つからない（エラーになる）ことを確認します。
-:   ```console
-:   aws cloudformation describe-stacks --stack-name saga-o11y-handson
-:   ```
+
+```console
+aws cloudformation describe-stacks --stack-name saga-o11y-handson
+```
+
+Positive
 : * **マネジメントコンソールで確認**: CloudFormation の画面を開き、フィルターで「削除済み」を含めて表示すると、`DELETE_COMPLETE` のステータスを確認できます。スタック一覧から消えていれば削除完了です。
 
 Negative
@@ -705,9 +709,12 @@ aws logs delete-log-group --log-group-name "todo-app-logs"
 Positive
 : **TOPIC_ARN 変数が消えてしまった場合**
 : ターミナルを閉じると変数は消えてしまいます。その場合は以下のコマンドで ARN を確認できます。
-: ```console
-: aws sns list-topics
-: ```
+
+```console
+aws sns list-topics
+```
+
+Positive
 : 表示された一覧から `todo-app-alerts` を含む ARN をコピーして使用してください。
 
 ### Kiro-IDE 環境の削除

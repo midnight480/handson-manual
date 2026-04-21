@@ -590,10 +590,9 @@ pip freeze &gt; requirements.txt
 <aside class="special"><p><strong>Snyk CLI を使うための前提条件</strong></p>
 </aside>
 <p>Snyk CLI を動かすには <strong>Node.js</strong> が必要です。Kiro-IDE 環境には通常プリインストールされていますが、<code>node --version</code> を実行してバージョンが表示されない場合は、以下のコマンドで Node.js をインストールしてください。</p>
-<pre></pre>
-<p>Amazon Linux 2023 の場合</p>
-<p>sudo dnf install -y nodejs</p>
-<pre><code></code></pre>
+<pre># Amazon Linux 2023 の場合
+sudo dnf install -y nodejs
+</pre>
 <pre>npm install -g snyk
 snyk auth
 </pre>
@@ -648,12 +647,12 @@ pip freeze &gt; requirements.txt
 <ul>
 <li><strong>CLI で確認</strong>: 以下のコマンドを実行し、ステータスが <code>DELETE_COMPLETE</code> になるか、スタックが見つからない（エラーになる）ことを確認します。</li>
 </ul>
-<pre></pre>
-<p>aws cloudformation describe-stacks –stack-name saga-o11y-handson</p>
-<pre><code></code></pre>
-<ul>
+<pre>aws cloudformation describe-stacks --stack-name saga-o11y-handson
+</pre>
+<aside class="special"><ul>
 <li><strong>マネジメントコンソールで確認</strong>: CloudFormation の画面を開き、フィルターで「削除済み」を含めて表示すると、<code>DELETE_COMPLETE</code> のステータスを確認できます。スタック一覧から消えていれば削除完了です。</li>
 </ul>
+</aside>
 <aside class="warning"><p><strong>削除に失敗した場合</strong></p>
 </aside>
 <p>ステータスが <code>DELETE_FAILED</code> になった場合は、CloudFormation の「イベント」タブでエラー原因を確認してください。手動で追加したリソース（例: セキュリティグループのルールなど）が原因で削除できないことがあります。その場合は、該当リソースを手動で削除してから再度 <code>delete-stack</code> を実行してください。</p>
@@ -674,10 +673,10 @@ aws logs delete-log-group --log-group-name &#34;todo-app-logs&#34;
 <aside class="special"><p><strong>TOPIC_ARN 変数が消えてしまった場合</strong></p>
 </aside>
 <p>ターミナルを閉じると変数は消えてしまいます。その場合は以下のコマンドで ARN を確認できます。</p>
-<pre></pre>
-<p>aws sns list-topics</p>
-<pre><code></code></pre>
-<p>表示された一覧から <code>todo-app-alerts</code> を含む ARN をコピーして使用してください。</p>
+<pre>aws sns list-topics
+</pre>
+<aside class="special"><p>表示された一覧から <code>todo-app-alerts</code> を含む ARN をコピーして使用してください。</p>
+</aside>
 <h2 is-upgraded>Kiro-IDE 環境の削除</h2>
 <p>用済みになった場合は、手順に従って Kiro-IDE 自体の CloudFormation スタックも削除してください。</p>
 <h2 is-upgraded>外部サービスの後処理</h2>
