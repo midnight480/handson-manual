@@ -893,20 +893,20 @@ pip freeze &gt; requirements.txt
 </ol>
 <aside class="special"><p><strong>用語解説: npm とは？</strong></p>
 </aside>
-<p>「Node Package Manager」の略で、JavaScript / TypeScript のライブラリ（パッケージ）を管理するツールです。Python における <code>pip</code> と同じ役割です。<code>npm install -g snyk</code> の <code>-g</code> は「グローバル（システム全体）にインストールする」という意味で、どのディレクトリからでも <code>snyk</code> コマンドが使えるようになります。</p>
+<p>「Node Package Manager」の略で、JavaScript / TypeScript のライブラリ（パッケージ）を管理するツールです。Python における <code>pip</code> と同じ役割です。<code>sudo npm install -g snyk</code> の <code>-g</code> は「グローバル（システム全体）にインストールする」という意味で、システム共通のディレクトリにインストールされるため <code>sudo</code> による管理者権限が必要になります。</p>
 <aside class="special"><p><strong>Snyk CLI を使うための前提条件</strong></p>
 </aside>
 <p>Snyk CLI を動かすには <strong>Node.js</strong> が必要です。Kiro-IDE や Codespaces 環境には通常プリインストールされていますが、<code>node --version</code> を実行してバージョンが表示されない場合は、以下のコマンド等で Node.js をインストールしてください。</p>
 <pre># Amazon Linux 2023 の場合
 sudo dnf install -y nodejs
 </pre>
-<pre>npm install -g snyk
+<pre>sudo npm install -g snyk
 snyk auth
 </pre>
 <aside class="special"><p><strong>コマンドの解説</strong></p>
 </aside>
 <ul>
-<li><code>npm install -g snyk</code>: Snyk の CLI ツールをグローバルにインストールします。</li>
+<li><code>sudo npm install -g snyk</code>: Snyk の CLI ツールをグローバル（システム全体）にインストールします。</li>
 <li><code>snyk auth</code>: ブラウザが開き、Snyk アカウントとの認証（ログイン連携）を行います。ブラウザが開かない環境の場合は、<code>snyk auth --token <YOUR_TOKEN></code> のように Snyk の Web 画面から取得したトークンを直接指定することもできます。</li>
 </ul>
 <ol type="1" start="3">

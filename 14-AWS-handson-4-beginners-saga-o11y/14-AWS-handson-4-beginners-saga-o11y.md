@@ -961,7 +961,7 @@ Positive
 
 Positive
 : **用語解説: npm とは？**
-: 「Node Package Manager」の略で、JavaScript / TypeScript のライブラリ（パッケージ）を管理するツールです。Python における `pip` と同じ役割です。`npm install -g snyk` の `-g` は「グローバル（システム全体）にインストールする」という意味で、どのディレクトリからでも `snyk` コマンドが使えるようになります。
+: 「Node Package Manager」の略で、JavaScript / TypeScript のライブラリ（パッケージ）を管理するツールです。Python における `pip` と同じ役割です。`sudo npm install -g snyk` の `-g` は「グローバル（システム全体）にインストールする」という意味で、システム共通のディレクトリにインストールされるため `sudo` による管理者権限が必要になります。
 
 Positive
 : **Snyk CLI を使うための前提条件**
@@ -973,13 +973,13 @@ sudo dnf install -y nodejs
 ```
 
 ```console
-npm install -g snyk
+sudo npm install -g snyk
 snyk auth
 ```
 
 Positive
 : **コマンドの解説**
-: * `npm install -g snyk`: Snyk の CLI ツールをグローバルにインストールします。
+: * `sudo npm install -g snyk`: Snyk の CLI ツールをグローバル（システム全体）にインストールします。
 : * `snyk auth`: ブラウザが開き、Snyk アカウントとの認証（ログイン連携）を行います。ブラウザが開かない環境の場合は、`snyk auth --token <YOUR_TOKEN>` のように Snyk の Web 画面から取得したトークンを直接指定することもできます。
 
 3. プロジェクトディレクトリでスキャンを実行します。
