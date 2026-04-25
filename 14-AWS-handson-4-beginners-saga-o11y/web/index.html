@@ -47,7 +47,7 @@
 <ul>
 <li><strong>インフラ</strong>: AWS EC2 (CloudFormation で構築)</li>
 <li><strong>アプリケーション</strong>: Python (Flask または Django) / TypeScript 等で作成した簡単な ToDo アプリ (DBは SQLite)</li>
-<li><strong>開発環境</strong>: <strong>Kiro-IDE Remote</strong> を使用して、ブラウザ上で簡単にコーディング・操作を行います。</li>
+<li><strong>開発環境</strong>: Kiro-IDE Remote、GitHub Codespaces、または自身のローカルPCなどを利用してコーディング・操作を行います。</li>
 <li><strong>O11yツール</strong>: Amazon CloudWatch, Mackerel</li>
 <li><strong>セキュリティツール</strong>: Snyk</li>
 </ul>
@@ -67,7 +67,7 @@
 <h2 is-upgraded>2つの環境の使い分けに注意！</h2>
 <p>本ハンズオンでは、2つの異なる Linux 環境を使い分けます。</p>
 <ol type="1">
-<li><strong>Kiro-IDE Remote</strong>: あなたの「作業用 PC」のような環境です。ここで設計図（CloudFormation）を書いたり、セキュリティスキャンを実行したりします。</li>
+<li><strong>開発環境 (Kiro-IDE / Codespaces / ローカルPC)</strong>: あなたの「作業用 PC」です。ここで設計図（CloudFormation）を書いたり、セキュリティスキャンを実行したりします。</li>
 <li><strong>ToDo アプリの EC2</strong>: CloudFormation で作成される「サーバー」環境です。アプリが実際に動き、ログが保存される場所です。</li>
 </ol>
 <aside class="special"><p>ターミナルで操作しているのが「どちらの環境か」を常に意識するのが上達の近道です。</p>
@@ -91,9 +91,16 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="開発環境 (Kiro-IDE Remote) の準備" duration="10">
-        <p>本ハンズオンでは、AWS 上に簡単に Web 開発環境を構築できる <strong>Kiro-IDE Remote</strong> を使用します。これにより、ローカル PC に環境を構築することなくハンズオンを進めることができます。</p>
-<h2 is-upgraded>Kiro-IDE の起動</h2>
+      <google-codelab-step label="開発環境の準備" duration="10">
+        <p>本ハンズオンでは、以下の3つの方法からお好きな開発環境を選択して進めることができます。</p>
+<ol type="1">
+<li><strong>Kiro-IDE Remote を使う場合</strong> (推奨: AWS上に環境を自動構築)</li>
+<li><strong>GitHub Codespaces を使う場合</strong> (ブラウザ上で完結)</li>
+<li><strong>自身の端末を利用する場合</strong> (ローカル環境)</li>
+</ol>
+<h2 is-upgraded>オプション1: Kiro-IDE Remote を使う場合</h2>
+<p>AWS 上に簡単に Web 開発環境を構築できる <strong>Kiro-IDE Remote</strong> を使用します。ローカル PC に環境を構築することなく、また IAM の設定なども自動で行われるため、最も推奨される手順です。</p>
+<h3 is-upgraded>Kiro-IDE の起動</h3>
 <p>以下のリンク先に用意されている「Deploy」ボタンから、ワンクリックでデプロイが可能です。</p>
 <p><a href="https://aws-samples.github.io/sample-one-click-generative-ai-solutions/solutions/kiro-ide/" target="_blank">Kiro IDE Remote のマニュアルページ</a></p>
 <ol type="1">
@@ -123,7 +130,99 @@
 <li>※デスクトップ上の Kiro アイコンは最初無効化されています。右クリックで起動を許可（Allow Launching）してから実行してください。</li>
 </ul>
 </li>
+<li><strong>Session Manager プラグインのインストール</strong>: Kiro 上の AI チャット機能（<strong>Vibe</strong>）を開き、「<code>Session Manager プラグインをインストールする</code>」と入力して送信します。AI が提示した手順やコマンドに従って、Session Manager プラグインをインストールしてください。</li>
 </ol>
+<h2 is-upgraded>オプション2: GitHub Codespaces を使う場合</h2>
+<p>ブラウザ上で完結する開発環境である GitHub Codespaces を利用することもできます。</p>
+<h3 is-upgraded>テンプレートからリポジトリを作成</h3>
+<ol type="1">
+<li><a href="https://github.com/" target="_blank">GitHub</a> にログインします</li>
+<li>テンプレートリポジトリ <a href="https://github.com/midnight480/aws-handson-template" target="_blank">midnight480/aws-handson-template</a> を開きます</li>
+<li><strong>Use this template</strong> → <strong>Create a new repository</strong> をクリックします</li>
+<li>リポジトリ名に任意の名前を入力し、<strong>Create repository</strong> をクリックします</li>
+</ol>
+<h3 is-upgraded>Codespace の起動</h3>
+<ol type="1">
+<li>作成したリポジトリの画面で <strong>Code</strong> ボタンをクリックします</li>
+<li><strong>Codespaces</strong> タブ → <strong>Create codespace on main</strong> をクリックします</li>
+<li>Codespace の起動を待ちます（初回は3〜5分程度）</li>
+</ol>
+<aside class="special"><p>テンプレートリポジトリには開発環境の設定（devcontainer）が含まれており、AWS CLI、Python、Node.js などが自動的にインストールされます。</p>
+</aside>
+<h3 is-upgraded>AWS CLI の動作確認</h3>
+<p>Codespace が起動したら、ターミナルで AWS CLI がインストールされていることを確認します。</p>
+<pre>aws --version
+</pre>
+<p><code>aws-cli/2.x.x</code> のようにバージョンが表示されればOKです。</p>
+<aside class="warning"><p><strong>IAMユーザーの作成と認証設定について</strong></p>
+</aside>
+<p>GitHub Codespaces を使用する場合は、別途 IAM ユーザー（AdministratorAccess 等の権限を持つもの）を作成し、ターミナルで <code>aws configure</code> コマンドを使用してアクセスキーとシークレットアクセスキーを設定する必要があります。</p>
+<h2 is-upgraded>オプション3: 自身の端末を利用する場合</h2>
+<p>ご自身の PC (Windows, Mac, Linux など) のローカル環境で進めることも可能です。その場合は、以下のツールがあらかじめインストールされている必要があります。</p>
+<ol type="1">
+<li><strong>AWS CLI (v2)</strong><ul>
+<li>AWS リソースをコマンドラインから操作するために必要です。</li>
+<li><a href="https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/getting-started-install.html" target="_blank">AWS CLI のインストールと更新 (公式ドキュメント)</a> を参照してインストールしてください。</li>
+</ul>
+</li>
+<li><strong>Session Manager プラグイン (SSM Plugin)</strong><ul>
+<li>EC2 インスタンスにコマンドラインから安全に接続するために必要です（本ハンズオンではマネジメントコンソールのブラウザ経由で接続することも可能ですが、CLIから接続する場合に必須となります）。</li>
+<li><a href="https://docs.aws.amazon.com/ja_jp/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html" target="_blank">Session Manager プラグインをインストールする (公式ドキュメント)</a> を参照してインストールしてください。</li>
+</ul>
+</li>
+<li><strong>Node.js (npm)</strong><ul>
+<li>後半の Snyk CLI インストールや動作のために必要になります。</li>
+<li><a href="https://nodejs.org/ja/" target="_blank">Node.js 公式サイト</a> などからインストールしてください。</li>
+</ul>
+</li>
+<li><strong>AWS 認証情報の設定</strong><ul>
+<li>ターミナルで <code>aws configure</code> を実行し、AWS へのアクセス権限を持つ IAM ユーザーのアクセスキーを設定してください。</li>
+</ul>
+</li>
+</ol>
+<aside class="special"><p>各ツールのインストール後、ターミナルで <code>aws --version</code> や <code>session-manager-plugin</code>、<code>npm --version</code> を実行し、正しくインストールされているか確認しましょう。</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="IAMユーザーのアクセスキーの発行と設定 (Kiro-IDE 以外の場合)" duration="10">
+        <p>GitHub Codespaces やご自身の端末を利用する場合は、AWS リソースを操作するためのアクセスキー（認証情報）が必要です。以下の手順で IAM ユーザーのアクセスキーを発行し、設定してください。</p>
+<aside class="warning"><p><strong>【重要】アクセスキーの利用に関する注意喚起</strong></p>
+</aside>
+<p>IAM ユーザーの永続的なアクセスキーを発行する本手順は、<strong>あくまでも今回のハンズオンを簡単に進めるための限定的な手段</strong>です。実際の開発現場や本番運用においては、セキュリティの観点から永続的なアクセスキーの利用は推奨されていません。現在は <code>aws login</code>（AWS IAM Identity Center との統合）や <code>aws sso login</code> などを利用し、一時的な（有効期限のある）認証トークンを取得して利用することが前提・ベストプラクティスとされています。</p>
+<ul>
+<li>参考: <a href="https://aws.amazon.com/jp/blogs/news/simplified-developer-access-to-aws-with-aws-login/" target="_blank">AWS CLI での認証の簡素化 – 新しいコマンド「aws login」を一般公開</a></li>
+</ul>
+<h2 is-upgraded>アクセスキーの発行手順</h2>
+<ol type="1">
+<li><strong>AWS マネジメントコンソール</strong>にログインし、<strong>IAM</strong> (Identity and Access Management) サービスを開きます。</li>
+<li>左側のメニューから「<strong>ユーザー</strong>」を選択し、本ハンズオン用のユーザー（例: AdministratorAccess 権限を持つユーザー）をクリックします。</li>
+<li>「<strong>セキュリティ認証情報</strong>」タブを選択します。</li>
+<li>「<strong>アクセスキーを作成</strong>」ボタンをクリックします。</li>
+<li>ユースケースとして「<strong>コマンドラインインターフェイス (CLI)</strong>」を選択し、確認のチェックを入れて「次へ」をクリックします。</li>
+<li>(任意) 説明タグを入力し、「<strong>アクセスキーを作成</strong>」をクリックします。</li>
+<li>発行された「<strong>アクセスキー</strong>」と「<strong>シークレットアクセスキー</strong>」をメモするか、CSVファイルをダウンロードします（※この画面を閉じるとシークレットアクセスキーは二度と確認できません）。</li>
+</ol>
+<aside class="special"><p>画面の詳しい操作手順については、こちらの記事も参考にしてください。</p>
+</aside>
+<ul>
+<li><a href="https://dev.classmethod.jp/articles/iam_user_create_access_keys_2023/" target="_blank">2023年版：IAMユーザーのアクセスキーを作成してみる (DevelopersIO)</a></li>
+</ul>
+<h2 is-upgraded>アクセスキーの設定 (aws configure)</h2>
+<p>開発環境（Codespaces またはご自身の端末）のターミナルで以下のコマンドを実行し、先ほど発行したキーを設定します。</p>
+<pre>aws configure
+</pre>
+<p>対話形式で以下のように入力してください。</p>
+<ul>
+<li><strong>AWS Access Key ID</strong>: (取得したアクセスキー)</li>
+<li><strong>AWS Secret Access Key</strong>: (取得したシークレットアクセスキー)</li>
+<li><strong>Default region name</strong>: <code>ap-northeast-1</code> (東京リージョンの場合)</li>
+<li><strong>Default output format</strong>: <code>json</code></li>
+</ul>
+<p>設定後、以下のコマンドでエラーが出ず、ご自身のアカウント情報が表示されれば設定は完了です。</p>
+<pre>aws sts get-caller-identity
+</pre>
 
 
       </google-codelab-step>
@@ -135,7 +234,7 @@
 </aside>
 <p>AWS上のインフラ環境（サーバーやネットワークなど）を、設計図（テンプレート）としてコード化して自動構築するサービスです。「スタック」とは、その設計図をもとに作られたAWSリソースのグループのことです。手動で一つずつ設定するよりも、早く・正確にインフラを用意できます。</p>
 <ol type="1">
-<li>Kiro-IDE のエディタを開き、新規ファイル <code>todo-app-template.yaml</code> を作成します。 <ul>
+<li>開発環境のエディタを開き、新規ファイル <code>todo-app-template.yaml</code> を作成します。 <ul>
 <li><strong>作成方法</strong>: 左側のファイルエクスプローラーで右クリックし「New File」を選択するか、上部メニューの File &gt; New Text File から作成し、名前を付けて保存します。</li>
 </ul>
 </li>
@@ -143,7 +242,7 @@
 <aside class="special"><p><strong>■日本語入力</strong></p>
 </aside>
 <p>もしかしたら、デフォルトで英語になっているかもしれません。Windowsの場合は <code>Ctrl + Space</code>、Macの場合は <code>Control + Space</code> や <code>Cmd + Space</code> などで直接／日本語入力を切り替えられる場合があります。半角・全角キーでの切り替えを行いたい場合一度設定を再起動してください。</p>
-<aside class="special"><p><strong>■その他</strong></p>
+<aside class="special"><p><strong>■その他 (Kiro-IDE 利用時のヒント)</strong></p>
 </aside>
 <ul>
 <li>Kiro CLI で認証がなかなか進まない場合、<code>kiro-cli login --use-device-flow</code> を試してみてください。</li>
@@ -195,8 +294,8 @@ Resources:
   ToDoAppInstance:
     Type: &#39;AWS::EC2::Instance&#39;
     Properties:
-      InstanceType: t3.micro
-      ImageId: &#39;resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64&#39;
+      InstanceType: t4g.small
+      ImageId: &#39;resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-arm64&#39;
       IamInstanceProfile: !Ref InstanceProfile
       SecurityGroupIds:
         - !Ref InstanceSecurityGroup
@@ -210,32 +309,200 @@ Resources:
           cd /opt/todo-app
           # 意図的に古い脆弱性のあるパッケージを導入（ハンズオン用）
           pip3 install Flask==2.0.1 Jinja2==3.0.1 Werkzeug==2.0.1
-          cat &lt;&lt; &#39;EOF&#39; &gt; app.py
-          import logging
-          from flask import Flask, request, jsonify
+          cat &lt;&lt; &#39;PYEOF&#39; &gt; app.py
+          import logging, time, random
+          from flask import Flask, request, render_template_string, redirect, jsonify
+
           app = Flask(__name__)
-          logging.basicConfig(filename=&#39;/var/log/todo-app/app.log&#39;, level=logging.INFO, format=&#39;%(asctime)s %(levelname)s: %(message)s&#39;)
-          todos = []
+          logging.basicConfig(filename=&#39;/var/log/todo-app/app.log&#39;, level=logging.INFO,
+                              format=&#39;%(asctime)s %(levelname)s: %(message)s&#39;)
+
+          todos = [
+              {&#34;task&#34;: &#34;AWS CloudWatchを学ぶ&#34;, &#34;done&#34;: False},
+              {&#34;task&#34;: &#34;X-Rayのセットアップ&#34;, &#34;done&#34;: False},
+              {&#34;task&#34;: &#34;ToDoアプリをデプロイする&#34;, &#34;done&#34;: True},
+          ]
+
+          HTML = &#34;&#34;&#34;
+          &lt;!DOCTYPE html&gt;
+          &lt;html lang=&#34;ja&#34;&gt;
+          &lt;head&gt;
+            &lt;meta charset=&#34;UTF-8&#34;&gt;
+            &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1.0&#34;&gt;
+            &lt;title&gt;ToDo App - O11y Hands-on&lt;/title&gt;
+            &lt;style&gt;
+              * { box-sizing: border-box; margin: 0; padding: 0; }
+              body { font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, sans-serif;
+                     background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+                     color: #f8fafc; min-height: 100vh; padding: 2rem; }
+              .container { max-width: 640px; margin: 0 auto; }
+              h1 { font-size: 1.8rem; margin-bottom: 0.3rem;
+                   background: linear-gradient(to right, #a78bfa, #38bdf8);
+                   -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+              .subtitle { color: #94a3b8; margin-bottom: 1.5rem; font-size: 0.9rem; }
+              .card { background: rgba(30,41,59,0.7); backdrop-filter: blur(12px);
+                      border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+                      padding: 1.5rem; margin-bottom: 1.5rem; }
+              .stats { display: flex; gap: 1rem; margin-bottom: 1rem; }
+              .stat { flex: 1; text-align: center; padding: 0.8rem; border-radius: 10px;
+                      background: rgba(255,255,255,0.05); }
+              .stat-num { font-size: 1.5rem; font-weight: 700; }
+              .stat-label { font-size: 0.75rem; color: #94a3b8; }
+              .stat-num.total { color: #38bdf8; }
+              .stat-num.done { color: #4ade80; }
+              .stat-num.pending { color: #fbbf24; }
+              form { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+              input[type=&#34;text&#34;] { flex: 1; padding: 0.7rem 1rem; border-radius: 8px;
+                     border: 1px solid rgba(255,255,255,0.15); background: rgba(15,23,42,0.6);
+                     color: white; font-size: 1rem; outline: none; }
+              input:focus { border-color: #8b5cf6; box-shadow: 0 0 0 2px rgba(139,92,246,0.3); }
+              button, .btn { padding: 0.7rem 1.2rem; border-radius: 8px; border: none;
+                     font-size: 0.9rem; font-weight: 600; cursor: pointer; color: white;
+                     text-decoration: none; display: inline-block; transition: 0.2s; }
+              .btn-add { background: #8b5cf6; }
+              .btn-add:hover { background: #7c3aed; }
+              .btn-sm { padding: 0.3rem 0.6rem; font-size: 0.75rem; border-radius: 6px; }
+              .btn-done { background: #4ade80; color: #0f172a; }
+              .btn-undo { background: #fbbf24; color: #0f172a; }
+              .btn-del { background: #ef4444; }
+              ul { list-style: none; }
+              li { display: flex; align-items: center; justify-content: space-between;
+                   padding: 0.7rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+              li:last-child { border-bottom: none; }
+              .task-text { flex: 1; margin: 0 0.8rem; }
+              .task-done { text-decoration: line-through; color: #64748b; }
+              .actions { display: flex; gap: 0.3rem; }
+              .test-section { margin-top: 1rem; padding-top: 1rem;
+                              border-top: 1px solid rgba(255,255,255,0.1); }
+              .test-section h3 { font-size: 0.85rem; color: #94a3b8; margin-bottom: 0.5rem; }
+              .test-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+              .btn-warn { background: #f97316; }
+              .btn-err { background: #ef4444; }
+              .btn-slow { background: #6366f1; }
+              .badge { display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+                       margin-right: 0.3rem; }
+              .badge-done { background: #4ade80; }
+              .badge-pending { background: #fbbf24; }
+              .flash { background: rgba(139,92,246,0.15); border: 1px solid #8b5cf6;
+                       border-radius: 8px; padding: 0.6rem 1rem; margin-bottom: 1rem;
+                       font-size: 0.85rem; }
+            &lt;/style&gt;
+          &lt;/head&gt;
+          &lt;body&gt;
+            &lt;div class=&#34;container&#34;&gt;
+              &lt;h1&gt;📝 ToDo App&lt;/h1&gt;
+              &lt;p class=&#34;subtitle&#34;&gt;AWS Observability ハンズオン用アプリケーション&lt;/p&gt;
+              {% if message %}&lt;div class=&#34;flash&#34;&gt;&#123;&#123; message }}&lt;/div&gt;{% endif %}
+              &lt;div class=&#34;card&#34;&gt;
+                &lt;div class=&#34;stats&#34;&gt;
+                  &lt;div class=&#34;stat&#34;&gt;&lt;div class=&#34;stat-num total&#34;&gt;&#123;&#123; total }}&lt;/div&gt;&lt;div class=&#34;stat-label&#34;&gt;Total&lt;/div&gt;&lt;/div&gt;
+                  &lt;div class=&#34;stat&#34;&gt;&lt;div class=&#34;stat-num done&#34;&gt;&#123;&#123; done_count }}&lt;/div&gt;&lt;div class=&#34;stat-label&#34;&gt;Done&lt;/div&gt;&lt;/div&gt;
+                  &lt;div class=&#34;stat&#34;&gt;&lt;div class=&#34;stat-num pending&#34;&gt;&#123;&#123; pending }}&lt;/div&gt;&lt;div class=&#34;stat-label&#34;&gt;Pending&lt;/div&gt;&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;form action=&#34;/&#34; method=&#34;POST&#34;&gt;
+                  &lt;input type=&#34;text&#34; name=&#34;task&#34; placeholder=&#34;新しいタスクを入力...&#34; required&gt;
+                  &lt;button type=&#34;submit&#34; class=&#34;btn btn-add&#34;&gt;追加&lt;/button&gt;
+                &lt;/form&gt;
+                &lt;ul&gt;
+                {% for i, todo in todos %}
+                  &lt;li&gt;
+                    &lt;span class=&#34;badge &#123;&#123; &#39;badge-done&#39; if todo.done else &#39;badge-pending&#39; }}&#34;&gt;&lt;/span&gt;
+                    &lt;span class=&#34;task-text &#123;&#123; &#39;task-done&#39; if todo.done }}&#34;&gt;&#123;&#123; todo.task }}&lt;/span&gt;
+                    &lt;div class=&#34;actions&#34;&gt;
+                      {% if todo.done %}
+                        &lt;a href=&#34;/undo/&#123;&#123; i }}&#34; class=&#34;btn btn-sm btn-undo&#34;&gt;↩&lt;/a&gt;
+                      {% else %}
+                        &lt;a href=&#34;/done/&#123;&#123; i }}&#34; class=&#34;btn btn-sm btn-done&#34;&gt;✓&lt;/a&gt;
+                      {% endif %}
+                      &lt;a href=&#34;/delete/&#123;&#123; i }}&#34; class=&#34;btn btn-sm btn-del&#34;&gt;✕&lt;/a&gt;
+                    &lt;/div&gt;
+                  &lt;/li&gt;
+                {% endfor %}
+                &lt;/ul&gt;
+              &lt;/div&gt;
+              &lt;div class=&#34;card&#34;&gt;
+                &lt;div class=&#34;test-section&#34;&gt;
+                  &lt;h3&gt;🔧 Observability テスト（ハンズオン用）&lt;/h3&gt;
+                  &lt;div class=&#34;test-btns&#34;&gt;
+                    &lt;a href=&#34;/error&#34; class=&#34;btn btn-sm btn-err&#34;&gt;500 Error&lt;/a&gt;
+                    &lt;a href=&#34;/warn&#34; class=&#34;btn btn-sm btn-warn&#34;&gt;Warning Log&lt;/a&gt;
+                    &lt;a href=&#34;/slow&#34; class=&#34;btn btn-sm btn-slow&#34;&gt;Slow Response&lt;/a&gt;
+                    &lt;a href=&#34;/health&#34; class=&#34;btn btn-sm btn-done&#34; style=&#34;color:white&#34;&gt;Health Check&lt;/a&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/body&gt;
+          &lt;/html&gt;
+          &#34;&#34;&#34;
+
+          def render(message=None):
+              done_count = sum(1 for t in todos if t[&#34;done&#34;])
+              return render_template_string(HTML, todos=list(enumerate(todos)),
+                  total=len(todos), done_count=done_count, pending=len(todos)-done_count,
+                  message=message)
+
           @app.route(&#39;/&#39;, methods=[&#39;GET&#39;])
           def get_todos():
-              app.logger.info(&#34;Fetched ToDos&#34;)
-              return jsonify(todos)
+              app.logger.info(&#34;GET / - Fetched ToDos&#34;)
+              return render()
+
           @app.route(&#39;/&#39;, methods=[&#39;POST&#39;])
           def add_todo():
-              data = request.json
-              if not data or &#39;task&#39; not in data:
-                  app.logger.error(&#34;Invalid request to add ToDo&#34;)
-                  return &#34;Invalid data&#34;, 400
-              todos.append(data[&#39;task&#39;])
-              app.logger.info(f&#34;Added ToDo: {data[&#39;task&#39;]}&#34;)
-              return jsonify({&#39;status&#39;: &#39;added&#39;}), 201
-          @app.route(&#39;/error&#39;, methods=[&#39;GET&#39;])
+              task = request.form.get(&#39;task&#39;, &#39;&#39;).strip()
+              if not task:
+                  app.logger.error(&#34;POST / - Empty task submitted&#34;)
+                  return render(&#34;タスクを入力してください&#34;), 400
+              todos.append({&#34;task&#34;: task, &#34;done&#34;: False})
+              app.logger.info(f&#34;POST / - Added ToDo: {task}&#34;)
+              return redirect(&#39;/&#39;)
+
+          @app.route(&#39;/done/&lt;int:idx&gt;&#39;)
+          def mark_done(idx):
+              if 0 &lt;= idx &lt; len(todos):
+                  todos[idx][&#34;done&#34;] = True
+                  app.logger.info(f&#34;GET /done/{idx} - Marked done: {todos[idx][&#39;task&#39;]}&#34;)
+              return redirect(&#39;/&#39;)
+
+          @app.route(&#39;/undo/&lt;int:idx&gt;&#39;)
+          def mark_undo(idx):
+              if 0 &lt;= idx &lt; len(todos):
+                  todos[idx][&#34;done&#34;] = False
+                  app.logger.info(f&#34;GET /undo/{idx} - Marked undone: {todos[idx][&#39;task&#39;]}&#34;)
+              return redirect(&#39;/&#39;)
+
+          @app.route(&#39;/delete/&lt;int:idx&gt;&#39;)
+          def delete_todo(idx):
+              if 0 &lt;= idx &lt; len(todos):
+                  removed = todos.pop(idx)
+                  app.logger.info(f&#34;GET /delete/{idx} - Deleted: {removed[&#39;task&#39;]}&#34;)
+              return redirect(&#39;/&#39;)
+
+          @app.route(&#39;/error&#39;)
           def trigger_error():
-              app.logger.error(&#34;Intentionally triggered error log for testing!&#34;)
-              return &#34;Error logged&#34;, 500
+              app.logger.error(&#34;GET /error - Intentional 500 error triggered!&#34;)
+              return render(&#34;⚠️ 500 Internal Server Error をログに記録しました&#34;), 500
+
+          @app.route(&#39;/warn&#39;)
+          def trigger_warn():
+              app.logger.warning(&#34;GET /warn - Intentional warning triggered!&#34;)
+              return render(&#34;⚠️ Warning をログに記録しました&#34;)
+
+          @app.route(&#39;/slow&#39;)
+          def trigger_slow():
+              delay = random.uniform(2.0, 5.0)
+              app.logger.warning(f&#34;GET /slow - Slow response: {delay:.1f}s&#34;)
+              time.sleep(delay)
+              return render(f&#34;🐢 {delay:.1f}秒の遅延レスポンスを返しました&#34;)
+
+          @app.route(&#39;/health&#39;)
+          def health():
+              app.logger.info(&#34;GET /health - Health check OK&#34;)
+              return jsonify({&#34;status&#34;: &#34;healthy&#34;, &#34;todos&#34;: len(todos)}), 200
+
           if __name__ == &#39;__main__&#39;:
               app.run(host=&#39;0.0.0.0&#39;, port=8080)
-          EOF
+          PYEOF
           nohup python3 app.py &gt; /dev/null 2&gt;&amp;1 &amp;
 
 # --- ⑥ Outputs: スタック作成後に表示される情報 ---
@@ -254,7 +521,7 @@ Outputs:
 <li><strong>InstanceRole (IAMロール)</strong>: EC2 が SSM（リモート接続）や CloudWatch（ログ送信）を使うための「許可証」です。人間でいう「社員証」のようなもので、これがないと EC2 は他の AWS サービスと連携できません。</li>
 <li><strong>InstanceProfile</strong>: IAM ロールを EC2 に渡すための「入れ物」です。EC2 にロールを直接付けることはできないため、この仲介役が必要です。</li>
 <li><strong>InstanceSecurityGroup</strong>: EC2 への通信を制御する「ファイアウォール（防火壁）」です。ここでは TCP ポート 8080 番への通信を全 IP アドレス（<code>0.0.0.0/0</code>）から許可しています。</li>
-<li><strong>ToDoAppInstance</strong>: 実際の EC2 サーバー本体です。<code>t3.micro</code> は無料利用枠対象の小さなサーバーサイズです。<code>ImageId</code> は OS のテンプレート（Amazon Linux 2023）を指定しています。</li>
+<li><strong>ToDoAppInstance</strong>: 実際の EC2 サーバー本体です。<code>t4g.small</code> は Graviton プロセッサを搭載したコストパフォーマンスに優れた小さなサーバーサイズです。<code>ImageId</code> は OS のテンプレート（Amazon Linux 2023）を指定しています。</li>
 <li><strong>UserData</strong>: EC2 が初めて起動した時に自動実行されるスクリプトです。Python や Flask のインストール、アプリのコード配置、アプリの起動までを自動で行います。</li>
 <li><strong>Outputs</strong>: スタック作成完了後に表示される情報です。アプリの URL やインスタンス ID を確認できます。</li>
 </ol>
@@ -266,7 +533,7 @@ Outputs:
 <li><code>Fn::Base64</code>: テキストを Base64 形式にエンコード（変換）します。UserData に渡すスクリプトは Base64 形式である必要があるため使用しています。</li>
 </ul>
 <ol type="1" start="3">
-<li>Kiro-IDE のターミナルで以下のコマンドを実行し、ファイルからCloudFormationスタックを作成します。</li>
+<li>開発環境のターミナルで以下のコマンドを実行し、ファイルからCloudFormationスタックを作成します。</li>
 </ol>
 <pre>aws cloudformation create-stack \
   --stack-name saga-o11y-handson \
@@ -284,10 +551,11 @@ Outputs:
 <li>構築完了を確認します。<ul>
 <li>AWS マネジメントコンソールの <strong>CloudFormation</strong> 画面を開き、<code>saga-o11y-handson</code> のステータスが <code>CREATE_COMPLETE</code> になるのを待ちます。</li>
 <li>完了したら、スタックの詳細画面にある「<strong>出力 (Outputs)</strong>」タブを開きます。</li>
-<li>そこに表示されている <code>AppURL</code> をクリック（またはコピーしてブラウザで開く）して、ToDo アプリが表示されるか確認してください。</li>
+<li>そこに表示されている <code>AppURL</code> をクリック（またはコピーしてブラウザで開く）して、ToDo アプリの画面が表示されるか確認してください。</li>
 </ul>
 </li>
-<li>このToDoアプリは背景でログファイル（例: <code>/var/log/todo-app/app.log</code>）にアクセスログやエラーを出力していることを確認しておきましょう。</li>
+<li>表示された ToDo アプリの画面にある入力フォームから、新しいタスク（例: <code>CloudWatchのログを確認する</code>）を入力し、「追加」ボタンを押して登録できるかテストしてみましょう。</li>
+<li>この ToDo アプリは背景でログファイル（例: <code>/var/log/todo-app/app.log</code>）にアクセスログやエラーを出力していることを確認しておきましょう。</li>
 </ol>
 
 
@@ -320,7 +588,7 @@ Outputs:
 <aside class="special"><p><strong>GUI エディタを使って編集したい場合</strong></p>
 </aside>
 <ol type="1">
-<li>まず、<strong>Kiro-IDE のエディタ</strong>で <code>config.json</code> という名前の新規ファイルを作成し、以下の JSON 内容を貼り付けて保存します。</li>
+<li>まず、<strong>開発環境のエディタ</strong>で <code>config.json</code> という名前の新規ファイルを作成し、以下の JSON 内容を貼り付けて保存します。</li>
 <li>保存した内容をコピーします。</li>
 <li>EC2 インスタンスのターミナル（セッションマネージャー）で <code>sudo nano config.json</code> を実行します。</li>
 <li>コピーした内容をターミナルに貼り付け（Windows: <code>Ctrl + Shift + V</code> / Mac: <code>Cmd + V</code>）て保存します。</li>
@@ -366,7 +634,7 @@ Outputs:
 <li><code>-c file:config.json</code>: 先ほど作成した設定ファイルを指定しています。</li>
 </ul>
 <h2 is-upgraded>通知用 SNS トピックの作成とメール購読 (CLI)</h2>
-<p>まずは、アラーム発生時にメールを通知するための SNS トピックを作成します。Kiro-IDE のターミナルから以下のコマンドを入力します。 （最後に設定する自分のメールアドレス <code>your_email@example.com</code> は、受信可能なものに変更して実行してください）</p>
+<p>まずは、アラーム発生時にメールを通知するための SNS トピックを作成します。開発環境のターミナルから以下のコマンドを入力します。 （最後に設定する自分のメールアドレス <code>your_email@example.com</code> は、受信可能なものに変更して実行してください）</p>
 <aside class="special"><p><strong>用語解説: SNS (Simple Notification Service) とは？</strong></p>
 </aside>
 <p>AWS が提供する通知サービスです。「トピック」という通知チャンネルを作り、そこにメールアドレスなどの「購読者（サブスクライバー）」を登録しておくと、トピックにメッセージが送られた時に自動で通知が届きます。LINEグループのようなイメージです。</p>
@@ -460,7 +728,7 @@ aws cloudwatch put-metric-alarm \
 <li><strong>AWSマネジメントコンソール</strong> にログインし、<strong>CloudWatch</strong> の画面を開きます。</li>
 <li>左メニューの <strong>ログ &gt; ロググループ</strong> から <code>todo-app-logs</code> を開くと、EC2 が送信したアプリのログ（ログストリーム）を見ることができます。</li>
 <li>左メニューの <strong>アラーム &gt; すべてのアラーム</strong> を開くと、「<code>ToDoAppErrorAlarm</code>」が作成されていることを確認できます（最初は「データ不足」や「OK」になっています）。</li>
-<li>Kiro-IDEまたは別ブラウザのタブから、ToDo アプリの <strong>エラー発生用 URL</strong> にアクセスし、意図的にエラーログを書き込みます。 <ul>
+<li>開発環境のブラウザまたは別タブから、ToDo アプリの <strong>エラー発生用 URL</strong> にアクセスし、意図的にエラーログを書き込みます。 <ul>
 <li>アクセス先例: <code>http://<EC2のIPまたはパブリックDNS>:8080/error</code></li>
 </ul>
 </li>
@@ -562,7 +830,7 @@ command = [&#34;check-log&#34;, &#34;--file&#34;, &#34;/var/log/todo-app/app.log
 </aside>
 <p>このセクションでは、学習のために意図的に古い脆弱なバージョンをインストールします。<strong>実際の開発現場では、常に最新の安定版を使用し、古いバージョンをそのまま使い続けることは絶対に避けてください！</strong></p>
 <h2 is-upgraded>脆弱なパッケージの導入</h2>
-<p>Kiro-IDE または EC2 のターミナル上で、作業用のソースコードディレクトリ（フォルダ）に移動し、わざと古いパッケージを指定してインストールします。</p>
+<p>開発環境 または EC2 のターミナル上で、作業用のソースコードディレクトリ（フォルダ）に移動し、わざと古いパッケージを指定してインストールします。</p>
 <aside class="special"><p><strong>Linux コマンドの補足: ディレクトリの移動</strong></p>
 </aside>
 <p>Linux 環境で特定のフォルダ（ディレクトリ）に移動する場合は、<code>cd</code> (change directory) コマンドを使用します。今回の EC2 の例では、アプリの配置場所である <code>/opt/todo-app</code> に移動する必要があります（例: <code>cd /opt/todo-app</code> を実行）。</p>
@@ -581,7 +849,7 @@ pip freeze &gt; requirements.txt
 <h2 is-upgraded>セキュリティスキャンの実行（例: Snyk）</h2>
 <p>「Snyk（スニーク）」は、開発中にセキュリティ上の問題を自動で見つけてくれる便利なツールです。佐賀の現場でも、こういったツールを導入して安全な開発を行うことが推奨されます。</p>
 <ol type="1">
-<li><a href="https://snyk.io/" target="_blank">Snyk</a> のアカウントを作成し、CLI メニューの手順に従って Kiro-IDE 環境に Snyk CLI をインストールします。</li>
+<li><a href="https://snyk.io/" target="_blank">Snyk</a> のアカウントを作成し、CLI メニューの手順に従って開発環境に Snyk CLI をインストールします。</li>
 <li>認証を行います。</li>
 </ol>
 <aside class="special"><p><strong>用語解説: npm とは？</strong></p>
@@ -589,7 +857,7 @@ pip freeze &gt; requirements.txt
 <p>「Node Package Manager」の略で、JavaScript / TypeScript のライブラリ（パッケージ）を管理するツールです。Python における <code>pip</code> と同じ役割です。<code>npm install -g snyk</code> の <code>-g</code> は「グローバル（システム全体）にインストールする」という意味で、どのディレクトリからでも <code>snyk</code> コマンドが使えるようになります。</p>
 <aside class="special"><p><strong>Snyk CLI を使うための前提条件</strong></p>
 </aside>
-<p>Snyk CLI を動かすには <strong>Node.js</strong> が必要です。Kiro-IDE 環境には通常プリインストールされていますが、<code>node --version</code> を実行してバージョンが表示されない場合は、以下のコマンドで Node.js をインストールしてください。</p>
+<p>Snyk CLI を動かすには <strong>Node.js</strong> が必要です。Kiro-IDE や Codespaces 環境には通常プリインストールされていますが、<code>node --version</code> を実行してバージョンが表示されない場合は、以下のコマンド等で Node.js をインストールしてください。</p>
 <pre># Amazon Linux 2023 の場合
 sudo dnf install -y nodejs
 </pre>
@@ -635,7 +903,7 @@ pip freeze &gt; requirements.txt
       <google-codelab-step label="お片付け (Clean up)" duration="5">
         <p>ハンズオンで使用した AWS リソースや、外部サービスのデータは、課金や不要なアラートの原因になるため忘れずに削除しましょう。</p>
 <h2 is-upgraded>CloudFormationスタックの削除</h2>
-<p>Kiro-IDE または AWS マネジメントコンソールから、最初に作成した CloudFormation スタックを削除します。</p>
+<p>開発環境 または AWS マネジメントコンソールから、最初に作成した CloudFormation スタックを削除します。</p>
 <pre>aws cloudformation delete-stack --stack-name saga-o11y-handson
 </pre>
 <aside class="special"><p><strong>コマンドの解説</strong></p>
@@ -677,8 +945,11 @@ aws logs delete-log-group --log-group-name &#34;todo-app-logs&#34;
 </pre>
 <aside class="special"><p>表示された一覧から <code>todo-app-alerts</code> を含む ARN をコピーして使用してください。</p>
 </aside>
-<h2 is-upgraded>Kiro-IDE 環境の削除</h2>
-<p>用済みになった場合は、手順に従って Kiro-IDE 自体の CloudFormation スタックも削除してください。</p>
+<h2 is-upgraded>環境のお片付け</h2>
+<ul>
+<li><strong>Kiro-IDE の場合</strong>: 用済みになった場合は、手順に従って Kiro-IDE 自体の CloudFormation スタックも削除してください。</li>
+<li><strong>Codespaces の場合</strong>: 不要になった Codespace インスタンスを GitHub 上から削除（Delete）してください。</li>
+</ul>
 <h2 is-upgraded>外部サービスの後処理</h2>
 <ul>
 <li><strong>Mackerel</strong>: 作成したオーガニゼーション、ホスト設定などを必要に応じて退会・削除してください。</li>
