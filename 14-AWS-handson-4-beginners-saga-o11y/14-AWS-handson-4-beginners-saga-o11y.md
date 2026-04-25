@@ -885,7 +885,7 @@ Positive
 
 ```toml
 [plugin.checks.todo-app-log]
-command = ["check-log", "--file", "/var/log/todo-app/app.log", "--pattern", "ERROR", "--warning-pattern", "WARNING"]
+command = ["check-log", "--file", "/var/log/todo-app/app.log", "--pattern", "ERROR|WARNING"]
 ```
 
 Positive
@@ -893,13 +893,13 @@ Positive
 : エディタの操作に自信がない、またはキーボードがうまく反応しない場合は、以下の `echo` を使ったワンライナーコマンド（1行のコマンド）を貼り付けて実行するだけで、ファイルの末尾に設定を追記できます。
 
 ```console
-echo -e '\n[plugin.checks.todo-app-log]\ncommand = ["check-log", "--file", "/var/log/todo-app/app.log", "--pattern", "ERROR", "--warning-pattern", "WARNING"]' | sudo tee -a /etc/mackerel-agent/mackerel-agent.conf
+echo -e '\n[plugin.checks.todo-app-log]\ncommand = ["check-log", "--file", "/var/log/todo-app/app.log", "--pattern", "ERROR|WARNING"]' | sudo tee -a /etc/mackerel-agent/mackerel-agent.conf
 ```
 
 Positive
 : **設定ファイル (TOML形式) の解説**
 : * `[plugin.checks.todo-app-log]`: チェック監視プラグインの設定セクションです。`todo-app-log` は監視項目の名前で、Mackerel のダッシュボードに表示されます。
-: * `command`: 実行するチェックコマンドです。`check-log` プラグインが `/var/log/todo-app/app.log` ファイルを監視し、`ERROR` という文字列が見つかると CRITICAL アラート、`WARNING` という文字列が見つかると WARNING アラートを発報します。
+: * `command`: 実行するチェックコマンドです。`check-log` プラグインが `/var/log/todo-app/app.log` ファイルを監視し、`ERROR` または `WARNING` という文字列が見つかるとアラートを発報します。
 
 5. 設定を反映させるために Mackerel エージェントを再起動します。
 

@@ -827,18 +827,18 @@ curl -fsSL https://mackerel.io/file/script/setup-all-yum-v2.sh | MACKEREL_APIKEY
 <li>先ほどのアプリのログ (<code>/var/log/todo-app/app.log</code>) から、特定のエラー（<code>ERROR</code>）や警告（<code>WARNING</code>）の文字列を検知してアラートを発火させるため、ファイルの末尾に以下の設定を追記し、保存して閉じます。（※ nano エディタの場合は <code>Ctrl+O</code> -&gt; <code>Enter</code> で保存し、<code>Ctrl+X</code> で終了します。Macでも <code>Cmd</code> ではなく <code>Ctrl</code> キーを使用します）</li>
 </ol>
 <pre><code language="language-toml" class="language-toml">[plugin.checks.todo-app-log]
-command = [&#34;check-log&#34;, &#34;--file&#34;, &#34;/var/log/todo-app/app.log&#34;, &#34;--pattern&#34;, &#34;ERROR&#34;, &#34;--warning-pattern&#34;, &#34;WARNING&#34;]
+command = [&#34;check-log&#34;, &#34;--file&#34;, &#34;/var/log/todo-app/app.log&#34;, &#34;--pattern&#34;, &#34;ERROR|WARNING&#34;]
 </code></pre>
 <aside class="special"><p><strong>nanoエディタが苦手な方へ（ワンライナーでの追記）</strong></p>
 </aside>
 <p>エディタの操作に自信がない、またはキーボードがうまく反応しない場合は、以下の <code>echo</code> を使ったワンライナーコマンド（1行のコマンド）を貼り付けて実行するだけで、ファイルの末尾に設定を追記できます。</p>
-<pre>echo -e &#39;\n[plugin.checks.todo-app-log]\ncommand = [&#34;check-log&#34;, &#34;--file&#34;, &#34;/var/log/todo-app/app.log&#34;, &#34;--pattern&#34;, &#34;ERROR&#34;, &#34;--warning-pattern&#34;, &#34;WARNING&#34;]&#39; | sudo tee -a /etc/mackerel-agent/mackerel-agent.conf
+<pre>echo -e &#39;\n[plugin.checks.todo-app-log]\ncommand = [&#34;check-log&#34;, &#34;--file&#34;, &#34;/var/log/todo-app/app.log&#34;, &#34;--pattern&#34;, &#34;ERROR|WARNING&#34;]&#39; | sudo tee -a /etc/mackerel-agent/mackerel-agent.conf
 </pre>
 <aside class="special"><p><strong>設定ファイル (TOML形式) の解説</strong></p>
 </aside>
 <ul>
 <li><code>[plugin.checks.todo-app-log]</code>: チェック監視プラグインの設定セクションです。<code>todo-app-log</code> は監視項目の名前で、Mackerel のダッシュボードに表示されます。</li>
-<li><code>command</code>: 実行するチェックコマンドです。<code>check-log</code> プラグインが <code>/var/log/todo-app/app.log</code> ファイルを監視し、<code>ERROR</code> という文字列が見つかると CRITICAL アラート、<code>WARNING</code> という文字列が見つかると WARNING アラートを発報します。</li>
+<li><code>command</code>: 実行するチェックコマンドです。<code>check-log</code> プラグインが <code>/var/log/todo-app/app.log</code> ファイルを監視し、<code>ERROR</code> または <code>WARNING</code> という文字列が見つかるとアラートを発報します。</li>
 </ul>
 <ol type="1" start="5">
 <li>設定を反映させるために Mackerel エージェントを再起動します。</li>
