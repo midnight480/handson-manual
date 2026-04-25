@@ -605,10 +605,23 @@ Positive
 : * `--template-body`: 先ほど作成したファイルのパスを指定します。
 : * `--capabilities CAPABILITY_IAM`: このテンプレートが、AWS内での権限設定（IAMロールなど）を作成することを許可するためのフラグです。
 
-4. 構築完了を確認します。
-   * AWS マネジメントコンソールの **CloudFormation** 画面を開き、`saga-o11y-handson` のステータスが `CREATE_COMPLETE` になるのを待ちます。
-   * 完了したら、スタックの詳細画面にある「**出力 (Outputs)**」タブを開きます。
-   * そこに表示されている `AppURL` をクリック（またはコピーしてブラウザで開く）して、ToDo アプリの画面が表示されるか確認してください。
+4. スタックの構築完了と出力結果を確認します。
+
+   AWS マネジメントコンソールの **CloudFormation** 画面から `saga-o11y-handson` のステータス（`CREATE_COMPLETE`）と「**出力 (Outputs)**」タブを確認することもできますが、ターミナルから以下のコマンドで確認することも可能です。
+
+   **進行状況を待機するコマンド**（構築が完了するまで待機します。数分後にプロンプトが戻れば完了です）:
+   ```console
+   aws cloudformation wait stack-create-complete --stack-name saga-o11y-handson
+   ```
+
+   **出力結果を確認するコマンド**（完了後に実行します）:
+   ```console
+   aws cloudformation describe-stacks \
+     --stack-name saga-o11y-handson \
+     --query 'Stacks[0].Outputs'
+   ```
+
+   * 出力結果に表示された `AppURL` の値（`http://ec2-...`）をコピーしてブラウザで開き、ToDo アプリの画面が表示されるか確認してください。
 
 5. 表示された ToDo アプリの画面にある入力フォームから、新しいタスク（例: `CloudWatchのログを確認する`）を入力し、「追加」ボタンを押して登録できるかテストしてみましょう。
 
