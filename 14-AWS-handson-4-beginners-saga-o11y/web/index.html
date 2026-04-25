@@ -91,6 +91,47 @@
 
       </google-codelab-step>
     
+      <google-codelab-step label="IAMユーザーのアクセスキーの発行と設定 (Kiro-IDE 以外の場合)" duration="10">
+        <p>Kiro-IDE 以外（オプション2〜4）の環境を利用する場合は、AWS リソースを操作するためのアクセスキー（認証情報）が必要です。以下の手順で IAM ユーザーのアクセスキーを発行し、設定してください。</p>
+<aside class="warning"><p><strong>【重要】アクセスキーの利用に関する注意喚起</strong></p>
+</aside>
+<p>IAM ユーザーの永続的なアクセスキーを発行する本手順は、<strong>あくまでも今回のハンズオンを簡単に進めるための限定的な手段</strong>です。実際の開発現場や本番運用においては、セキュリティの観点から永続的なアクセスキーの利用は推奨されていません。現在は <code>aws login</code>（AWS IAM Identity Center との統合）や <code>aws sso login</code> などを利用し、一時的な（有効期限のある）認証トークンを取得して利用することが前提・ベストプラクティスとされています。</p>
+<ul>
+<li>参考: <a href="https://aws.amazon.com/jp/blogs/news/simplified-developer-access-to-aws-with-aws-login/" target="_blank">AWS CLI での認証の簡素化 – 新しいコマンド「aws login」を一般公開</a></li>
+</ul>
+<h2 is-upgraded>アクセスキーの発行手順</h2>
+<ol type="1">
+<li><strong>AWS マネジメントコンソール</strong>にログインし、<strong>IAM</strong> (Identity and Access Management) サービスを開きます。</li>
+<li>左側のメニューから「<strong>ユーザー</strong>」を選択し、本ハンズオン用のユーザー（例: AdministratorAccess 権限を持つユーザー）をクリックします。</li>
+<li>「<strong>セキュリティ認証情報</strong>」タブを選択します。</li>
+<li>「<strong>アクセスキーを作成</strong>」ボタンをクリックします。</li>
+<li>ユースケースとして「<strong>コマンドラインインターフェイス (CLI)</strong>」を選択し、確認のチェックを入れて「次へ」をクリックします。</li>
+<li>(任意) 説明タグを入力し、「<strong>アクセスキーを作成</strong>」をクリックします。</li>
+<li>発行された「<strong>アクセスキー</strong>」と「<strong>シークレットアクセスキー</strong>」をメモするか、CSVファイルをダウンロードします（※この画面を閉じるとシークレットアクセスキーは二度と確認できません）。</li>
+</ol>
+<aside class="special"><p>画面の詳しい操作手順については、こちらの記事も参考にしてください。</p>
+</aside>
+<ul>
+<li><a href="https://dev.classmethod.jp/articles/iam_user_create_access_keys_2023/" target="_blank">2023年版：IAMユーザーのアクセスキーを作成してみる (DevelopersIO)</a></li>
+</ul>
+<h2 is-upgraded>アクセスキーの設定 (aws configure)</h2>
+<p>ご自身の開発環境のターミナルで以下のコマンドを実行し、先ほど発行したキーを設定します。</p>
+<pre>aws configure
+</pre>
+<p>対話形式で以下のように入力してください。</p>
+<ul>
+<li><strong>AWS Access Key ID</strong>: (取得したアクセスキー)</li>
+<li><strong>AWS Secret Access Key</strong>: (取得したシークレットアクセスキー)</li>
+<li><strong>Default region name</strong>: <code>ap-northeast-1</code> (東京リージョンの場合)</li>
+<li><strong>Default output format</strong>: <code>json</code></li>
+</ul>
+<p>設定後、以下のコマンドでエラーが出ず、ご自身のアカウント情報が表示されれば設定は完了です。</p>
+<pre>aws sts get-caller-identity
+</pre>
+
+
+      </google-codelab-step>
+    
       <google-codelab-step label="開発環境の準備" duration="10">
         <p>本ハンズオンでは、以下の4つの方法からお好きな開発環境を選択して進めることができます。</p>
 <ol type="1">
@@ -219,47 +260,6 @@ $ aws sts get-caller-identity
 </ol>
 <aside class="special"><p>各ツールのインストール後、ターミナルで <code>aws --version</code> や <code>session-manager-plugin</code>、<code>npm --version</code> を実行し、正しくインストールされているか確認しましょう。</p>
 </aside>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="IAMユーザーのアクセスキーの発行と設定 (Kiro-IDE 以外の場合)" duration="10">
-        <p>Kiro-IDE 以外（オプション2〜4）の環境を利用する場合は、AWS リソースを操作するためのアクセスキー（認証情報）が必要です。以下の手順で IAM ユーザーのアクセスキーを発行し、設定してください。</p>
-<aside class="warning"><p><strong>【重要】アクセスキーの利用に関する注意喚起</strong></p>
-</aside>
-<p>IAM ユーザーの永続的なアクセスキーを発行する本手順は、<strong>あくまでも今回のハンズオンを簡単に進めるための限定的な手段</strong>です。実際の開発現場や本番運用においては、セキュリティの観点から永続的なアクセスキーの利用は推奨されていません。現在は <code>aws login</code>（AWS IAM Identity Center との統合）や <code>aws sso login</code> などを利用し、一時的な（有効期限のある）認証トークンを取得して利用することが前提・ベストプラクティスとされています。</p>
-<ul>
-<li>参考: <a href="https://aws.amazon.com/jp/blogs/news/simplified-developer-access-to-aws-with-aws-login/" target="_blank">AWS CLI での認証の簡素化 – 新しいコマンド「aws login」を一般公開</a></li>
-</ul>
-<h2 is-upgraded>アクセスキーの発行手順</h2>
-<ol type="1">
-<li><strong>AWS マネジメントコンソール</strong>にログインし、<strong>IAM</strong> (Identity and Access Management) サービスを開きます。</li>
-<li>左側のメニューから「<strong>ユーザー</strong>」を選択し、本ハンズオン用のユーザー（例: AdministratorAccess 権限を持つユーザー）をクリックします。</li>
-<li>「<strong>セキュリティ認証情報</strong>」タブを選択します。</li>
-<li>「<strong>アクセスキーを作成</strong>」ボタンをクリックします。</li>
-<li>ユースケースとして「<strong>コマンドラインインターフェイス (CLI)</strong>」を選択し、確認のチェックを入れて「次へ」をクリックします。</li>
-<li>(任意) 説明タグを入力し、「<strong>アクセスキーを作成</strong>」をクリックします。</li>
-<li>発行された「<strong>アクセスキー</strong>」と「<strong>シークレットアクセスキー</strong>」をメモするか、CSVファイルをダウンロードします（※この画面を閉じるとシークレットアクセスキーは二度と確認できません）。</li>
-</ol>
-<aside class="special"><p>画面の詳しい操作手順については、こちらの記事も参考にしてください。</p>
-</aside>
-<ul>
-<li><a href="https://dev.classmethod.jp/articles/iam_user_create_access_keys_2023/" target="_blank">2023年版：IAMユーザーのアクセスキーを作成してみる (DevelopersIO)</a></li>
-</ul>
-<h2 is-upgraded>アクセスキーの設定 (aws configure)</h2>
-<p>ご自身の開発環境のターミナルで以下のコマンドを実行し、先ほど発行したキーを設定します。</p>
-<pre>aws configure
-</pre>
-<p>対話形式で以下のように入力してください。</p>
-<ul>
-<li><strong>AWS Access Key ID</strong>: (取得したアクセスキー)</li>
-<li><strong>AWS Secret Access Key</strong>: (取得したシークレットアクセスキー)</li>
-<li><strong>Default region name</strong>: <code>ap-northeast-1</code> (東京リージョンの場合)</li>
-<li><strong>Default output format</strong>: <code>json</code></li>
-</ul>
-<p>設定後、以下のコマンドでエラーが出ず、ご自身のアカウント情報が表示されれば設定は完了です。</p>
-<pre>aws sts get-caller-identity
-</pre>
 
 
       </google-codelab-step>
