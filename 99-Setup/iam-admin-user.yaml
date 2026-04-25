@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Create an IAM user for hands-on with AdministratorAccess attached directly'
+
+Parameters:
+  UserName:
+    Type: String
+    Description: 'Name of the IAM User for the hands-on sessions'
+    Default: 'handson-admin'
+  
+  Password:
+    Type: String
+    Description: 'Initial console password for the IAM User'
+    NoEcho: true
+
+Resources:
+  HandsonAdminUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Ref UserName
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+      LoginProfile:
+        Password: !Ref Password
+        PasswordResetRequired: true
+
+Outputs:
+  ConsoleLoginURL:
+    Description: 'AWS Console Login URL for this account'
+    Value: !Sub 'https://${AWS::AccountId}.signin.aws.amazon.com/console/'
+  
+  UserName:
+    Description: 'IAM User Name'
+    Value: !Ref HandsonAdminUser

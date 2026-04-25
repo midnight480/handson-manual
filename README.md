@@ -50,4 +50,5 @@ claat export *.md
 - [サーバレスAPIの構築と保護 - GASからAPI Gateway + WAFまで](12-AWS-handson-4-beginners-saga-serverlss-004/web/index.html)
 - [生成AI×GAS 業務自動化プロフェッショナル養成講座 〜異なる視点で作り上げる、次世代の業務改善バイブル〜](13-Google-Apps-Script-4-Begineers/web/index.html)
 - [AWS Hands-on for Beginners: Saga O11y & Security](14-AWS-handson-4-beginners-saga-o11y/web/index.html)
-
+- [SITCD Initial Setup - SCP, RCP, and IAM Setup via AWS CLI](99-Setup/web/index.html)
+- [AWS環境構築・ポリシー設定CLIジェネレーター](99-Setup/cli-generator.html)

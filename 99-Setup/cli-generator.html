@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS CLI Command Generator for Hands-on Setup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8b5cf6;
+            --primary-hover: #7c3aed;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+        .container { max-width: 900px; width: 100%; }
+        h1 {
+            font-weight: 600; margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #a78bfa, #38bdf8);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        p.subtitle { color: var(--text-muted); margin-bottom: 2rem; }
+        .card {
+            background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 400; color: #cbd5e1; }
+        input[type="text"], select {
+            width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--border);
+            background: rgba(15,23,42,0.6); color: white; font-family: monospace; font-size: 1rem;
+            transition: all 0.3s ease; outline: none;
+        }
+        select { font-family: 'Outfit', sans-serif; }
+        input[type="text"]:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(139,92,246,0.3); }
+        .chapters-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 0.75rem; margin-top: 1rem;
+        }
+        .checkbox-item {
+            display: flex; align-items: center; background: rgba(255,255,255,0.05);
+            padding: 0.6rem 0.75rem; border-radius: 8px; border: 1px solid transparent; cursor: pointer; transition: all 0.2s;
+        }
+        .checkbox-item:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); }
+        .checkbox-item input { margin-right: 10px; cursor: pointer; width: 18px; height: 18px; accent-color: var(--primary); }
+        .btn {
+            color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px;
+            font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.3s;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-primary { background: var(--primary); }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-danger { background: var(--danger); }
+        .btn-danger:hover { background: var(--danger-hover); }
+        .btn-outline { background: transparent; border: 1px solid var(--border); }
+        .btn-outline:hover { background: rgba(255,255,255,0.1); }
+        .btn-sm { padding: 0.3rem 0.8rem; font-size: 0.8rem; }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+        pre {
+            background: #0f172a; padding: 1.5rem; border-radius: 12px; overflow-x: auto;
+            border: 1px solid var(--border); color: #38bdf8;
+            font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; line-height: 1.5;
+        }
+        .output-section { margin-top: 1.5rem; }
+        .output-section h3 { font-size: 1rem; margin-bottom: 0.5rem; color: #a78bfa; }
+        .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .tab-bar { display: flex; gap: 0; margin-bottom: 0; overflow-x: auto; }
+        .tab {
+            padding: 0.6rem 1.2rem; cursor: pointer; border: 1px solid var(--border);
+            background: transparent; color: var(--text-muted); font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem; transition: all 0.2s; white-space: nowrap;
+        }
+        .tab:first-child { border-radius: 8px 0 0 0; }
+        .tab:last-child { border-radius: 0 8px 0 0; }
+        .tab.active { background: rgba(139,92,246,0.2); color: white; border-color: var(--primary); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .dl-copy-bar { display: flex; gap: 0.5rem; margin: 0.75rem 0; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>AWS Setup Generator</h1>
+    <p class="subtitle">各章のOU作成・ポリシー適用・IAMユーザー払い出し、および削除のAWS CLIスクリプトを自動生成します。</p>
+
+    <div class="card">
+        <div class="form-group">
+            <label for="osSelect">Target Shell / OS</label>
+            <select id="osSelect" style="margin-bottom:1rem;">
+                <option value="bash">Bash (Mac / Linux)</option>
+                <option value="pwsh">PowerShell (Windows Terminal)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="parentOu">Parent OU ID (作成先のルートOU)</label>
+            <input type="text" id="parentOu" placeholder="例: ou-xxxx-yyyyyy" autocomplete="off">
+        </div>
+        <div class="form-group">
+            <label for="regionSelect">Deploy Region (StackSets / CloudFormation)</label>
+            <select id="regionSelect" style="margin-bottom:1rem;">
+                <option value="ap-northeast-1">東京 (ap-northeast-1)</option>
+                <option value="ap-northeast-3">大阪 (ap-northeast-3)</option>
+                <option value="us-east-1">バージニア北部 (us-east-1)</option>
+                <option value="us-west-2">オレゴン (us-west-2)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="iamUserName">IAM User Name (StackSets で払い出すユーザー名)</label>
+            <input type="text" id="iamUserName" placeholder="例: handson-admin" value="handson-admin" autocomplete="off">
+        </div>
+        <div class="form-group">
+            <label for="iamPassword">Initial Password (初期パスワード)</label>
+            <input type="text" id="iamPassword" placeholder="例: HandsOn2026!" autocomplete="off">
+        </div>
+        <div class="form-group">
+            <div class="toolbar">
+                <label>適用するフォルダ（章）を選択</label>
+                <div>
+                    <button class="btn btn-outline btn-sm" onclick="toggleAll(true)">すべて選択</button>
+                    <button class="btn btn-outline btn-sm" onclick="toggleAll(false)">すべて解除</button>
+                </div>
+            </div>
+            <div class="chapters-grid" id="chaptersGrid"></div>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="generate('create-all')">一括作成</button>
+            <button class="btn btn-danger" onclick="generate('delete-all')">一括削除</button>
+        </div>
+    </div>
+
+    <div class="card" id="outputCard" style="display:none;">
+        <label>生成されたスクリプト</label>
+        <div class="tab-bar" id="tabBar"></div>
+        <div id="tabContents"></div>
+    </div>
+</div>
+<script>
+// === DATA ===
+const chapters = [
+    "06-CloudWatch-Logs-Metrics","07-SITCD-Initial-Setup","08-SITCD-Resource-Setup",
+    "09-AWS-handson-4-beginners-saga-serverlss-001","10-AWS-handson-4-beginners-saga-serverlss-002",
+    "11-AWS-handson-4-beginners-saga-serverlss-003","12-AWS-handson-4-beginners-saga-serverlss-004",
+    "13-Google-Apps-Script-4-Begineers","14-AWS-handson-4-beginners-saga-o11y"
+];
+
+window.addEventListener('DOMContentLoaded', () => {
+    if (navigator.platform.indexOf('Win') > -1 || navigator.userAgent.indexOf('Windows') > -1)
+        document.getElementById('osSelect').value = 'pwsh';
+});
+
+const grid = document.getElementById('chaptersGrid');
+chapters.forEach(ch => {
+    const lbl = document.createElement('label');
+    lbl.className = 'checkbox-item';
+    lbl.innerHTML = `<input type="checkbox" value="${ch}" checked> <span style="font-size:0.9rem;word-break:break-all;">${ch}</span>`;
+    grid.appendChild(lbl);
+});
+
+function toggleAll(c) { document.querySelectorAll('#chaptersGrid input').forEach(cb => cb.checked = c); }
+
+// === VALIDATION ===
+function getInputs() {
+    const parentOu = document.getElementById('parentOu').value.trim().replace(/['"]/g, '');
+    const shell = document.getElementById('osSelect').value;
+    const region = document.getElementById('regionSelect').value;
+    const iamUserName = document.getElementById('iamUserName').value.trim();
+    const iamPassword = document.getElementById('iamPassword').value.trim();
+    const selected = Array.from(document.querySelectorAll('#chaptersGrid input:checked')).map(cb => cb.value);
+    return { parentOu, shell, region, iamUserName, iamPassword, selected };
+}
+
+function validate(inputs, needPassword) {
+    if (!inputs.parentOu) { alert("Parent OU ID を入力してください。"); return false; }
+    if (!/^(ou-[a-z0-9]{4,32}-[a-z0-9]{8,32}|r-[a-z0-9]{4,32})$/.test(inputs.parentOu)) {
+        alert("Parent OU ID の形式が正しくありません。例: ou-xxxx-yyyyyyyy"); return false;
+    }
+    if (inputs.selected.length === 0) { alert("少なくとも1つのフォルダを選択してください。"); return false; }
+    if (needPassword && !inputs.iamUserName) { alert("IAM User Name を入力してください。"); return false; }
+    if (needPassword && !inputs.iamPassword) { alert("Initial Password を入力してください。"); return false; }
+    return true;
+}
+
+// === BASH GENERATORS ===
+function bashCreate(parentOu, folder, iamUserName, iamPassword, region) {
+    const p = folder.substring(0, 2);
+    let s = `#!/bin/bash\n\nPARENT_OU="${parentOu}"\nFOLDER="${folder}"\nPREFIX="${p}"\nREGION="${region}"\nexport AWS_DEFAULT_REGION="$REGION"\n\n`;
+    s += `echo "Setup for $FOLDER"\n\n`;
+    // OU
+    s += `EXISTING_OUS=$(aws organizations list-organizational-units-for-parent --parent-id "$PARENT_OU" --query 'OrganizationalUnits[].{Id:Id,Name:Name}' --output json)\n`;
+    s += `EXISTING_ID=$(echo "$EXISTING_OUS" | python3 -c "import sys,json;data=json.load(sys.stdin);matches=[x['Id'] for x in data if x['Name']=='$FOLDER'];print(matches[0] if matches else '')")\n\n`;
+    s += `if [ -n "$EXISTING_ID" ]; then\n  echo "OU already exists: $EXISTING_ID"\n  NEW_OU_ID="$EXISTING_ID"\nelse\n  echo "Creating OU..."\n  NEW_OU_ID=$(aws organizations create-organizational-unit --parent-id "$PARENT_OU" --name "$FOLDER" --query 'OrganizationalUnit.Id' --output text)\nfi\n\n`;
+    s += `if [ -z "$NEW_OU_ID" ] || [ "$NEW_OU_ID" == "None" ]; then\n  echo "Failed to create OU. Exiting."\n  exit 1\nfi\necho "Using OU: $NEW_OU_ID"\n\n`;
+    // SCP
+    s += bashPolicyBlock('SCP', p, folder, 'SERVICE_CONTROL_POLICY');
+    // RCP
+    s += bashPolicyBlock('RCP', p, folder, 'RESOURCE_CONTROL_POLICY');
+    // Tag
+    s += `if [ -f "tag-policy.json" ]; then\n  echo "Creating and attaching Tag Policy..."\n`;
+    s += `  TAG_ID=$(aws organizations create-policy --content "file://tag-policy.json" --description "Tag policy PublicHandson for $FOLDER" --name "HandsOn-$PREFIX-TagPolicy" --type TAG_POLICY --query 'Policy.PolicySummary.Id' --output text 2>&1)\n`;
+    s += `  if echo "$TAG_ID" | grep -q "ERROR"; then\n    echo "Tag policy creation failed (may already exist)"\n  else\n    aws organizations attach-policy --policy-id "$TAG_ID" --target-id "$NEW_OU_ID"\n    echo "Attached Tag Policy: $TAG_ID"\n  fi\nfi\n\n`;
+    // StackSet
+    s += `STACKSET_NAME="HandsOn-IAM-Admin-User"\n`;
+    s += `aws cloudformation create-stack-set --stack-set-name "$STACKSET_NAME" --template-body file://iam-admin-user.yaml --parameters ParameterKey=UserName,ParameterValue=${iamUserName} ParameterKey=Password,ParameterValue=${iamPassword} --permission-model SERVICE_MANAGED --auto-deployment Enabled=true,RetainStacksOnAccountRemoval=false --capabilities CAPABILITY_NAMED_IAM 2>&1 || true\n`;
+    s += `aws cloudformation create-stack-instances --stack-set-name "$STACKSET_NAME" --deployment-targets OrganizationalUnitIds="$NEW_OU_ID" --regions $REGION 2>&1\n`;
+    s += `echo "Done: $FOLDER"\n`;
+    return s;
+}
+
+function bashPolicyBlock(label, prefix, folder, type) {
+    const file = label === 'SCP' ? `$FOLDER/$PREFIX-${label}.json` : `$FOLDER/$PREFIX-${label}.json`;
+    let s = `if [ -f "${folder}/${prefix}-${label}.json" ]; then\n  echo "Creating and attaching ${label}..."\n`;
+    s += `  ${label}_ID=$(aws organizations create-policy --content "file://${folder}/${prefix}-${label}.json" --description "${label} for $FOLDER" --name "HandsOn-$PREFIX-${label}" --type ${type} --query 'Policy.PolicySummary.Id' --output text 2>&1)\n`;
+    s += `  if echo "$${label}_ID" | grep -q "ERROR"; then\n    echo "${label} creation failed (may already exist)"\n  else\n    aws organizations attach-policy --policy-id "$${label}_ID" --target-id "$NEW_OU_ID"\n    echo "Attached ${label}: $${label}_ID"\n  fi\nfi\n\n`;
+    return s;
+}
+
+function bashCreateAll(parentOu, selected, iamUserName, iamPassword, region) {
+    const folders = selected.map(f => `"${f}"`).join('\n  ');
+    let s = `#!/bin/bash\n\nPARENT_OU="${parentOu}"\nREGION="${region}"\nexport AWS_DEFAULT_REGION="$REGION"\nFOLDERS=(\n  ${folders}\n)\n\n`;
+    s += `EXISTING_OUS=$(aws organizations list-organizational-units-for-parent --parent-id "$PARENT_OU" --query 'OrganizationalUnits[].{Id:Id,Name:Name}' --output json)\n\n`;
+    s += `for FOLDER in "\${FOLDERS[@]}"; do\n  PREFIX="\${FOLDER:0:2}"\n  echo "=========================================="\n  echo "Setup for $FOLDER"\n  echo "=========================================="\n\n`;
+    s += `  EXISTING_ID=$(echo "$EXISTING_OUS" | python3 -c "import sys,json;data=json.load(sys.stdin);matches=[x['Id'] for x in data if x['Name']=='$FOLDER'];print(matches[0] if matches else '')")\n\n`;
+    s += `  if [ -n "$EXISTING_ID" ]; then\n    echo "OU already exists: $EXISTING_ID"\n    NEW_OU_ID="$EXISTING_ID"\n  else\n    echo "Creating OU..."\n    NEW_OU_ID=$(aws organizations create-organizational-unit --parent-id "$PARENT_OU" --name "$FOLDER" --query 'OrganizationalUnit.Id' --output text)\n  fi\n\n`;
+    s += `  if [ -z "$NEW_OU_ID" ] || [ "$NEW_OU_ID" == "None" ]; then\n    echo "Failed. Skipping..."\n    continue\n  fi\n  echo "Using OU: $NEW_OU_ID"\n\n`;
+    // SCP
+    s += `  if [ -f "$FOLDER/$PREFIX-SCP.json" ]; then\n    SCP_ID=$(aws organizations create-policy --content "file://$FOLDER/$PREFIX-SCP.json" --description "SCP for $FOLDER" --name "HandsOn-$PREFIX-SCP" --type SERVICE_CONTROL_POLICY --query 'Policy.PolicySummary.Id' --output text 2>&1)\n`;
+    s += `    if ! echo "$SCP_ID" | grep -q "ERROR"; then\n      aws organizations attach-policy --policy-id "$SCP_ID" --target-id "$NEW_OU_ID"\n      echo "Attached SCP: $SCP_ID"\n    else\n      echo "SCP creation failed (may already exist)"\n    fi\n  fi\n\n`;
+    // RCP
+    s += `  if [ -f "$FOLDER/$PREFIX-RCP.json" ]; then\n    RCP_ID=$(aws organizations create-policy --content "file://$FOLDER/$PREFIX-RCP.json" --description "RCP for $FOLDER" --name "HandsOn-$PREFIX-RCP" --type RESOURCE_CONTROL_POLICY --query 'Policy.PolicySummary.Id' --output text 2>&1)\n`;
+    s += `    if ! echo "$RCP_ID" | grep -q "ERROR"; then\n      aws organizations attach-policy --policy-id "$RCP_ID" --target-id "$NEW_OU_ID"\n      echo "Attached RCP: $RCP_ID"\n    else\n      echo "RCP creation failed (may already exist)"\n    fi\n  fi\n\n`;
+    // Tag
+    s += `  if [ -f "tag-policy.json" ]; then\n    TAG_ID=$(aws organizations create-policy --content "file://tag-policy.json" --description "Tag policy PublicHandson for $FOLDER" --name "HandsOn-$PREFIX-TagPolicy" --type TAG_POLICY --query 'Policy.PolicySummary.Id' --output text 2>&1)\n`;
+    s += `    if ! echo "$TAG_ID" | grep -q "ERROR"; then\n      aws organizations attach-policy --policy-id "$TAG_ID" --target-id "$NEW_OU_ID"\n      echo "Attached Tag Policy: $TAG_ID"\n    else\n      echo "Tag policy creation failed (may already exist)"\n    fi\n  fi\n`;
+    s += `  echo "------------------------------------------"\ndone\n\n`;
+    // StackSet
+    s += `echo "=========================================="\necho "StackSet: IAM User Deployment"\necho "=========================================="\n`;
+    s += `STACKSET_NAME="HandsOn-IAM-Admin-User"\n`;
+    s += `aws cloudformation create-stack-set --stack-set-name "$STACKSET_NAME" --template-body file://iam-admin-user.yaml --parameters ParameterKey=UserName,ParameterValue=${iamUserName} ParameterKey=Password,ParameterValue=${iamPassword} --permission-model SERVICE_MANAGED --auto-deployment Enabled=true,RetainStacksOnAccountRemoval=false --capabilities CAPABILITY_NAMED_IAM 2>&1 || true\n\n`;
+    s += `EXISTING_OUS=$(aws organizations list-organizational-units-for-parent --parent-id "$PARENT_OU" --query 'OrganizationalUnits[].{Id:Id,Name:Name}' --output json)\n`;
+    s += `for FOLDER in "\${FOLDERS[@]}"; do\n`;
+    s += `  OU_ID=$(echo "$EXISTING_OUS" | python3 -c "import sys,json;data=json.load(sys.stdin);matches=[x['Id'] for x in data if x['Name']=='$FOLDER'];print(matches[0] if matches else '')")\n`;
+    s += `  if [ -n "$OU_ID" ]; then\n    echo "Deploying IAM user to OU: $OU_ID ($FOLDER)"\n    aws cloudformation create-stack-instances --stack-set-name "$STACKSET_NAME" --deployment-targets OrganizationalUnitIds="$OU_ID" --regions $REGION 2>&1\n  fi\ndone\n\n`;
+    s += `echo "All setups completed."\n`;
+    return s;
+}
+
+function bashDelete(parentOu, folder, region) {
+    const p = folder.substring(0, 2);
+    let s = `#!/bin/bash\n\nPARENT_OU="${parentOu}"\nFOLDER="${folder}"\nPREFIX="${p}"\nREGION="${region}"\nexport AWS_DEFAULT_REGION="$REGION"\n\n`;
+    s += `echo "Deleting setup for $FOLDER"\n\n`;
+    s += `OU_ID=$(aws organizations list-organizational-units-for-parent --parent-id "$PARENT_OU" --query "OrganizationalUnits[?Name=='$FOLDER'].Id" --output text)\n`;
+    s += `if [ -z "$OU_ID" ] || [ "$OU_ID" == "None" ]; then\n  echo "OU not found for $FOLDER. Skipping."\n  exit 0\nfi\necho "Found OU: $OU_ID"\n\n`;
+    // Detach all custom policies first
+    s += `POLICY_IDS=""\n`;
+    s += `for PTYPE in SERVICE_CONTROL_POLICY RESOURCE_CONTROL_POLICY TAG_POLICY; do\n`;
+    s += `  PIDS=$(aws organizations list-policies-for-target --target-id "$OU_ID" --filter "$PTYPE" --query "Policies[?!AwsManaged].Id" --output text 2>/dev/null)\n`;
+    s += `  for PID in $PIDS; do\n`;
+    s += `    aws organizations detach-policy --policy-id "$PID" --target-id "$OU_ID" 2>&1 || true\n`;
+    s += `    echo "Detached policy: $PID"\n`;
+    s += `    POLICY_IDS="$POLICY_IDS $PID"\n`;
+    s += `  done\ndone\n\n`;
+    // Delete policies
+    s += `for PID in $POLICY_IDS; do\n`;
+    s += `  aws organizations delete-policy --policy-id "$PID" 2>&1 || true\n`;
+    s += `  echo "Deleted policy: $PID"\ndone\n\n`;
+    // StackSet instances
+    s += `STACKSET_NAME="HandsOn-IAM-Admin-User"\n`;
+    s += `echo "Removing StackSet instances from $OU_ID..."\n`;
+    s += `aws cloudformation delete-stack-instances --stack-set-name "$STACKSET_NAME" --deployment-targets OrganizationalUnitIds="$OU_ID" --regions $REGION --no-retain-stacks 2>&1 || true\n\n`;
+    // Delete OU
+    s += `echo "Waiting 30s for StackSet operations..."\nsleep 30\n\n`;
+    s += `echo "Deleting OU $OU_ID..."\n`;
+    s += `aws organizations delete-organizational-unit --organizational-unit-id "$OU_ID" 2>&1\necho "Done: $FOLDER"\n`;
+    return s;
+}
+
+function bashDeleteAll(parentOu, selected, region) {
+    const folders = selected.map(f => `"${f}"`).join('\n  ');
+    let s = `#!/bin/bash\n\nPARENT_OU="${parentOu}"\nREGION="${region}"\nexport AWS_DEFAULT_REGION="$REGION"\nFOLDERS=(\n  ${folders}\n)\n\n`;
+    s += `echo "Deleting all HandsOn setups"\n\n`;
+    s += `STACKSET_NAME="HandsOn-IAM-Admin-User"\n`;
+    s += `ALL_POLICY_IDS=""\n\n`;
+    // Phase 1: Detach policies and delete StackSet instances
+    s += `echo "=== Phase 1: Detach policies & remove StackSet instances ==="\n`;
+    s += `for FOLDER in "\${FOLDERS[@]}"; do\n  PREFIX="\${FOLDER:0:2}"\n`;
+    s += `  echo "=========================================="\n  echo "Detaching: $FOLDER"\n  echo "=========================================="\n\n`;
+    s += `  OU_ID=$(aws organizations list-organizational-units-for-parent --parent-id "$PARENT_OU" --query "OrganizationalUnits[?Name=='$FOLDER'].Id" --output text)\n`;
+    s += `  if [ -z "$OU_ID" ] || [ "$OU_ID" == "None" ]; then\n    echo "OU not found. Skipping."\n    continue\n  fi\n  echo "Found OU: $OU_ID"\n\n`;
+    s += `  for PTYPE in SERVICE_CONTROL_POLICY RESOURCE_CONTROL_POLICY TAG_POLICY; do\n`;
+    s += `    PIDS=$(aws organizations list-policies-for-target --target-id "$OU_ID" --filter "$PTYPE" --query "Policies[?!AwsManaged].Id" --output text 2>/dev/null)\n`;
+    s += `    for PID in $PIDS; do\n`;
+    s += `      aws organizations detach-policy --policy-id "$PID" --target-id "$OU_ID" 2>&1 || true\n`;
+    s += `      echo "Detached policy: $PID from $OU_ID"\n`;
+    s += `      ALL_POLICY_IDS="$ALL_POLICY_IDS $PID"\n`;
+    s += `    done\n  done\n\n`;
+    s += `  aws cloudformation delete-stack-instances --stack-set-name "$STACKSET_NAME" --deployment-targets OrganizationalUnitIds="$OU_ID" --regions $REGION --no-retain-stacks 2>&1 || true\n`;
+    s += `  echo "------------------------------------------"\ndone\n\n`;
+    // Phase 2: Delete policies (now detached from all OUs)
+    s += `echo "=== Phase 2: Delete policies ==="\n`;
+    s += `for PID in $(echo "$ALL_POLICY_IDS" | tr ' ' '\\n' | sort -u); do\n`;
+    s += `  if [ -n "$PID" ]; then\n`;
+    s += `    aws organizations delete-policy --policy-id "$PID" 2>&1 || true\n`;
+    s += `    echo "Deleted policy: $PID"\n`;
+    s += `  fi\ndone\n\n`;
+    // Phase 3: Wait for StackSet operations then delete OUs
+    s += `echo "=== Phase 3: Delete OUs ==="\n`;
+    s += `echo "Waiting 30s for StackSet operations to complete..."\nsleep 30\n\n`;
+    s += `for FOLDER in "\${FOLDERS[@]}"; do\n`;
+    s += `  OU_ID=$(aws organizations list-organizational-units-for-parent --parent-id "$PARENT_OU" --query "OrganizationalUnits[?Name=='$FOLDER'].Id" --output text)\n`;
+    s += `  if [ -n "$OU_ID" ] && [ "$OU_ID" != "None" ]; then\n`;
+    s += `    echo "Deleting OU: $OU_ID ($FOLDER)"\n`;
+    s += `    aws organizations delete-organizational-unit --organizational-unit-id "$OU_ID" 2>&1 || true\n`;
+    s += `  fi\ndone\n\n`;
+    s += `echo "Deleting StackSet $STACKSET_NAME..."\n`;
+    s += `aws cloudformation delete-stack-set --stack-set-name "$STACKSET_NAME" 2>&1 || true\n\n`;
+    s += `echo "All deletions completed."\n`;
+    return s;
+}
+
+// === MAIN GENERATE ===
+function generate(action) {
+    const inp = getInputs();
+    const needPw = (action === 'create-all');
+    if (!validate(inp, needPw)) return;
+
+    const scripts = []; // { title, content, filename }
+    const ext = inp.shell === 'bash' ? 'sh' : 'ps1';
+
+    if (action === 'create-all') {
+        scripts.push({
+            title: `一括作成 (${inp.selected.length}章)`,
+            content: bashCreateAll(inp.parentOu, inp.selected, inp.iamUserName, inp.iamPassword, inp.region),
+            filename: `setup-all.${ext}`
+        });
+        inp.selected.forEach(f => {
+            const p = f.substring(0, 2);
+            scripts.push({
+                title: `作成: ${f}`,
+                content: bashCreate(inp.parentOu, f, inp.iamUserName, inp.iamPassword, inp.region),
+                filename: `setup-${p}.${ext}`
+            });
+        });
+    } else if (action === 'delete-all') {
+        scripts.push({
+            title: `一括削除 (${inp.selected.length}章)`,
+            content: bashDeleteAll(inp.parentOu, inp.selected, inp.region),
+            filename: `teardown-all.${ext}`
+        });
+        inp.selected.forEach(f => {
+            const p = f.substring(0, 2);
+            scripts.push({
+                title: `削除: ${f}`,
+                content: bashDelete(inp.parentOu, f, inp.region),
+                filename: `teardown-${p}.${ext}`
+            });
+        });
+    }
+
+    renderTabs(scripts);
+}
+
+// === TAB UI ===
+function renderTabs(scripts) {
+    const tabBar = document.getElementById('tabBar');
+    const tabContents = document.getElementById('tabContents');
+    tabBar.innerHTML = '';
+    tabContents.innerHTML = '';
+
+    scripts.forEach((s, i) => {
+        // Tab button
+        const tab = document.createElement('div');
+        tab.className = 'tab' + (i === 0 ? ' active' : '');
+        tab.textContent = s.title;
+        tab.onclick = () => switchTab(i);
+        tabBar.appendChild(tab);
+
+        // Tab content
+        const div = document.createElement('div');
+        div.className = 'tab-content' + (i === 0 ? ' active' : '');
+        div.id = `tab-${i}`;
+        div.innerHTML = `
+            <p class="subtitle" style="margin:0.75rem 0 0.5rem;font-size:0.85rem;">
+                <code>99-Setup/</code> ディレクトリにて <code>bash ${s.filename}</code> で実行
+            </p>
+            <div class="dl-copy-bar">
+                <button class="btn btn-primary btn-sm" onclick="dlScript(${i})">Download ${s.filename}</button>
+                <button class="btn btn-outline btn-sm" onclick="cpScript(${i})">Copy</button>
+            </div>
+            <pre><code id="code-${i}"></code></pre>`;
+        tabContents.appendChild(div);
+        document.getElementById(`code-${i}`).textContent = s.content;
+    });
+
+    // Store metadata
+    window._scripts = scripts;
+    document.getElementById('outputCard').style.display = 'block';
+    document.getElementById('outputCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function switchTab(idx) {
+    document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+    document.querySelectorAll('.tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
+}
+
+function dlScript(idx) {
+    const s = window._scripts[idx];
+    const blob = new Blob([s.content], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = s.filename;
+    a.click();
+    URL.revokeObjectURL(a.href);
+}
+
+function cpScript(idx) {
+    navigator.clipboard.writeText(window._scripts[idx].content).then(() => {
+        const btns = document.querySelectorAll(`#tab-${idx} .btn-outline`);
+        if (btns.length) {
+            btns[0].textContent = 'Copied!';
+            setTimeout(() => { btns[0].textContent = 'Copy'; }, 2000);
+        }
+    });
+}
+</script>
+</body>
+</html>

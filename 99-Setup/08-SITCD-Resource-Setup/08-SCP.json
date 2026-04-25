@@ -1,0 +1,70 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyUnallowedServicesSCP",
+      "Effect": "Deny",
+      "NotAction": [
+        "iam:*",
+        "access-analyzer:*",
+        "sts:*",
+        "tag:*",
+        "cloudformation:*",
+        "s3:*",
+        "dynamodb:*",
+        "lambda:*",
+        "apigateway:*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DenyUnapprovedRegions",
+      "Effect": "Deny",
+      "NotAction": [
+        "iam:*",
+        "sts:*",
+        "cloudfront:*",
+        "wafv2:*",
+        "route53:*"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:RequestedRegion": [
+            "us-east-1",
+            "us-west-2",
+            "ap-northeast-1",
+            "ap-northeast-3"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "LimitEC2InstanceTypes",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:RunInstances"
+      ],
+      "Resource": "arn:aws:ec2:*:*:instance/*",
+      "Condition": {
+        "StringNotEquals": {
+          "ec2:InstanceType": [
+            "t3.nano",
+            "t3.micro",
+            "t3.small",
+            "t3.medium",
+            "t3.large",
+            "t3.xlarge",
+            "t3.2xlarge",
+            "t4g.micro",
+            "t4g.small",
+            "t4g.medium",
+            "t4g.large",
+            "t4g.xlarge",
+            "t4g.2xlarge"
+          ]
+        }
+      }
+    }
+  ]
+}

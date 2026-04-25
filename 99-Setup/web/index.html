@@ -1,0 +1,172 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>SITCD Initial Setup: AWS CLI 設定手順書</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="initial-setup"
+                  title="SITCD Initial Setup: AWS CLI 設定手順書"
+                  environment="web"
+                  feedback-link="https://github.com/midnight480/handson-manual">
+    
+      <google-codelab-step label="はじめに" duration="2">
+        <p>この手順書では、AWS CLI を使用してハンズオン環境向けの初期設定（SCP、RCP、および IAM ユーザーの自動払い出し）を行う方法を解説します。 管理アカウント（Management Account）の権限を持つユーザー、または AWS CloudShell 等から実行してください。</p>
+<h2 is-upgraded>前提条件</h2>
+<ul>
+<li>AWS CLI がインストール・設定されていること。</li>
+<li>AWS Organizations の管理権限を有していること。</li>
+<li>ハンズオン対象のアカウントが所属する「対象の OU (Organizational Unit) ID」を確認しておくこと。（例: <code>ou-xxxx-yyyyyy</code>）</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="1. Organizations ポリシーの有効化" duration="3">
+        <p>Organizations で SCP および RCP を利用するためには、まず組織のルートで各ポリシータイプを有効化する必要があります。すでに有効化済みの場合はスキップして構いません。</p>
+<h2 is-upgraded>ルートIDの確認</h2>
+<pre>ROOT_ID=$(aws organizations list-roots --query &#39;Roots[0].Id&#39; --output text)
+echo $ROOT_ID
+</pre>
+<h2 is-upgraded>SCP と RCP の有効化</h2>
+<pre># SCP (Service Control Policy) の有効化
+aws organizations enable-policy-type \
+    --root-id $ROOT_ID \
+    --policy-type SERVICE_CONTROL_POLICY
+
+# RCP (Resource Control Policy) の有効化
+aws organizations enable-policy-type \
+    --root-id $ROOT_ID \
+    --policy-type RESOURCE_CONTROL_POLICY
+</pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="2. SCP の作成とアタッチ" duration="5">
+        <p><code>SCP.json</code> を読み込み、AWS Organizations にポリシーを作成し、対象の OU にアタッチします。</p>
+<h2 is-upgraded>ポリシーの作成</h2>
+<p>※カレントディレクトリを <code>99-Setup/</code> に移動してから実行してください。</p>
+<pre>SCP_POLICY_ID=$(aws organizations create-policy \
+    --content file://07-SITCD-Initial-Setup/07-SCP.json \
+    --description &#34;SITCD Hands-on SCP&#34; \
+    --name &#34;SITCD-HandsOn-SCP&#34; \
+    --type SERVICE_CONTROL_POLICY \
+    --query &#39;Policy.PolicySummary.Id&#39; \
+    --output text)
+
+echo &#34;作成された SCP ID: $SCP_POLICY_ID&#34;
+</pre>
+<h2 is-upgraded>対象 OU へのアタッチ</h2>
+<p><code>TARGET_OU_ID</code> の値はご自身の環境の OU ID に変更して実行してください。</p>
+<pre>TARGET_OU_ID=&#34;ou-xxxx-yyyyyy&#34;
+
+aws organizations attach-policy \
+    --policy-id $SCP_POLICY_ID \
+    --target-id $TARGET_OU_ID
+</pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="3. RCP の作成とアタッチ" duration="5">
+        <p>同様に、<code>RCP.json</code> を読み込み、ポリシーを作成して対象 OU にアタッチします。</p>
+<h2 is-upgraded>ポリシーの作成</h2>
+<pre>RCP_POLICY_ID=$(aws organizations create-policy \
+    --content file://07-SITCD-Initial-Setup/07-RCP.json \
+    --description &#34;SITCD Hands-on RCP&#34; \
+    --name &#34;SITCD-HandsOn-RCP&#34; \
+    --type RESOURCE_CONTROL_POLICY \
+    --query &#39;Policy.PolicySummary.Id&#39; \
+    --output text)
+
+echo &#34;作成された RCP ID: $RCP_POLICY_ID&#34;
+</pre>
+<h2 is-upgraded>対象 OU へのアタッチ</h2>
+<pre>aws organizations attach-policy \
+    --policy-id $RCP_POLICY_ID \
+    --target-id $TARGET_OU_ID
+</pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="4. StackSets による IAM ユーザーの展開" duration="5">
+        <p>最後に、CloudFormation StackSets を利用して、ハンズオン用の IAM ユーザー (<code>AdministratorAccess</code> 権限付き) を対象 OU 内の全アカウントに一括作成します。</p>
+<h2 is-upgraded>StackSet の作成</h2>
+<p>テンプレートファイル <code>iam-admin-user.yaml</code> は同じディレクトリ (<code>99-Setup/</code>) に配置されている前提です。</p>
+<pre>aws cloudformation create-stack-set \
+    --stack-set-name SITCD-HandsOn-IAM \
+    --template-body file://iam-admin-user.yaml \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --permission-model SERVICE_MANAGED \
+    --auto-deployment Enabled=true,RetainStacksOnAccountRemoval=false \
+    --parameters ParameterKey=Password,ParameterValue=&#34;TempPassword123!&#34; \
+    --description &#34;Create hands-on IAM users via StackSets&#34;
+</pre>
+<aside class="special"><p><strong>パスワードについて</strong></p>
+</aside>
+<p><code>--parameters ParameterKey=Password,ParameterValue="TempPassword123!"</code> の箇所で初期パスワードを指定しています。必要に応じて安全な値に変更して実行してください。初回のログイン時にパスワードの再設定が要求されます。</p>
+<h2 is-upgraded>Stack Instance のデプロイ</h2>
+<p>対象 OU に向けてインスタンスを展開（実際の IAM ユーザーのデプロイ）を実行します。</p>
+<pre>aws cloudformation create-stack-instances \
+    --stack-set-name SITCD-HandsOn-IAM \
+    --deployment-targets OrganizationalUnitIds=$TARGET_OU_ID \
+    --regions ap-northeast-1 \
+    --operation-preferences FailureToleranceCount=0,MaxConcurrentCount=1
+</pre>
+<h2 is-upgraded>展開状況の確認</h2>
+<p>StackSets の展開は非同期で行われるため、以下のコマンドでステータスを確認します。</p>
+<pre># 直近のオペレーションIDを取得
+OPERATION_ID=$(aws cloudformation list-stack-set-operations \
+    --stack-set-name SITCD-HandsOn-IAM \
+    --query &#39;Summaries[0].OperationId&#39; \
+    --output text)
+
+# ステータスの確認
+aws cloudformation describe-stack-set-operation \
+    --stack-set-name SITCD-HandsOn-IAM \
+    --operation-id $OPERATION_ID \
+    --query &#39;StackSetOperation.Status&#39; \
+    --output text
+</pre>
+<p><code>SUCCEEDED</code> と表示されれば、OU 配下の各アカウントでの IAM ユーザー作成は完了です！</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="おわりに" duration="1">
+        <p>以上で、SCP・RCP によるアカウントの安全なガードレール設定と、ハンズオン用ユーザーの払い出しがすべて完了しました。</p>
+<p>受講者は各アカウントにログインし、作成された <code>handson-admin</code> ユーザー（および初期パスワード）を用いてコンソールに入り、ハンズオンを開始できます。隔離された安全な環境で学習を進めてください！</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "tags": {
+    "PublicHandson": {
+      "tag_key": {
+        "@@assign": "PublicHandson"
+      }
+    }
+  }
+}

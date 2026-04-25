@@ -1,0 +1,27 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2026-04-25T10:10:15+09:00",
+  "id": "initial-setup",
+  "duration": 21,
+  "title": "SITCD Initial Setup: AWS CLI 設定手順書",
+  "summary": "SITCD Initial Setup - SCP, RCP, and IAM Setup via AWS CLI",
+  "source": "initial-setup.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "codelab",
+    "markdown",
+    "aws",
+    "security"
+  ],
+  "tags": [
+    "web"
+  ],
+  "feedback": "https://github.com/midnight480/handson-manual",
+  "url": "initial-setup"
+}
