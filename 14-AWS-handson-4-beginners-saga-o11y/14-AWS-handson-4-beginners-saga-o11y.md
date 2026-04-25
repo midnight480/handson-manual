@@ -1071,6 +1071,16 @@ Positive
 : 表示された一覧から `todo-app-alerts` を含む ARN をコピーして使用してください。
 
 ### 環境のお片付け
+
+ハンズオン用に構築した EC2 インスタンス等の CloudFormation スタックを削除します。ターミナルで以下のコマンドを実行してください。
+
+```console
+aws cloudformation delete-stack --stack-name saga-o11y-handson
+
+# 削除が完了するまで待機する場合（数分かかります）
+aws cloudformation wait stack-delete-complete --stack-name saga-o11y-handson
+```
+
 * **Kiro-IDE の場合**: 用済みになった場合は、手順に従って Kiro-IDE 自体の CloudFormation スタックも削除してください。
 * **Codespaces の場合**: 不要になった Codespace インスタンスを GitHub 上から削除（Delete）してください。
 

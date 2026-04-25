@@ -987,6 +987,12 @@ aws logs delete-log-group --log-group-name &#34;todo-app-logs&#34;
 <aside class="special"><p>表示された一覧から <code>todo-app-alerts</code> を含む ARN をコピーして使用してください。</p>
 </aside>
 <h2 is-upgraded>環境のお片付け</h2>
+<p>ハンズオン用に構築した EC2 インスタンス等の CloudFormation スタックを削除します。ターミナルで以下のコマンドを実行してください。</p>
+<pre>aws cloudformation delete-stack --stack-name saga-o11y-handson
+
+# 削除が完了するまで待機する場合（数分かかります）
+aws cloudformation wait stack-delete-complete --stack-name saga-o11y-handson
+</pre>
 <ul>
 <li><strong>Kiro-IDE の場合</strong>: 用済みになった場合は、手順に従って Kiro-IDE 自体の CloudFormation スタックも削除してください。</li>
 <li><strong>Codespaces の場合</strong>: 不要になった Codespace インスタンスを GitHub 上から削除（Delete）してください。</li>
