@@ -608,15 +608,13 @@ Outputs:
 <p>EC2 インスタンスにログイン（※マネジメントコンソールから「SSMセッションマネージャー」を使用すると、ブラウザだけで安全・簡単にLinuxサーバへ接続できます）し、CloudWatch Agentをインストールします。</p>
 <aside class="special"><p><strong>SSM セッションマネージャーでの EC2 接続手順</strong></p>
 </aside>
-<p>SSH キーの設定なしに、ブラウザだけで EC2 に接続できる便利な方法です。</p>
+<p>SSH キーの設定なしに EC2 へ安全に接続できる便利な機能です。以下のいずれかの方法で接続してください。<strong>方法A: 開発環境のターミナルから接続する (推奨)</strong>Kiro-IDE や Codespaces などのターミナルから、以下のコマンドを実行します。<code>aws ssm start-session --target <インスタンスID></code>※ <code><インスタンスID></code> は <code>i-0123456789abcdef0</code> のような文字列です。事前の CloudFormation 出力結果で表示された <code>InstanceId</code> の値に置き換えて実行してください。<strong>方法B: AWS マネジメントコンソール（ブラウザ）から接続する</strong></p>
 <ol type="1">
-<li>AWS マネジメントコンソールにログインし、上部の検索バーで「<strong>EC2</strong>」と入力して EC2 ダッシュボードを開きます。</li>
-<li>左メニューの「<strong>インスタンス</strong>」をクリックし、<code>saga-o11y-handson</code> で作成されたインスタンスを見つけます。</li>
-<li>インスタンスのチェックボックスを選択し、画面上部の「<strong>接続</strong>」ボタンをクリックします。</li>
+<li>コンソール上部の検索バーで「<strong>EC2</strong>」と入力して EC2 ダッシュボードを開きます。</li>
+<li>左メニューの「<strong>インスタンス</strong>」をクリックし、作成されたインスタンスのチェックボックスを選択して、画面上部の「<strong>接続</strong>」ボタンをクリックします。</li>
 <li>「セッションマネージャー」タブを選択し、「<strong>接続</strong>」をクリックします。</li>
-<li>ブラウザ上に黒い画面（ターミナル）が開けば接続成功です。 :</li>
 </ol>
-<p>※ 接続できない場合は、EC2 インスタンスのステータスが「実行中 (running)」であること、および CloudFormation テンプレートで IAM ロール（<code>AmazonSSMManagedInstanceCore</code> ポリシー）が正しく設定されていることを確認してください。</p>
+<p>※ 接続できない場合は、EC2 インスタンスが「実行中 (running)」であること、および CloudFormation テンプレートで IAM ロールが正しく設定されていることを確認してください（方法Aの場合は Session Manager プラグインがインストール済みであることも確認してください）。</p>
 <aside class="special"><p><strong>セッションマネージャーで接続した直後の注意点</strong></p>
 </aside>
 <p>接続直後は <code>sh-5.2$</code> のようなプロンプト（入力待ち表示）になっています。<code>bash</code> と入力して Enter を押すと、より使いやすいシェルに切り替わります。また、<code>sudo su -</code> と入力すると管理者（root）ユーザーに切り替わり、<code>sudo</code> を毎回付ける必要がなくなります。</p>
