@@ -943,13 +943,13 @@ Positive
 ```console
 # Pythonの例
 # あえて脆弱性がある古いバージョン(2.19.1)を指定します
-pip install requests==2.19.1
-pip freeze > requirements.txt
+python3 -m pip install requests==2.19.1
+python3 -m pip freeze > requirements.txt
 ```
 
 Positive
 : **用語解説**
-: * **pip**: Python のライブラリをインストールするためのツールです。
+: * **pip**: Python のライブラリをインストールするためのツールです。`python3 -m pip` のように呼び出すことで確実に Python 3 用の pip を動かせます。
 : * **pip freeze**: 現在インストールされているライブラリとそのバージョンを一覧表示します。
 : * **requirements.txt**: プロジェクトに必要なライブラリを書き出したファイルです。これがあることで、他の環境でも同じ構成を再現できます。 `>` は「コマンドの結果をファイルに書き出す」という Linux の機能（リダイレクト）です。
 
@@ -997,7 +997,8 @@ Negative
 3. プロジェクトディレクトリでスキャンを実行します。
 
 ```console
-snyk test
+# Amazon Linux 環境などでは python ではなく python3 コマンドを使うため、--command オプションで指定します
+snyk test --command=python3
 ```
 
 Positive
@@ -1011,14 +1012,14 @@ Positive
 
 ```console
 # 提案された安全なバージョンや最新バージョンへアップデート
-pip install requests --upgrade
-pip freeze > requirements.txt
+python3 -m pip install requests --upgrade
+python3 -m pip freeze > requirements.txt
 ```
 
 Positive
 : **コマンドの解説**
-: * `pip install requests --upgrade`: `requests` ライブラリを最新の安全なバージョンにアップデートします。`--upgrade` を付けないと、既にインストール済みの場合は何もしません。
-: * `pip freeze > requirements.txt`: アップデート後のライブラリ一覧を `requirements.txt` に上書き保存します。これにより、修正後の安全な状態が記録されます。
+: * `python3 -m pip install requests --upgrade`: `requests` ライブラリを最新の安全なバージョンにアップデートします。`--upgrade` を付けないと、既にインストール済みの場合は何もしません。
+: * `python3 -m pip freeze > requirements.txt`: アップデート後のライブラリ一覧を `requirements.txt` に上書き保存します。これにより、修正後の安全な状態が記録されます。
 
 再度 `snyk test` を実行し、脆弱性が「0」になったことを確認します。
 

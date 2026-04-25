@@ -875,13 +875,13 @@ command = [&#34;check-log&#34;, &#34;--file&#34;, &#34;/var/log/todo-app/app.log
 <p>Linux 環境で特定のフォルダ（ディレクトリ）に移動する場合は、<code>cd</code> (change directory) コマンドを使用します。今回の EC2 の例では、アプリの配置場所である <code>/opt/todo-app</code> に移動する必要があります（例: <code>cd /opt/todo-app</code> を実行）。</p>
 <pre># Pythonの例
 # あえて脆弱性がある古いバージョン(2.19.1)を指定します
-pip install requests==2.19.1
-pip freeze &gt; requirements.txt
+python3 -m pip install requests==2.19.1
+python3 -m pip freeze &gt; requirements.txt
 </pre>
 <aside class="special"><p><strong>用語解説</strong></p>
 </aside>
 <ul>
-<li><strong>pip</strong>: Python のライブラリをインストールするためのツールです。</li>
+<li><strong>pip</strong>: Python のライブラリをインストールするためのツールです。<code>python3 -m pip</code> のように呼び出すことで確実に Python 3 用の pip を動かせます。</li>
 <li><strong>pip freeze</strong>: 現在インストールされているライブラリとそのバージョンを一覧表示します。</li>
 <li><strong>requirements.txt</strong>: プロジェクトに必要なライブラリを書き出したファイルです。これがあることで、他の環境でも同じ構成を再現できます。 <code>></code> は「コマンドの結果をファイルに書き出す」という Linux の機能（リダイレクト）です。</li>
 </ul>
@@ -921,7 +921,8 @@ sudo dnf install -y nodejs
 <ol type="1" start="3">
 <li>プロジェクトディレクトリでスキャンを実行します。</li>
 </ol>
-<pre>snyk test
+<pre># Amazon Linux 環境などでは python ではなく python3 コマンドを使うため、--command オプションで指定します
+snyk test --command=python3
 </pre>
 <aside class="special"><p><strong>コマンドの解説</strong></p>
 </aside>
@@ -932,14 +933,14 @@ sudo dnf install -y nodejs
 <h2 is-upgraded>修復 (Remediation) 作業</h2>
 <p>出力されたアドバイスに従い、安全なバージョンにアップデートします。</p>
 <pre># 提案された安全なバージョンや最新バージョンへアップデート
-pip install requests --upgrade
-pip freeze &gt; requirements.txt
+python3 -m pip install requests --upgrade
+python3 -m pip freeze &gt; requirements.txt
 </pre>
 <aside class="special"><p><strong>コマンドの解説</strong></p>
 </aside>
 <ul>
-<li><code>pip install requests --upgrade</code>: <code>requests</code> ライブラリを最新の安全なバージョンにアップデートします。<code>--upgrade</code> を付けないと、既にインストール済みの場合は何もしません。</li>
-<li><code>pip freeze > requirements.txt</code>: アップデート後のライブラリ一覧を <code>requirements.txt</code> に上書き保存します。これにより、修正後の安全な状態が記録されます。</li>
+<li><code>python3 -m pip install requests --upgrade</code>: <code>requests</code> ライブラリを最新の安全なバージョンにアップデートします。<code>--upgrade</code> を付けないと、既にインストール済みの場合は何もしません。</li>
+<li><code>python3 -m pip freeze > requirements.txt</code>: アップデート後のライブラリ一覧を <code>requirements.txt</code> に上書き保存します。これにより、修正後の安全な状態が記録されます。</li>
 </ul>
 <p>再度 <code>snyk test</code> を実行し、脆弱性が「0」になったことを確認します。</p>
 <aside class="special"><p>このように、定期的にチェックすることで、本番環境に脆弱性が混入するのを未然に防ぐことができます。</p>
