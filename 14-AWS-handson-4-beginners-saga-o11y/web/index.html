@@ -92,10 +92,11 @@
       </google-codelab-step>
     
       <google-codelab-step label="開発環境の準備" duration="10">
-        <p>本ハンズオンでは、以下の3つの方法からお好きな開発環境を選択して進めることができます。</p>
+        <p>本ハンズオンでは、以下の4つの方法からお好きな開発環境を選択して進めることができます。</p>
 <ol type="1">
 <li><strong>Kiro-IDE Remote を使う場合</strong> (推奨: AWS上に環境を自動構築)</li>
 <li><strong>GitHub Codespaces を使う場合</strong> (ブラウザ上で完結)</li>
+<li><strong>ローカルの VSCode を使う場合</strong> (自身の端末)</li>
 <li><strong>自身の端末を利用する場合</strong> (ローカル環境)</li>
 </ol>
 <h2 is-upgraded>オプション1: Kiro-IDE Remote を使う場合</h2>
@@ -134,6 +135,39 @@
 </ol>
 <h2 is-upgraded>オプション2: GitHub Codespaces を使う場合</h2>
 <p>ブラウザ上で完結する開発環境である GitHub Codespaces を利用することもできます。</p>
+<h3 is-upgraded>Codespace の起動とツールのインストール</h3>
+<p><a href="https://github.com/codespaces" target="_blank">GitHub Codespaces</a> にアクセスし、任意のテンプレート（Blank template など）から新しい Codespace を作成して起動します。 Codespace が起動したら、ターミナルで以下のコマンドを順番に実行し、必要なツールをインストール・更新します。</p>
+<ol type="1">
+<li><strong>AWS CLI (v2) のインストール</strong></li>
+</ol>
+<pre>curl &#34;https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip&#34; -o &#34;awscliv2.zip&#34;
+unzip awscliv2.zip
+sudo ./aws/install
+</pre>
+<ol type="1" start="2">
+<li><strong>AWS SSM Plugin のインストール</strong></li>
+</ol>
+<pre>curl &#34;https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb&#34; -o &#34;session-manager-plugin.deb&#34;
+sudo dpkg -i session-manager-plugin.deb
+</pre>
+<ol type="1" start="3">
+<li><strong>Python を最新にする</strong></li>
+</ol>
+<pre>sudo apt-get update
+sudo apt-get install -y python3 python3-pip
+</pre>
+<ol type="1" start="4">
+<li><strong>Node (npm) を最新にする</strong> Codespaces には <code>nvm</code> (Node Version Manager) がプリインストールされているため、それを利用して最新の Node.js をインストールします。</li>
+</ol>
+<pre>nvm install node
+nvm use node
+npm install -g npm@latest
+</pre>
+<aside class="warning"><p><strong>IAMユーザーの作成と認証設定について</strong></p>
+</aside>
+<p>GitHub Codespaces を使用する場合は、別途 IAM ユーザー（AdministratorAccess 等の権限を持つもの）を作成し、ターミナルで <code>aws configure</code> コマンドを使用してアクセスキーとシークレットアクセスキーを設定する必要があります。</p>
+<h2 is-upgraded>オプション3: ローカルの VSCode を使う場合</h2>
+<p>ご自身の PC のローカル環境で VSCode を使って進めることも可能です。必要な開発環境が自動で揃うテンプレートリポジトリを活用します。</p>
 <h3 is-upgraded>テンプレートからリポジトリを作成</h3>
 <ol type="1">
 <li><a href="https://github.com/" target="_blank">GitHub</a> にログインします</li>
@@ -141,23 +175,16 @@
 <li><strong>Use this template</strong> → <strong>Create a new repository</strong> をクリックします</li>
 <li>リポジトリ名に任意の名前を入力し、<strong>Create repository</strong> をクリックします</li>
 </ol>
-<h3 is-upgraded>Codespace の起動</h3>
-<ol type="1">
-<li>作成したリポジトリの画面で <strong>Code</strong> ボタンをクリックします</li>
-<li><strong>Codespaces</strong> タブ → <strong>Create codespace on main</strong> をクリックします</li>
-<li>Codespace の起動を待ちます（初回は3〜5分程度）</li>
-</ol>
-<aside class="special"><p>テンプレートリポジトリには開発環境の設定（devcontainer）が含まれており、AWS CLI、Python、Node.js などが自動的にインストールされます。</p>
+<h3 is-upgraded>リポジトリのクローンと VSCode での起動</h3>
+<p>作成したリポジトリをご自身の PC にクローン（ダウンロード）し、VSCode で開きます。</p>
+<aside class="special"><p>テンプレートリポジトリには開発環境の設定（devcontainer）が含まれており、VSCode の Dev Containers 拡張機能を使用することで、AWS CLI、Python、Node.js などが自動的にインストールされた環境を利用できます。</p>
 </aside>
 <h3 is-upgraded>AWS CLI の動作確認</h3>
-<p>Codespace が起動したら、ターミナルで AWS CLI がインストールされていることを確認します。</p>
+<p>VSCode のターミナルを開き、AWS CLI が利用可能になっていることを確認します。</p>
 <pre>aws --version
 </pre>
 <p><code>aws-cli/2.x.x</code> のようにバージョンが表示されればOKです。</p>
-<aside class="warning"><p><strong>IAMユーザーの作成と認証設定について</strong></p>
-</aside>
-<p>GitHub Codespaces を使用する場合は、別途 IAM ユーザー（AdministratorAccess 等の権限を持つもの）を作成し、ターミナルで <code>aws configure</code> コマンドを使用してアクセスキーとシークレットアクセスキーを設定する必要があります。</p>
-<h2 is-upgraded>オプション3: 自身の端末を利用する場合</h2>
+<h2 is-upgraded>オプション4: 自身の端末を利用する場合</h2>
 <p>ご自身の PC (Windows, Mac, Linux など) のローカル環境で進めることも可能です。その場合は、以下のツールがあらかじめインストールされている必要があります。</p>
 <ol type="1">
 <li><strong>AWS CLI (v2)</strong><ul>
@@ -187,7 +214,7 @@
       </google-codelab-step>
     
       <google-codelab-step label="IAMユーザーのアクセスキーの発行と設定 (Kiro-IDE 以外の場合)" duration="10">
-        <p>GitHub Codespaces やご自身の端末を利用する場合は、AWS リソースを操作するためのアクセスキー（認証情報）が必要です。以下の手順で IAM ユーザーのアクセスキーを発行し、設定してください。</p>
+        <p>Kiro-IDE 以外（オプション2〜4）の環境を利用する場合は、AWS リソースを操作するためのアクセスキー（認証情報）が必要です。以下の手順で IAM ユーザーのアクセスキーを発行し、設定してください。</p>
 <aside class="warning"><p><strong>【重要】アクセスキーの利用に関する注意喚起</strong></p>
 </aside>
 <p>IAM ユーザーの永続的なアクセスキーを発行する本手順は、<strong>あくまでも今回のハンズオンを簡単に進めるための限定的な手段</strong>です。実際の開発現場や本番運用においては、セキュリティの観点から永続的なアクセスキーの利用は推奨されていません。現在は <code>aws login</code>（AWS IAM Identity Center との統合）や <code>aws sso login</code> などを利用し、一時的な（有効期限のある）認証トークンを取得して利用することが前提・ベストプラクティスとされています。</p>
@@ -210,7 +237,7 @@
 <li><a href="https://dev.classmethod.jp/articles/iam_user_create_access_keys_2023/" target="_blank">2023年版：IAMユーザーのアクセスキーを作成してみる (DevelopersIO)</a></li>
 </ul>
 <h2 is-upgraded>アクセスキーの設定 (aws configure)</h2>
-<p>開発環境（Codespaces またはご自身の端末）のターミナルで以下のコマンドを実行し、先ほど発行したキーを設定します。</p>
+<p>ご自身の開発環境のターミナルで以下のコマンドを実行し、先ほど発行したキーを設定します。</p>
 <pre>aws configure
 </pre>
 <p>対話形式で以下のように入力してください。</p>
