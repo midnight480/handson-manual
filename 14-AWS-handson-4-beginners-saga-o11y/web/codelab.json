@@ -1,0 +1,29 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2026-04-25T14:55:29+09:00",
+  "id": "14-AWS-handson-4-beginners-saga-o11y",
+  "duration": 105,
+  "title": "AWS Hands-on for Beginners: Saga Edition (O11y \u0026 Security)",
+  "summary": "AWSを使った簡単なObservability（O11y）と脆弱性管理のハンズオン",
+  "source": "14-AWS-handson-4-beginners-saga-o11y.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "codelab",
+    "markdown",
+    "aws",
+    "o11y",
+    "security"
+  ],
+  "tags": [
+    "web"
+  ],
+  "feedback": "https://github.com/midnight480/handson-manual",
+  "ga": "196534296",
+  "url": "14-AWS-handson-4-beginners-saga-o11y"
+}
