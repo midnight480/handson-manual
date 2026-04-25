@@ -974,13 +974,25 @@ sudo dnf install -y nodejs
 
 ```console
 sudo npm install -g snyk
-snyk auth
 ```
 
 Positive
-: **コマンドの解説**
-: * `sudo npm install -g snyk`: Snyk の CLI ツールをグローバル（システム全体）にインストールします。
-: * `snyk auth`: ブラウザが開き、Snyk アカウントとの認証（ログイン連携）を行います。ブラウザが開かない環境の場合は、`snyk auth --token <YOUR_TOKEN>` のように Snyk の Web 画面から取得したトークンを直接指定することもできます。
+: **Snyk への認証 (Codespaces / Kiro-IDE / EC2 の場合)**
+: クラウド開発環境や EC2 上で単に `snyk auth` を実行すると、ブラウザからのコールバック通信（localhost へのリダイレクト）が失敗して認証が完了しない場合があります。そのため、以下の手順で手動でトークンを取得して認証を行ってください。
+: 
+: 1. ブラウザで [Snyk にログイン](https://app.snyk.io/) します。
+: 2. 左下の自分のアカウントアイコンをクリックし、「**Account settings**」を開きます。
+: 3. 「**General**」メニューの中央付近にある「**Auth Token**」セクションで、`Click to show` を押して表示された長いトークン文字列をコピーします。
+: 4. ターミナルに戻り、コピーしたトークンを使って以下のコマンドを実行します。
+:
+: ```console
+: snyk auth <コピーしたトークン文字列>
+: ```
+: `Your account has been authenticated. Snyk is now ready to be used.` と表示されれば認証成功です。
+
+Negative
+: **ご自身のローカルPCの場合**
+: ローカルの環境であれば、単に `snyk auth` と実行するだけでブラウザが開き、自動的に認証を完了させることができます。
 
 3. プロジェクトディレクトリでスキャンを実行します。
 
