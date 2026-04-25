@@ -211,6 +211,23 @@ aws --version
    - [Node.js 公式サイト](https://nodejs.org/ja/) などからインストールしてください。
 4. **AWS 認証情報の設定**
    - ターミナルで `aws configure` を実行し、AWS へのアクセス権限を持つ IAM ユーザーのアクセスキーを設定してください。
+   ```console
+   $ aws configure
+
+   Tip: You can deliver temporary credentials to the AWS CLI using your AWS Console session by running the command 'aws login'.
+
+   AWS Access Key ID [None]: AK***
+   AWS Secret Access Key [None]: ***
+   Default region name [None]: ap-northeast-1
+   Default output format [None]: json
+
+   $ aws sts get-caller-identity
+   {
+       "UserId": "***",
+       "Account": "***",
+       "Arn": "arn:aws:iam::***:user/handson-admin"
+   }
+   ```
 
 Positive
 : 各ツールのインストール後、ターミナルで `aws --version` や `session-manager-plugin`、`npm --version` を実行し、正しくインストールされているか確認しましょう。

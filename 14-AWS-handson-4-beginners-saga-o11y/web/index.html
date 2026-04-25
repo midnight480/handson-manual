@@ -199,6 +199,22 @@ npm install -g npm@latest
 <li><strong>AWS 認証情報の設定</strong><ul>
 <li>ターミナルで <code>aws configure</code> を実行し、AWS へのアクセス権限を持つ IAM ユーザーのアクセスキーを設定してください。</li>
 </ul>
+<pre>$ aws configure
+
+Tip: You can deliver temporary credentials to the AWS CLI using your AWS Console session by running the command &#39;aws login&#39;.
+
+AWS Access Key ID [None]: AK***
+AWS Secret Access Key [None]: ***
+Default region name [None]: ap-northeast-1
+Default output format [None]: json
+
+$ aws sts get-caller-identity
+{
+    &#34;UserId&#34;: &#34;***&#34;,
+    &#34;Account&#34;: &#34;***&#34;,
+    &#34;Arn&#34;: &#34;arn:aws:iam::***:user/handson-admin&#34;
+}
+</pre>
 </li>
 </ol>
 <aside class="special"><p>各ツールのインストール後、ターミナルで <code>aws --version</code> や <code>session-manager-plugin</code>、<code>npm --version</code> を実行し、正しくインストールされているか確認しましょう。</p>
