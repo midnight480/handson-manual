@@ -7,24 +7,13 @@
       "NotAction": [
         "iam:*",
         "sts:*",
-        "tag:*",
-        "cloudformation:*",
-        "s3:*",
-        "cloudwatch:*",
         "ec2:*",
-        "sns:*",
+        "cloudformation:*",
+        "cloudwatch:*",
+        "logs:*",
         "ssm:*",
         "ssmmessages:*",
-        "ec2messages:*",
-        "logs:*",
-        "events:*",
-        "xray:*",
-        "access-analyzer:*",
-        "lambda:*",
-        "elasticloadbalancing:*",
-        "cloudfront:*",
-        "secretsmanager:*",
-        "kms:*"
+        "ec2messages:*"
       ],
       "Resource": "*"
     },
@@ -33,10 +22,7 @@
       "Effect": "Deny",
       "NotAction": [
         "iam:*",
-        "sts:*",
-        "cloudfront:*",
-        "wafv2:*",
-        "route53:*"
+        "sts:*"
       ],
       "Resource": "*",
       "Condition": {

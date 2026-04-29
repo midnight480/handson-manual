@@ -6,11 +6,9 @@
       "Effect": "Deny",
       "Principal": "*",
       "Action": [
-        "s3:*",
+        "apigateway:*",
         "dynamodb:*",
-        "logs:*",
-        "cognito-idp:*",
-        "cognito-identity:*"
+        "logs:*"
       ],
       "Resource": "*",
       "Condition": {

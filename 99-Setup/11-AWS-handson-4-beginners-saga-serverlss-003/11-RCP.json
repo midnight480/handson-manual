@@ -7,7 +7,9 @@
       "Principal": "*",
       "Action": [
         "s3:*",
-        "dynamodb:*"
+        "dynamodb:*",
+        "apigateway:*",
+        "logs:*"
       ],
       "Resource": "*",
       "Condition": {

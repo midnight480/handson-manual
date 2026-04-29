@@ -6,7 +6,8 @@
       "Effect": "Deny",
       "Principal": "*",
       "Action": [
-        "s3:*"
+        "s3:*",
+        "logs:*"
       ],
       "Resource": "*",
       "Condition": {
