@@ -5,3 +5,7 @@ claat-windows-amd64.exe
 
 # AI-DLC generated documentation (local only)
 aidlc-docs/
+
+# Generated setup scripts
+99-Setup/*.sh
+99-Setup/*.ps1
