@@ -51,6 +51,12 @@ Step 4: API Gateway + WAF + Lambda（本格的・セキュアな構成）
 * Googleアカウントを持っていること
 * GitHubアカウントを持っていること
 
+### ターミナルとディレクトリの前提
+
+本ハンズオンでは、特記ない限り**プロジェクトのルートディレクトリ**（`12-AWS-handson...` フォルダ）でコマンドを実行することを前提としています。
+
+また、Windows のコマンドプロンプトを使用する場合、ターミナルを閉じると `set` コマンドで設定した環境変数（`API_ID` や `API_KEY` 等）が消えてしまいます。ターミナルを再起動した場合は、必要に応じて変数を再設定してください。
+
 Positive
 : 本ハンズオンは初心者向けの内容です。GAS、Lambda、API Gateway、WAF を段階的に学んでいきます。
 
@@ -60,7 +66,7 @@ Negative
 ## 事前準備: AWS Builder ID の作成
 Duration: 0:05:00
 
-Kiro-IDE Remoteなどのツールを利用・連携するために、「**AWS Builder ID**」が必要となります。
+AWS Kiro-IDE などのツールを利用・連携するために、「**AWS Builder ID**」が必要となります。
 AWS Builder ID は AWS や Amazon.co.jp アカウントとは異なる、個人のための無料アカウントです（クレジットカードの登録なども不要です）。
 
 1. [AWS Builder ID の作成画面](https://builder.aws.com/start) にアクセスします。
@@ -75,216 +81,165 @@ Positive
 ## 開発環境を準備する
 Duration: 0:15:00
 
-開発環境は以下の2つから選択できます。
+本ハンズオンは、ご自身のローカルPC（Windows または macOS/Linux）または **AWS Kiro-IDE** などのクラウドIDEで実行することを前提としています。
+以下のツールがインストールされているか確認し、インストールされていない場合はセットアップを行ってください。
 
-### オプション1: GitHub Codespaces を使う場合
+### 1. エディタ (AWS Kiro-IDE) のインストール
 
-#### 新規リポジトリの作成
+本ハンズオンでは、デスクトップIDEである **AWS Kiro-IDE** を使用します。
+[https://kiro.dev/](https://kiro.dev/) にアクセスし、サイトの手順に従ってダウンロード・インストールを行ってください。
 
-1. [GitHub](https://github.com/) にログインします
-2. 右上の **+** → **New repository** をクリックします
-3. 以下の内容で設定します
+以降のファイル編集などの操作は、このエディタ環境内で行うものとします。
 
-| 項目 | 値 |
-|------|-----|
-| Repository name | 任意の名前（例: `aws-handson`） |
-| Public / Private | どちらでもOK |
-| Add a README file | **✅ チェックを入れる** |
+### 2. Node.js と npm のインストール
 
-4. **Create repository** をクリックします
+GASのコマンドラインツール（clasp）を使用するために必要です。
 
-#### Codespace の起動
+**Windows の場合**
+[Node.js 公式サイト](https://nodejs.org/) から Windows Installer (.msi) をダウンロードしてインストールしてください（LTS版を推奨）。
 
-1. 作成したリポジトリの画面で **Code** ボタンをクリックします
-2. **Codespaces** タブ → **Create codespace on main** をクリックします
-3. Codespace の起動を待ちます（初回は2〜3分程度）
-
-#### 開発ツールのインストール
-
-Codespace が起動したら、ターミナルで以下のコマンドを実行し、必要なツールをインストールします。
-
+**macOS の場合**
+Homebrew を使用してインストールします。
 ```console
-# AWS CLI のインストール
+brew install node
+```
+
+**Linux (Ubuntu/Debian) の場合**
+```console
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
+
+### 3. Python 3 のインストール
+
+AWS Lambda のコードを作成・パッケージングするために使用します。
+
+**Windows の場合**
+[Python 公式サイト](https://www.python.org/downloads/windows/) からインストーラをダウンロードしてインストールしてください。
+※ インストール時に「Add Python to PATH」にチェックを入れるのを忘れないでください。
+
+**macOS の場合**
+```console
+brew install python
+```
+
+**Linux (Ubuntu/Debian) の場合**
+```console
+sudo apt-get update && sudo apt-get install -y python3 python3-pip
+```
+
+### 4. AWS CLI のインストール
+
+AWS リソースをコマンドラインから操作するために必要です。
+
+**Windows の場合**
+[AWS CLI MSI インストーラ](https://awscli.amazonaws.com/AWSCLIV2.msi) をダウンロードして実行してください。
+
+**macOS の場合**
+```console
+curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+sudo installer -pkg AWSCLIV2.pkg -target /
+```
+
+**Linux の場合**
+```console
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
-rm -rf aws awscliv2.zip
-
-# Python3 の最新化とエイリアス設定
-sudo apt-get update && sudo apt-get install -y python3 python3-pip
-echo 'alias python=python3' >> ~/.bashrc
-echo 'alias pip=pip3' >> ~/.bashrc
-source ~/.bashrc
-
-# Node.js のインストール
-curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-sudo apt-get install -y nodejs
-
-# npm の最新化
-sudo npm install -g npm@latest
-
-# clasp（Google Apps Script CLI）のインストール
-sudo npm install -g @google/clasp
 ```
 
-#### 動作確認
+### 5. clasp のインストールとログイン
+
+Google Apps Script のプロジェクトをローカルで管理するためのツールです。
+
+コマンドプロンプト（Windows）またはターミナル（macOS/Linux）を開き、以下のコマンドを実行します。
 
 ```console
-aws --version; python -V; node -v; npm -v; clasp --version
+npm install -g @google/clasp
 ```
 
-それぞれバージョンが表示されればOKです。
+インストールが完了したら、Google アカウントにログインします。
 
-#### clasp で Google アカウントにログイン
-
-Codespace はリモート環境のため、ブラウザが直接開けません。`--no-localhost` オプションを使って認証します。
-
-1. Apps Script API を有効化します。ブラウザで以下のURLにアクセスし、トグルを **オン** にします
-
+1. Apps Script API を有効化します。ブラウザで以下のURLにアクセスし、トグルを **オン** にします。
    https://script.google.com/home/usersettings
 
-2. Codespace のターミナルで以下を実行します
+2. ターミナルまたはコマンドプロンプトで以下を実行します。
 
 ```console
-clasp login --no-localhost
+clasp login
 ```
 
-3. 認証用のURLが表示されるので、そのURLをコピーしてブラウザで開きます
-4. Google アカウントでログインし、アクセスを許可します
-5. 表示された認証コードをコピーします
-6. Codespace のターミナルに戻り、認証コードを貼り付けて Enter を押します
+3. ブラウザが自動的に開き、Google アカウントの選択画面が表示されます。
+4. 使用するアカウントを選択し、アクセスを許可してください。
+5. ブラウザに「Logged in! You may close this page.」と表示されれば成功です。
 
-`Authorization successful.` と表示されればログイン完了です。
+### 動作確認
 
-### オプション2: Kiro-IDE Remote を使う場合
+ターミナル（またはコマンドプロンプト）で以下のコマンドを実行し、バージョンが表示されれば準備完了です。
 
-AWS 上に簡単に Web 開発環境を構築できる **Kiro-IDE Remote** を使用します。ローカル PC に環境を構築することなく、また IAM の設定なども自動で行われるため、推奨される手順です。
-
-#### Kiro-IDE の起動
-
-以下のリンク先に用意されている「Deploy」ボタンから、ワンクリックでデプロイが可能です。
-
-[Kiro IDE Remote のマニュアルページ](https://aws-samples.github.io/sample-one-click-generative-ai-solutions/solutions/kiro-ide/)
-
-1. サインイン済みの AWS アカウントがある状態で、マニュアルページ内の **[Deploy]** ボタンをクリックします。
-2. AWS CloudFormation の「スタックのクイック作成」画面が開きます。
-3. デプロイに必要な以下のパラメータを確認・入力します：
-   - **UserEmail**: 構築完了メールや通知を受け取るご自身のメールアドレスを入力します。
-   - **Language**: OS の言語設定です。`JP`（日本語）を選択しておくことを推奨します。
-   - **EnableAdministratorAccess**: **重要**。本ハンズオンでは CloudFormation などの AWS リソースを作成・操作するため、必ず `true` に設定してください。これにより、Kiro-IDE のターミナルから AWS コマンドを実行するための権限（IAM ロール）が自動的に付与されます。
-4. 画面最下部の「AWS CloudFormation が IAM リソースを作成する場合があることを承認します。」にチェックを入れます。
-5. **[スタックの作成]** をクリックし、作成プロセスが完了（ステータスが `CREATE_COMPLETE` になる）するまで約5〜10分程度待ちます。
-   * ※デプロイが開始されると、入力したメールアドレス宛に通知のサブスクリプション確認メールが届きます。「Confirm subscription」をクリックして承認を行ってください。
-6. デプロイが完了すると、「[One Click Gen AI Solutions] Kiro IDE - Deployment completed」というメールが届きます。本文（または CloudFormation の「出力(Outputs)」タブ）から以下の情報を確認します：
-   - `KiroIDEURL`: アクセス用URL
-   - `Username`: ログインユーザー名
-   - `Password`: 初期パスワード
-7. 指定された URL にアクセスし、ユーザー名とパスワードでログインしてください。
-8. ログイン後、ブラウザ上で VS Code ライクなエディタとターミナルが使用できることを確認してください。
-   * **エディタ**: 左側のファイルツリーからファイルを管理し、右側の画面で編集します。
-   * **ターミナル**: 画面下部（またはメニューの Terminal > New Terminal）に表示される Linux シェルです。以降のコマンド操作はここで行います。
-9. **Session Manager プラグインのインストール**: Kiro 上の AI チャット機能（**Vibe**）を開き、「`Session Manager プラグインをインストールする`」と入力して送信します。AI が提示した手順やコマンドに従って、Session Manager プラグインをインストールしてください。
-
-#### Kiro-IDE Remote の操作Tips
-
-* **デスクトップの Kiro アイコン**: 最初は無効化されています。右クリックで起動を許可（Allow Launching）してから実行してください。
-* **日本語入力**: `Ctrl + Space` で直接入力 / 日本語入力を切り替えられます。半角・全角キーでの切り替えを行いたい場合は、一度設定を再起動してください。
-* **ターミナルへの貼り付け**: `Ctrl + Shift + V` を使用します（Linux の仕様です）。
-* **Kiro CLI の認証**: 認証がなかなか進まない場合は `kiro-cli login --use-device-flow` を試してみてください。
-
-Positive
-: Kiro-IDE Remote を使う場合、IAM ユーザーの作成やアクセスキーの発行は不要です。`EnableAdministratorAccess` を `true` にすることで、ターミナルから直接 AWS CLI を使用できます。次の「IAMユーザーの作成」と「AWS CLI の認証設定」のセクションはスキップしてください。
-
-#### 開発ツールのインストール（Kiro-IDE Remote）
-
-ターミナルで以下のコマンドを実行し、必要なツールをインストールします。
-
+**Windows (コマンドプロンプト) の場合**
 ```console
-# Python3 の最新化とエイリアス設定
-sudo apt-get update && sudo apt-get install -y python3 python3-pip
-echo 'alias python=python3' >> ~/.bashrc
-echo 'alias pip=pip3' >> ~/.bashrc
-source ~/.bashrc
-
-# Node.js のインストール
-curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-sudo apt-get install -y nodejs
-
-# npm の最新化
-sudo npm install -g npm@latest
-
-# clasp（Google Apps Script CLI）のインストール
-sudo npm install -g @google/clasp
+aws --version
+python -V
+node -v
+npm -v
+clasp --version
 ```
 
-#### 動作確認
-
+**macOS/Linux (ターミナル) の場合**
 ```console
-aws --version; python -V; node -v; npm -v; clasp --version
+aws --version; python3 -V; node -v; npm -v; clasp --version
 ```
 
-それぞれバージョンが表示されればOKです。
-
-#### clasp で Google アカウントにログイン
-
-リモート環境のため、ブラウザが直接開けません。`--no-localhost` オプションを使って認証します。
-
-1. Apps Script API を有効化します。ブラウザで以下のURLにアクセスし、トグルを **オン** にします
-
-   https://script.google.com/home/usersettings
-
-2. ターミナルで以下を実行します
-
-```console
-clasp login --no-localhost
+**実行結果の例**
+```text
+aws-cli/2.15.0 Python/3.11.6 ...
+Python 3.12.1
+v20.10.0
+10.2.3
+2.4.2
 ```
-
-3. 認証用のURLが表示されるので、そのURLをコピーしてブラウザで開きます
-4. Google アカウントでログインし、アクセスを許可します
-5. 表示された認証コードをコピーします
-6. ターミナルに戻り、認証コードを貼り付けて Enter を押します
-
-`Authorization successful.` と表示されればログイン完了です。
 
 ## IAMユーザーの作成
 Duration: 0:10:00
 
-Negative
-: **Kiro-IDE Remote を使用している場合、このセクションと次の「AWS CLI の認証設定」はスキップしてください。** IAM ロールが自動的に付与されているため、アクセスキーの発行は不要です。
+### IAMユーザーの作成手順 (マネジメントコンソール)
 
-### IAMユーザーの作成手順
+AWS CLI から AWS リソースを操作するための専用ユーザーを作成し、アクセスキーを発行します。最初のユーザー作成は、AWS マネジメントコンソール（ブラウザ）から行います。
 
-AWS CLI から AWS リソースを操作するために、IAM ユーザーを作成してアクセスキーを発行します。
+1. [AWS マネジメントコンソール](https://console.aws.amazon.com/) に、**ルートユーザー** または **ハンズオン用に払い出された（IAM操作権限を持つ）IAMユーザー** でログインします。
+2. 検索バーに「IAM」と入力し、IAM サービス画面に移動します。
+3. 左メニューの [ユーザー] をクリックし、[ユーザーの作成] をクリックします。
+4. **ユーザーの詳細**:
+   *   ユーザー名: `handson-user`
+   *   [次へ] をクリックします。
+5. **許可の設定**:
+   *   [ポリシーを直接アタッチする] を選択します。
+   *   許可ポリシーの検索窓に `AdministratorAccess` と入力し、チェックボックスをオンにします。
+   *   [次へ] をクリックします。
+6. **確認と作成**:
+   *   内容を確認し、[ユーザーの作成] をクリックします。
+7. **アクセスキーの発行**:
+   *   作成された `handson-user` の名前をクリックして詳細画面を開きます。
+   *   [セキュリティ認証情報] タブをクリックします。
+   *   「アクセスキー」セクションで [アクセスキーを作成] をクリックします。
+   *   ユースケースで [コマンドラインインターフェイス (CLI)] を選択し、チェックボックスをオンにして [次へ] をクリックします。
+   *   [アクセスキーを作成] をクリックします。
 
-```console
-# IAMユーザーの作成
-aws iam create-user --user-name handson-user
-
-# AdministratorAccess ポリシーをアタッチ
-aws iam attach-user-policy --user-name handson-user \
-  --policy-arn arn:aws:iam::aws:policy/AdministratorAccess
-
-# アクセスキーの発行
-aws iam create-access-key --user-name handson-user
-```
-
-出力される `AccessKeyId` と `SecretAccessKey` をメモします。
+8. 表示される **アクセスキー ID** と **シークレットアクセスキー** を必ずメモ（またはCSVをダウンロード）してください。
 
 Positive
 : 本ハンズオンでは簡易化のため AdministratorAccess を付与しますが、AWS Organizations のSCP（サービスコントロールポリシー）により、実際に利用できるサービスは制限されています。本番環境では最小権限の原則に基づいた権限設定を行ってください。
 
 Negative
-: シークレットアクセスキーはこのコマンド実行時にしか表示されません。必ずメモしてください。紛失した場合は、アクセスキーを削除して新しく作成し直す必要があります。
+: シークレットアクセスキーはこのタイミングでしか確認できません。必ずメモしてください。
 
 ## AWS CLI の認証設定
 Duration: 0:05:00
 
-Negative
-: **Kiro-IDE Remote を使用している場合、このセクションはスキップしてください。**
-
 ### 認証情報の設定
 
-Codespace のターミナルで以下のコマンドを実行し、先ほど発行したアクセスキーを設定します。
+ターミナル（またはコマンドプロンプト）で以下のコマンドを実行し、先ほど発行したアクセスキーを設定します。
 
 ```console
 aws configure
@@ -303,6 +258,15 @@ aws configure
 aws sts get-caller-identity
 ```
 
+**実行結果の例**
+```json
+{
+    "UserId": "AIDASAMPLEUSERID",
+    "Account": "123456789012",
+    "Arn": "arn:aws:iam::123456789012:user/handson-user"
+}
+```
+
 正しく設定されていれば、アカウントIDやユーザーARNが表示されます。
 
 Negative
@@ -313,19 +277,32 @@ Duration: 0:15:00
 
 ### Google Apps Script プロジェクトの作成
 
-Codespace のターミナルで clasp を使ってプロジェクトを作成します。
+ターミナル（またはコマンドプロンプト）で clasp を使ってプロジェクトを作成します。
 
+**Windows (コマンドプロンプト) の場合**
 ```console
-mkdir -p ~/gas/04 && cd ~/gas/04
-clasp create --title "handson-text-api" --type webapp
+mkdir gas\04
+cd gas\04
+clasp create --title "handson-text-api" --type standalone
+```
+
+**macOS/Linux (ターミナル) の場合**
+```console
+mkdir -p gas/04 && cd gas/04
+clasp create --title "handson-text-api" --type standalone
+```
+
+**実行結果の例**
+```text
+Created new standalone script: handson-text-api
+...
 ```
 
 ### コードの入力
 
-作成された `Code.js` を以下の内容で上書きします。
+Kiro を使用して作成されたディレクトリ内の `Code.js` を開き、以下の内容で上書き保存してください。
 
-```console
-cat > Code.js << 'EOF'
+```javascript
 /**
  * GETリクエストのハンドラー
  * @param {Object} e - イベントオブジェクト
@@ -394,20 +371,33 @@ function doPost(e) {
       .setMimeType(ContentService.MimeType.JSON);
   }
 }
-EOF
 ```
 
 ### コードのアップロードとデプロイ
 
+**Windows (コマンドプロンプト) の場合**
 ```console
-# コードを Apps Script にアップロード
+:: コードを Apps Script にアップロード
 clasp push
 
-# バージョンを作成
+:: バージョンを作成
 clasp version "初回デプロイ"
 
-# Webアプリとしてデプロイ
+:: Webアプリとしてデプロイ
 clasp deploy --description "テキスト要約API"
+```
+
+**macOS/Linux (ターミナル) の場合**
+```console
+clasp push
+clasp version "初回デプロイ"
+clasp deploy --description "テキスト要約API"
+```
+
+**実行結果の例**
+```text
+Created version 1.
+- AKfycbwEXAMPLE_DEPLOY_ID @1.
 ```
 
 デプロイIDが表示されます。WebアプリのURLは以下の形式です。
@@ -421,6 +411,21 @@ Positive
 
 ### 動作確認
 
+デプロイID（`AKfy...`のような文字列）をコピーしておきます。
+
+**Windows (コマンドプロンプト) の場合**
+```console
+:: デプロイIDを変数に設定（表示されたIDに置き換え）
+set DEPLOY_ID=ここにデプロイIDを貼り付け
+
+:: GETリクエスト
+curl -L "https://script.google.com/macros/s/%DEPLOY_ID%/exec"
+
+:: POSTリクエスト（WindowsコマンドプロンプトではJSONのエスケープが必要です）
+curl -L -X POST -H "Content-Type: application/json" -d "{\"text\": \"AWSは包括的なクラウドプラットフォームです。200以上のサービスを提供しています。多くの企業がAWSを利用しています。\", \"max_sentences\": 2}" "https://script.google.com/macros/s/%DEPLOY_ID%/exec"
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 # デプロイIDを変数に設定（表示されたIDに置き換え）
 DEPLOY_ID="ここにデプロイIDを貼り付け"
@@ -435,6 +440,16 @@ curl -L -X POST \
   "https://script.google.com/macros/s/${DEPLOY_ID}/exec"
 ```
 
+**実行結果の例**
+```json
+{
+  "original_length": 68,
+  "summary": "AWSは包括的なクラウドプラットフォームです。200以上のサービスを提供しています。",
+  "sentence_count": 3,
+  "summary_sentence_count": 2
+}
+```
+
 Negative
 : GASのWebアプリURLは、URLを知っている人なら誰でもアクセスできます。また、無料版では実行時間が最大6分に制限されています。
 
@@ -445,11 +460,20 @@ Duration: 0:20:00
 
 Lambda関数用の実行ロールを作成します。
 
+**Windows (コマンドプロンプト) の場合**
 ```console
-mkdir -p ~/lambda/05 && cd ~/lambda/05
+mkdir lambda\05
+cd lambda\05
+```
 
-# 信頼ポリシーの作成
-cat > trust-policy.json << 'EOF'
+**macOS/Linux (ターミナル) の場合**
+```console
+mkdir -p lambda/05 && cd lambda/05
+```
+
+Kiro を使用して同ディレクトリ内に `trust-policy.json` を作成し、以下の内容を保存します。
+
+```json
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -460,8 +484,23 @@ cat > trust-policy.json << 'EOF'
     }
   ]
 }
-EOF
+```
 
+**Windows (コマンドプロンプト) の場合**
+```console
+:: IAMロールの作成
+aws iam create-role ^
+  --role-name handson-furl-lambda-role ^
+  --assume-role-policy-document file://trust-policy.json
+
+:: CloudWatchLogsFullAccess ポリシーをアタッチ
+aws iam attach-role-policy ^
+  --role-name handson-furl-lambda-role ^
+  --policy-arn arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+```
+
+**macOS/Linux (ターミナル) の場合**
+```console
 # IAMロールの作成
 aws iam create-role \
   --role-name handson-furl-lambda-role \
@@ -475,12 +514,9 @@ aws iam attach-role-policy \
 
 ### Lambda関数の作成
 
-```console
-# 作業ディレクトリの作成
-cd ~/lambda/05
+Kiro を使用して同ディレクトリ内（`lambda/05`）に `lambda_function.py` を作成し、以下の内容を保存します。
 
-# コードファイルの作成
-cat > lambda_function.py << 'EOF'
+```python
 import json
 
 
@@ -507,7 +543,7 @@ def lambda_handler(event, context):
     # POSTリクエスト: テキスト要約処理
     if http_method == 'POST':
         try:
-            body = event.get('body', '{}')
+            body = event.get('body') or '{}'
             if event.get('isBase64Encoded', False):
                 import base64
                 body = base64.b64decode(body).decode('utf-8')
@@ -556,15 +592,34 @@ def lambda_handler(event, context):
         'headers': {'Content-Type': 'application/json; charset=utf-8'},
         'body': json.dumps({'error': f'{http_method}はサポートされていません'}, ensure_ascii=False)
     }
-EOF
+```
 
+コードを保存したら、ZIPファイルに圧縮し、Lambda関数を作成します。
+
+**Windows (コマンドプロンプト) の場合**
+```console
+:: zipファイルの作成 (Windows 10/11 以降で利用可能な tar コマンドを使用)
+tar -a -c -f function.zip lambda_function.py
+
+:: アカウントIDの取得と関数の作成
+for /f "delims=" %i in ('aws sts get-caller-identity --query Account --output text') do set ACCOUNT_ID=%i
+
+aws lambda create-function ^
+  --function-name handson-text-summarizer ^
+  --runtime python3.12 ^
+  --handler lambda_function.lambda_handler ^
+  --role arn:aws:iam::%ACCOUNT_ID%:role/handson-furl-lambda-role ^
+  --zip-file fileb://function.zip
+```
+
+**macOS/Linux (ターミナル) の場合**
+```console
 # zipファイルの作成
 zip function.zip lambda_function.py
 
-# アカウントIDの取得
+# アカウントIDの取得と関数の作成
 ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 
-# Lambda関数の作成
 aws lambda create-function \
   --function-name handson-text-summarizer \
   --runtime python3.12 \
@@ -573,8 +628,37 @@ aws lambda create-function \
   --zip-file fileb://function.zip
 ```
 
+**実行結果の例**
+```json
+{
+    "FunctionName": "handson-text-summarizer",
+    "FunctionArn": "arn:aws:lambda:ap-northeast-1:123456789012:function:handson-text-summarizer",
+    "Runtime": "python3.12",
+    ...
+}
+```
+
+
 ### Function URLの有効化
 
+**Windows (コマンドプロンプト) の場合**
+```console
+:: Function URLの作成
+aws lambda create-function-url-config ^
+  --function-name handson-text-summarizer ^
+  --auth-type NONE ^
+  --cors "{\"AllowOrigins\":[\"*\"],\"AllowMethods\":[\"GET\",\"POST\"],\"AllowHeaders\":[\"Content-Type\"]}"
+
+:: 公開アクセス許可の付与
+aws lambda add-permission ^
+  --function-name handson-text-summarizer ^
+  --statement-id FunctionURLAllowPublicAccess ^
+  --action lambda:InvokeFunctionUrl ^
+  --principal "*" ^
+  --function-url-auth-type NONE
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 # Function URLの作成
 aws lambda create-function-url-config \
@@ -596,6 +680,13 @@ Negative
 
 Function URLを取得します。
 
+**Windows (コマンドプロンプト) の場合**
+```console
+for /f "delims=" %i in ('aws lambda get-function-url-config --function-name handson-text-summarizer --query FunctionUrl --output text') do set FUNCTION_URL=%i
+echo %FUNCTION_URL%
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 FUNCTION_URL=$(aws lambda get-function-url-config \
   --function-name handson-text-summarizer \
@@ -605,6 +696,16 @@ echo $FUNCTION_URL
 
 ### 動作確認
 
+**Windows (コマンドプロンプト) の場合**
+```console
+:: GETリクエスト
+curl %FUNCTION_URL%
+
+:: POSTリクエスト
+curl -X POST %FUNCTION_URL% -H "Content-Type: application/json" -d "{\"text\": \"AWSは包括的なクラウドプラットフォームです。200以上のサービスを提供しています。多くの企業がAWSを利用しています。\", \"max_sentences\": 2}"
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 # GETリクエスト
 curl $FUNCTION_URL
@@ -669,12 +770,24 @@ API GatewayやWAFを使わなくても、アプリケーションレベルでの
 
 #### GASコードの更新
 
-`~/gas/06/Code.js` を以下に更新します。
+新しいディレクトリを作成し、プロジェクトを初期化します。
 
+**Windows (コマンドプロンプト) の場合**
 ```console
-mkdir -p ~/gas/06 && cd ~/gas/06
-clasp create --title "handson-text-api-v2" --type webapp
-cat > Code.js << 'EOF'
+mkdir gas\06
+cd gas\06
+clasp create --title "handson-text-api-v2" --type standalone
+```
+
+**macOS/Linux (ターミナル) の場合**
+```console
+mkdir -p gas/06 && cd gas/06
+clasp create --title "handson-text-api-v2" --type standalone
+```
+
+Kiro を使用してディレクトリ内に生成された `Code.js` を開き、以下の内容で上書き保存してください。
+
+```javascript
 // スプレッドシートID（自分のスプレッドシートIDに置き換え）
 var SPREADSHEET_ID = "{あなたのスプレッドシートID}";
 
@@ -687,7 +800,10 @@ function validateApiKey(apiKey) {
   if (!apiKey) return false;
 
   var sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName("APIKeys");
-  var keys = sheet.getRange("A2:A" + sheet.getLastRow()).getValues();
+  var lastRow = sheet.getLastRow();
+  if (lastRow < 2) return false;
+
+  var keys = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
 
   for (var i = 0; i < keys.length; i++) {
     if (keys[i][0] === apiKey) return true;
@@ -761,7 +877,6 @@ function doPost(e) {
       .setMimeType(ContentService.MimeType.JSON);
   }
 }
-EOF
 ```
 
 Negative
@@ -769,6 +884,14 @@ Negative
 
 #### GASの再デプロイ
 
+**Windows (コマンドプロンプト) の場合**
+```console
+clasp push
+clasp version "APIキー認証追加"
+clasp deploy --description "APIキー認証付きテキスト要約API"
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 clasp push
 clasp version "APIキー認証追加"
@@ -777,6 +900,18 @@ clasp deploy --description "APIキー認証付きテキスト要約API"
 
 #### テスト
 
+**Windows (コマンドプロンプト) の場合**
+```console
+set DEPLOY_ID=ここにデプロイIDを貼り付け
+
+:: APIキーなし → エラー
+curl -L -X POST -H "Content-Type: application/json" -d "{\"text\": \"テストです。要約します。\"}" "https://script.google.com/macros/s/%DEPLOY_ID%/exec"
+
+:: APIキーあり → 成功
+curl -L -X POST -H "Content-Type: application/json" -d "{\"api_key\": \"handson-demo-key-2026\", \"text\": \"テストです。要約します。\", \"max_sentences\": 1}" "https://script.google.com/macros/s/%DEPLOY_ID%/exec"
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 # 新しいデプロイIDを変数に設定（表示されたIDに置き換え）
 DEPLOY_ID="ここにデプロイIDを貼り付け"
@@ -798,6 +933,16 @@ curl -L -X POST \
 
 #### DynamoDBテーブルの作成
 
+**Windows (コマンドプロンプト) の場合**
+```console
+aws dynamodb create-table ^
+  --table-name handson-api-keys ^
+  --attribute-definitions AttributeName=api_key,AttributeType=S ^
+  --key-schema AttributeName=api_key,KeyType=HASH ^
+  --billing-mode PAY_PER_REQUEST
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 aws dynamodb create-table \
   --table-name handson-api-keys \
@@ -806,8 +951,27 @@ aws dynamodb create-table \
   --billing-mode PAY_PER_REQUEST
 ```
 
+**実行結果の例**
+```json
+{
+    "TableDescription": {
+        "TableName": "handson-api-keys",
+        "TableStatus": "CREATING",
+        ...
+    }
+}
+```
+
 #### APIキーの登録
 
+**Windows (コマンドプロンプト) の場合**
+```console
+aws dynamodb put-item ^
+  --table-name handson-api-keys ^
+  --item "{\"api_key\": {\"S\": \"handson-demo-key-2026\"}}"
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 aws dynamodb put-item \
   --table-name handson-api-keys \
@@ -818,6 +982,14 @@ aws dynamodb put-item \
 
 Lambda関数がDynamoDBにアクセスできるよう、ポリシーを追加します。
 
+**Windows (コマンドプロンプト) の場合**
+```console
+aws iam attach-role-policy ^
+  --role-name handson-furl-lambda-role ^
+  --policy-arn arn:aws:iam::aws:policy/AmazonDynamoDBReadOnlyAccess
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 aws iam attach-role-policy \
   --role-name handson-furl-lambda-role \
@@ -828,9 +1000,20 @@ aws iam attach-role-policy \
 
 Lambda関数のコードを以下に更新します。
 
+**Windows (コマンドプロンプト) の場合**
 ```console
-mkdir -p ~/lambda/06 && cd ~/lambda/06
-cat > lambda_function.py << 'EOF'
+mkdir lambda\06
+cd lambda\06
+```
+
+**macOS/Linux (ターミナル) の場合**
+```console
+mkdir -p lambda/06 && cd lambda/06
+```
+
+Kiro を使用してディレクトリ内に `lambda_function.py` を作成し、以下の内容を保存します。
+
+```python
 import json
 import boto3
 
@@ -928,9 +1111,20 @@ def lambda_handler(event, context):
         'headers': {'Content-Type': 'application/json; charset=utf-8'},
         'body': json.dumps({'error': f'{http_method}はサポートされていません'}, ensure_ascii=False)
     }
-EOF
+```
 
-# zipファイルの作成とデプロイ
+ファイルを保存したら、圧縮して更新します。
+
+**Windows (コマンドプロンプト) の場合**
+```console
+tar -a -c -f function.zip lambda_function.py
+aws lambda update-function-code ^
+  --function-name handson-text-summarizer ^
+  --zip-file fileb://function.zip
+```
+
+**macOS/Linux (ターミナル) の場合**
+```console
 zip function.zip lambda_function.py
 aws lambda update-function-code \
   --function-name handson-text-summarizer \
@@ -939,6 +1133,16 @@ aws lambda update-function-code \
 
 #### テスト
 
+**Windows (コマンドプロンプト) の場合**
+```console
+:: APIキーなし → 403
+curl -X POST %FUNCTION_URL% -H "Content-Type: application/json" -d "{\"text\": \"テストです。\"}"
+
+:: APIキーあり → 200
+curl -X POST %FUNCTION_URL% -H "Content-Type: application/json" -d "{\"api_key\": \"handson-demo-key-2026\", \"text\": \"テストです。要約します。\", \"max_sentences\": 1}"
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 # APIキーなし → 403
 curl -X POST $FUNCTION_URL \
@@ -977,9 +1181,20 @@ Duration: 0:15:00
 API Gateway用にLambda関数を更新します。既存の `handson-text-summarizer` のコードを以下に更新します。  
 （DynamoDBのAPIキー認証は、API Gateway側のAPIキー認証に置き換えるため削除します）
 
+**Windows (コマンドプロンプト) の場合**
 ```console
-mkdir -p ~/lambda/07 && cd ~/lambda/07
-cat > lambda_function.py << 'EOF'
+mkdir lambda\07
+cd lambda\07
+```
+
+**macOS/Linux (ターミナル) の場合**
+```console
+mkdir -p lambda/07 && cd lambda/07
+```
+
+Kiro を使用してディレクトリ内に `lambda_function.py` を作成し、以下の内容を保存します。
+
+```python
 import json
 
 
@@ -1004,7 +1219,7 @@ def lambda_handler(event, context):
 
     if http_method == 'POST':
         try:
-            body = event.get('body', '{}')
+            body = event.get('body') or '{}'
             data = json.loads(body) if isinstance(body, str) else body
 
             text = data.get('text', '')
@@ -1059,8 +1274,18 @@ def lambda_handler(event, context):
         },
         'body': json.dumps({'error': f'{http_method}はサポートされていません'}, ensure_ascii=False)
     }
-EOF
+```
 
+**Windows (コマンドプロンプト) の場合**
+```console
+tar -a -c -f function.zip lambda_function.py
+aws lambda update-function-code ^
+  --function-name handson-text-summarizer ^
+  --zip-file fileb://function.zip
+```
+
+**macOS/Linux (ターミナル) の場合**
+```console
 zip function.zip lambda_function.py
 aws lambda update-function-code \
   --function-name handson-text-summarizer \
@@ -1074,6 +1299,14 @@ Positive
 
 API Gateway経由に切り替えるため、既存のFunction URLを削除します。
 
+**Windows (コマンドプロンプト) の場合**
+```console
+aws lambda delete-function-url-config --function-name handson-text-summarizer
+aws lambda remove-permission --function-name handson-text-summarizer ^
+  --statement-id FunctionURLAllowPublicAccess
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 aws lambda delete-function-url-config --function-name handson-text-summarizer
 aws lambda remove-permission --function-name handson-text-summarizer \
@@ -1082,6 +1315,23 @@ aws lambda remove-permission --function-name handson-text-summarizer \
 
 ### REST APIの作成
 
+以降の手順では、コマンドの出力を変数に格納して利用します。
+
+**Windows (コマンドプロンプト) の場合**
+```console
+:: REST APIの作成
+for /f "delims=" %i in ('aws apigateway create-rest-api --name handson-text-summarizer-api --description "テキスト要約REST API" --endpoint-configuration types=REGIONAL --query id --output text') do set API_ID=%i
+echo API ID: %API_ID%
+
+:: ルートリソースIDの取得
+for /f "delims=" %i in ('aws apigateway get-resources --rest-api-id %API_ID% --query "items[?path=='/'].id" --output text') do set ROOT_ID=%i
+
+:: /summarize リソースの作成
+for /f "delims=" %i in ('aws apigateway create-resource --rest-api-id %API_ID% --parent-id %ROOT_ID% --path-part summarize --query id --output text') do set RESOURCE_ID=%i
+echo Resource ID: %RESOURCE_ID%
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 # REST APIの作成
 API_ID=$(aws apigateway create-rest-api \
@@ -1104,8 +1354,33 @@ RESOURCE_ID=$(aws apigateway create-resource \
 echo "Resource ID: $RESOURCE_ID"
 ```
 
+**実行結果の例**
+```text
+API ID: abcdef1234
+Resource ID: ghijk5678
+```
+
 ### メソッドの作成（GET・POST）
 
+**Windows (コマンドプロンプト) の場合**
+```console
+for /f "delims=" %i in ('aws sts get-caller-identity --query Account --output text') do set ACCOUNT_ID=%i
+set REGION=ap-northeast-1
+
+aws apigateway put-method --rest-api-id %API_ID% --resource-id %RESOURCE_ID% --http-method GET --authorization-type NONE
+aws apigateway put-integration --rest-api-id %API_ID% --resource-id %RESOURCE_ID% --http-method GET --type AWS_PROXY --integration-http-method POST --uri "arn:aws:apigateway:%REGION%:lambda:path/2015-03-31/functions/arn:aws:lambda:%REGION%:%ACCOUNT_ID%:function:handson-text-summarizer/invocations"
+
+aws apigateway put-method --rest-api-id %API_ID% --resource-id %RESOURCE_ID% --http-method POST --authorization-type NONE
+aws apigateway put-integration --rest-api-id %API_ID% --resource-id %RESOURCE_ID% --http-method POST --type AWS_PROXY --integration-http-method POST --uri "arn:aws:apigateway:%REGION%:lambda:path/2015-03-31/functions/arn:aws:lambda:%REGION%:%ACCOUNT_ID%:function:handson-text-summarizer/invocations"
+
+aws apigateway put-method --rest-api-id %API_ID% --resource-id %RESOURCE_ID% --http-method OPTIONS --authorization-type NONE
+aws apigateway put-integration --rest-api-id %API_ID% --resource-id %RESOURCE_ID% --http-method OPTIONS --type MOCK --request-templates "{\"application/json\": \"{\\\"statusCode\\\": 200}\"}"
+
+aws apigateway put-method-response --rest-api-id %API_ID% --resource-id %RESOURCE_ID% --http-method OPTIONS --status-code 200 --response-parameters "{\"method.response.header.Access-Control-Allow-Headers\":false,\"method.response.header.Access-Control-Allow-Methods\":false,\"method.response.header.Access-Control-Allow-Origin\":false}"
+aws apigateway put-integration-response --rest-api-id %API_ID% --resource-id %RESOURCE_ID% --http-method OPTIONS --status-code 200 --response-parameters "{\"method.response.header.Access-Control-Allow-Headers\":\"'Content-Type,X-Amz-Date,Authorization,X-Api-Key'\",\"method.response.header.Access-Control-Allow-Methods\":\"'GET,POST,OPTIONS'\",\"method.response.header.Access-Control-Allow-Origin\":\"'*'\"}"
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 REGION=ap-northeast-1
@@ -1173,6 +1448,12 @@ aws apigateway put-integration-response \
 
 API GatewayがLambda関数を呼び出せるよう権限を付与します。
 
+**Windows (コマンドプロンプト) の場合**
+```console
+aws lambda add-permission --function-name handson-text-summarizer --statement-id apigateway-invoke --action lambda:InvokeFunction --principal apigateway.amazonaws.com --source-arn "arn:aws:execute-api:%REGION%:%ACCOUNT_ID%:%API_ID%/*"
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 aws lambda add-permission \
   --function-name handson-text-summarizer \
@@ -1184,19 +1465,33 @@ aws lambda add-permission \
 
 ### APIのデプロイ
 
+**Windows (コマンドプロンプト) の場合**
+```console
+aws apigateway create-deployment --rest-api-id %API_ID% --stage-name dev
+set API_URL=https://%API_ID%.execute-api.%REGION%.amazonaws.com/dev/summarize
+echo Endpoint: %API_URL%
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 aws apigateway create-deployment \
   --rest-api-id $API_ID \
   --stage-name dev
-
-echo "Endpoint: https://${API_ID}.execute-api.${REGION}.amazonaws.com/dev/summarize"
+API_URL="https://${API_ID}.execute-api.${REGION}.amazonaws.com/dev/summarize"
+echo "Endpoint: $API_URL"
 ```
 
 ### 動作確認
 
+**Windows (コマンドプロンプト) の場合**
 ```console
-API_URL="https://${API_ID}.execute-api.${REGION}.amazonaws.com/dev/summarize"
+curl %API_URL%
 
+curl -X POST %API_URL% -H "Content-Type: application/json" -d "{\"text\": \"AWSは包括的なクラウドプラットフォームです。200以上のサービスを提供しています。多くの企業がAWSを利用しています。\", \"max_sentences\": 2}"
+```
+
+**macOS/Linux (ターミナル) の場合**
+```console
 curl $API_URL
 
 curl -X POST $API_URL \
@@ -1209,6 +1504,13 @@ Duration: 0:15:00
 
 ### 使用量プランの作成
 
+**Windows (コマンドプロンプト) の場合**
+```console
+for /f "delims=" %i in ('aws apigateway create-usage-plan --name handson-basic-plan --throttle burstLimit^=5^,rateLimit^=10 --quota limit^=1000^,period^=DAY --api-stages apiId^=%API_ID%^,stage^=dev --query id --output text') do set PLAN_ID=%i
+echo Usage Plan ID: %PLAN_ID%
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 # 使用量プランの作成
 PLAN_ID=$(aws apigateway create-usage-plan \
@@ -1222,6 +1524,15 @@ echo "Usage Plan ID: $PLAN_ID"
 
 ### APIキーの作成
 
+**Windows (コマンドプロンプト) の場合**
+```console
+for /f "delims=" %i in ('aws apigateway create-api-key --name handson-test-key --enabled --query id --output text') do set KEY_ID=%i
+aws apigateway create-usage-plan-key --usage-plan-id %PLAN_ID% --key-id %KEY_ID% --key-type API_KEY
+for /f "delims=" %i in ('aws apigateway get-api-key --api-key %KEY_ID% --include-value --query value --output text') do set API_KEY=%i
+echo API Key: %API_KEY%
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 # APIキーの作成
 KEY_ID=$(aws apigateway create-api-key \
@@ -1241,8 +1552,22 @@ API_KEY=$(aws apigateway get-api-key --api-key $KEY_ID --include-value \
 echo "API Key: $API_KEY"
 ```
 
+**実行結果の例**
+```text
+Usage Plan ID: lmno9012
+API Key: ABCDEFGHIJKLMNOPQRSTUVWXYZ123456
+```
+
 ### メソッドにAPIキー要求を設定
 
+**Windows (コマンドプロンプト) の場合**
+```console
+aws apigateway update-method --rest-api-id %API_ID% --resource-id %RESOURCE_ID% --http-method GET --patch-operations op=replace,path=/apiKeyRequired,value=true
+aws apigateway update-method --rest-api-id %API_ID% --resource-id %RESOURCE_ID% --http-method POST --patch-operations op=replace,path=/apiKeyRequired,value=true
+aws apigateway create-deployment --rest-api-id %API_ID% --stage-name dev
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 # GETメソッドにAPIキー必須を設定
 aws apigateway update-method \
@@ -1266,6 +1591,19 @@ aws apigateway create-deployment \
 
 ### テスト
 
+**Windows (コマンドプロンプト) の場合**
+```console
+:: APIキーなし → 403 Forbidden
+curl %API_URL%
+
+:: APIキーあり → 200 OK
+curl -H "x-api-key: %API_KEY%" %API_URL%
+
+:: POSTリクエスト + APIキー
+curl -X POST -H "x-api-key: %API_KEY%" -H "Content-Type: application/json" -d "{\"text\": \"テストです。要約します。\", \"max_sentences\": 1}" %API_URL%
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 # APIキーなし → 403 Forbidden
 curl $API_URL
@@ -1294,11 +1632,89 @@ API Gatewayと連携することで、APIに対する不正アクセスを自動
 
 ### Web ACLの作成
 
+まず、WAFのルールを定義したJSONファイルを作成します。  
+Kiro を使用してコマンドを実行しているディレクトリに `waf-rules.json` を作成し、以下の内容を保存してください。
+
+```json
+[
+  {
+    "Name": "AWSManagedRulesCommonRuleSet",
+    "Priority": 1,
+    "Statement": {
+      "ManagedRuleGroupStatement": {
+        "VendorName": "AWS",
+        "Name": "AWSManagedRulesCommonRuleSet"
+      }
+    },
+    "OverrideAction": {"None": {}},
+    "VisibilityConfig": {
+      "SampledRequestsEnabled": true,
+      "CloudWatchMetricsEnabled": true,
+      "MetricName": "AWSManagedRulesCommonRuleSet"
+    }
+  },
+  {
+    "Name": "AWSManagedRulesKnownBadInputsRuleSet",
+    "Priority": 2,
+    "Statement": {
+      "ManagedRuleGroupStatement": {
+        "VendorName": "AWS",
+        "Name": "AWSManagedRulesKnownBadInputsRuleSet"
+      }
+    },
+    "OverrideAction": {"None": {}},
+    "VisibilityConfig": {
+      "SampledRequestsEnabled": true,
+      "CloudWatchMetricsEnabled": true,
+      "MetricName": "AWSManagedRulesKnownBadInputsRuleSet"
+    }
+  },
+  {
+    "Name": "handson-rate-limit",
+    "Priority": 3,
+    "Statement": {
+      "RateBasedStatement": {
+        "Limit": 100,
+        "AggregateKeyType": "IP"
+      }
+    },
+    "Action": {"Block": {}},
+    "VisibilityConfig": {
+      "SampledRequestsEnabled": true,
+      "CloudWatchMetricsEnabled": true,
+      "MetricName": "handson-rate-limit"
+    }
+  }
+]
+```
+
+次に、Web ACLを作成します。
+
+**Windows (コマンドプロンプト) の場合**
+```console
+set API_GW_ARN=arn:aws:apigateway:%REGION%::/restapis/%API_ID%/stages/dev
+
+:: Web ACLの作成
+aws wafv2 create-web-acl ^
+  --name handson-api-waf ^
+  --scope REGIONAL ^
+  --region %REGION% ^
+  --default-action Allow={} ^
+  --description "ハンズオンAPI用WAF" ^
+  --visibility-config SampledRequestsEnabled=true,CloudWatchMetricsEnabled=true,MetricName=handson-api-waf ^
+  --rules file://waf-rules.json
+
+:: ARNの取得
+for /f "delims=" %i in ('aws wafv2 list-web-acls --scope REGIONAL --region %REGION% --query "WebACLs[?Name=='handson-api-waf'].ARN" --output text') do set WAF_ACL_ARN=%i
+echo WAF ACL ARN: %WAF_ACL_ARN%
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 # API GatewayのARNを取得
 API_GW_ARN="arn:aws:apigateway:${REGION}::/restapis/${API_ID}/stages/dev"
 
-# Web ACLの作成（マネージドルール + レートベースルール付き）
+# Web ACLの作成
 WAF_ACL_ARN=$(aws wafv2 create-web-acl \
   --name handson-api-waf \
   --scope REGIONAL \
@@ -1306,58 +1722,14 @@ WAF_ACL_ARN=$(aws wafv2 create-web-acl \
   --default-action Allow={} \
   --description "ハンズオンAPI用WAF" \
   --visibility-config SampledRequestsEnabled=true,CloudWatchMetricsEnabled=true,MetricName=handson-api-waf \
-  --rules '[
-    {
-      "Name": "AWSManagedRulesCommonRuleSet",
-      "Priority": 1,
-      "Statement": {
-        "ManagedRuleGroupStatement": {
-          "VendorName": "AWS",
-          "Name": "AWSManagedRulesCommonRuleSet"
-        }
-      },
-      "OverrideAction": {"None": {}},
-      "VisibilityConfig": {
-        "SampledRequestsEnabled": true,
-        "CloudWatchMetricsEnabled": true,
-        "MetricName": "AWSManagedRulesCommonRuleSet"
-      }
-    },
-    {
-      "Name": "AWSManagedRulesKnownBadInputsRuleSet",
-      "Priority": 2,
-      "Statement": {
-        "ManagedRuleGroupStatement": {
-          "VendorName": "AWS",
-          "Name": "AWSManagedRulesKnownBadInputsRuleSet"
-        }
-      },
-      "OverrideAction": {"None": {}},
-      "VisibilityConfig": {
-        "SampledRequestsEnabled": true,
-        "CloudWatchMetricsEnabled": true,
-        "MetricName": "AWSManagedRulesKnownBadInputsRuleSet"
-      }
-    },
-    {
-      "Name": "handson-rate-limit",
-      "Priority": 3,
-      "Statement": {
-        "RateBasedStatement": {
-          "Limit": 100,
-          "AggregateKeyType": "IP"
-        }
-      },
-      "Action": {"Block": {}},
-      "VisibilityConfig": {
-        "SampledRequestsEnabled": true,
-        "CloudWatchMetricsEnabled": true,
-        "MetricName": "handson-rate-limit"
-      }
-    }
-  ]' \
+  --rules file://waf-rules.json \
   --query Summary.ARN --output text)
 echo "WAF ACL ARN: $WAF_ACL_ARN"
+```
+
+**実行結果の例**
+```text
+WAF ACL ARN: arn:aws:wafv2:ap-northeast-1:123456789012:regional/webacl/handson-api-waf/...
 ```
 
 | ルールグループ | 説明 |
@@ -1368,6 +1740,12 @@ echo "WAF ACL ARN: $WAF_ACL_ARN"
 
 ### API Gatewayとの関連付け
 
+**Windows (コマンドプロンプト) の場合**
+```console
+aws wafv2 associate-web-acl --web-acl-arn %WAF_ACL_ARN% --resource-arn %API_GW_ARN% --region %REGION%
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 aws wafv2 associate-web-acl \
   --web-acl-arn $WAF_ACL_ARN \
@@ -1385,6 +1763,12 @@ Duration: 0:10:00
 
 APIキーを使って正常にアクセスできることを確認します。
 
+**Windows (コマンドプロンプト) の場合**
+```console
+curl -H "x-api-key: %API_KEY%" %API_URL%
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 curl -H "x-api-key: $API_KEY" $API_URL
 ```
@@ -1395,6 +1779,12 @@ curl -H "x-api-key: $API_KEY" $API_URL
 
 WAFが悪意のあるリクエストをブロックすることを確認します。
 
+**Windows (コマンドプロンプト) の場合**
+```console
+curl -X POST -H "x-api-key: %API_KEY%" -H "Content-Type: application/json" -d "{\"text\": \"SELECT * FROM users; DROP TABLE users;--\"}" %API_URL%
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 # SQLインジェクション風のリクエスト → WAFがブロック
 curl -X POST \
@@ -1410,6 +1800,12 @@ WAFがブロックした場合、`403 Forbidden` が返ります。
 
 短時間に大量のリクエストを送信して、レートリミットが機能することを確認します。
 
+**Windows (コマンドプロンプト) の場合**
+```console
+for /l %i in (1,1,120) do @curl -s -o nul -w "Request %i: %%{http_code}\n" -H "x-api-key: %API_KEY%" %API_URL%
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 # 連続リクエストでレートリミットをテスト
 for i in $(seq 1 120); do
@@ -1421,8 +1817,13 @@ done
 
 100リクエストを超えた辺りから `403` レスポンスが返り始めれば、レートリミットが機能しています。
 
+Positive
+: **テスト結果の解釈について**
+WAF のレートベースルールは「5分間の継続的な集計」に基づいています。そのため、120回連続でリクエストを投げても、評価タイミングによっては**すべて `200 OK` で終わる場合がありますが、これは正常な動作です。** その場合は数分待ってから再度 1 回リクエストを投げると、集計が完了して `403 Forbidden` が返るようになります。
+
 Negative
-: レートベースのルールは5分間隔で評価されるため、即座にブロックされるわけではありません。テスト時はこの点を考慮してください。
+: レートベースのルールは5分間隔の集計に基づいて評価されるため、しきい値を超えてから実際にブロックが開始されるまでに数分のタイムラグが発生する場合があります。テストで即座に `403` にならない場合は、少し待ってから再度試してください。
+
 
 ### 構成の進化を振り返る
 
@@ -1442,19 +1843,51 @@ Duration: 0:10:00
 
 ハンズオンが完了したら、以下のコマンドでリソースを削除して料金の発生を防ぎましょう。
 
+Windowsのコマンドプロンプトでは変数の動的取得が複雑になるため、ここではマネジメントコンソールからの削除を推奨しますが、コマンドで削除する場合は以下のようになります。
+
 #### WAF Web ACLの削除
 
+**Windows (コマンドプロンプト) の場合**
 ```console
-WAF_ACL_ID=$(aws wafv2 list-web-acls --scope REGIONAL --region ap-northeast-1 \
+:: 関連付けの解除
+aws wafv2 disassociate-web-acl --resource-arn %API_GW_ARN% --region %REGION%
+
+:: Web ACLの削除
+for /f "delims=" %i in ('aws wafv2 list-web-acls --scope REGIONAL --region %REGION% --query "WebACLs[?Name=='handson-api-waf'].Id" --output text') do set WAF_ACL_ID=%i
+for /f "delims=" %i in ('aws wafv2 get-web-acl --name handson-api-waf --scope REGIONAL --id %WAF_ACL_ID% --region %REGION% --query "LockToken" --output text') do set WAF_ACL_LOCK=%i
+aws wafv2 delete-web-acl --name handson-api-waf --scope REGIONAL --id %WAF_ACL_ID% --lock-token %WAF_ACL_LOCK% --region %REGION%
+```
+
+**macOS/Linux (ターミナル) の場合**
+```console
+# 関連付けの解除
+aws wafv2 disassociate-web-acl --resource-arn $API_GW_ARN --region $REGION
+
+# Web ACLの削除
+WAF_ACL_ID=$(aws wafv2 list-web-acls --scope REGIONAL --region $REGION \
   --query "WebACLs[?Name=='handson-api-waf'].Id" --output text)
 WAF_ACL_LOCK=$(aws wafv2 get-web-acl --name handson-api-waf --scope REGIONAL \
-  --id $WAF_ACL_ID --region ap-northeast-1 --query "LockToken" --output text)
+  --id $WAF_ACL_ID --region $REGION --query "LockToken" --output text)
 aws wafv2 delete-web-acl --name handson-api-waf --scope REGIONAL \
-  --id $WAF_ACL_ID --lock-token $WAF_ACL_LOCK --region ap-northeast-1
+  --id $WAF_ACL_ID --lock-token $WAF_ACL_LOCK --region $REGION
 ```
 
 #### API Gateway関連の削除
 
+**Windows (コマンドプロンプト) の場合**
+```console
+:: 変数が残っていない場合は再取得が必要です
+for /f "delims=" %i in ('aws apigateway get-rest-apis --query "items[?name=='handson-text-summarizer-api'].id" --output text') do set API_ID=%i
+for /f "delims=" %i in ('aws apigateway get-api-keys --query "items[?name=='handson-test-key'].id" --output text') do set KEY_ID=%i
+for /f "delims=" %i in ('aws apigateway get-usage-plans --query "items[?name=='handson-basic-plan'].id" --output text') do set PLAN_ID=%i
+
+:: 削除実行（REST API -> 使用量プラン -> APIキー の順）
+aws apigateway delete-rest-api --rest-api-id %API_ID%
+aws apigateway delete-usage-plan --usage-plan-id %PLAN_ID%
+aws apigateway delete-api-key --api-key %KEY_ID%
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 API_ID=$(aws apigateway get-rest-apis \
   --query "items[?name=='handson-text-summarizer-api'].id" --output text)
@@ -1463,10 +1896,13 @@ KEY_ID=$(aws apigateway get-api-keys \
 PLAN_ID=$(aws apigateway get-usage-plans \
   --query "items[?name=='handson-basic-plan'].id" --output text)
 
-aws apigateway delete-api-key --api-key $KEY_ID
-aws apigateway delete-usage-plan --usage-plan-id $PLAN_ID
+# 削除実行（REST API -> 使用量プラン -> APIキー の順）
 aws apigateway delete-rest-api --rest-api-id $API_ID
+aws apigateway delete-usage-plan --usage-plan-id $PLAN_ID
+aws apigateway delete-api-key --api-key $KEY_ID
 ```
+
+Windows環境の場合は、AWSマネジメントコンソールから手動で「WAF Web ACL」「API Gateway」を削除することをおすすめします（変数が維持されていれば、作成時と同様のコマンドで削除可能です）。
 
 #### DynamoDBテーブルの削除
 
@@ -1482,6 +1918,16 @@ aws lambda delete-function --function-name handson-text-summarizer
 
 #### IAMロールの削除
 
+**Windows (コマンドプロンプト) の場合**
+```console
+aws iam detach-role-policy --role-name handson-furl-lambda-role ^
+  --policy-arn arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+aws iam detach-role-policy --role-name handson-furl-lambda-role ^
+  --policy-arn arn:aws:iam::aws:policy/AmazonDynamoDBReadOnlyAccess
+aws iam delete-role --role-name handson-furl-lambda-role
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 aws iam detach-role-policy --role-name handson-furl-lambda-role \
   --policy-arn arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
@@ -1492,6 +1938,19 @@ aws iam delete-role --role-name handson-furl-lambda-role
 
 #### IAMユーザーの削除
 
+**Windows (コマンドプロンプト) の場合**
+```console
+:: アクセキーの削除
+for /f "delims=" %i in ('aws iam list-access-keys --user-name handson-user --query "AccessKeyMetadata[0].AccessKeyId" --output text') do set ACCESS_KEY_ID=%i
+aws iam delete-access-key --user-name handson-user --access-key-id %ACCESS_KEY_ID%
+
+:: ポリシーのデタッチとユーザー削除
+aws iam detach-user-policy --user-name handson-user ^
+  --policy-arn arn:aws:iam::aws:policy/AdministratorAccess
+aws iam delete-user --user-name handson-user
+```
+
+**macOS/Linux (ターミナル) の場合**
 ```console
 # アクセスキーの削除
 ACCESS_KEY_ID=$(aws iam list-access-keys --user-name handson-user \
@@ -1506,20 +1965,29 @@ aws iam delete-user --user-name handson-user
 
 #### GASプロジェクトの削除
 
+**Windows (コマンドプロンプト) の場合**
 ```console
-cd ~/gas/04 && clasp undeploy --all
-cd ~/gas/06 && clasp undeploy --all
+cd gas\04 && clasp undeploy --all
+cd gas\06 && clasp undeploy --all
+```
+
+**macOS/Linux (ターミナル) の場合**
+```console
+cd gas/04 && clasp undeploy --all
+cd gas/06 && clasp undeploy --all
 ```
 
 #### 作業ディレクトリの削除
 
+**Windows (コマンドプロンプト) の場合**
 ```console
-rm -rf ~/gas ~/lambda
+rmdir /S /Q gas lambda
 ```
 
-#### GitHub Codespace の削除
-
-不要であれば GitHub の [Codespaces 管理画面](https://github.com/codespaces) から Codespace を削除します。
+**macOS/Linux (ターミナル) の場合**
+```console
+rm -rf gas lambda
+```
 
 Negative
 : リソースの削除を忘れると、特にWAFとAPI Gatewayで意図しない料金が発生する可能性があります。必ず全てのリソースを削除してください。
