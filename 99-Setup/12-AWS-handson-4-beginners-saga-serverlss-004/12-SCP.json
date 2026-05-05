@@ -12,7 +12,16 @@
         "dynamodb:*",
         "bedrock:*",
         "wafv2:*",
-        "logs:*"
+        "logs:*",
+        "ec2:*",
+        "elasticloadbalancing:*",
+        "cloudfront:*",
+        "ssm:*",
+        "secretsmanager:*",
+        "sns:*",
+        "events:*",
+        "cloudformation:*",
+        "s3:*"
       ],
       "Resource": "*"
     },
@@ -22,7 +31,8 @@
       "NotAction": [
         "iam:*",
         "sts:*",
-        "wafv2:*"
+        "wafv2:*",
+        "cloudfront:*"
       ],
       "Resource": "*",
       "Condition": {

@@ -6,7 +6,6 @@
       "Effect": "Deny",
       "Principal": "*",
       "Action": [
-        "apigateway:*",
         "dynamodb:*",
         "logs:*"
       ],
