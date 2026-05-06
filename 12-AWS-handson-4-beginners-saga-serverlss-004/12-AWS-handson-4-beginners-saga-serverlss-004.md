@@ -73,32 +73,31 @@ Duration: 0:10:00
 
 詳細な作成手順については、以下の公式ページや参考記事をご覧ください。
 * [AWS 無料枠（公式）](https://aws.amazon.com/jp/free/)
-* [参考記事: AWSアカウントの作成手順](https://zenn.dev/tamago701/articles/ce15bf5f0cce09)
 
 ### AWSの主要サービスの無料枠について
 
 AWSには、クレジットを消費せずに利用できる**「常に無料」のサービス**と、クレジットを利用して評価・検証が可能なサービスがあります。
 
 #### 常に無料のサービス（毎月の限度枠）
-* **AWS Lambda**: 100万リクエスト/月、最大40万GB秒（または320万秒）のコンピューティング時間
-* **Amazon DynamoDB**: 25 GBのストレージ、25 WCU（書き込み）、25 RCU（読み込み）
-* **Amazon CloudFront**: 1 TBのアウトバウンドデータ転送、1,000万リクエスト/月
-* **Amazon Q Developer**: IDE/CLIでのコード補完、月間50回のチャット、月間25回の自然言語クエリなど
-* **AWS WAF Bot Control**: 月間1,000万リクエストまでの処理
-* **Amazon CodeCatalyst**: 2,000ビルド分、60時間の開発環境、10GBのソースストレージ
-* **Amazon SNS**: 100万件のパブリッシュ、10万件のHTTP/S配信、1,000件のEメール配信
-* **AWS Certificate Manager (ACM)**: 最初の10,000APIコール
-* **AWS Systems Manager**: Explorer, Session Manager, Parameter Store などの主要機能
-* **AWS CloudFormation**: 月間1,000回のハンドラー操作
-* **Amazon EventBridge**: Schedulerの月間1,400万回呼び出し など
-* **AWS Key Management Service (KMS)**: 月間20,000リクエスト
+* **AWS Lambda** (プログラムを実行するサーバーレス計算サービス): 100万リクエスト/月、最大40万GB秒（または320万秒）のコンピューティング時間
+* **Amazon DynamoDB** (高速でスケーラブルなNoSQLデータベース): 25 GBのストレージ、25 WCU（書き込み）、25 RCU（読み込み）
+* **Amazon CloudFront** (コンテンツを高速に配信するCDN): 1 TBのアウトバウンドデータ転送、1,000万リクエスト/月
+* **Amazon Q Developer** (AIによるコード生成・開発支援アシスタント): IDE/CLIでのコード補完、月間50回のチャット、月間25回の自然言語クエリなど
+* **AWS WAF Bot Control** (悪意のあるボット攻撃をブロックする機能): 月間1,000万リクエストまでの処理
+* **Amazon CodeCatalyst** (開発からデプロイまでを統合するCI/CDツール): 2,000ビルド分、60時間の開発環境、10GBのソースストレージ
+* **Amazon SNS** (メッセージや通知を配信するサービス): 100万件のパブリッシュ、10万件のHTTP/S配信、1,000件のEメール配信
+* **AWS Certificate Manager (ACM)** (SSL/TLS証明書を発行・管理するサービス): 最初の10,000APIコール
+* **AWS Systems Manager** (クラウドやオンプレミスのインフラを一元管理するサービス): Explorer, Session Manager, Parameter Store などの主要機能
+* **AWS CloudFormation** (インフラ構成をコードで定義・構築するサービス): 月間1,000回のハンドラー操作
+* **Amazon EventBridge** (アプリ間を連携するイベントバス・スケジューラ): Schedulerの月間1,400万回呼び出し など
+* **AWS Key Management Service (KMS)** (暗号化キーを作成・管理するサービス): 月間20,000リクエスト
 
 #### 無料枠・クレジット対象のサービス
 以下のサービスは、無料プラン対象のインスタンスを選択したり、付与されたクレジットを消費することで無料で評価・利用が可能です。
-* **Amazon EC2**: T3.micro, T3.small, T4g.micro などの対象インスタンス
-* **Amazon RDS**: db.t3.micro, db.t4g.micro（MySQL, PostgreSQL 等）
-* **Amazon S3**: 高い耐久性を持ったデータ保存とアクセス制御
-* **その他**: Elastic Load Balancing (ALB/NLB等), AWS WAF, AWS CloudShell, Amazon SES, Amazon Polly, AWS SecretsManager
+* **Amazon EC2** (仮想サーバー構築サービス): T3.micro, T3.small, T4g.micro などの対象インスタンス
+* **Amazon RDS** (リレーショナルデータベース管理サービス): db.t3.micro, db.t4g.micro（MySQL, PostgreSQL 等）
+* **Amazon S3** (大容量データを保存できるオブジェクトストレージ): 高い耐久性を持ったデータ保存とアクセス制御
+* **その他**: Elastic Load Balancing (負荷分散/ALB/NLB等), AWS WAF (Webアプリケーションファイアウォール), AWS CloudShell (ブラウザベースのシェル), Amazon SES (メール送受信), Amazon Polly (音声読み上げ), AWS SecretsManager (パスワードやキーの秘匿管理)
 
 ## 事前準備: AWS Builder ID の作成
 Duration: 0:05:00
